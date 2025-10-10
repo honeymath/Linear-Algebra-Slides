@@ -1,0 +1,624 @@
+
+\aaa{Annihilating polynomial of matrices}
+Let $A$ be an $n × n$ matrix, it is an element in the set
+$$
+ℝ^{n × n}:=\{M: ␣ M“ is an “n × n“ matrix “ \}
+$$
+which is $n × n$ dimensiona. Therefore, the following $n^2+1$ elements
+$$
+I=A^0, A=A^1, A^2, A^3, ..., A^{n^2}
+$$
+must be \x{linearly dependent}, and therefore gives some non-zero coefficients 
+$$
+c_0+c_1A+c_2A^2+...+c^{n^2}A^{n^2}=0.
+$$
+This implies that there exists a polynomial
+$$
+f(t)
+=c_0+c_1t+c_2t^2+...+c^{n^2}t^{n^2}=0.
+$$
+with $f(A)=0$.
+\a\aa
+\[defi]{A polynomial $f(t)$ with $f(A)=0$ is called an \x{annilating polynomial} of an n × n matrix $A$.
+}
+\a\aa
+\exe Try to find an annihilating polynomial of the matrxi
+$$
+A = \m 12,34.
+$$
+
+We calculate
+$$
+A^0 = \m 10,01. ␣ A^1 = \m 12,34. ␣ A^2 = \m 7{10},{15}{22}.
+$$
+
+We saw that $A^2-5A-2I=0$. Is there any other possible method to find the polynomial $x^2-5x-2$ other than solving equations?
+
+\aaa
+
+
+\aaa{Determinant and polynomial}
+
+\[defi]{For any $n × n$ matrix $A$, the formula
+$$
+\det(tI-A)
+$$
+gives a polynomial of $t$. Call this \x{the characteristic polynomial} of $A$.
+}
+
+\[thm]{(Calay Hamilton Theorem)For any n × n matrix $A$, the charactiersitc polynomial $\det(tI-A)$ is an annilating polynomial of it.
+}
+{\color{red}\x{False proof}␣ $\det(tI-A)|_{t=A}=\det(AI-A)=\det0=0$}
+\vfill
+Instead, we should expand $\det(tI-A)$ first before plug in the matrix $A$.
+
+\a\aa
+
+Let $t$ be a variable.
+\vfill
+Why $“det“(tI-A)$ is a polynomial?
+
+\a\aa
+
+$$
+\det\m{t-1}{3}4,
+{1}{t-2}3,
+11{t-1}.
+$$
+have at least 3 position with $t$ variables.
+
+Expand it by a column, then for each determinant there have at most 2 position with $t$ variables. 
+$$
+(t-1)
+“det“
+{
+\tiny\m
+\134,
+0{t-2}3,
+01{t-1}.
+}
++1
+“det“
+{\tiny\m
+034,
+\1{t-2}3,
+01{t-1}.
+}+1
+“det“
+{\tiny\m
+034,
+0{t-2}3,
+\11{t-1}.
+}
+$$
+
+Expanding a column containing variable $t$ reduces the number of variables inside determinant.
+
+%Until we expanded out all column containing $t$, we will finally get a polynomial.
+\a\aa
+\exe Find the characteristic polynomial of 
+$$
+A = \m 12,34.
+$$
+
+$$
+\det(tI-A)=“det“\m{t-1}{-2},{-3}{t-4}.=(t-1)(t-4)-(-2)(-3)=t^2-5t-2.$$
+\a{Polynomial division}
+Then why do we have
+
+\[thm]{(Calay Hamilton Theorem)For any n × n matrix $A$, the charactiersitc polynomial $\det(tI-A)$ is an annilating polynomial of it.
+}
+{\color{red}\x{False proof}␣ $\det(tI-A)|_{t=A}=\det(AI-A)=\det0=0$ (You are only allowed to plug in numbers when writting this)}
+
+
+\[rem]{
+In scalar coeffient polynomial, you are allowed to plug in matrics. In matrix coefficient polynomial, you can only plug in scalars! \x{\color{red}Never plug in matrix to matrix coefficient polynomials!}
+}
+\a{About the False proof}
+For example, 
+$$
+\det(tI_2)=\det \m t0,0t. = t^2
+$$
+\vfill
+How do you plug in a matrix $t = B=\m12,34.$? 
+
+Is that $\det(BI_2)$??
+
+Is that
+$$
+\det \m B0,0B. = \det \m 1200,3400,0012,0034.?
+$$
+The above is closer, but it is not $B^2$, it is equal to $\det B^2$
+\vfill
+You can only first calculate out the polynomial before plug that in.
+\a{Polynomial division}
+
+Example. When simplifiying fractions, 
+$$
+t^3+2\over t-1
+$$
+
+$$
+\begin{array}{rllll}
+&&{\color{red} t^2}&+{\color{red}t}&+{\color{red}1}\\
+    \cline{2-5}
+    t-1 )& t^3 &  &  & +2 \\
+    & t^3 & -t^2 &  & \\
+    \cline{2-4}
+    &  & t^2 &  & \\
+    &   & t^2 & -t & \\
+    \cline{3-5}
+    &   &  & t & +2 \\
+    &   &     & t & -1 \\
+    \cline{4-5}
+    &   &     &  & {\color{blue}3} \\
+\end{array}
+$$
+
+$$
+\frac{t^3+2}{t-1} = {\color{red}t^2 + t + 1} + { {\color{blue}3}\over t-1}
+$$
+
+\x{{\color{blue} 3} is the value of pluging $t=1$ to $t^3+2$}
+\a\aa
+
+$$
+\frac{t^3+2}{t-1} = {\color{red}t^2 + t + 1} + { {\color{blue}3}\over t-1}
+$$
+⟺  
+$$
+t^3+2  ␣ = \underbrace{(t-1)({\color{red}t^2 + t + 1})}_{“This part vanishes when plugin“ t=1} +  ␣ {\color{blue}3}
+$$
+\a\aa
+Instead of pluging matrix to determinant. We first calculate out determinant, and then apply polynomial division.
+
+For example
+$$
+\det(tI-A)=\det\m{t-1}{-2},{-3}{t-4}.=t^2-5t-2
+$$
+
+$$
+\begin{array}{rllll}
+&&{\color{red} t}&+{\color{red}(A-5)}&\\
+    \cline{2-5}
+    t-A )& t^2 &-5t  &-2  & \\
+    & t^2 & -At &  & \\
+    \cline{2-4}
+    &  & (A-5)t &-2  & \\
+    &   & (A-5)t & A^2-5A & \\
+    \cline{3-5}
+      \cline{4-5}
+    &   &     &   {\color{blue}A^2-5A+2} &\\
+\end{array}
+$$
+The {\color{blue}remainder} is exactly we plug in $t=A$ to the polynomial.
+$$
+{t^2 - 5t -2 \over t-A }= {\color{red}t+(A-5)}+{{\color{blue}A^2-5A+2}\over t-A}
+$$
+
+
+\a\aa
+We already have
+$$
+{t^2 - 5t -2 \over t-A }= {\color{red}t+(A-5)}+{{\color{blue}A^2-5A+2}\over t-A}
+$$
+\vfill
+Is that possible to have another decomposition??
+$$
+{t^2 - 5t -2 \over t-A }
+=
+Bt+C+{D\over t-A}
+$$
+\a\aa
+No, the polynomial division is uniquely determined, say, once
+$$
+{\color{red}t+(A-5)}+{{\color{blue}A^2-5A+2}\over t-A} = Et^2+Bt+C+{D\over t-A}
+$$
+
+Then $E=0$ , $B = I_2$, $C=(A-5)$ and $D=A^2-5A+2$.
+
+$$
+{t^2 - 5t -2 \over t-A }= {\color{red}t+(A-5)}+{{\color{blue}A^2-5A+2}\over t-A}
+$$
+
+\a\aa
+
+\[thm]{
+Let $C_{-1},C_0,...,C_n$ and $D_{-1},D_0,...,D_n$ be matrices that satisfying the following expression
+$$
+C_nt^n+C_{n-1}t^{n-1}+...C_0+C_{-1}(t-A)^{-1}
+$$
+$$
+=
+D_nt^n+D_{n-1}t^{n-1}+...D_0+D_{-1}(t-A)^{-1}
+$$
+Then $C_i=D_i$.
+}
+
+\textbf{Proof}: Dividing both side by $t^n$, we have
+$$
+C_n + \frac{C_{n-1}}t + ... +\frac{C_0}{t^n}+\frac{C_{-1}(I-\frac At)^{-1}}{t^{n+1}}
+$$
+$$
+=
+D_n + \frac{D_{n-1}}t + ... +\frac{D_0}{t^n}+\frac{D_{-1}(I-\frac At)^{-1}}{t^{n+1}}
+$$
+Comparing this equality at limit $t ⟶  ∞$, we have $C_n=D_n$.
+
+
+%\a\aa
+%In the above process, the quotient is uniquely determined, if 
+%$$
+%{t^2-5t-2\over t-A }=  Et^2+B t + C + {D \over t-A}
+%$$
+%then we must have
+%$$
+%E=0 ␣ B = I ␣ C = A-5I ␣ D = A^2-5A+2.
+%$$
+\a\aa
+Going back to the proof of Calay Hamilton theroem, letting
+$$
+f(t):=\det(tI-A).
+$$
+on one hand, we may decompose the polynomial generally
+
+$$
+\frac{\det(tI-A)}{tI-A} =\frac{f(t)}{tI-A} = B_kt^k+...+B_0+\frac{f(A)}{tI-A}
+$$
+\a\aa
+
+However, we have the adjugate formula.
+$$
+(tI-A)^*(tI-A) = \det(tI-A)I,
+$$
+which gives us another decomposition
+$$
+\frac{\det(tI-A)}{tI-A} = (tI-A)^*
+$$
+We claim that $(tI-A)^*$ MUST BE a polynomial!
+$$
+(tI-A)^* = C_mt^m+...+C_0 ␣ “ for some “C_i.
+$$
+Once we done this, then by comparing coefficients, 
+$$
+C_mt^m+...+C_0 ␣ ␣ 
+$$
+$$
+=B_kt^k+...+B_0+\frac{f(A)}{tI-A}
+$$
+
+we obtain $f(A)=0$, the Calay--Hamilton theorem.
+
+\a\aa
+
+So why $(tI-A)$ is a polynomial? 
+
+$$
+“Illustrate idea with an example:“␣  A=\m
+101,010,101.
+$$
+Think about how you find $(tI-A)^*$
+$$
+\underbrace{\m
+{t-1}0{-1},
+0{t-1}0,
+{-1}0{t-1}.^*
+}_{(tI-A)^*}
+=
+\m
+{(t-1)^2}0{t-1},
+0{t^2-2t}0,
+{t-1}0{(t-1)^2}.
+$$
+\a\aa
+Therefore, we may always write $(tI-A)^*$ as matrix polynomial of $t$.
+
+$$
+\m
+{(t-1)^2}0{t-1},
+0{t^2-2t}0,
+{t-1}0{(t-1)^2}.
+=
+\m
+{t^2-2t+1}0{t-1},
+0{t^2-2t}0,
+{t-1}0{t^2-2t+1}.
+$$
+$$
+=\m100,010,001.t^2+\m{-2}01,0{-2}0,10{-2}.t +\m10{-1},000,{-1}01.
+$$
+
+\aaa
+
+
+
+\aaa{Multiplinear expansion of determinant}
+Having proved that the characteristic polynomial $f(t)=\det(tI-A)$ is annihilating polynomial $f(A)=0$, we want methods for calculating $\det(tI-A)$.
+\a\aa
+Determinant can be expanded once on one column
+$$
+\det \m{v+w}{u}.=\det \m vu. +\det\m wu.
+$$
+\a\aa
+If wanna expand in two columns, we expand one by one
+$$
+\det\m{v+w}{u+k}.
+$$
+$$
+=
+\det \m v{u+k}.
++
+\det \m w{u+k}.
+$$
+$$
+=
+\det\m vu.+\det\m vk.+\det \m wu.+\det\m wk.
+$$
+That is, to expand determinant from multiple columns, we add up all possible combinations of choosing a summand inside each factor.
+\a\aa
+This applies to the calculation of charcteristic polynomial.
+
+Let $e_1,...,e_n$ be natural basis and let $A = \m{v_1}{...}{v_n}.$
+
+$$
+“det“(tI-A) = “det“\m{te_1-v_1}{te_2-v_2}{...}{te_n-v_n}.
+$$
+\a\aa
+Example of expansion $\det(tI_3-A)$ for $3 × 3$ matrix.
+$$
+\det\m{te_1-v_1}{te_2-v_2}{te_3-v_3}.
+$$$$
+=
+$$$$
+\det\m{te_1}{te_2}{te_3}.
+$$
+$$
++
+\det\m{-v_1}{te_2}{te_3}.
++
+\det\m{te_1}{-v_2}{te_3}.
++
+\det\m{te_1}{te_2}{-v_3}.
+$$$$
+\det\m{-v_1}{te_2}{e_3}.
++
+\det\m{te_1}{-v_2}{e_3}.
++
+\det\m{-v_1}{-v_2}{te_3}.
+$$
+$$
++
+\det\m{-v_1}{-v_2}{-v_3}.
+$$
+\a\aa
+We may factor out the sign and $t$
+
+$$
+\det\m{te_1-v_1}{te_2-v_2}{te_3-v_3}.
+$$$$
+=
+$$$$
+\det\m{te_1}{te_2}{te_3}.{\color{blue}t^3}
+$$
+$$
+{\color{red}-}
+\left(
+\det\m{v_1}{e_2}{e_3}. 
++
+\det\m{e_1}{v_2}{e_3}.
++
+\det\m{e_1}{e_2}{v_3}.
+\right)
+{\color{blue}t^2}
+$$$$
+{\color{red}+}\left(
+\det\m{v_1}{e_2}{e_3}.
++
+\det\m{e_1}{v_2}{e_3}.
++
+\det\m{v_1}{v_2}{e_3}.
+\right){\color{blue}t}
+$$
+$$
+{\color{red}-}\left(
+\det\m{v_1}{v_2}{v_3}.
+\right)
+$$
+
+\a\aa
+If
+$$
+A=\m{v_1}{v_2}{v_3}{v_4}. = 
+\m ****,****,****,****.
+$$
+as an example, then, 
+$$
+\det\m{e_1}{v_2}{e_3}{v_4}.
+=
+\det \m1*0*,0*0*,0*1*,0*0*.
+=
+\det \m1000,0*0*,0010,0*0*.
+$$
+Strategy of calculating such determinant
+$$
+\det \m1000,0{\h*}0{\h*},0010,0{\h*}0{\h*}.
+=
+\det\m {\h*}{\h*},{\h*}{\h*}.
+$$
+This submatrix has its diagonal lies in the same diagonal of original matrix.
+\a\aa
+\[defi]{A principle minor of size $k$ is the \x{determinant} of a $k × k$ submatrix, whose diagonal coincide with the diagonal of its father.}
+Location of submatrices for principal minor of size $2$ of a $ 3 × 3$ matrix.
+\def\q{{\h*}}
+$$
+\m\q\q*,\q\q*,***.
+␣
+\m***,*\q\q,*\q\q.
+␣
+\m\q*\q,***,\q*\q.
+$$
+\vfill
+
+Location of submatrices for principal minor of size $1$ of a $ 3 × 3$ matrix.
+
+$$
+\m \q**,***,***.␣ 
+\m ***,*\q*,***.␣ 
+\m ***,***,**\q.
+$$
+\a\aa
+\[thm]{The characteristic polynomial of n × n matrix $A$ has formula
+$$
+“det“(tI-A) = t^n - a_1t^{n-1}+a_2t^{n-2}- ... +(-1)^na_n
+$$
+where $a_i$ is the \x{sum} of principal minors of size $i$.
+In particular $a_1=“tr“(A)$ and $a_n=“det“(A)$
+}
+\a\aa
+\exe Calculate the charcteristic polynomial for the following matrices
+$$
+A = \m 111,111,111. ␣  B= \m 101,011,110.
+$$
+\aaa
+\aaa{Lagurange interpolation polynomial}
+
+
+\exe Suppose $f(x)=x-c$. Given that $f(2)=0$, determine the number $c$.
+
+\a\aa
+\exe Let f(x)=(x-a)(x-b). Determine the value of a,b such that 
+
+\vfill
+¡$f(3)=0 ␣ f(9) = 0$
+
+\a\aa
+
+\exe Consdier the following exercises 
+
+ Suppose 
+$$
+f(x) = \frac{(x-2)(x-5)(x-7)(x-9)}{(11-2)(11-5)(11-7)(11-9)}.
+$$
+Please calculate the value of $f(x)$ to fill into the following value table
+$$
+\t{$x=$}{$f(x)=$},
+2{},
+5{},
+7{},
+9{},
+{11}{}.
+$$
+
+
+\a\aa
+
+
+Using the idea from previous exercise. Please write down a polynomial $f(x)$  such that 
+$$
+f(2)=f(3)=f(5)=f(8)=0,\qquad f(10)=1.
+$$
+\a\aa
+ Write down polynomials $f_2(x),f_3(x),f_5(x),f_7(x)$ with the following value table
+$$
+\t{$x=$}{$f_1(x)=$}{$f_4(x)=$}{$f_5(x)=$},
+1100,
+4010,
+5001.
+$$
+\a\aa
+Try to determine a polynomial with its graph passing through the following points
+
+\[tikzpicture]{[scale=0.38]\zbx{10}\func{-1}6{\x*\x/2-5*\x/2+3}\dian11\dian41\dian53}
+\a\aa
+We are trying to find $g(x)$ with $g(1)=1,g(4)=1,g(5)=3$. 
+
+$$
+\t{$x=$}{$f_1(x)=$}{$f_4(x)=$}{$f_5(x)=$}{$g(x)=$},
+11001,
+40101,
+50013.
+$$
+and suppose that
+$$
+g(x)=a_1\cdot f_1(x)+a_4\cdot f_4(x)+a_5\cdot f_5(x).
+$$
+Determine the value of $a_1,a_4,a_5$.
+
+
+$$
+\t{$x=$}{$f_1(x)=$}{$f_4(x)=$}{$f_5(x)=$}{$a_1\cdot f_1(x)+a_4\cdot f_4(x)+a_5\cdot f_5(x)=$},
+1100{a_1},
+4010{a_4},
+5001{a_5}.
+$$
+\aaa
+\aaa{Lagurange Interpolation}
+\[lem]{
+Let $g(t)$ be an arbitray polynomial, let $x_1,x_2,...,x_n$ be distinct numbers. Let $f_{x_1},...,f_{x_n}$ be interpolation polynomials satisfying
+$$
+f_{x_i}(x_j) = 
+\[cases]{
+1 & x_i=x_j\\
+0 & x_i ≠ x_j.
+}
+$$
+Then the polynomial 
+$$
+h(t) := g(t) - g(x_1)f_{x_1}(t) - g(x_2)f_{x_2}(t) - ... - g(x_n)f_{x_n}(t)
+$$
+satisfies $h(x_1)=h(x_2)=...=h(x_n)=0$.
+}
+\a\aa
+\[lem]{
+If $h(x)$ is a polynomial satisfying
+$h(x_1)=h(x_2)=...=h(x_n)=0$
+for distinct inputs $x_i≠x_j$ for $i≠j$, then $h(x)$ is divisible by $(x-x_1)...(x-x_n)$ in the sense that
+$$
+h(t) = Q(t)(t-x_1)...(t-x_n)
+$$
+for some polynomial $Q$.
+}
+\a\aa
+Explaination of the proof:
+
+$$
+\frac{h(t)}{t-x_1} = “Some polynomial“ + \frac{h(x_1)}{t-x_1}
+$$
+Therefore 
+$$h(x_1)=0 ␣  ⟹   ␣ \frac{h(t)}{t-x_1} “ is a polynomial.“ $$
+ Just write
+$$
+h_2(t) = \frac{h(t)}{t-x_1},
+$$
+then $h_2(x_2)=...=h_2(x_n)=0$. Use the method again and again, we know
+$$\frac{h(t)}{(t-x_1)(t-x_2)\cdots(t-x_n)}$$
+is a polynomial.
+\a{Lagurange Interpolation Theorem}
+\[thm]{Let $g(t)$ be arbitrary polynomials, given distinct points $x_1,...,x_n$ and a choice of interpolation polynomials $f_{x_1}(t),...,f_{x_n}(t)$ with $f_{x_j}(x_i)=0$ for $i≠j$ and $f_{x_i}(x_i)=1$ for any $1≤i≤n$, we can write
+$$
+g(t)=Q(t)(t-x_1)
+\cdots
+(t-x_n) + 
+g(x_1)f_{x_1}(t)
++
+%g(x_2)f_{x_2}(t)
+%+
+\cdots
++
+g(x_n)f_{x_n}(t)
+$$ }
+\a\aa
+\exe Write down an interpolation of $t^5$ at point $t=1$ and $t=2$.
+
+\sol First we pick interpolation polynomials.
+\t{$t=$}{$2-t$}{$t-1$}{$t^5$},
+1101,
+201{32}
+.
+
+Then we can write
+$$
+t^5 = Q(t)(t-1)(t-2) + (2-t) + 32(t-1)
+$$
+for some polyonimal $Q(t)$.
+\aaa

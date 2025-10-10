@@ -1,0 +1,609 @@
+
+\newcommand\map[3]{#1 : {#2}⟶  {#3}}
+\newcommand\maps[5]{{#1}:{#2}⟶  {#3}, {#4} ↦ {#5}}
+
+
+\aaa{Induced Linear Transformation}
+
+From now, we have learned three concepts
+
+\[itemize]{
+\item Matrices
+\item Tuple of vectors
+\item Linear Transformation
+}
+
+In order to link all those three concepts together, we would like to bring all object in one world: Linear Transformation.
+\vfill
+
+In the next part. We will give the way to translate each object as a linear transformation. 
+
+\[itemize]{
+\item $m\times n$ Matrices $\iff$ Linear transformations $F^n\longrightarrow F^m$
+\item n Tuple of vectors $\iff$ Linear transformations $F^n\longrightarrow V$
+}
+\a\aa
+There is also a way to translate subspaces into Linear Transformations. We would like to keep that part later because we would like you to be familiar with it first.
+\vfill
+
+After those translation. All linear algebra are essentially studying linear transformations. The goal for this part is to put the linear transformation into a central point of all this subject.
+
+\a\aa
+
+After we translate a tuple or a matrix into a linear transformation. We call it \x{induced linear transformation}.\footnote{This concept is borrowed from Prof. Jason Siefken's Book}
+
+\vfill
+
+Before talking about this, let's continue our story of making meals.
+
+\a\aa
+Afterwards, Shinchan start using pictures to represents everything. Until one day, an old Chef complained.
+
+\vspace{0.5cm}
+
+\centerline{Old Chef: {\it I want a clear number table! The recipe is not a doodle!}}
+
+\[columns]{
+\co5
+\[zzz]{
+\org
+\grid{-4}{-4}44
+\draw (1,0) node {\sleaf} (0,1) node {\sbean};
+\draw (1,2) node {\scola} (1,1) node {\stea};
+	\pgftransformcm{1}{2}{1}{1}{\pgfpoint{0}{0}}
+\grid[red!60!white!40]{-2}{-2}22
+\draw (1,1) node {\sbento} (1,2) node {\ssoup};
+	}
+\co5
+
+Old Chef wants
+
+\t{}\bento\soup,\cola11,\tea12.
+}
+\a\aa
+
+But still Shinchan wants to keep pictures, so he just cut the table and labeled it to each corresponding meals.
+\[columns]{\co6
+\[zz]{
+\org
+\grid{-4}{-4}44
+\draw (1,0) node {\sleaf} (0,1) node {\sbean};
+\draw (1,2) node {\scola} (1,1) node {\stea};
+	\pgftransformcm{1}{2}{1}{1}{\pgfpoint{0}{0}}
+\grid[red!60!white!40]{-2}{-2}12
+\draw (1,1) node {\sbento} node[right]{\tiny$\cc11$} (1,2) node {\ssoup} node[right]{\tiny$\cc12$};
+	}
+\co4
+He did not put the row header \scola,\stea on it. And those label depends on what it the row header.
+
+\vspace{1cm}
+
+To prevent the old chief complaining, he will label all future meals. 
+}
+
+\a\aa
+
+Call the combination space of meals as $V$. Let $\ce=\rr\scola\stea$ be the tuple of materials in the row header. The way Shinchan label the meals, is a map
+
+
+$$
+\maps {L_\ce}{F^2}V{\cc xy}{x\scola+y\stea}
+$$
+\vfill
+By the meaning of matrix multiplication, this map can also be written as
+
+
+$$
+\maps {L_\ce}{F^2}V{\cc xy}{\rr{\scola}{\stea}\cc xy}
+$$
+
+In other words, this is just the map of left multiplication by $\rr\scola\stea$
+
+
+\a{Viewing tuple of vectors as a linear transformation}
+
+\[defi]{Let $\ce=\rrrr{\vv_1}{\vv_2}\cdots{\vv_n}$ be n-tuples of vectors in $V$, the \x{induced linear transformation} of $\ce$ is a linear transformation $L_\ce$ with the domain $F^n$, codomain $V$, by the rules of assiging coefficient list to corresponding linear combinations of $\ce$. Explicitely,
+$$
+\maps {L_\ce}{F^n}V{\cccc{a_1}{a_2}\vdots{a_n}}{a_1\vv_1+a_2\vv_2+\cdots+a_n\vv_n}.
+$$
+}
+\a\aa
+Note that the linear combination can be written as a matrix multiplication.
+
+$$
+a_1\vv_1+a_2\vv_2+\cdots+a_n\vv_n=\obasis\vv n\coro an
+$$
+\a\aa
+Let $\ce=\rrrr{\vv_1}{\vv_2}\cdots{\vv_n}$, the induced linear transformation $L_\ce$ is the same as \x{left multiplying } the list of vectors $\rrrr{\vv_1}{\vv_2}\cdots{\vv_n}$ as a matrix. 
+
+$$
+\maps {L_\ce}{F^n}V{\cccc{a_1}{a_2}\vdots{a_n}}{{\obasis\vv n\coro an}}.
+$$
+
+The letter L refers to the {\it \x{L}eft multiplication}
+\a\aa
+The induced transformation is defined for \x{any finite tuple of vectors.} The induced transformation may map two coefficient list to the same element. For example,  
+\[columns]{\co6
+\[zz]{
+\org
+\grid{-4}{-4}44
+\draw (1,0) node {\sleaf} (0,1) node {\sbean};
+\draw (1,2) node {\scola} (1,1) node {\stea};
+	\pgftransformcm{1}{2}{1}{1}{\pgfpoint{0}{0}}
+%\grid[red!60!white!40]{-2}{-2}12
+	}
+\co4
+We consider the induced transformation $\map{L_\ce}{F^3}V$ with $\ce = \rrr\sbean\sleaf\stea$, then 
+$$
+\stea=0\sbean+0\sleaf+1\stea
+$$
+$$\stea=1\sbean+1\sleaf+0\stea
+$$
+
+Both coefficients list maps to the same vector
+$$
+L_\ce\ccc001=L_\ce\ccc110 = \tea
+$$
+}
+\a\aa
+
+Some element in the codomain may not be associated with a coefficient list, for example
+\[columns]{\co6
+\[zz]{
+\org
+\grid{-4}{-4}44
+\draw (1,0) node {\sleaf} (0,1) node {\sbean};
+\draw (1,2) node {\scola} node[right]{$(1)$} (1,1) node {\stea};
+\draw (2,4) node {\small $(2)$};
+\draw (-1,-2) node {\small $(-1)$};
+\draw (-2,-4) node {\small $(-2)$};
+\draw[thick,blue] (-2.5,-5)--(2.5,5);
+	\pgftransformcm{1}{2}{1}{1}{\pgfpoint{0}{0}}
+%\grid[red!60!white!40]{-2}{-2}12
+	}
+\co4
+We consider the induced transformation $$\map{L_\ce}{F}V$$ with $\ce = (\scola)$. 
+\vspace{0.5cm}
+
+The image of this map is as shown. Clear, \sleaf can not be writen as any kinds of linear combination of \scola, so $\sleaf$ do not have an coefficient list corresponds to it.
+}
+
+
+\a\aa
+
+\[summ]{A tuple of vectors $\ce = \obasis\vv m$ in $V$ can be viewed as a linear transformation.
+$$
+\map{L_\ce}{F^m}{V}
+$$
+
+Any linear transformation $\map T{F^m}V$ must be an induced linear transformation by an m-tuples in $V$. This tuple is given by
+$$
+\m{T\cccc10\vdots0}{T\cccc01\vdots0}\cdots{T\cccc00\vdots1}.
+$$
+
+.
+	}
+
+\aaa
+
+
+
+
+\aaa{Viewing matrices as linear transformations}
+
+
+
+
+In the previous part we have understand how m tuples corresponds to linear transformations from domain $F^m$. Previously we give the link between tuple of vectors and linear transformations.
+\vfill
+$$
+\xymatrix{
+	\text{Tuple of vectors}\ar[rr]{}{}&& \text{Linear Transformations}\ar[ll]{}{}\\
+	&\text{Matrices}&\\
+	}
+$$
+\vfill
+Now we will draw our road map to matrices.
+
+\a{Viewing matrices as tuples}
+
+If we look at a $n\times m$ matrix column by column. Each column is representing an element in $F^n$.
+$$
+{\m 12,23,34.} \iff \m{\ccc123}{\ccc234}.
+$$
+
+Therefore, $n\times m$ matrices are equivalent to m-tuples in $F^n$. This gives a interpretation of matrices in tuples.
+
+$$
+\xymatrix{
+	\text{Tuple of vectors}\ar[rd]{}{}\ar[rr]{}{}&& \text{Linear Transformations}\ar[ll]{}{}\\
+	&\text{Matrices}\ar[ul]{}{}&\\
+}
+$$
+	
+
+
+
+
+
+\a\aa
+
+Since matrices can be viewed as tuples, $n\times m$ matrix is equivalent to choosen $m$ vectors in $F^n$. This tuple induces a map of
+$$
+\map {L_\ce}{F^m}{F^n}
+$$
+This map is obtained by left multiplying a matrix with columns by those selected vectors $\ce$ in $F^n$. Since this is an actual matrix( every entry of this matrix are numbers $\in F$ ). This is called \x{the induced linear transformation by a matrix}.
+
+This gives a interpretation of matrices in linear transformations.
+
+$$
+\xymatrix{
+	\text{Tuple of vectors}\ar[rd]{}{}\ar[rr]{}{}&& \text{Linear Transformations}\ar[ll]{}{}\ar[ld]{}{}\\
+	&\text{Matrices}\ar[ul]{}{}\ar[ur]{}{}&\\
+}
+$$
+
+This viewpoint tell us we can view a matrix as a linear transformation from $F^m$ to $F^n$.
+
+\a\aa
+
+
+
+Now we replace the abstract vector space $V$ by $F^n$. This implies we can natrually understand m-tuples in $F^n$ as a linear transformation.
+
+\vfill
+
+\a\aa
+\exe Select two vectors in $F^3$ as a 2-tuple as follows
+$$
+\ce = \left(\ccc120,\ccc101\right)
+$$
+Write down the induced linear tranformation.
+\vfill
+\sol
+$$
+\maps{L_\ce}{F^2}{F^3}{\cc ab}{a\ccc120+b\ccc101}
+$$
+\vfill
+One can also write this as
+$$
+\cc ab\mapsto \m11,20,01.\cc ab.
+$$
+
+\a\aa
+Conversely, \x{any linear tranformation} $\map{}{F^m}{F^n}$ \x{is induced by a matrix}. By looking at the image of natural basis. 
+\vfill
+\exe Consider a linear transformation $\map T{F^2}{F^3}$ with
+$$
+T\cc 11 = \ccc132,\qquad T\cc12=\ccc 135
+$$
+Find a tuple of vectors $\ce$, with $T=L_\ce$.
+
+\a\aa
+\sol We only need to know $T\cc10$ and $T\cc01$. Those are easy
+$$
+T\cc10=T\cc22-T\cc12=\ccc264-\ccc135=\ccc13{-1}
+$$
+$$
+T\cc 01 = T\cc12-T\cc11 = \ccc003
+$$
+This implies $T$ is a linear tranformation induced by 
+$$
+\m 10,30,{-1}3.
+$$
+
+\a\aa
+Now let's summarise the induced linear transformation.
+\a\aa
+For any $n\times m$ matrix $P$, its \idu\lt is defined by
+$$
+\maps{L_P}{F^m}{F^n}{{\coro am}}{P{\coro am}}
+$$
+
+Remember here $P$ is a \x{Matrix}, $L_P$ is a \x{Linear Transformation}, $L_P$ and $P$ has the exactly the same information, but different meaning. $L_P$ means how we use $P$ to creat a map.(by left multiplication)
+
+
+{\color{gray}\exe{What's the differene between {\it you} as a person and {\it you eat} as an action?}}
+
+\a\aa
+
+For any $m$-tuple of vectors $\cv=\obasis\vv m$ in $V$, its \idu\lt is defined by
+$$
+\maps{L_\cv}{F^m}{V}{{\coro am}}{{\obasis\vv m\coro am}}
+$$
+
+Remember here $\obasis\vv m$ is a \x{m-tuple of vectors}, $L_\cv$ is a \x{Linear Transformation}, $L_\cv$ and $\cv$ has the exactly the same information, but different meaning. $L_\cv$ means how we use $\cv$ to creat a map. (by left multiplication)
+
+\aaa
+
+
+\aaa{Composition of induced transformation}
+
+From very begining we mentioned that we could write
+$$
+\left\{\[array]{{ll}
+3\ee_1+\ee_2&=\ww_1\\
+\ee_1+\ee_2&=\ww_2
+}\right.
+$$
+
+as
+$$
+\obaba\ww=\obaba\ee \m31,11.
+$$
+\vfill
+
+The reason of writing this way can be stated in the viewpoint of induced linear transformation.
+
+\a\aa
+
+Label each part with a symbol.
+
+$$
+\underbrace{\obaba\ww}_{\cw}=\underbrace{\obaba\ee}_{\ce}\underbrace{ \m31,11.}_A
+$$
+
+We have associated induced linear transformation $L_\cw,L_\ce,L_A$.
+\vfill
+The order of our symbol is logical in the sense that we have
+$$
+L_\cw = L_\ce\circ L_A
+$$
+\a\aa
+
+More generally, in this part, you would find all our symbol make sense because it is representing its meaning of induced transformations
+\vfill
+We will prove the following equations in this part
+\t{Regular Symbol}{Translate to Induced Transformation},
+{$
+\underbrace{\obaba\ww}_{\cw}=\underbrace{\obaba\ee}_{\ce}\underbrace{ \m31,11.}_A
+$}{$
+L_\cw = L_\ce\circ L_A
+$
+},
+{$
+T\underbrace{\obaba\ww}_{\cw}=\underbrace{\obaba\ee}_{\ce}
+$}{$
+T\circ L_\cw = L_\ce
+$
+},
+{$
+C=AB
+$}{$
+L_C = L_A\circ L_B
+$
+}.
+\a\aa
+\[lem]{For any tuple $\cw=\obasis\ww n$ and $\ce=\obasis\ee m$in $V$, suppose
+$$
+\underbrace{\obasis\ww n}_\cw=\underbrace{\obasis\ee m}_{\ce}A
+$$
+Then 
+$$
+L_{\cw}= L_\ce\circ L_A
+$$
+The following picture shows domain and codomain for each map.
+$$
+\xymatrix{
+	F^n\ar[r]^{L_A}\ar[rr]_{L_\cw}&F^m\ar[r]^{L_\ce}&V
+	}
+$$
+}
+\a\aa
+\textbf{Proof:} We only need to prove $L_{\cw}(\vv)= L_\ce\circ L_A(\vv)$ for any $\vv\in F^n$. To see this, we see
+
+$$
+L_\ce\circ L_A(\vv) = L_\ce(L_A(\vv))=L_\ce(A\vv)=\underbrace{\obasis\ee m}_\ce A\vv
+$$
+Note that this equals to
+$$
+\underbrace{\obasis\ww n}_\cw\vv = L_\cw(\vv).
+$$
+Therefore we proved this Lemma.
+
+
+
+
+
+
+\a\aa
+\[lem]{For any tuple $\ce=\obasis\vv n$ in $V$, any \lt $\map TVW$. Let $\cw = T\ce$ be the corresponding output in $W$. In other words,
+$$
+\underbrace{\obasis\ww n}_{\cw} = T\underbrace{\obasis\vv n}_{\ce}
+$$
+Then 
+$$
+L_{\cw}=T\circ L_\ce
+$$
+The following picture shows domain and codomain for each map.
+$$
+\xymatrix{
+	F^n\ar[r]^{{L_\ce}}\ar[rr]_{L_\cw}&V\ar[r]^{T}&W
+	}
+$$
+
+
+}
+\a\aa
+\[proof]{By definition, we have
+$$
+\underbrace{\obasis\ww n}_{\cw} = \obasis{T\vv} n
+$$
+To prove $L_{\cw}=T\circ L_\ce$, we only need to show $L_{\cw}(x)=T\circ L_\ce(x)$ for any
+$$x=\coo an\in F^n,$$ Clear
+$$
+L_{\cw}(x)=a_1T\vv_1+\cdots+a_nT\vv_n=T(a_1\vv_1+\cdots+a_n\vv_n)=T(L_\ce(x))=T\circ L_\ce(x).
+$$
+
+Therefore $L_\cw = T\circ L_\ce$.
+
+}
+\a\aa
+
+
+\[lem]{
+Let $A$ be an $n\times m$ matrix, $B$ an $m\times p$ matrix, let $C$ be the product of them
+$$
+C=AB
+$$
+Then we have
+$$
+L_C=L_A\circ L_B
+$$
+The following picture shows domain and codomain for each map.
+$$
+\xymatrix{
+	F^p\ar[r]^{L_B}\ar[rr]_{L_C}&F^m\ar[r]^{L_A}&F^n
+	}
+$$
+
+}
+\a\aa
+
+\[proof]{We only need to show for any $x\in F^p$, we have
+$$
+L_C(x)=L_A\circ L_B(x).
+$$
+To do so, we see
+$$
+L_C(x)=Cx=ABx=L_A(Bx)=L_A(L_B(x))=L_A\circ L_B(x).
+$$
+
+}
+
+\a{Invertible matrix and its induced transformation}
+
+In the world of matrices, we have identity matrix and invertible matrices.
+
+\vfill
+
+In the world of \lt, we have identity \lt and invertible \lt.
+
+\vfill
+
+In this part, we demonstrate the concept of being identity and invertible in matrix world is a kind of translation of the same concept from \lt world. 
+\a\aa
+
+\[lem]{Let $I_n$ be an $n\times n$ identity matrix, then
+$$
+L_{I_n}=\id_{F^n}
+$$
+The following picture shows domain and codomain for each map.
+$$
+\xymatrix{
+	F^n\ar[r]^{L_{I_n}}&F^n
+	}
+$$
+
+
+}
+\[proof]{
+	For any $x\in F^n$, $L_{I_n}(x)=I_nx=x$. So $L_{I_n}=\id_{F^n}$.
+	}
+\a\aa
+
+\[lem]{Let $A$ be an $n\times n$ invertible matrix and let $A^{-1}$ be its inverse, then $L_A$ is an invertible linear transformation and its inverse is $L_{A^{-1}}$.
+
+The following picture shows domain and codomain for each map.
+$$
+\xymatrix{
+	F^n\ar[rr]^{L_{A}}&&F^n\ar[ll]^{L_{A^{-1}}}
+	}
+$$
+
+
+	}
+\[proof]{We have $L_A\circ L_{A^{-1}}=L_{AA^{-1}}=L_{I_n}=\id_{F^n}$, and $L_{A^{-1}}\circ L_A=L_{A^{-1}A}=L_{I_n}=\id_{F^n}$. This implies the lemma.}
+
+
+\aaa
+
+
+
+
+
+
+
+
+
+\aaa{Basis and its induced transformation}
+In the world of tuples in $V$, we have discussed how to verify certain tuples are \li, \sws, or being a \bas. 
+\vfill
+
+In this part, we will show being a \bas translates to the property of being \inve in \lt world.
+
+\vfill
+
+The inverse of the \idu\lt of a \bas is called \x{the coordinate map}.
+
+
+\a\aa
+
+\[lem]{A tuple $\ce=\obasis\ee n$ in $V$ is a \bas if and only if its \idu\lt $L_\ce$ is \inve.
+
+
+\vspace{1cm}
+The following picture shows domain and codomain for each map.
+$$
+\xymatrix{
+	F^n\ar[rr]^{L_\ce}&&V
+	}
+$$
+
+}
+
+We will prove this lemma by directly giving its inverse. 
+
+
+
+\a\aa
+
+\[prop]{For a basis $\ce=\obasis\ee n$, let $L_\ce$ be its \idu\lt, then
+$$
+[\vv]^\ce = L_\ce^{-1}(\vv)
+$$
+
+In other words, the \lt $$\xymatrix{V\ar[r]^{L_\ce^{-1}}&F^n}$$ maps every vector to its coordinate. We call the map $L_\ce^{-1}$ the \x{coordinate map} of the \bas $\ce$. %(footnote)\footnote{We also write $L_\ce^{-1}$ as $L^\ce$ for index cancelation purposes(see later).}
+	}
+\a\aa
+\textbf{Proof}Consider the following map
+$$
+\maps{R}{V}{F^n}{\vv}{[\vv]^\ce}
+$$
+We will prove this map is the inverse of $L_\ce$. For any $\vv\in V$
+$$
+L_\ce\circ R(\vv) = L_\ce(R(\vv))=L_\ce([\vv]^\ce) = \underbrace{\obasis\ee n}_\ce [\vv]^\ce = \vv.
+$$
+
+\a\aa
+\textbf{Continue from previous}
+
+And for any coefficient list $$x=\coo xn\in F^n,$$ we have
+$$
+R\circ L_\ce(x) = R(x_1\ee_1+\cdots+x_n\ee_n)=\coo xn = x
+$$
+
+This implies the coordinate map $R$ is the inverse of the linear transformation $L_\ce$.
+
+\a\aa
+\[prop]{
+Let $\ce=\obasis\ee n$ be a basis of $V$. For any vectors $\vv,\ww\in V$, we have
+$$
+[\lambda\vv+\mu\ww]^\ce = \lambda[\vv]^\ce+\mu[\ww]^\ce
+$$
+
+}
+\[proof]{Since the inverse of a \lt must be a \lt. We know $L_\ce^{-1}$ is a \lt. Therefore
+$$
+[\lambda\vv+\mu\ww]^\ce = L_\ce^{-1}(\lambda\vv+\mu\ww) =  \lambda L_\ce^{-1}(\vv)+\mu L_\ce^{-1}(\ww) = \lambda[\vv]^\ce+\mu[\ww]^\ce
+$$
+	}
+
+
+
+
+
+
+
+
+\aaa

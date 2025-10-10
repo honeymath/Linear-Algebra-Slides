@@ -1,0 +1,813 @@
+
+\aaa{QR decomposition}
+
+Calculation Strategy :
+
+$$
+A= \m{\vec v_1}{\vec v_2}{\vec v_3}.
+$$
+
+Find orthonormal basis $\vec u_1,\vec u_2,\vec u_3$ such that 
+$$ \vec v_1  ∈ “span“\{\vec u_1\} $$
+$$ \vec v_2  ∈ “span“\{\vec u_1,\vec u_2\} $$
+$$ \vec v_3  ∈ “span“\{\vec u_1,\vec u_2,\vec u_3\} $$
+Then 
+$$
+A=QR
+$$
+where $Q=\m{\vec u_1}{\vec u_2}{\vec u_3}.$ 
+\a\aa
+The method: Find orthogonal basis first, then normalize it. Do not compute with unit vector.
+
+Key formula:
+
+Orthogonal Projection induced by a vector $v$: $\frac{vv^T}{v^Tv}$.
+
+For simplicity, in test we will only test you about QR of square matrices.
+\a\aa
+\exe QR the following matrix
+$$
+A = \m1{-1}00,{-1}2{-1}0,0{-1}2{-1},00{-1}2.
+$$
+
+\sol: Assume $A=\m{\vec v_1}{\vec v_2}{\vec v_3}{\vec v_4}.$ We first find orthogonal vectors $\vec w_1,\vec w_2,\vec w_3,\vec w_4$
+$$
+\vec w_1:=\vec v_1 = \m1,{-1},0,0.; ␣ \vec w_1^T\vec w_1 = 2.
+$$
+Now directly calculate $\vec w_2$. A vector perpendicular to $\vec w_1$, we consider
+$$
+\vec v_2 - \frac{\vec w_1^T\vec v_2}{\vec w_1^T\vec w_1}\vec w_1
+$$
+\a\aa
+$$
+\vec v_2 - \frac{\vec w_1^T\vec v_2}{\vec w_1^T\vec w_1}\vec w_1
+$$
+equals to
+$$
+\m{-1},2,{-1},0. - \frac12 \m1,{-1},0,0.\m1{-1}00.\m{-1},2,{-1},0.
+$$
+$$
+=\m{-1},2,{-1},0. + \frac32 \m1,{-1},0,0.
+$$
+$$
+\vec v_2 + \frac32\vec w_1=\frac12\underbrace{\m{1},1,{-2},0.}_{w_2}
+$$
+\a\aa
+So we obtain 
+$$
+\vec v_2 = -\frac32\vec w_1+\frac12\vec w_2
+$$
+With
+$$
+\vec w_2= \m{1},1,{-2},0.; ␣ \vec w_2^T\vec w_2 = 6.
+$$
+\a\aa
+Now dealing with $\vec v_3$, Consider
+$$
+\vec v_3 
+- \frac{\vec w_1^T\vec v_3}{\vec w_1^T\vec w_1}\vec w_1
+- \frac{\vec w_2^T\vec v_3}{\vec w_2^T\vec w_2}\vec w_2
+$$
+$$
+\m0,{-1},2,{-1}. 
+- \frac12\m1,{-1},0,0.
++\frac56\m1,1,{-2},0.
+=\frac16\m2,2,2,{-6}.
+=\frac13\m1,1,1,{-3}.
+$$
+So we may take
+$$
+w_3 = \m1,1,1,{-3}. ␣   w_3^Tw_3 = 12. 
+$$
+$$
+\vec v_3 = \frac12 w_1-\frac56 w_2+\frac13 w_3.
+$$
+%We with not to have fractions, so we may write
+%$$
+%\vec w_2 = (\vec w_1^T\vec w_1)\vec v_2 - \vec w_1^T\vec v_2\vec w_1
+%$$
+\a\aa
+Use the above information fill in to the matrix, you got QR decomposition.
+$$
+\underbrace{\m{\vec v_1}{\vec v_2}{\vec v_3}{\vec v_4}.}_A=
+$$
+$$
+\underbrace{\m
+{\frac{\vec w_1}{||\vec w_1||}}
+{\frac{\vec w_2}{||\vec w_2||}}
+{\frac{\vec w_3}{||\vec w_3||}}
+{\frac{\vec w_4}{||\vec w_4||}}.
+}_Q
+\underbrace{
+\m
+{||\vec w_1||}000,
+0{||\vec w_2||}00,
+00{||\vec w_3||}0,
+000{||\vec w_4||}.
+\m****,0***,00**,000*.}_R
+$$
+\aaa
+
+\aaa{Determining the Jordan Canonical Form}
+Recall the notion of Jordan canonical form
+$$
+A
+\underbrace{\m123141,121122,412013,111004,000105,112222.}_P
+=
+\underbrace{\m123141,121122,412013,111004,000105,112222.}_PJ
+$$
+where
+$$
+J = \m{\1}00000,0{\h1}{\h1}000,0{\h0}{\h1}000,000{\e2}{\e1}{\e0},000{\e0}{\e2}{\e1},000{\e0}{\e0}{\e2}.
+$$
+\a\aa
+We use colors to make it more clear
+$$
+A
+\m{\y\vec v_1}{\h\vec u_1}{\h\vec u_2} {\e\vec w_1} {\e\vec w_2} {\e\vec w_3}.
+$$
+$$
+=
+\m{\y\vec v_1}{\h\vec u_1}{\h\vec u_2} {\e\vec w_1} {\e\vec w_2} {\e\vec w_3}.
+\m{\1}00000,0{\h1}{\h1}000,0{\h0}{\h1}000,000{\e2}{\e1}{\e0},000{\e0}{\e2}{\e1},000{\e0}{\e0}{\e2}.
+$$
+Each color represents an infinite eigenvector, and those infinite eigen vectors are linearly independent. 
+
+$$
+A\vec v_1  = (1+ε)\vec v_1
+$$
+$$
+A(\vec u_1∞+\vec u_2) = (1+ε)(\vec u_1∞+\vec u_2)
+$$
+$$
+A(\vec w_1∞^2+\vec w_2∞+\vec w_3) = (2+ε)(\vec w_1∞^2+\vec w_2∞+\vec w_3)
+$$
+
+\a\aa
+This is called Yang Tableau, it represents an infinite vector by its components, for example 
+
+$$\yt{{\vec u_2}{\vec u_1}} = u_2+u_1∞$$
+
+We collect vectors by putting them row by row. 
+$$
+\yt{{\vec v_1},{\vec u_2}{\vec u_1}} = \vec v_1  \; ,\; \vec u_2+\vec u_1∞
+$$
+\a\aa
+
+\x{InfiniteEigenvectors of eigenvalue $1+ε$}
+$$
+\yt{{},{}{}}
+$$
+\x{InfiniteEigenvectors of eigenvalue $2+ε$}
+$$
+\yt{{}{}{}}
+$$
+Each row represents an infinite eigenvector, and corresponds to a \x{Jordan Block}
+\a\aa
+Now let us try to multiply formal scalar $λ+ε$ on the infinite vector.
+If $λ≠0$, then
+$$
+(λ)\yt{{v_0}{v_1}{v_2}} = \yt{{λv_0}{λv_1}{λv_2}}
+$$
+However, for the case $λ=0$
+$$
+0\yt{{v_0}{v_1}{v_2}} = “Empty“
+$$
+$$
+ε\yt{{v_0}{v_1}{v_2}}=\yt{{v_1}{v_2}}.
+$$
+One box will vanish.
+
+\yll
+If $λ≠0$, then 
+$$
+(λ+ε)\yt{{v_0}{v_1}{v_2}} = \yt{{λv_0+v_1}{λv_1+v_2}{λv_2}}
+$$
+\a\aa
+\ys
+Roughly speaking, 
+$$
+\[cases]{
+(λ+ε)\yt{{}{}{}} = \yt{{}{}{}} & “if“ λ≠0\\\\
+(λ+ε)\yt{{}{}{}} = \yt{{}{}} & “if“ λ=0\\
+}
+$$
+\a\aa
+\exe Suppose $A$ is a $17 × 17$ matrix of eigenvalue $1,2,3$ and one have the following shape of infinite-eigenbasis of the space
+
+Eigenvalue $1$
+$$
+\yt{
+{}{}{}{},{}{},{}{},{}
+}
+$$
+Eigenvalue $2$
+$$
+\yt{
+{}{},{}{},{}
+}
+$$
+Eigenvalue$3$
+$$
+\yt{
+{}{},{}
+}
+$$
+
+Use this diagram, describe how to calculate $“rank“(p(A))$ for any polynomial $p$.
+\a\aa
+If we multiply $A-I$, then this is the effect:
+Eigenvalue $1$
+$$
+\yt{
+{}{}{}{},{}{},{}{},{}
+} × ((1+ε)-1) = \yt{
+{}{}{},{},{}
+}
+$$
+Eigenvalue $2$
+$$
+\yt{
+{}{},{}{},{}
+} × (2+ε)-1) = \yt{
+{}{},{}{},{}
+}
+$$
+Eigenvalue$3$
+$$
+\yt{
+{}{},{}
+} × (3+ε)-1) = \yt{
+{}{},{}
+}
+$$
+
+\a\aa
+If we multiply $A-2I$, then this is the effect:
+Eigenvalue $1$
+$$
+\yt{
+{}{}{}{},{}{},{}{},{}
+} × ((1+ε)-2) = \yt{
+{}{}{}{},{}{},{}{},{}
+}
+$$
+Eigenvalue $2$
+$$
+\yt{
+{}{},{}{},{}
+} × (2+ε)-2) = \yt{
+{},{}
+}
+$$
+Eigenvalue$3$
+$$
+\yt{
+{}{},{}
+} × (3+ε)-2) = \yt{
+{}{},{}
+}
+$$
+
+\a\aa
+If we multiply $A-3I$, then this is the effect:
+Eigenvalue $1$
+$$
+\yt{
+{}{}{}{},{}{},{}{},{}
+} × ((1+ε)-3) = \yt{
+{}{}{}{},{}{},{}{},{}
+}
+$$
+Eigenvalue $2$
+$$
+\yt{
+{}{},{}{},{}
+} × (2+ε)-3) = \yt{
+{}{},{}{},{}
+}
+$$
+Eigenvalue$3$
+$$
+\yt{
+{}{},{}
+} × (3+ε)-3) = \yt{
+{}
+}
+$$
+
+\a\aa
+If we multiply $(A-I)^2(A-3I)$, then this is the effect:
+
+
+Eigenvalue $1+ε$
+$$
+\yt{
+{}{}{}{},{}{},{}{},{}
+}  ⟶   \yt{
+{}{}
+}
+$$
+Eigenvalue $2+ε$
+$$
+\yt{
+{}{},{}{},{}
+}  ⟶   \yt{
+{}{},{}{},{}
+}
+$$
+Eigenvalue$3+ε$
+$$
+\yt{
+{}{},{}
+}  ⟶   \yt{
+{}}
+$$
+\a\aa
+\exe Find the Jordan form of the following matrix
+$$
+\m24,{-1}{-2}.
+$$ 
+
+
+%\a\aa
+%If we multiply $I$, then this is the effect:
+%Eigenvalue $1$
+%$$
+%\yt{
+%{}{}{}{},{}{},{}{},{}
+%} × ((1+ε)-1) = \yt{
+%{}{}{}{},{}{},{}{},{}
+%}
+%$$
+%Eigenvalue $2$
+%$$
+%\yt{
+%{}{},{}{},{}
+%} × (2+ε)-1) = \yt{
+%{}{},{}{},{}
+%}
+%$$
+%Eigenvalue$3$
+%$$
+%\yt{
+%{}{},{}
+%} × (3+ε)-1) = \yt{
+%{}{},{}
+%}
+%$$
+
+
+\aaa
+\aaa{Power and exponential of matrices}
+Recall if
+$$
+\det(tI-A)=(t-λ_1)^{n_1}…(t-λ_k)^{n_k}
+$$
+Then
+$$
+g(A)=∑_{i=1}^k “Const“(g(λ_i+ε)𝒫_{λ_i})
+$$
+with
+$$
+𝒫_{λ_i}=P_{λ_i}+∞N_{λ_i}+∞^2N_{λ_i}^2+…+∞^{n_i-1}N_{λ_i}^{n_i-1}
+$$
+In particular, we have
+$$
+P_{λ_1}+
+P_{λ_2}+
+…
+P_{λ_k}
+=
+I␣ ;␣ 
+A = ∑_{i=1}^k \left(λ_iP_{λ_i}+N_{λ_i}\right)
+$$
+and
+$$
+“tr“(P_{λ_i})=n_i.
+$$
+$A$ is diagonalizable ⟺   $N_{λ_i}=0$ for all $λ_i$.
+\a\aa
+The best way to compute $A^n$ and $e^A$ is by spectural decomposition! We will only test you when $A$ is at most $3 × 3$ matrix.
+\a\aa
+For the following matrix
+$$
+A = \m11,{-6}6.
+$$
+Compute a formula for $A^n$ and $e^{A}$.
+
+{\color{blue} We use spectural decomposition. Note that $“tr“(A)=7$ and $“det“(A)=12$. The characteristic polynomial is $“det“(tI-A)=t^2-7t+12$}
+
+We have 
+$$
+“det“(tI-A) = (t-3)(t-4).
+$$
+By spectural decomposition
+$$
+A = 3P_3+4P_4; ␣   P_3+P_4=I.
+$$
+Therefore
+$$
+P_4 = (3P_3+4P_4) - 3(P_3+P_4) = A-3I = \m{-2}1,{-6}3.
+$$
+\a\aa
+Now 
+$$
+P_3=I-P_4 = \m10,01.-\m{-2}1,{-6}3. = \m3{-1},6{-2}.
+$$
+Therefore
+$$
+A^n = 3^nP_3+4^nP_4=3^n\m3{-1},6{-2}.+4^n\m{-2}1,{-6}3.
+$$
+$$
+e^A = e^3\m3{-1},6{-2}.+e^4\m{-2}1,{-6}3.
+$$
+\a\aa
+\exe Solving the equation
+$$
+\frac {dy}{dt} = \underbrace{\m11,{-6}6.}_Ay, ␣ y(0)=\m1,2.
+$$
+By \x{definition} of $e^{At}$, we directly have
+$$
+y(t)=e^{At}y(0) 
+$$
+$$
+\left(e^{3t}\m3{-1},6{-2}.+e^{4t}\m{-2}1,{-6}3.\right)\m1,2.
+$$
+$$
+=e^{3t}\m1,2.+e^{4t}\m0,0.
+$$
+\a\aa
+\exe Solving the following diffrential equation
+$$
+\frac{dy}{dt} = 
+\m02{-1},
+{-2}0{-2},
+120. y(t) ␣ y(0)=\m1,2,3.
+$$
+Look at this matrix, it is skew symmetric. So all its eigenvalues are purly imaginary!
+
+Since it has 3 eigenvalues, and if $z$ is an eignevalue, so is $¯z$, therefore, $0$ must be an eigenvalue of it! Therefore, its characteristic polynomial must be of the form
+$$
+“det“(tI-A) = (t-bi)(t+bi)t = t^3 + b^2 t.
+$$
+We have
+$$
+b^2 = 
+“det“\m02,{-2}0.
++
+“det“\m0{-1},10.
++
+“det“\m0{-2},20.
+=4+1+4=9
+$$
+\a\aa
+Therefore, its eigenvalues are $0,3i,-3i$. Note that skew Hermitian matrices are normal, and therefore always diagonalizable. So, we have
+$$
+P_0+P_{3i}+P_{-3i}=I. ␣ 3iP_{3i}+(-3i)P_{-3i}=A.
+$$
+Since $A$ is real matrix, we must have $P_{-3i}=¯{P_{3i}}$.  We may write 
+$$
+P_{3i} = X+Yi, ␣ P_{-3i}=X-Yi
+$$
+Therefore
+$$
+3i(2Yi)=A ⟹  Y = -\frac16 A = -\frac 16\m02{-1},
+{-2}0{-2},
+120.
+$$
+\a\aa
+To determine $X$, we may calculate $A^2$. Note that it must be a symmetric matrix
+$$
+A^2 = \m02{-1},
+{-2}0{-2},
+120.\m02{-1},
+{-2}0{-2},
+120.
+=\m{-5}{-2}{-4},{-2}{-8}{2},{-4}2{-5}.
+$$
+Note that $A^2 = (3i)^2P_{3i}+(-3i)^2P_{-3i}=(-9)(P_{3i}+P_{-3i})$
+
+So
+$$
+X = -\frac1{18}\m{-5}{-2}{-4},{-2}{-8}{2},{-4}2{-5}.
+$$
+\a\aa
+Now $P_0+P_{3i}+P_{3i}=I$, we obtain
+$$
+P_0=I-2X = \frac19 \m4{-2}{-4},{-2}12,{-4}24.
+$$
+\a\aa
+So the spectral decomposition is
+$$
+g\m02{-1},
+{-2}0{-2},
+120.
+$$
+$$
+=
+g(0)\frac19 \m4{-2}{-4},{-2}12,{-4}24. 
+$$
+$$+ g(3i)\left(-\frac1{18}\m{-5}{-2}{-4},{-2}{-8}{2},{-4}2{-5}.-\frac i6\m02{-1}, {-2}0{-2}, 120.\right) $$
+$$+ g(-3i)\left(-\frac1{18}\m{-5}{-2}{-4},{-2}{-8}{2},{-4}2{-5}.+\frac i6\m02{-1}, {-2}0{-2}, 120.\right) $$
+\a\aa
+Don't be scared, if $g$ is a real polynomial, then we may write
+
+$$
+=
+g(0)\frac19 \m4{-2}{-4},{-2}12,{-4}24. 
+$$
+$$+“Re“\left( g(3i)\left(-\frac1{9}\m{-5}{-2}{-4},{-2}{-8}{2},{-4}2{-5}.-\frac i3\m02{-1}, {-2}0{-2}, 120.\right) \right)$$
+\a\aa
+Therefore
+$$
+e^{At}=\frac19 \m4{-2}{-4},{-2}12,{-4}24.
++
+$$
+$$
+“Re“\left( \left(“cos“(3t)+i“sin“(3t)\right)\left(-\frac1{9}\m{-5}{-2}{-4},{-2}{-8}{2},{-4}2{-5}.-\frac i3\m02{-1}, {-2}0{-2}, 120.\right) \right)
+$$
+This equals to $e^{At}$
+$$
+\frac19 \m4{-2}{-4},{-2}12,{-4}24.-\frac{“cos“(3t)}{9}\m{-5}{-2}{-4},{-2}{-8}{2},{-4}2{-5}.
++\frac {“sin“(3t)}3\m02{-1}, {-2}0{-2}, 120.
+$$
+\a\aa
+The solution is given by
+$$
+y(t)=e^{At}y(0)
+$$
+$$
+=\frac19 \m4{-2}{-4},{-2}12,{-4}24.\m1,2,3.
+$$
+$$-\frac{“cos“(3t)}{9}\m{-5}{-2}{-4},{-2}{-8}{2},{-4}2{-5}.\m1,2,3.
++\frac {“sin“(3t)}3\m02{-1}, {-2}0{-2}, 120.\m1,2,3.
+$$
+$$
+=\frac13\m{-4},2,4. + \frac{“cos“(3t)}3\m{-7},{-4},{-5}. + \frac{“sin“(3t)}{3}\m1,{-8},5.
+$$
+\a\aa
+
+\[rem]{In general, if $AB=BA$, then $e^Ae^B=e^{A+B}$.
+
+If $A$ is a skew Hermitian matrix, then $e^A$ is always unitary, indeed.
+$$
+e^A(e^A)^H=e^Ae^{A^H}=e^{A+A^H}=e^0=I.
+$$
+Therefore, for skew symmetric real matrices $A=-A^T$, the system $y'=Ay$ always represents rotation.
+}
+
+\a\aa
+For $3 × 3$ matrix. It is easier if it is diagonalizable and have repeated roots.
+
+\exe Consider the following matrix
+$$
+A=\m 223,256,36{10}.
+$$
+Find a unitary matrix $U$ such that $U^HAU$ is diagonal.
+
+Suppose one find the characteristic polynomial $“det“(tI-A)=(t-1)^2(t-15)$
+\a\aa
+The eigenvalue $1+ε$ is suspicious, 
+We find
+$$
+“rank“(A-I) = “rank“\m 123,246,369. = 1
+$$
+This implies the Yang tableau of eigenvalue $1+ε$ looks like
+$$
+\yt{{},{}}
+$$
+This means all its eigenvectors of $1+ε$ are finite. Therefore $A$ is diagonalizable. By spectural decomposition, 
+$$
+A = P_1+15 P_{15} ␣ , ␣  P_1+P_{15}=I
+$$
+$$
+“tr“(P_1)=2 ␣ ,␣  “tr“(P_{15})=1
+$$
+\a\aa
+Therefore, 
+$$
+A-I = (P_1+15P_1)-(P_1+P_{15})=14P_{15}
+$$
+So
+$$
+P_{15}=\frac1{14}(A-I)=\frac1{14}\m123,246,369.
+$$
+and
+$$
+P_1=I-P_{15} = \frac1{14}\m{13}{-2}{-3},{-2}{10}{-6},{-3}{-6}5.
+$$
+The eigenspace of eigenvalue $15$ is 1-dimensional and for eigenvalue $1$ is 2-dimensional. 
+\a\aa
+,
+{\color{blue}From here we already have 
+$$
+A^n = \frac1{14}\m{13}{-2}{-3},{-2}{10}{-6},{-3}{-6}5.+\frac{15^n}{14}\m123,246,369.
+$$
+and
+$$
+e^{At} = \frac{e^t}{14}\m{13}{-2}{-3},{-2}{10}{-6},{-3}{-6}5.+\frac{e^{15t}}{14}\m123,246,369.
+$$
+The above formula enable us to do other exercises, but in this question we particularly need diagoanalization.
+}
+\[rem]{In most applicational problems, \x{spectural decomposition is sufficient}, one need not to diagonalize a matrix. Diagonalization is useful only when you wanna decompse matrix.}
+\a\aa
+We already have $“Col“(P_{15}) \perp “Col“(P_1)$. But we need orthogonal basis in $P_1$ also. For this purpose, we use \x{diagonal cross filling}. It is up to you 
+
+$$
+\m{13}{-2}{-3},{-2}{10}{-6},{-3}{-6}5.
+=
+\m{0.4}{\y-2}{1.2},{\y-2}{\y10}{\y-6},{1.2}{\y-6}{3.6}.
++
+\m{12.6}0{-4.2},000,{-4.2}0{1.4}.
+$$
+Using this, we obtain an \x{ortho}, but not yet normal eigenvectors!
+$$
+\underbrace{\m1,2,3.}_{15}, \underbrace{\m{-1},5,{-3}.}_{1}, \underbrace{\m{-3},0,1.}_1
+$$
+\a\aa
+\[rem]{We only need corss-filling for eigenvalues shown as repeated roots. The difference between unitary diagonalization and typical diagonalization is that unitary diagonalization you choose \x{diagonal} as center, but general diagonalization you do not have to.}
+
+\a\aa Now the length of it is 
+$$
+\underbrace{\m1,2,3.}_{\sqrt{14}}, \underbrace{\m{-1},5,{-3}.}_{\sqrt{35}}, \underbrace{\m{-3},0,1.}_{\sqrt{10}}
+$$
+
+Collecting these as
+$$
+U = \m
+{\frac1{\sqrt14}} {\frac{-1}{\sqrt{35}}} {\frac{-3}{\sqrt{10}}},
+{\frac2{\sqrt14}} {\frac{5}{\sqrt{35}}} {\frac{0}{\sqrt{10}}},
+{\frac3{\sqrt14}} {\frac{-3}{\sqrt{35}}} {\frac{1}{\sqrt{10}}}.
+%,250,3{-3}1.
+$$
+$$
+AU = U\m{15}00,010,001. ⟹  
+U^HAU = \m{15}00,010,001.
+$$
+\aaa
+\aaa{Calculating powers and exponentials for the non-diagonalizable matrices}
+The most important is to determine $P_{λ}$ and $N_{λ}$ for each eigenvalue $λ$.
+
+\exe For the following matrix $A$, try to solve $A^n$ and $e^A$
+$$
+A=\m0{-1}{-2},122,001.
+$$
+We have
+$$
+“det“(λI-A) = (λ-1)^3.
+$$
+So $P_1=I$, 
+$$
+A = 1·P_1+N_1
+$$
+Therefore
+$$
+N_1=\m{-1}{-1}{-2},112,000.
+$$
+\a\aa
+You observe that 
+$$
+“rank“(N_1)=“rank“(A-I)=1
+$$
+Therefore, its Yang tableau must be the form
+$$
+\yt{{}{},{}}
+$$
+This implies $N_1^2=0$
+Therefore
+$$
+g(A)=“Const“\left(g(1+ε)\left(I_3+∞N_1\right)\right)
+$$
+For $A^n$, we have $(1+ε+O(ε))^n=1+nε+O(ε)$
+$$
+A^n = “Const“\left((1+nε)\left(I_3+∞N_1\right)\right)
+$$
+$$
+A^n=I_3 + nN_1 
+$$
+\a\aa
+And for $e^{At}$, we note that
+$$
+e^{(1+ε)t}=e^te^{εt}=e^t(1+εt+O(ε))
+$$
+Therefore
+$$
+e^{At} = e^tP_1+te^tN_1
+$$
+$$
+=e^t\m100,010,001.+te^t\m{-1}{-1}{-2},112,000.
+$$
+
+\a\aa
+Do the same problem with 
+$$
+A=\m{-6}{-5}{-1},{10}81,{-2}{-1}2.
+$$
+Suppose you know eigenvalue are $1$ and $2$.
+
+\sol From here we know the characteristic polynomial is given by
+$$
+“det“(tI-A) = (t-1)^2(t-2)
+$$
+Therefore, the spectural decomposition is 
+$$
+g(A) = “Const“(g(1+ε)(P_1+N_1∞)) + g(2)P_2.
+$$
+\a\aa
+To detect each matrix. Note that
+
+\t{}{1+ε}{2},
+{(t-1)^2}{0+O(ε)}{1}.
+
+Therefore
+$$
+P_2 = (A-I)^2
+$$
+Note that $“tr“(P_2)=“rank“(P_2)$ is the multiplicity of $2$, so $“rank“(P_2)=1$. So $(A-I)^2$ will be a rank 1 trace 1 matrix
+$$
+A-I=\m{-7}{-5}{-1},{10}71,{-2}{-1}1.
+$$
+$$
+(A-I)^2=\m111,{-2}{-2}{-2},{2}{2}{2}.
+$$
+\a\aa
+This implies that
+$$
+P_1=\m0{-1}{-1},232,{-2}{-2}{-1}.
+$$
+Note that 
+$$
+A = P_1+N_1+2P_2 = I + P_2 + N_1
+$$
+This implies that
+$$
+N_1=A-I-P_2
+$$
+$$
+=\m{-7}{-5}{-1},{10}71,{-2}{-1}1. - 
+\m111,{-2}{-2}{-2},{2}{2}{2}.
+$$
+$$
+=\m{-8}{-6}{-2},
+{12}93,
+{-4}{-3}{-1}.≠0
+$$
+\a\aa
+Therefore, its Yang tableau must be of this form
+
+Eigenvalue $1+ε$:
+
+\yt{{}{}}
+
+Eigenvalue $2+ε$:
+
+\yt{{}}
+
+This means all columns of $𝒫_1$ must be colinear to each other, we do not need cross-filling
+
+$$
+𝒫_1=\m{-8∞}{-6∞-1}{-2∞-1},
+{12∞+2}{9∞+3}{3∞+2},
+{-4∞-2}{-3∞-2}{-∞-1}.
+$$
+\a\aa
+So we may take any column of $𝒫_1$ to be infinite eigenvector, we take half of the first column
+$$
+\m{-4∞},{6∞+1},{-2∞-1}.
+$$
+We can write it as
+$$
+\m0,1,{-1}. + \m{-4},6,{-2}.∞
+$$
+\yll
+$$
+\yt{{{\m0,1,{-1}.}}{{\m{-4},6,{-2}.}}}
+$$
+\a\aa
+Now 
+$$
+P_2 =\m111,{-2}{-2}{-2},{2}{2}{2}.
+$$
+Take any problem of $P_2$ we obtain eigenvector 
+$$
+\m1,{-2},2.
+$$
+The Jordan canonical form, is 
+$$
+A = \m1{-4}0,{-2}61,2{-2}{-1}.^{-1}\m200,011,001.\underbrace{\m1{-4}0,{-2}61,2{-2}{-1}.}_P
+$$
+%$$
+%A = \m5114,{-13}{-4}{-4}{-10},{18}76{12},{-6}{-1}{-1}{-5}.
+%$$
+%Suppose you know $“det“(tI-A)=(t-1)^3(t+1)$
+%
+%\vfill
+%
+%We are sure the eigenvalue $-1+ε$ is \yt{{}}.
+%\a\aa
+%$$
+%P_1+P_{-1}=I  ␣ 
+%A = -P_{-1}+P_1+N
+%$$
+\aaa

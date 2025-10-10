@@ -1,0 +1,454 @@
+
+
+\def\1{\y1}
+\def\2{\y2}
+\def\3{\y3}
+\def\4{\y4}
+\def\5{\y5}
+\def\6{\y6}
+\def\7{\y7}
+\def\8{\y8}
+\def\9{\y9}
+\def\0{\y0}
+\def\-{\y-}
+\aaa{Determinat and linearly independence}
+For determinant, 
+
+if one column is  a linear combination of others, then the determinant is 0 
+$$
+\m
+|||,
+{v_1}{v_2}{3v_1+2v_2} 
+,|||
+. = 0
+$$
+
+
+
+\a\aa
+For determinant, we may add/subtract a column by linear combination of other columns, the determinant would not change.
+
+For any $λ_1,...,λ_n$
+$$
+\det
+\m
+||\cdots|\cdots|
+,{v_1}{v_2}\cdots{v_i}\cdots{v_n},
+||\cdots|\cdots|.
+$$
+$$
+=
+\det
+\m
+||\cdots|\cdots|
+,{v_1-λ_1v_i}{v_2-λ_2v_i}\cdots {v_i}\cdots{v_n-λ_nv_i},
+||\cdots|\cdots|.
+$$
+\a\aa
+Explaination: expand by columns
+
+$$
+\det\m||,{v_1+3v_2}{v_2},||.
+=
+\det\m||,{v_1}{v_2},||.
+\underbrace{+\det\m||,{3v_2}{v_2},||.}_0
+$$
+
+\vfill
+
+$$
+\det\m|||,
+{v_1+3v_2+5v_3}{v_2}{v_3},
+|||.
+=
+\det\m|||,
+{v_1}{v_2}{v_3},
+|||.+
+\det\m|||,
+{3v_2+5v_3}{v_2}{v_3},
+|||.
+$$
+\a\aa
+
+Suppose cross-filling decomposes
+$$
+\m111,123,149. = \m{0.5}\1{1.5},\1{\h2}\3,2\46. +\m {0.5}0{-0.5},000,{-1}03.
+$$
+
+
+$$
+\det\m111,123,149. = \det \m {0.5}\1{-0.5},0{\h2}0,{-1}\43.
+=  \det \m {0.5}0{-0.5},0{\h2}0,{-1}03.
+$$
+\a\aa
+Why 
+$$
+\det \m {0.5}\1{-0.5},0{\h2}0,{-1}\43.
+=  \det \m {0.5}0{-0.5},0{\h2}0,{-1}03.?$$
+\vfill
+Think about it 
+$$
+\det \m {0.5}\1{-0.5},0{\h2}0,{-1}\43.
+=  \det \m {0.5}0{-0.5},0{\h2}0,{-1}03. + \det\m {0.5}\1{-0.5},0{0}0,{-1}\43.
+$$
+\aaa
+
+
+
+\aaa{determinant by cross-filling}
+\[thm]{Let $A$ be an $n × n$ matrix and one have a one-step cross-filling decomposition
+$$
+A = A_1 + R
+$$
+where $A_1$ is a rank 1 matrix with cross-center $a_1$, $R$ has a zero cross. Let $\widetilde R$ be the $R$ relacing the cross center by $1$. Then
+$$
+\det A = a_1\det \widetilde R.
+$$
+}
+
+\aaa
+
+\aaa{Example}
+
+\exe
+Calculating determinant by cross-filling
+
+$$
+\det \underbrace{\m212,131,213.}_A
+$$
+
+$$
+A=\m\262,{\h1}\3\1,\262.
++\m0{-\5}1,0\00,\0{\h-5}\1.
++\m\0\0{\h-1},00\0,00\0. 
+$$
+
+
+
+$$
+\det A=1(-5)(-1)\m00\1,\100,0\10.
+$$
+
+
+\aaa
+
+
+
+\aaa{Determinant of Switching Matrix}
+The calculation of determinant by cross-filling gives us the question of determining the value of the following determinant
+\[defi]{
+A switching matrix is a matrix with each row and column a unique non-zero entry valued $1$}
+
+$$\m\1000,000\1,00\10,0\100.$$
+\a{zigzag method}
+The formula for determinant of switching matrix can be summarized as follows
+\[itemize]{
+\item Find all horizontal and vertical segment inking $1$ and diagonal entrise(no matter what that is).
+\vfill
+\item Count the number $m$ of \x{connected loops }
+\vfill
+\item Determinant is $(-1)^{m+n}$.
+}
+\a\aa
+Calculation example
+$$
+\xymatrix{
+0\ar[rrrr]{}{}&&0&&1\ar[dddd]{}{}&&0\\\\
+0&&0\ar[rrrr]{}{}&&0&&1\ar[dddd]{}{}\\\\
+0&&1\ar[uu]{}{}&&0\ar[ll]{}{}&&0\\\\
+1\ar[uuuuuu]{}{}&&0&&0&&\ar[llllll]{}{}0\\
+}
+$$
+There are only one \x{loop} linking all one.
+\vfill
+$$
+\det\m0010,0001,0100,1000. = (-1)^{4+1}=-1.
+$$
+\a\aa
+To see why . This is because that each swithcing inside path will break a loop into two.
+
+$$
+\xymatrix{
+0\ar[rrrr]{}{}&&0&&1\ar[dddd]{}{}&&0\\\\
+1\ar[uu]{}{}&&0\ar[ll]{}{}&&0&&0\\\\
+0&&1\ar[uu]{}{}&&0\ar[ll]{}{}&&0\\\\
+&&&&&\ar[d]{}{}&\ar[l]{}{}\\
+0&&0&&0&\ar[r]{}{}&1\ar[u]{}{}\\\\
+}
+$$
+Note that in this picture, $1$ itself is a loop.
+
+
+
+
+
+\aaa
+
+
+
+
+
+\aaa{Determinant of Transpose}
+\[thm]{
+We have $“det“(A)=“det“(A^T)$
+}
+Because the cross filling is symmetric on rows and columns. 
+$$
+A = P_1+...+P_n
+$$
+is a cross-filling for $A$, then $A^T=P_1^T+...+P_n^T$ is cross-filling for $A^T$ with center value the same. 
+
+Left $\det S= \det S^T$ for switching matrix.
+$S$ with path denoted, the transpose is still a path. So number of path not changed.
+\aaa
+
+
+
+
+\aaa{Determinant of Block Triangular Matrices}
+\[thm]{
+We have
+$$ “det“\m A0,CD. = “det“A“det“D.  $$
+and similarly
+$$ “det“\m AB,0D. = “det“A“det“D.  $$
+}
+\a\aa
+Proof, this is because 
+
+When performing cross filling for $A$, the matrix $B$ or $D$ has automatically be deleted, and the paths for the switching matrix has been constrained inside each diagonal block. Let us demonstrade this by examples.
+
+\a\aa
+For finding the determinant of the matrix
+$$\m11897,21121,00111,00221,00231.$$
+we notice the block makes it to upper triangular block matrix.
+$$\m\1\1897,\2\1121,00\1\1\1,00\2\2\1,00\2\3\1.$$
+\a\aa
+while the cross filling for the first block has been performed, it automatically cleared non-diagonal blocks.
+$$
+\m\1{\h1}\8\9\7,1\1897,0\0000,0\0000,0\0000.
++\m\00000,{\h1}\0{-\7}{-\7}{-\6},\00111,\00221,\00231.
++\underbrace{\m00000,00000,00111,00221,00231.}_{“remainder block“}
+$$
+Then one perform the corss-filling for remainder block.
+$$
+\m
+0000\0,
+0000\0,
+\0\0\1\1{\h1},
+0011\1,
+0011\1.
++\m
+00\000,
+00\000,
+00\000,
+\0\0{\h1}\1\0,
+00\110.
++
+\m
+000\00,
+000\00,
+000\00,
+000\00,
+\0\0\0{\h1}\0.
+$$
+$$“product of cross center “=
+\overbrace{
+\t{\h1}.
+× 
+\t{\h1}.
+}^{“first block“}
+× 
+\overbrace{
+\t{\h1}.
+× 
+\t{\h1}.
+× 
+\t{\h1}.
+}^{“second blcok“}
+$$
+\a\aa
+Now we trying to figure out the sign. Using zigzag method, Explain why
+$$
+\det\m
+\0{\h1}000,
+{\h1}\0000,
+00\00{\h1},
+00{\h1}\00,
+000{\h1}\0.
+$$
+\vfill
+is 
+\vfill
+$$
+\det \m
+\0{\h1},{\h1}\0.
+× 
+\det
+\m\00{\h1},
+{\h1}\00,
+0{\h1}\0.
+$$
+\a\aa
+Inductively
+\[thm]{ The determinant of block upper or lower triangular matrix is the product of determinant of blocks.
+$$
+“det“\m
+{A_{11}}{A_{12}}\cdots{A_{1n}},
+0{A_{22}}\cdots{A_{2n}},
+\vdots\vdots\ddots\vdots,
+00\cdots{A_{nn}}.
+=
+“det“(A_{11})
+“det“(A_{22})
+\cdots
+“det“(A_{nn})
+$$
+}
+\a\aa
+The formula is also true for block lower triangular matrix and block diagonal matrix
+$$
+“det“\m
+{A_{11}}0\cdots0,
+{A_{12}}{A_{22}}\cdots0,
+\vdots\vdots\ddots\vdots,
+{A_{1n}}{A_{2n}}\cdots{A_{nn}}.
+=
+“det“(A_{11})
+“det“(A_{22})
+\cdots
+“det“(A_{nn})
+$$
+
+
+$$
+“det“\m
+{A_{11}}0\cdots0,
+{0}{A_{22}}\cdots0,
+\vdots\vdots\ddots\vdots,
+{0}{0}\cdots{A_{nn}}.
+=
+“det“(A_{11})
+“det“(A_{22})
+\cdots
+“det“(A_{nn})
+$$
+\a\aa
+In particular, the determinant of usual upper triangular, diagonal, and lower triangular matrices is the product of diagonal entries.
+
+\aaa
+
+
+
+\aaa{Determinant of product of matrices}
+Look at the following graph, explain the matrix product
+
+
+\[columns]{
+\co4
+\[zzz]{
+\org
+\grid{-5}{-5}55
+\draw[thick,  ->] (0,0) -- (1,0);
+\draw[thick,  ->] (0,0) -- (0,1);
+\pgftransformcm{1}{2}{-1}{1}{\pgfpoint{0}{0}}
+\grid[red!60!white!40]{-2}{-2}22
+\draw[thick,red,  ->] (0,0) -- (1,0) node[right]{$\vec v_1$};
+\draw[thick,red,  ->] (0,0) -- (0,1)node[left]{$\vec v_2$};
+\draw[thick,purple,  ->] (0,0) -- (1,-1)node[left]{$\vec w_1$};
+\draw[thick,purple,  ->] (0,0) -- (1,2)node[left]{$\vec w_2$};
+%\draw[green,fill=green,opacity = 0.5] (0,0)--(1,2)--(2,1)--(1,-1)--(0,0);
+	}
+\co6
+$$ \m{\vec v_1}{\vec v_2}. = \m{\vec e_1}{\vec e_2}.\m1{-1},21.  $$
+$$ \m{\vec w_1}{\vec w_2}. = \m{\vec v_1}{\vec v_2}.\m11,{-1}2.$$
+$$ \m{\vec w_1}{\vec w_2}. = \m{\vec e_1}{\vec e_2}.\m1{-1},21.\m11,{-1}2.  $$
+}
+\a\aa
+How to calculate the deteminant without calculating matrix product?
+\[columns]{
+\co5
+\[zzz]{
+\org
+\grid{-5}{-5}55
+\draw[thick,  ->] (0,0) -- (1,0);
+\draw[thick,  ->] (0,0) -- (0,1);
+\pgftransformcm{1}{2}{-1}{1}{\pgfpoint{0}{0}}
+\grid[red!60!white!40]{-2}{-2}22
+\draw[thick,red,  ->] (0,0) -- (1,0) node[right]{$\vec v_1$};
+\draw[thick,red,  ->] (0,0) -- (0,1)node[left]{$\vec v_2$};
+\draw[green,fill=green,opacity = 0.5] (0,0)--(1,2)--(2,1)--(1,-1)--(0,0);
+	}
+\co5
+
+$$
+\[zzz]{
+%\draw (0,0)--(0,1)--(1,1)--(1,0)--(0,0);
+\pgftransformcm{1}{2}{-1}{1}{\pgfpoint{0}{0}}
+\draw[fill=red,opacity=0.3] (0,0)--(0,1)--(1,1)--(1,0)--(0,0);
+}
+:\[zzz]{
+\draw (0,0)--(0,1)--(1,1)--(1,0)--(0,0);
+%\pgftransformcm{1}{2}{-1}{1}{\pgfpoint{0}{0}}
+%\draw (0,0)--(0,1)--(1,1)--(1,0)--(0,0);
+}
+=\det\m1{-1},21.
+$$
+
+$$
+\[zzz]{
+\pgftransformcm{1}{2}{-1}{1}{\pgfpoint{0}{0}}
+\draw[green,fill=green,opacity = 0.5] (0,0)--(1,2)--(2,1)--(1,-1)--(0,0);
+	}
+:
+\[zzz]{
+%\draw (0,0)--(0,1)--(1,1)--(1,0)--(0,0);
+\pgftransformcm{1}{2}{-1}{1}{\pgfpoint{0}{0}}
+\draw[fill=red,opacity=0.3] (0,0)--(0,1)--(1,1) node[above]{}--(1,0)--(0,0);
+}
+=\det\m1{1},{-1}2.
+$$
+}
+\a\aa
+\[thm]{
+$$
+“det“(AB)
+=
+“det“(A)
+“det“(B)
+$$
+}
+\vfill
+
+We have a geometrical understanding of the theorem, but we do not yet have a mathematical proof.
+\a\aa
+$$
+\m{B},{AB}. = \m{I},A.B
+$$
+Each column of $\m{B},{AB}.$ is a linear combination of columns of $\m{I},A.$ by coefficients listed in $B$
+\a\aa
+Here illustrates mathematical proof.
+$$
+“det“\m I{},A{AB}.
+=
+“det“\m I{-B},A0.
+=
+“det“\m I{-B+I},AA.
+=
+“det“\m B{-B+I},0A.
+$$
+
+\a\aa
+\[prop]{A matrix $A$ is invertible if and only if $“det“(A)≠0$
+}
+If $A$ has inverse, then
+$“det“(A)“det“(A^{-1}) = “det“(I_n)=1$,
+so $“det“(A)≠0$
+
+If 
+ $“det“(A)≠0$, then we can construct $A^{-1}$ by $A^*/“det“(A)$
+
+\a\aa
+We have
+$$ “det“(A^k) = “det“(A)^k $$
+$$ “det“(λA) =λ^n “det“(A) $$
+\aaa

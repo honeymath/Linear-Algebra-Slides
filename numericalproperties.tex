@@ -1,0 +1,69 @@
+
+
+\aaa{Sufficient linearly independent vectors give a basis}
+\begin{prop}
+If $V$ is a vector space of $“dim“(V)=n$, then any $n$ many \li vectors is a \bas.
+\end{prop}
+Let 
+$$B=\m{\vec v_1}\cdots{\vec v_n}.$$
+ be the $n × n$ matrix collecting those \li vectors. Then $B$ has a {\color{red}left inverse} $AB=I_n$. Since $B$ is a square matrix, $BA=I_n$
+\vfill
+But this means $B$ also a {\color{blue}right inverse}, then columns of $B$ \sws, which means it is a \bas. 
+\a\aa
+The following is application of above theorem
+\begin{cor}
+Suppose $W ⊆ V$ and $“dim“(W) = “dim“(V)$, then $W=V$.
+\end{cor}
+
+A \bas $\m{\vec e_1}\cdots{\vec e_n}.$ of $W$ is \li in $V$, but since there are $“dim“(V)$-many of them, it is a \bas of $V$. So
+$$
+V = “span“ \m{\vec e_1}\cdots{\vec e_n}. = W
+$$
+
+\aaa
+
+
+\aaa{Extension of linearly indepdent basis}
+
+Another application is extension of \li to a \bas
+
+\a\aa
+$B$ linearly independent, $B$ has left inverse $AB = I_m$.
+
+$BA$ is projection matrix, then $I_n-BA$ is also proejction matrix.
+
+Use cross filling, we may write 
+$$
+I_n-BA = DC ␣  CD = I_?
+$$
+how to determine the size of $CD$? 
+$$
+“tr“(CD) = “tr“(DC) = “tr“(I_n-BA)=n-“tr“(BA)=n-“tr“(AB)= n-m
+$$
+So $CD = I_{n-m}$.
+
+\a\aa
+Then 
+$$
+\m A,C.\m BD.  = \m{AB}{AD},{CB}{CD}.
+$$
+
+
+$$(BA)²=BA ⟺   BA(I_n-BA)=0 ⟺  BADC = 0 ⟺   AD = 0 $$
+$$(BA)²=BA ⟺  (I_n-BA)BA=0 ⟺  DCBA = 0 ⟺   CB = 0 $$
+
+
+$$
+\m A,C.\m BD.  = \m{I_m}{0},{0}{I_{n-m}}. = I_n.
+$$
+\a\aa
+
+\begin{prop}
+Any linearly indepdent list of vectors can be extended to a \bas
+\end{prop}
+
+\a\aa
+\begin{prop}
+If $W ⊆ V$, then $“dim“(W) ≤ “dim“(V)$
+\end{prop}
+\aaa

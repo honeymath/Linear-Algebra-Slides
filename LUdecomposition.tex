@@ -1,0 +1,808 @@
+
+\aaa{LDU decomposition by row operation}
+$$
+\tiny{\m111,122,123. = \m100,010,001. \m100,010,001.^{-1} \m111,122,123.}
+$$
+$$
+\xequal{
+\substack{
+r_2=r_2-r_1\\
+r_3=r_3-r_1
+}
+}\m100,010,001. \m100,{-1}10,{-1}01.^{-1} \m111,011,012.
+$$
+$$ \xequal{
+r_3=r_3-r_2
+}\m100,010,001. \m100,{-1}10,0{-1}1.^{-1} \m111,011,001.  $$
+$$ \xequal{
+c_2=c_2+c_3
+}\m100,010,011. \m100,{-1}10,0{0}1.^{-1} \m111,011,001.  $$
+$$ \xequal{
+c_1=c_1+c_2
+}\m100,110,111. \m100,{0}10,0{0}1.^{-1} \m111,011,001.  $$
+\aaa
+
+
+
+
+\aaa{Forwarded Row Operation v.s. Cross Filling}
+%%% Seems also good to say step by step. remainder of corss filling
+One step cross-filling
+
+$$
+\m 222,233,234. = 
+\m{\h2}{\y2}{\y2},{\y2}22,{\y2}22.
+ + \m000,011,012.
+$$
+
+$$
+= \m1,1,1.\m222.+\m00,10,01.\m011,012.
+$$
+
+$$
+= \m100,{\x1}10,{\x1}01.\m{\h2}22,{\x0}11,{\x0}12.
+$$
+One step cross-filling = forward row operation
+
+Cross-center = pivot
+
+\a\aa
+
+Look at the following cross-filling decomposition
+$$
+\m 11111,11333,11338. 
+$$
+$$= \m{\h1}{\y1}{\y1}{\y1}{\y1},{\y1}1111,{\y1}1111.
++
+\m00{\y0}00,{\y0}{\y0}{\h2}{\y2}{\y2},00{\y2}22.
++
+\m0000{\y0},0000{\y0},{\y0}{\y0}{\y0}{\y0}{\h5}.
+$$
+This decompose the matrix into the product
+$$
+\m100,110,111. \m
+{\h1}{\y1}{\y1}{\y1}{\y1},
+{0}{0}{\h2}{\y2}{\y2},
+0000{\h5}.
+$$
+Cross-center = pivot
+\a\aa
+Don't forgot that you can also look column by column
+$$
+\m{\h1}00,{\y1}{\h2}0,{\y1}{\y2}{\h5}.
+\m11111,00111,00001.
+$$
+The left factor is in fact obtained by \x{forward column operation.}
+\a{Pro, Cons of two method.}
+
+\t{Cross-Filling}{Row/Col Operation},
+{Symmetric on rows/cols}{Only emphasis in one of row/columns},
+{Useful for projection operator}{Easy for calculating inverse}.
+\aaa
+
+
+
+
+\aaa{Algebraic expression for cross-filling}
+Can you write first summand into a product of matrices?
+$$
+A=\m 22222,22444,22449. 
+$$
+$$= \m{\h2}{\y2}{\y2}{\y2}{\y2},{\y2}2222,{\y2}2222.
++
+\m00{\y0}00,{\y0}{\y0}{\h2}{\y2}{\y2},00{\y2}22.
++
+\m0000{\y0},0000{\y0},{\y0}{\y0}{\y0}{\y0}{\h5}.
+$$
+
+\a\aa
+
+$$
+\m{\h2}{\y2}{\y2}{\y2}{\y2},{\y2}2222,{\y2}2222.
+=
+\m{\h2},{\y2},{\y2}.\frac1{\m{\h2}.}\m{\h2}{\y2}{\y2}{\y2}{\y2}.
+$$
+$$
+=Ae_1(e_1'Ae_1)^{-1}e_1'A
+$$
+where
+$$
+e_1=\m1,0,0,0,0. ␣ e_1' = \m100.
+$$
+The expression \x{$Ae_1(e_1'Ae_1)^{-1}e_1'A$} is algebraic expression for cross-filling.
+
+\a\aa
+
+\exe $A$ is $m × n$ matrix, let $e_i$ be $i$th column of $I_n$, and $e_j'$ be $j$'th row of $I_m$. The corss-filling matrix obtained from the center at $j$'th row $i$'th column is given by
+\vfill
+\textbf{Answer}: $Ae_i(e_j'Ae_i)^{-1}e_j'A$.
+
+
+\vfill
+
+Algebraic expression is useful when writting proof. 
+
+\a\aa
+
+\exe A \x{projection matrix} P is a square matrix with $P^2=P$. Suppose $P$ is a projection matrix, and $P'$ is a matrix obtained from $P$ by \x{cross filling}. Is $P'$ again a projection matrix? 
+
+\vfill
+
+\textbf{Solution}: Suppose $P$ is $n × n$ matrix. Let $e_i$ be i'th column of $I_n$, then
+$$
+P' = Pe_i(e_j^TPe_i)^{-1}e_j^TP
+$$
+By calculation 
+$$
+P'P' = Pe_i(e_j^TPe_i)^{-1}e_j^TPPe_i(e_j^TPe_i)^{-1}e_j^TP
+$$
+$$
+=Pe_i(e_j^TPe_i)^{-1}e_j^TPe_i(e_j^TPe_i)^{-1}e_j^TP
+$$
+$$
+= Pe_i(e_j^TPe_i)^{-1}e_j^TP = P'.
+$$
+
+In the future class, the cross-filling method is \x{ extremely important for projection matrix}
+
+\aaa
+
+
+
+
+\aaa{Transpose of matrices}
+Recall that when we try explaining rows of matrices,
+$$
+\t{}\bento\soup,\leaf{2}2,\lemon{\h1}{\h1},\bean{0}4,\cow{2}1.
+$$
+\alert{DO NOT MEAN}
+$$
+\lemon = 1\cdot\bento +1\cdot\soup \text{(Wrong)}
+$$
+
+
+Actual meaning:  $
+[\lemon] = 1\cdot[\bento] +1\cdot[\soup] \text{(Correct)}
+$
+$$
+\text{The number of }\lemon =1\cdot\text{The number of }\bento + 1\cdot\text{The number of }\soup.
+$$
+\a\aa
+Therefore, a matrix of \x{making meals}, can therefore give a matrix of \x{making counters}.
+$$
+\t{}\bento\soup,\leaf{2}2,\lemon{1}{1},\bean{0}4,\cow{2}1.
+$$
+
+$$
+\t{}{[\leaf]}{[\lemon]}{[\bean]}{[\cow]},
+{[\bento]}2104,
+{[\soup]}2141.
+$$
+This is the transpose of the matrix.
+\a\aa
+Since the transpose exchanges the position of the material list and compund list, the order of the matrix multiplication should change.
+$$
+\underbrace{
+\t{}\milk\coffee\tea,\leaf{0}{0}{2},\lemon{0}{0}{1},\bean{0}{2}{0},\cow{1}{0}{0}.
+}_A
+\cdot
+\underbrace{
+\t{}\bento\soup,
+\milk{2}{1},
+\coffee{0}{2},
+\tea{1}{1}.
+}_B\quad=
+\underbrace{
+\t{}\bento\soup,\leaf{2}2,\lemon{\alert1}{\alert1},\bean{0}4,\cow{2}1.
+}_C
+$$
+
+$AB = C$
+\a\aa
+
+$$
+\underbrace{\t{}{[\milk]}{[\coffee]}{[\tea]},
+{[\bento]}201,
+{[\soup]}121.
+}_{B^T}
+·
+\underbrace{\t{}{[\leaf]}{[\lemon]}{[\bean]}{[\cow]},
+{[\milk]}0001,
+{[\coffee]}0020,
+{[\tea]}2100.
+}_{A^T}
+$$
+
+$$
+=\underbrace{\t{}{[\leaf]}{[\lemon]}{[\bean]}{[\cow]},
+{[\bento]}2102,
+{[\soup]}2141.}_{C^T}
+$$
+
+$B^TA^T=C^T$.
+\a\aa
+Therefore
+\begin{thm}
+$$
+AB = C \iff B^TA^T = C^T
+$$
+\end{thm}
+\aaa
+
+
+\aaa{Inverse of matrices}
+\exe Recall the way we introduce inverse is to flip the materials and compunds each other 
+\vfill
+\[columns]{\co 5
+
+\t{}\milk\coffee,\bean02,\cow10.
+
+\co 5 
+\t{}\bean\cow,\milk01,\coffee{0.5}0.
+}
+
+Please use the same logic, try to understand why 
+$$
+AB = C \iff B^{-1}A^{-1}=C^{-1}.
+$$
+
+\a\aa
+The expression can be deduced formally.
+
+$$
+AB=C \iff B=A^{-1}C \iff BC^{-1}=A^{-1} \iff C^{-1}=B^{-1}A^{-1}.
+$$
+
+Another story to understand this:
+\vfill
+You put socks on then shoes on ; But when take them off, you  put shoes off and then socks off.
+
+\aaa
+
+
+
+
+
+
+\aaa{LDU decomposition for symmetric matrix}
+If $A$ is symmetric, we have $A=A^T$. 
+
+
+Suppose
+$$
+A = LDU.
+$$
+Therefore $A^T = U^TD^TL^T$. 
+If $A$ is symmetric, we have $A=A^T$, so 
+$$
+U^TD^TL^T = LDU
+$$
+Furthermore, if $A$ is invertible, its $LDU$ decomposition is unique, then
+$$
+U=L^T
+$$
+We can write LDU decomposition of invertible symmetric matrix $A$ as $LDL^T$.
+\a\aa
+\textbf{Warning}: Not all matrix is LDU decomposible (even invertible matrices). For example
+$$
+\m 01,13.
+$$
+is symemtric but not $LDU$-decomposable.
+\a{Positive definite matrix}
+However, things are nice for so-called \x{positive definite matrix}
+\[defi]{
+An $n × n$ matrix $A$ is called \x{positive definite} if 
+$$
+v^T Av > 0
+$$
+for any $v≠0$.
+}
+
+\x{YOU MUST REMEMBE THE FOLLOWING IMPORTANT THEOREM}
+\[thm]{
+A positive definite matrix $A$ is both \x{invertible} and \x{LDL^T}-decomposable, all diagonal entries of $D$ are positive numbers!
+}
+\a\aa
+Recall: Suppose $A$ is $ n × n$ matrix.
+$$
+“LDU-decomposable “\iff “ cross-fillable with center on \x{diagonal}“
+$$
+$$
+“invertible “ \iff “ decomposing into “ \x{n} “ matrices with cross-filling“ 
+$$
+In other words, the theorem is equivalent as saying.
+$$
+“positive definite matrix cross-fillable along diagonals one by one.“
+$$
+\a\aa
+Let $A$ be a positive definite matrix, we need to start by proving its first element non-zero.
+
+First diagonal element $e_1^TAe_1>0$ (recall $e_1$ first column of $I_n$). So is \x{cross-fillable}!
+
+$$
+\underbrace{\m111,122,123.}_A = \m{\h1}{\y1}{\y1},{\y1}11,{\y1}11.+\m000,0{\x1}{\x1},0{\x1}{\x2}.
+$$ 
+The process will finish if 
+$$
+A_1 = \m11,12.
+$$
+is again a positive definite matrix, then an induction can be use.
+\a\aa
+$$
+\underbrace{\m111,122,123.}_A = \m{\h1}{\y1}{\y1},{\y1}11,{\y1}11.+\m000,0{\x1}{\x1},0{\x1}{\x2}.
+$$
+So why 
+$$
+A_1 = \m11,12.
+$$
+is positive definite? That is why
+$$
+\m xy.\m11,12.\m x,y. >0
+$$
+for $\m xy.≠\m00.$?
+\a\aa
+The idea is simple, firstly, realize that
+$$
+\m xy.\m11,12.\m x,y.= \m {\x*}xy.\m000,0{\x1}{\x1},0{\x1}{\x2}.\m{\x*},x,y.
+$$
+Then we may simply choose $*$ to make sure
+$$
+\m {\x*}xy.\m{\h1}{\y1}{\y1},{\y1}11,{\y1}11.\m{\x*},x,y.=0
+$$
+In our case, $*=-(x+y)$. This implies that
+$$
+\m xy.\underbrace{\m11,12.}_{A_1}\m x,y. = \m {\x {-(x+y)}}xy.A\m{\x {-(x+y)}},x,y. >0
+$$
+So $A_1$ is positive definite, and therefore the cross-filling process may continue.
+\aaa
+
+\aaa{Connection between two ways of representing subspaces}
+
+%%% Cross Filling and LDU decomposition.  LDU decomposition is unique.
+\a{Cross-Filling and LDU decomposition}
+We explain the connection between cross-filling and matrix LDU decomposition. 
+\vfill
+\a\aa
+Suppose a cross filling decomposition has been made by \x{choosing cross center on diagonals}
+$$
+\m111,132,{-1}14.=\m
+{\y1} {\y1} {\y1},
+{\y1}11,
+{\y-1}{-1}{-1}.
++
+\m0{\y0}0,{\y0}{\y2}{\y2},0{\y2}2.
++
+\m
+00{\y0},
+00{\y0},
+{\y0}{\y0}{\y3}.
+$$
+
+\a\aa
+Observation, (think from perspective of column actions)
+$$
+\m
+{\y1} {\y1} {\y1},
+{\y1}11,
+{\y-1}{-1}{-1}.
+=
+\m
+{\y1} {*} {*},
+{\y1}**,
+{\y-1}**.
+\m
+{\y1} {\y1} {\y1},
+000,
+000.
+$$
+or (row actions)
+$$
+\m
+{\y1} {\y1} {\y1},
+{\y1}11,
+{\y-1}{-1}{-1}.
+=
+\m
+{\y1} {0} {0},
+{\y1}00,
+{\y-1}00.
+\m
+{\y1} {\y1} {\y1},
+***,
+***.
+$$
+\a\aa
+Now you can see 
+$$
+\m
+{\y1} {\y1} {\y1},
+{\y1}11,
+{\y-1}{-1}{-1}.
+=
+\m
+{\y1} {*} {*},
+{\y1}**,
+{\y-1}**.
+\m100,000,000.
+\m
+{\y1} {\y1} {\y1},
+***,
+***.
+$$
+\a\aa
+\textbf{Question:} Why the following is true?
+$$
+\m0{\y0}0,{\y0}{\y{\x2}}{\y2},0{\y2}2. = 
+\m*{\y0}*,*{\y2}*,*{\y2}*.
+\m0{}{},{}{\frac1{\x2}}{},{}{}0.
+\m***,{\y0}{\y2}{\y2},***.
+$$
+A \x{scaled} version:
+$$
+\m0{\y0}0,{\y0}{\y{\x2}}{\y2},0{\y2}2. = 
+\m*{\y\frac0{\x2}}*,*{\y\frac{2}{\x{2}}}*,*{\y\frac{2}{\x{2}}}*.
+\m0{}{},{}{\x2}{},{}{}0.
+\m***,{\y\frac0{\x2}}{\y\frac{2}{\x{2}}}{\y\frac{2}{\x{2}}},***.
+$$
+
+\a\aa
+
+$$
+\m
+{\y{\x1}} {\y1} {\y1},
+{\y1}11,
+{\y-1}{-1}{-1}.
++
+\m0{\y0}0,{\y0}{\y{\x2}}{\y2},0{\y2}2.
++
+\m
+00{\y0},
+00{\y0},
+{\y0}{\y0}{\y{\x3}}.
+$$
+\a\aa
+$$
+\m
+{\y{\x1}} {\y1} {\y1},
+{\y1}11,
+{\y-1}{-1}{-1}.
+=
+\m
+{\frac{\x1}{\x1}}**,
+{\frac{1}{\x1}}**,
+{\frac{-1}{\x1}}**.
+\m{\x1}{}{},{}0{},{}{}0.
+\m{\frac{\x1}{\x1}}{\frac{1}{\x1}}{\frac{1}{\x1}},
+***,
+***.
+$$
+\vfill
+$$
+\m0{\y0}0,{\y0}{\y{\x2}}{\y2},0{\y2}2.=
+\m
+*0*,
+*{\frac{\x2}{\x2}}*,
+*{\frac{2}{\x2}}*.
+\m{0}{}{},{}{\x2}{},{}{}0.
+\m
+***,
+0{\frac{\x2}{\x2}}{\frac{2}{\x2}},
+***.
+$$
+\vfill
+
+$$
+\m
+00{\y0},
+00{\y0},
+{\y0}{\y0}{\y{\x3}}.=
+\m
+**0,
+**0,
+**{\frac{\x3}{\x3}}.
+\m{0}{}{},{}{0}{},{}{}{\x3}.
+\m
+***,
+***,
+00{\frac{\x3}{\x3}}.
+$$
+
+
+
+\a\aa
+$$
+\m
+{\y{\x1}} {\y1} {\y1},
+{\y1}11,
+{\y-1}{-1}{-1}.
+=
+\m
+{1}**,
+{1}**,
+{-1}**.
+\m{\x1}{}{},{}0{},{}{}0.
+\m111,
+***,
+***.
+$$
+\vfill
+$$
+\m0{\y0}0,{\y0}{\y{\x2}}{\y2},0{\y2}2.=
+\m
+*0*,
+*{1}*,
+*{1}*.
+\m{0}{}{},{}{\x2}{},{}{}0.
+\m
+***,
+011,
+***.
+$$
+\vfill
+
+$$
+\m
+00{\y0},
+00{\y0},
+{\y0}{\y0}{\y{\x3}}.=
+\m
+**0,
+**0,
+**{1}.
+\m{0}{}{},{}{0}{},{}{}{\x3}.
+\m
+***,
+***,
+00{1}.
+$$
+
+
+\a\aa
+$$
+\m
+{\y{\x1}} {\y1} {\y1},
+{\y1}11,
+{\y-1}{-1}{-1}.
+=
+\m
+{1}00,
+{1}10,
+{-1}11.
+\m{\x1}{}{},{}0{},{}{}0.
+\m111,
+011,
+001.
+$$
+\vfill
+$$
+\m0{\y0}0,{\y0}{\y{\x2}}{\y2},0{\y2}2.=
+\m
+{1}00,
+{1}10,
+{-1}11.
+\m{0}{}{},{}{\x2}{},{}{}0.
+\m111,
+011,
+001.
+$$
+\vfill
+
+$$
+\m
+00{\y0},
+00{\y0},
+{\y0}{\y0}{\y{\x3}}.=
+\m
+{1}00,
+{1}10,
+{-1}11.
+\m{0}{}{},{}{0}{},{}{}{\x3}.
+\m111,
+011,
+001.
+$$
+
+\a\aa
+
+$$
+\m111,132,{-1}14. = \underbrace{\m
+{1}{}{},
+{1}1{},
+{-1}11.}_L
+\underbrace{\m{\x1}{}{},{}{\x2}{},{}{}{\x3}.}_D
+\underbrace{\m111,
+{}11,
+{}{}1.}_U
+$$
+\a\aa
+
+\begin{prop}
+Let $A = P_1+P_2+\cdots+P_m$ be a cross-filling decomposition of $n\times n$ matrix. Suppose $A=LDU$ for some lower triangular $L$, upper $U$ an diagonal $D$ such that diagonals of $L$ and $U$ are all $1$. Assume
+$$
+D = \m{d_1}{}{}{}{},{}\ddots{}{}{},{}{}{d_i}{}{},{}{}{}\ddots{},{}{}{}{}{d_n}.\qquad
+\underbrace{D_i = \m{0}{}{}{}{},{}\ddots{}{}{},{}{}{d_i}{}{},{}{}{}\ddots{},{}{}{}{}{0}.}_{\text{only keep ith entry}}
+$$
+Then $P_i = LD_iU$.
+\end{prop}
+\a\aa
+This proposition has the following conclusions
+\begin{enumerate}
+\item The i'th diagonal entry $d_i$ of $D$ is the \x{cross-filling center} of $P_i$
+\item Let $\vec c_i$ be i'th column of $L$, then the scaled column $\vec c_i\cdot d_i$ is the \x{column of the cross} of  $P_i$
+\item Let $r_i$ be i'th row of $U$, then the scaled row $d_i\cdot r_i$ is the \x{row of the cross} of  $P_i$.
+\end{enumerate}
+
+In other words, the decomposition $A=LDU$ stores all the data of the cross-filling \x{along diagonals}. Therefore all matrices $L,D,U$ is \x{uniquely determined} by $A$.
+
+
+
+%%%%%%
+%Comments on triangular system of linear equations. 
+
+\a{Triangular system of linear equations}
+Our previous method of solving linear equations with cross-filling can be formally described by triangular systems.  
+
+\a\aa
+Consider previous linear system
+
+$$
+\underbrace{\m111,132,{-1}14.}_A\m x,y,z.=\m2,5,4.
+$$
+The cross filling
+$$
+\m111,132,{-1}14.=\m
+{\y1} {\y1} {\y1},
+{\y1}11,
+{\y-1}{-1}{-1}.
++
+\m0{\y0}0,{\y0}{\y2}{\y2},0{\y2}2.
++
+\m
+00{\y0},
+00{\y0},
+{\y0}{\y0}{\y3}.
+$$
+
+yields to a $LDU$ decomposition
+$$
+\m111,132,{-1}14. = \underbrace{\m
+{1}{}{},
+{1}1{},
+{-1}11.}_L
+\underbrace{\m{\x1}{}{},{}{\x2}{},{}{}{\x3}.}_D
+\underbrace{\m111,
+{}11,
+{}{}1.}_U
+$$
+
+\a\aa
+Each row of $DU$ is the \x{rows of each cross},
+$$
+\m111,132,{-1}14. = \underbrace{\m
+{1}{}{},
+{1}1{},
+{-1}11.}_L
+\underbrace{\m111,
+{}22,
+{}{}3.}_{DU}
+$$
+Each rows of the cross is exactly each intermediate equations that helpped us solving equations before.  Let
+$$
+\m u,v,w. := \underbrace{\m111,
+{}22,
+{}{}3.}_{DU}\m x,y,z.
+$$
+Then $u,v,w$ are those intermeidate equations.
+\a\aa
+The original equation just have the form
+$$
+\underbrace{\m
+{1}{}{},
+{1}1{},
+{-1}11.}_L\m u,v,w.=\m a,b,c.,\qquad
+\underbrace{\m111,
+{}22,
+{}{}3.}_{DU}\m x,y,z.=\m u,v,w.
+$$
+
+Solving triangular system is just by substitutions. For example $u=a$, $v = b-au=b-a^2$, and so on...
+%% For matrices that can not be LDU, apply some row operation. 
+
+
+\a{Not all matrices are LDU-decomposable}
+
+A matrix is LDU-decomposable if and only if it can be cross-filled from diagonal. But this is not always the case. For example
+
+$$
+A = \m 03,12.
+$$ 
+It just fails from the first step, we got 0 on diagonal, preventing us from cross-filling from it.
+
+\a\aa
+Even if some matrix can be cross-filled from the first step, \x{the second step might fail} if we insists of picking diagonals
+
+$$
+\m123,124,135. = \m {\y1}{\y2}{\y3},{\y1}23,{\y1}23.+\underbrace{\m000,0{\x0}1,012.}_{\substack{????oh! NO!\\\text{a non-zero cross}\\\text{with zero center..}}}
+$$
+\a\aa
+The problem comes from our restriction to ourselves. 
+\vfill
+WHY picking diagonals only? 
+\vfill
+A lot of trouble in this world come from the lack of freedom. 
+\vfill
+We ask for more freedom!
+\a{P-LDU decomposition}
+Now we are allow to do cross-filling following the order of columns, and lift the restriction on rows. This allows us to do more.
+
+\a\aa
+The following matrix is not LDU decomposable, but we may decompose it the following way
+$$
+\m0000,1234,1111,1358.=\m {\y0}000,{\y1}111,{\y1}{\y1}{\y1}{\y1},{\y1}111. + \m 0{\y0}00,{\y0}{\y1}{\y2}{\y3},0{\y0}00,0{\y2}46.+\m000{\y0},000{\y0},000{\y0},{\y0}{\y0}{\y0}{\y1}.
+$$
+For PLDU decomposition, every time we \x{must} choose the first non-zero column. But no restriction on rows.
+\a\aa
+The point is that the corss center can be distributed on diagonal after applying row operations on both side
+$$
+\underbrace{\m{}{}1{},{}1{}{},1{}{}{},{}{}{}1.}_P\underbrace{\m0000,1234,1111,1358. }_A
+$$$$= \m {\y1}{\y1}{\y1}{\y1},{\y0}000,{\y1}111,{\y1}111. + \m 0{\y0}00,{\y0}{\y1}{\y2}{\y3},0{\y0}00,0{\y2}46.+\m000{\y0},000{\y0},000{\y0},{\y0}{\y0}{\y0}{\y1}.
+$$
+\a\aa
+This gives the decomposition
+$$
+PA = \underbrace{\m1000,0100,1000,1201.}_L\underbrace{\m1000,0123,0000,0001.}_U.
+$$
+Therefore, we can always find some row operator $P$, such that $PA$ can be decomposed into LDU.
+%% Invertibility, A triangular matrix is invertible if all its diagonal is non-zero
+\a{Comments}
+When we write it into LDU with one of the diagonal entry of D equal to 0, we can assign arbitray numbers in that corresponding col and ros of L and U
+$$
+\underbrace{\m1000,0100,1000,1201.}_L\underbrace{\m1000,0123,0000,0001.}_U.
+$$
+$$
+=\underbrace{\m1000,0100,10*0,12*1.}_L\m1{}{}{},{}1{}{},{}{}0{},{}{}{}1.\underbrace{\m1000,0123,00**,0001.}_U.
+$$
+In other words, we may always assume $L$ and $U$ are triangular matrices with $1$ on diagonal.
+
+\a{Column and row switchings together}
+If we allow both column and row switchings, we have \x{complete freedom}
+
+$$
+\underbrace{\m{2}{1}{3},3{2}5,3{1}{-3}.}_A = \underbrace{\m{\y2}{\y1}{\y3},4{\y2}6,2{\y1}{3}.}_{P_1} + \underbrace{\m{\y0}00,{\y-1}0{6},{\y1}{\y0}{\y-6}.}_{P_2}+\underbrace{\m00{\y0},{\y0}{\y0}{\y-7},00{\y0}.}_{P_3}
+$$
+Then
+$$
+\m1{}{},{}{}1,{}1{}.A\m{}1{},1{}{},{}{}1.=
+$$
+$$
+\m{\y1}{\y2}{\y3},{\y2}46,{\y1}2{3}. + \m0{\y0}0,{\y0}{\y1}{\y-6},0{\y-1}{6}.+\m00{\y0},00{\y0},{\y0}{\y0}{\y-7}.
+$$
+which can be decomposed into $LDU$.
+\a{The invertibility of a matrix}
+Observation:
+
+\[prop]{A triangular matrix is invertible if and only if all its diagonal entries are non-zero.
+}
+\a\aa
+\[prop]{An $n\times n$ matrix $A$ is invertible if and only if it can be decomposed into $n$ many rank-1 matrices by cross-filling.
+}
+
+A cross-filling corresponds to a decomposition of the form $P_1LDUP_2$, where all $P_1,L,U,P_2$ are invertible. The number of non-zero entries in $D$ corresponds to the number of rank 1 matrices in the decomposition.
+%% Say something about rank. 
+
+%% Say something about LDU by row operations.
+
+
+%% 需要调整顺序
+
+% 把 简化过程放在 UL 分解之后讲。cross-filling 就讲cross-filling，
+
+%先只讲along diagonals for simplicity，然后再讲可以不along diagonals。
+
+% 最后讲invertibility即可
+
+% 然后讲对称矩阵如果有分解，那么分解一定是 R^TR之类的，这种时候当且仅当矩阵半正定（未来讲）
+
+% 把分块矩阵乘法单独拿出来讲，以后还有用，在diagonalization有用。
+
+\aaa

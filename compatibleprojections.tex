@@ -1,0 +1,549 @@
+
+\aaa{Warm up exercises}
+\exe Which of the following argument is true?
+\[enumerate]{
+\item $“Col“(AB) ⊆ “Col“(A)$
+\item $“Col“(AB) ⊆ “Col“(B)$
+\item $“Col“(AB) ⊇    “Col“(A)$
+\item $“Col“(AB) ⊇   “Col“(B)$
+}
+\a\aa
+\exe Which of the following codintion implies $“Col“(A)=“Col“(AB)$?
+\[enumerate]{
+\item $A$ has {\color{red} left inverse};
+\item $A$ has {\color{blue} right inverse};
+\item $B$ has {\color{red} left inverse};
+\item $B$ has {\color{blue} right inverse};
+}
+\a\aa
+\exe Which of the following argument is true?
+\[enumerate]{
+\item $“Null“(AB) ⊆ “Null“(A)$
+\item $“Null“(AB) ⊆ “Null“(B)$
+\item $“Null“(AB) ⊇    “Null“(A)$
+\item $“Null“(AB) ⊇   “Null“(B)$
+}
+
+\a\aa
+\exe Which of the following codintion implies $“Null“(B)=“Null“(AB)$?
+\[enumerate]{
+\item $A$ has {\color{red} left inverse};
+\item $A$ has {\color{blue} right inverse};
+\item $B$ has {\color{red} left inverse};
+\item $B$ has {\color{blue} right inverse};
+}
+
+\a\aa
+\exe The product $A^{-1}B$ won't change if we apply
+\[enumerate]{
+\item Simutaneous row operation on $A$ and $B$;
+\item Simutaneous column operation on $A$ and $B$;
+}
+\a\aa
+\exe The product $AB^{-1}$ won't change if we apply
+\[enumerate]{
+\item Simutaneous row operation on $A$ and $B$;
+\item Simutaneous column operation on $A$ and $B$;
+}
+
+
+\aaa
+
+
+
+
+\aaa{Mutually orthogonal projections}
+
+\exe Given two lines in a plane $l_1: x+y=0$, $l_2:x-y=0$. Find projection operators $P_{l_1}$ and $P_{l_2}$ such that
+\begin{itemize}
+\item $\ker P_{l_1}=l_2$, $\im P_{l_1}=l_1$
+\item $\ker P_{l_2}=l_1$, $\im P_{l_2}=l_2$
+\end{itemize}
+
+\[tikzpicture]{[scale=0.6]
+\draw[->,opacity=0.7] (-4.5,0)--(4.5,0);% node[right]{$x$};
+\draw[->,opacity=0.7] (0,-4.5)--(0,4.5);% node[right]{$y$};
+%\draw[->,ultra thick,purple] (0,0)--(1,2) node[right]{$\vec v$};
+%\draw[->,ultra thick,blue] (0,0)--(1,0) node[right]{$\vec v_x$};
+%\draw[->,ultra thick,blue] (0,0)--(0,2) node[right]{$\vec v_y$};
+\draw[thick] (-4,-4)--(4,4) node[right]{$l_2$};
+\draw[thick] (-4,4)--(4,-4) node[right]{$l_1$};
+\foreach\x in {-4,...,4}{
+	\draw[gray,opacity=0.4] (\x,-4.5)--(\x,4.5);
+	\draw[gray,opacity=0.4] (-4.5,\x)--(4.5,\x);
+}
+}
+\a\aa
+$B_{1}=\m1,{-1}.$ is a matrix with column space $l_1$
+
+
+$B_{2}=\m1,{1}.$ is a matrix with column space $l_2$
+
+
+$A_{1}:=\m11.$ is a matrix with null space $l_1$
+
+$A_{2}:=\m1{-1}.$ is a matrix with null space $l_2$
+
+Note that
+
+$$l_2 ∩ l_1 =\{0\} ⟺   A_2B_1 “ invertible “$$
+$$l_1 ∩ l_2 =\{0\} ⟺   A_1B_2 “ invertible “$$
+
+\a\aa
+Projection $P_1$ with $“col“(P_1) = l_1=“col“(B_1)$ and $“null“(P_1) = l_2=“null“(A_2)$ is given by
+
+$$
+P_1 = B_1(A_2B_1)^{-1}A_2 = \m1,{-1}.\frac12\m1{-1}. = \m{0.5}{-0.5},{-0.5}{0.5}.
+$$
+
+Projection $P_2$ with $“col“(P_2) = l_2=“col“(B_2)$ and $“null“(P_2) = l_1=“null“(A_1)$ is given by
+
+$$
+P_2 = B_2(A_1B_2)^{-1}A_1 = \m1,{1}.\frac11\m1{1}. = \m{0.5}{0.5},{0.5}{0.5}.
+$$
+
+
+
+\a\aa
+The method can be generalized, in general , when given two spaces $W,V ⊆ ℝ^n$ such that
+
+$W\cap V = \{\vec 0\}$ and $“dim“(W)+“dim“(V)=n$,  we may find matrices $A,B$ and write 
+$$
+W = “Null“(A), ␣  V = “Col“(B).
+$$
+Then, the above condition would implies $AB$ invertible. A projection can be constructed by 
+$$
+P = B(AB)^{-1}A.
+$$
+
+$$
+“Col“(B) ⊇  “Col“(B{\color{red}(AB)^{-1}A}) ⊇  “Col“(B (AB)^{-1}A{\color{red}B}) = “Col“(B)
+$$
+
+$$
+“Null“(A) ⊇  “Null“({\color{red}B(AB)^{-1}}A) ⊇  “Null“({\color{red}A}B (AB)^{-1}A) = “Null“(A)
+$$
+Then 
+$$
+“Col“(P)=“Col“(B) ␣  “Null“(P)=“Null“(A).
+$$
+
+\a\aa
+\[prop]{Let $P= P^2$ and $Q=Q^2$ be two projection matrices such that $“Col“(P)=“Col“(Q)$ and $“Null“(P)=“Null“(Q)$, then $P=Q$}
+
+Note that $“Null“(I-P)=“Col“(P)=“Col“(Q)$, so $“Col“(Q) ⊆ “Null“(I-P)$, which implies that
+$$
+(I-P)Q=0.
+$$
+Similarly $“Col“(I-Q)=“Null“(Q) = “Null“(P)$, so $“Col“(I-Q) ⊆ “Null“(P)$
+$$
+P(I-Q)=0.
+$$
+So $Q = PQ = P$.
+\a\aa
+\[rem]{Therefore projection are completely determined by its null(kernel) and column space(image)}
+\a\aa
+\exe Suppose $W$ is a vector space spanned by
+$$
+\m 1,1,2,0., \m 0,1,1,0.
+$$
+and $U$ is spanned by 
+$$
+\m 1,0,0,0., \m 1,0,0,1.
+$$
+Please find projection operator $P^2=P$ such that $\ker(P) = W$ and $\im(P) = U$.
+\a\aa
+\sol 
+Note that $W=“Null“\underbrace{\m11{-1}0,0001.}_A$ and $U = “Col“\underbrace{\tiny\m11,00,00,01.}_B$
+The formula $B(AB)^{-1}A$ give projection with such null and col space
+$$\m11,00,00,01.\left(\m 11{-1}0,0001.\m11,00,00,01.\right)^{-1}\m 11{-1}0,0001.$$
+$$=\m11,00,00,01.\m11,01.^{-1}\m 11{-1}0,0001.$$
+$$=\m10,00,00,01.\m10,01.^{-1}\m 11{-1}0,0001.={\tiny\m11{-1}0,0000,0000,0001.}$$
+
+\a\aa
+\exe For same $W$ is a vector space spanned by
+$$
+\m 1,1,2,0., \m 0,1,1,0.
+$$
+and $U$ is spanned by 
+$$
+\m 1,0,0,0., \m 1,0,0,1.
+$$
+Please find projection operator $P^2=P$ such that $\ker(P) = U$ and $\im(P) = W$.
+
+\a\aa
+\sol (Write your own solution )
+
+\a\aa
+Another method: 
+$$
+\m1000,0100,0010,0001. - \m11{-1}0,0000,0000,0001.= \m0{-1}10,0100,0010,0000. 
+$$
+%Note that $(AB)^{-1}A$ is left inverse of $B$ and $B(AB)^{-1}$ is right inverse of $A$
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%    the compatible projections, are for some basis diagonal 1 and 0, 
+%%%%%
+%%%%%
+%%%%  A set of projection operators is called "compatible" if the sum of them is a projection operator.
+%%%%   (A+B+C)² =(A+B²
+%%%%% it needs the characteristic to be 0.
+%%%% (A+B+C)(A+B)A 
+%%%%%    B is proj, A is proj, C is proj, A+B+C is proj, 
+%%%%%%%   
+%%%% (A+B) proj A(A+B) = (I-B)(A+B)
+%%%
+%%%%
+%%%%%%%% the 
+
+
+
+\a\aa
+
+In all the above exercises, $P_{1}$ and $P_{2}$ is a pair \x{interchanging} kernel(null space) and images(column space)
+
+\a\aa
+The pair of projection interchanging null space and column space 
+\[z]{[scale=0.3]
+\draw[ultra thick](-7,0)--(7,0) node[right]{$l_2$};
+\draw[ultra thick,red](-4,-4)--(4,4) node[right]{$l_1$};
+\draw[ultra thick,->,blue](0,0)--(0,3) node[right]{$\vec v$};
+\draw[ultra thick,->,cyan](0,0.05)--(-3,0.05) node[below]{$P_{2}\vec v$};
+\foreach\x in {-3,...,8}{
+	\draw [red,->](\x,4)--(-4+\x,0.1);
+}
+\draw[fill = cyan,opacity=0.2] (0,0)--(0,3)--(-3,0)--(0,0);
+}
+\[z]{[scale=0.3]
+\draw[ultra thick,red](-7,0)--(7,0) node[right]{$l_2$};
+\draw[ultra thick](-4,-4)--(4,4) node[right]{$l_1$};
+\draw[ultra thick,->,blue](0,0)--(0,3) node[right]{$\vec v$};
+\foreach\x in {-4,...,4}{
+	\draw [red,->](-6,\x)--(\x-0.1,\x);
+	\draw [red,->](6,\x)--(\x+0.1,\x);
+}
+\draw[fill = cyan,opacity=0.2] (0,0)--(0,3)--(3,3)--(0,0);
+\draw[ultra thick,->,orange](0,0.05)--(3,3.05) node[right]{$P_1\vec v$};
+}
+
+The following picture shows
+$$\vec v= P_1\vec v+P_2\vec v ␣ “ for any “\vec v  ⟹   P_1+P_2 = I$$
+\[zzz]{
+\draw[ultra thick,red](-7,0)--(7,0) node[right]{$l_2$};
+\draw[ultra thick](-4,-4)--(4,4) node[right]{$l_1$};
+\draw[ultra thick,->,blue](0,0)--(0,3) node[right]{$\vec v$};
+\draw[ultra thick,->,orange](0,0.05)--(3,3.05) node[right]{$P_1\vec v$};
+\draw[ultra thick,->,cyan](0,0.05)--(-3,0.05) node[below]{$P_{2}\vec v$};
+\draw[ultra thick,dotted,cyan](0,3)--(3,3.05) node[right]{};
+\draw[ultra thick,dotted,cyan](0,3)--(-3,0.05) node[below]{};
+}
+\a\aa
+For any projection operator $P$, the operator $I-P$ is interchaging kernel and image
+$$
+\ker(P) = \im(I-P); ␣ \im(P) = \ker(I-P)
+$$
+
+This is a first example of \x{mutually orthogonal projections}
+\a\aa
+\[rem]{The word \x{mutually orthogonal} DO NOT mean $\im(P_1)$ othogonal to $\im(P_2)$, instead, it means 
+$$\im(P_1) ⊆  \ker(P_2) “ and “\im(P_2) ⊆ \ker(P_1).$$
+ Historically speaking, people are most interested in discussing \x{orthogonal projections}($P=P^T$) where in their world $\im(P) \perp \ker(P)$, only in that case, we have 
+$$\im(P_1) ⊆  \ker(P_2) ⟹   \im(P_1)\perp \im(P_2).$$
+}
+\a{Equivalent definitions of mutually orthogonal}
+
+\[defi]{[Equivalent definition] Say a set of projections $\{P_1,P_2,...,P_n\}$ \x{mutually orthogonal} if
+$
+P_1 + P_2 + ... + P_n
+$
+is a projection operator.
+}
+\[defi]{[Equivalent definition - more computational] Say a set of projections $\{P_1,P_2,...,P_n\}$ \x{mutually orthogonal} if
+$
+P_iP_j=0
+$
+for any $i≠j$.
+}
+\[defi]{[Equivalent definition - more geometrical] Say a set of projections $\{P_1,P_2,...,P_n\}$ \x{mutually orthogonal} if
+$
+\im(P_i) ⊆ \ker(P_j)
+$
+for any $i≠j$.
+}
+\a\aa
+To show these difinition equivalent , we need to show that if $P_i^2=P_i$ for ∀ i, then 
+\vfill
+$$(P_1+...+P_n)²=P_1+...+P_n$$$$ ⟺   P_iP_j = 0 ∀ i≠j $$$$⟺   \im(P_i) ⊆ \ker(P_j) ∀ i≠j$$
+
+\vfill
+The proof for all part is easy except the part $  (P_1+...+P_n)²=P_1+...+P_n ⟹  P_iP_j = 0 ∀ i≠j$ is hard.
+
+\a\aa
+Proof of the hardest part, Schetch:
+Firstly, we observe that all columns of $P_1+...+P_n$ is the sum of columns of each $P_i$, so
+$$
+“Col“(P_1+...+P_n) ⊆  “span“ (“Col“(P_1) ∪ “Col“(P_2) ∪ ... ∪ “Col“(P_n))
+$$
+Since all of them, and the sum is projection, the rank and trace are the same, so we have
+$$
+N:=rank(P_1+...+P_n) = “tr“(P_1+...+P_n) = “tr“(P_1)+...+“tr“(P_n) 
+$$
+$$= “rank“(P_1)+...+“rank“(P_n)
+$$
+However, Each $“Col“(P_i)$ has $“tr“(P_i)$-many vectors as basis. Choosing for each, we have a total of $N$-vectors, spanning the entire $“span“ (“Col“(P_1) ∪ “Col“(P_2) ∪ ... ∪ “Col“(P_n))$. So 
+$$
+“dim“(“span“ (“Col“(P_1) ∪ “Col“(P_2) ∪ ... ∪ “Col“(P_n))) ≤ N
+$$
+\a\aa
+However, since
+$$
+“dim“(“Col“(P_1+...+P_n)) = N
+$$
+we must have
+$$
+“Col“(P_1+...+P_n) =  “span“ (“Col“(P_1) ∪ “Col“(P_2) ∪ ... ∪ “Col“(P_n))
+$$
+This implies 
+$$
+“Col“(P_i) ⊆ “Col“(P_1+...+P_n)
+$$
+Therefore
+$$
+P_1(P_1+...+P_i+...+P_n) = P_1
+$$
+Note that $P_1^T,...,P_n^T$ is also mutually orthogonal projection, we also have
+$$
+P_n^T(P_n+....+P_n)^T = P_n^T ⟹  
+(P_1+...+P_n)P_n = P_n
+$$
+The above equation implies $(P_1+...+P_{n-1})² =P_1+...+P_{n-1}$  is a projection as well. Then using induction implies the result.
+\a\aa
+The following matrices are projection matrices.
+
+$$0. \m000,000,000.  ␣ 1. \m000,000,001. ␣ 2.  \m000,010,000. ␣  3. \m000,010,001.  $$
+$$4. \m100,000,000.␣   5. \m100,000,001.  ␣ 6. \m100,010,000.  ␣ 7. \m100,010,001.  $$
+
+Find all pairs of mutually orthogonal projections.
+\a\aa
+
+%% This part is an exercise, in the picture, given muturally orthogonal projections, figure out its kernel.
+
+The geometric intuition of mutually orthogonal projection
+\[tikzpicture]{[scale=0.3]
+\draw[ultra thick,red] (0,-4)--(0,0);
+	\draw[fill=green,opacity=0.5] (-7,-1)--(1,-1)--(7,1) node[right]{$W_1$} --(-1,1)--(-7,-1);
+        \draw[ultra thick,red] (0,0)--(0,5) node[above]{$U_3$};
+	\draw[ultra thick,red] (-6,0)--(6,0) node[right]{$U_1$};
+	\draw[ultra thick,red] (-6,-2)--(6,2) node [right]{$U_2$};
+	}
+
+For this, there is a mutually orthogonal projection 
+$$ \ker(P_1) = “Span“(U_3 ∪ U_2); ␣  \im(P_1)= U_1 $$
+$$ \ker(P_2) = “Span“(U_3 ∪ U_1); ␣  \im(P_2)= U_2 $$
+$$ \ker(P_3) = “Span“(U_1 ∪ U_2); ␣  \im(P_3)= U_3 $$
+
+\a{Computation of mutually (orthogonal) projections.}
+
+Suppose $P_1,...,P_n$ are mutually orthogonal projections.
+%$P_1=P_1^2, ␣ P_2=P_2^2,␣ ...,P_n=P_n^2$ are projections with $\left(∑_i P_i\right)^2 = ∑_i P_i$.
+
+\vfill
+Suppose 
+$$A = λ_1 P_1+λ_2P_2 + ... + λ_nP_n,$$
+$$B = μ_1 P_1+μ_2P_2 + ... + μ_nP_n.$$
+What is $AB$? (note that $P_iP_j=0$ for $i≠j$)
+$$
+AB = (λ_1μ_1)P_1 + (λ_2μ_2)P_2 + ...  + (λ_nμ_n)P_n
+$$
+\[rem]{The decomposition of a matrix into a linear combination of mutually orthogonal projections is called \x{the spectrual decomposition}.
+}
+\a\aa
+Example
+$$
+\m{λ_1}00,0{λ_2}0,00{λ_3}. = 
+λ_1\m100,000,000. +
+λ_2\m000,010,000. +
+λ_3\m000,000,001. 
+$$
+
+$$
+\m{μ_1}00,0{μ_2}0,00{μ_3}. = 
+μ_1\m100,000,000. +
+μ_2\m000,010,000. +
+μ_3\m000,000,001. 
+$$
+
+$$
+{\small\m{λ_1μ_1}00,0{λ_2μ_2}0,00{λ_3μ_3}.} = 
+λ_1μ_1{\tiny\m100,000,000.} +
+λ_2μ_2{\tiny\m000,010,000.} +
+λ_3μ_3{\tiny\m000,000,001. }
+$$
+
+\a\aa
+If $P_1=P_1^2, ␣ P_2=P_2^2,␣ ...,P_n=P_n^2$, $\left(∑_i P_i\right)^2 = ∑_i P_i$, and
+$$A = λ_1 P_1+λ_2P_2 + ... + λ_nP_n,$$
+for 
+what is $A^k$?
+
+$$A^k = λ_1^k P_1+λ_2^kP_2 + ... + λ_n^kP_n,$$
+
+\a\aa
+The decomposition of a matrix into mutually orthogonal projections is useful for calculation. For example,
+$$
+\m21,12. = \m{0.5}{-0.5},{-0.5}{0.5}. + 3\m{0.5}{0.5},{0.5}{0.5}.
+$$
+Then we obtain a formula
+$$
+\m21,12.^n = \m{0.5}{-0.5},{-0.5}{0.5}. + 3^n\m{0.5}{0.5},{0.5}{0.5}.
+$$
+So
+$$
+\m21,12.^n = \m{\frac{1+3^n}2}{\frac{-1+3^n}2},
+{\frac{-1+3^n}2}
+ {\frac{1+3^n}2}.
+$$
+This is the main topic for the chapter of eigenvalue and eigenvectors.
+\a{Cross-Filling of projection operators}
+
+\[prop]{Let $P=P^2$ be a $ n × n$ projection matrix, the cross-filling decomposition:
+$$
+P =  Q+ (P-Q)
+; ␣ 
+Q = Pe_j(e_i^TPe_j)^{-1}e_i^TP
+$$
+make both $P-Q$ and $Q$ projection operators.
+}
+$$
+Q^2 = Pe_j(e_i^TPe_j)^{-1}e_i^TPPe_j(e_i^TPe_j)^{-1}e_i^TP $$
+$$= Pe_j(e_i^TPe_j)^{-1}\underbrace{e_i^TPe_j}(e_i^TPe_j)^{-1}e_i^TP $$
+$$= Pe_j(e_i^TPe_j)^{-1}e_i^TP = Q.
+$$
+It is easy to see $PQ=Q=QP$, so $(P-Q)² = P^2 +Q^2 -PQ-QP = P+Q-Q-Q=P-Q $.
+
+\a\aa
+\[rem]{
+In one word, cross-filling decompose projection matrix into projection matrices.
+}
+\a\aa
+\exe The following matrix is a projection
+$$
+P=\m1{2}{3}0,0000,0000,0001.
+$$
+Find a basis of $“Col“(P)$ and $“Null“(P)$. For each vector 
+$$
+\m x,y,z,w.
+$$
+Write down a formula for decomposition of this vector in your basis.
+\a\aa
+Finding basis of $“Col“(P)$ we use cross-filling
+$$
+P\m1{2}{3}0,0000,0000,0001.= \underbrace{\m{\h1}{\y2}{\y3}{\y0},{\y0}000,{\y0}000,{\y0}000.}_{A_1} +\underbrace{\m000{\y0},000{\y0},000{\y0},{\y0}{\y0}{\y0}{\h1}.}_{A_2}
+$$
+So a basis of $“Col“(P)$ is 
+$$
+\vec{w_1}=\m{\h1},{\y0},{\y0},{\y0}.
+,
+\vec{w_2}=\m{\y0},{\y0},{\y0},{\h1}.
+$$
+
+\a\aa
+Since $P$ is a projection matrix, we have $“Null“(P)=“Col“(I-P)$. Finding a basis of it
+$$
+I-P = \m0{-2}{-3}0,0100,0010,0000.
+= \underbrace{\m{\y0}{\h-2}{\y-3}{\y0},0{\y1}{1.5}0,0{\y0}00,0{\y0}00.}_{A_3}
++
+\underbrace{\m0{0}{\y0}0,00{\y-1.5}0,{\y0}{\y0}{\h1}{\y0},00{\y0}0.}_{A_4}
+$$
+A basis is given by
+$$
+\vec{w_3}=\m{\h{-2}},{\y1},{\y0},{\y0}.
+␣ 
+\vec{w_4}=\m{\y0},{\y-1.5},{\h1},{\y0}.
+$$
+
+\a\aa
+Now to get a decomposition of an arbitrary vector $\vec v$ into vectors $\vec{w}_1$, $\cdots$, $\vec w_4$, we note
+$$
+\vec v = I\vec v = P\vec v+(I-P)\vec v = A_1\vec v+A_2\vec v+A_3\vec v+A_4\vec v.
+$$
+Since
+$$
+A_1\vec v = \underbrace{\m{\h1}{\y2}{\y3}{\y0},{\y0}000,{\y0}000,{\y0}000.}_{A_1} \underbrace{ \m x,y,z,w.}_{\vec v} = (x+2y+3z)\vec w_1
+$$
+
+$$
+A_2\vec v = \underbrace{\m000{\y0},000{\y0},000{\y0},{\y0}{\y0}{\y0}{\h1}.}_{A_2}
+\underbrace{ \m x,y,z,w.}_{\vec v} = (w)\vec w_2
+$$
+
+\a\aa
+We continue
+$$
+A_3\vec v =  \underbrace{\m{\y0}{\h-2}{\y-3}{\y0},0{\y1}{1.5}0,0{\y0}00,0{\y0}00.}_{A_3} \underbrace{ \m x,y,z,w.}_{\vec v} = (y+1.5z)\vec w_3
+$$
+
+and
+$$
+A_4\vec v = 
+\underbrace{\m0{0}{\y0}0,00{\y-1.5}0,{\y0}{\y0}{\h1}{\y0},00{\y0}0.}_{A_4}
+\underbrace{ \m x,y,z,w.}_{\vec v} = (z)\vec w_4
+$$
+So
+$\vec v =  (x+2y+3z)\vec w_1 +  (w)\vec w_2 + (y+1.5z)\vec w_3 + (z)\vec w_4$ .
+
+
+\aaa
+
+
+
+\aaa{Linearly Independency}
+
+\[prop]{If $P_1,P_2,...,P_n$ is a mutually orthogonal family of projection operators, then for any \x{non-zero} vector $\vec 0 ≠ \vec v_i ∈ \im(P_i)$, the list
+$$
+\vec v_1,...,\vec v_n
+$$
+is automatically linearly independent.}
+
+Suppose $a_1\vec v_1+...+a_n\vec v_n = \vec 0$.
+
+We can write
+
+$$
+a_1P_1\vec v_1+...+a_nP_n\vec v_n = \vec 0
+$$
+Multiply $P_1$ on both side
+$$
+a_1P_1\vec v_1=\vec 0 ⟹  a_1\vec v_1=\vec 0 ⟹   a_1=0.
+$$
+\a\aa
+
+\[itemize]{
+\item Mutually orthogonal is a \x{pairwise}-condition  (good!)
+\item Linearly independent is \x{not a pairwise}-condition (bad!)
+}
+
+\exe If 
+\[itemize]{
+\item $\{\vec v_1, \vec v_2\}$ \li, 
+\item $\{\vec v_3, \vec v_2\}$ \li, 
+\item $\{\vec v_1, \vec v_3\}$ \li, 
+}
+is that true $\{\vec v_1,\vec v_2, \vec v_3\}$ \li?
+
+Vector only has information of its direction
+
+\a\aa
+
+\exe If 
+\[itemize]{
+\item $\{P_1, P_2\}$ mutually orthogonal, 
+\item $\{P_3, P_2\}$ mutually orthogonal, 
+\item $\{P_1, P_3\}$ mutually orthogonal, 
+}
+is that true $\{P_1, P_2, P_3\}$ mutually orthogonal?
+
+Projections not only have information of its direction $“Im“(P)$($“Col“(P)$), but also has 
+$“Ker“(P)$($“null“(P)$).
+\aaa

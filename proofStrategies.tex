@@ -1,0 +1,265 @@
+
+\aaa{Before reviewing proof}
+
+
+Make sure you are able to do QR decomposition, calculating determinant, calculating $A^n$, calculating $e^A$, able to solve differential equations $y'=Ay$, able to solve applicational problems (like the one in homework). 
+
+
+Able to verify if a matrix is diagonalizable (by verifying if it satisfies a polynomial). Able to diagonalize a matrix, able to find Jordan canonical form.... 
+
+
+You must be able to do all computations. In an efficient way.
+
+\a{Eigenvalue and eigenvectors for 2 by 2 matrices}
+Given 2 × 2 matrix. Its characteristic polynomial is given by
+$$
+“det“\left(tI_2-\m ab,cd.\right) = t^2 - (a+d) t +(ad-bc)
+$$
+Suppose the polynomial is given by $(t-λ_1)(t-λ_2)$ with $λ_1≠λ_2$. In this case, it is diagonalizable.
+\a\aa
+Since $(A-λ_1)(A-λ_2)=0$, we have $A(A-λ_1)=λ_2(A-λ_1)$ and $A(A-λ_2)=λ_1(A-λ_2)$.
+
+Therefore, the matrix
+$$ \m {a-λ_1}b,c{d-λ_1}. ␣  “eigenmatrix of eigenvalue “λ_2 $$
+$$ \m {a-λ_2}b,c{d-λ_2}. ␣  “eigenmatrix of eigenvalue “λ_1 $$
+
+\a\aa
+
+\exe Suppose $2a+b≠0$. Given the following matrix
+$$
+\m ba,{2b}{2a}.
+$$
+What is its eigenvalue and what is its eigenvector?
+
+\a\aa
+No matter what, this matrix is always \x{not invertible} since columns are colinear. Therefore, $0$ must be an eigenvalue of it. Therefore, by looking at the trace, the other eigenvalue must be $2a+b$.
+
+Therefore $A-0I=\m ba,{2b}{2a}.$ is the eigenmatrix of eigenvalue $2a+b$
+
+$A-(2a+b)I=\m{-2a}a,{2b}{-b}.$ is the eigenmatrix of eigenvalue $0$.
+
+So
+$$
+\m1,2.
+$$
+is eigenvector of eigenvalue $2a+b$. And
+$$
+\m{a},{-b}.
+$$
+is an eigenvector of eigenvalue $0$.
+\a\aa
+Therefore, we can even write down its diagonalization
+$$
+\m1a,2{-b}.^{-1}\m ba,{2b}{2a}.\m1a,2{-b}.=\m{2a+b}0,00.
+$$
+
+\[rem]{When eigenvalues are given , finding eigenvectors is extremely easy, you should able to be compute within 10 seconds in mind.}
+
+\a\aa
+\exe Write down an eigenvector of the following matrix
+$$
+\m 0{-2},35.
+$$
+of eigen value $2$.
+
+
+\a\aa
+\exe Write down an eigenvector of the following matrix
+$$
+\m 3{4},37.
+$$
+of eigen value $9$.
+
+
+\a{The most important fact}
+
+\[thm]{If $P_1,…,P_n$ are projection matrices $P_i^2=P_i$ and
+$$
+P_1+…+P_n = I
+$$
+Then $P_iP_j=0$
+}
+\textbf{Proof} We consider a matrix
+$$
+Q = \m{P_1}{P_2}\cdots{P_n}.
+$$
+$$
+R = \m{P_1},{P_2},\vdots,{P_n}. ␣ S = \m{P_1}{}\cdots{},
+{}{P_2}\cdots{},
+{}{}\ddots{},
+{}{}{}{P_n}.
+$$
+This definition implies that $QR=I$.
+\a\aa
+$$
+RQ=\m{P_1^2}{P_1P_2}{\cdots}{P_1P_n},
+{P_2P_1}{P_2^2}\cdots{P_2P_n},
+\vdots\vdots\vdots\ddots\vdots,
+{P_nP_1}{P_nP_2}\cdots{P_n^2}.
+$$
+Furthermore, $QS=Q$, $SR=R$. So 
+$$
+(S-RQ)^2=S^2-SRQ-RQS+RQRQ = S-RQ
+$$
+This implies $S-RQ$ is a projection matrix. However, $P_i^2=P_i$ so $“tr“(S-RQ)=0$ ⟹   S-RQ=0 ⟹   $P_iP_j=0$.
+\a\aa
+\[thm]{Suppose $P_i\vec v_i =\vec v_i$ for $1≤i≤k$ and $P_iP_j=0$ for $1≤i,j≤k$. Then
+$$
+\vec v_1, …, \vec v_k
+$$
+is linearly independent.}
+For $i≠j$,
+$$
+P_i\vec v_j=P_iP_j\vec v_j=0
+$$
+So if
+$$
+a_1\vec v_1+…+a_k\vec v_k=0
+$$
+Multiply $P_i$ we have
+$$
+0+0+…+0+a_iP_i\vec v_i+0+\cdots = P_i0=0  ⟹   a_i\vec v_i=0 ⟹   a_i=0.
+$$
+\aaa
+\aaa{Of different eigenvalue}
+
+\exe Show that eigenvectors from different eigenvalue must be linearly independent.
+
+Suppose $A\vec v_i=λ_i\vec v_i$ with $λ_i≠λ_j$. Assume
+$$
+a_1\vec v_1+a_2\vec v_2+…+a_k\vec v_k = 0.
+$$
+Multiply by $A$, we have
+$$
+a_1λ_1\vec v_1+a_2λ_2\vec v_2+…+a_kλ_k\vec v_k = 0.
+$$
+Subtract this equation by λ times the first equation, we have
+$$
+a_2(λ_2-λ_1)\vec v_2+…+a_k(λ_k-λ_1)\vec v_k=0
+$$
+By induction hypothesis, $a_2=…=a_k=0$.
+So $a_1\vec v_1=0$.
+\a\aa
+Proof by spectural decomposition. Assume $\vec v$ is an eigenvector of eigenvalue μ
+$$
+(λ+ε)𝒫_{λ}\vec v=A 𝒫 _{λ}\vec v = 𝒫_{λ}A\vec v=  𝒫_{λ}μ\vec v
+$$
+This implies 
+$$
+(λ-μ+ε)𝒫_{λ}\vec v=0
+$$
+If $λ≠μ$, this implies $𝒫_{λ}\vec v=0$, in particular, taking constant part, we have $P_{λ}\vec v=0$.
+Therefore $P_{μ_1}+…+P_{μ_k}+P_λ+…+P_{μ_m}=I$, multiply $\vec v$ we have $P_{μ}\vec v=\vec v.$
+\aaa
+\aaa{Some simple proof}
+We have already proved eigenvectors of normal matrices are perpendicular each other. Now let us write some shorter proof for some cases.
+
+\a\aa
+
+\exe Let $A=A^H$ be Hermitian matrices, Show that eigenvectors of different eigenvalues of $A$ are automatically Hermitian orthogonal.
+
+\sol Let $A\vec v=λ\vec v$ and $A\vec w=μ\vec w$ with  $λ≠μ$. Since $A=A^H$, $λ,μ$ are all real numbers.
+
+$$
+\vec v^H μ\vec w = \vec v^HA\vec w = \vec v^HA^H\vec w = \vec v^H λ\vec w.
+$$
+
+This implies that
+$$
+\vec v^H\vec w = 0.
+$$
+\a\aa
+
+\exe Let $A=-A^H$ be skew Hermitian matrices, Show that eigenvectors of different eigenvalues of $A$ are automatically Hermitian orthogonal.
+
+\sol Let $A\vec v=λ\vec v$ and $A\vec w=μ\vec w$ with  $λ≠μ$. Since $A=-A^H$, $¯λ=-λ,¯μ=-μ$ are all purely imaginary numbers.
+
+$$
+\vec v^H μ\vec w = \vec v^HA\vec w = -\vec v^HA^H\vec w = -\vec v^H ¯λ\vec w=\vec v^H λ\vec w.
+$$
+
+\a\aa
+
+\exe Let $A^{-1}=A^H$ be Unitary matrices, Show that eigenvectors of different eigenvalues of $A$ are automatically Hermitian orthogonal.
+
+\sol Let $A\vec v=λ\vec v$ and $A\vec w=μ\vec w$ with  $λ≠μ$. Since $A^{-1}=A^H$, $¯λ=\frac1{λ},¯μ=\frac1{μ}$.
+
+$$
+\vec v^H μ\vec w = \vec v^HA\vec w = \vec v^H(A^H)^{-1}\vec w = \vec v^H (¯{λ})^{-1}\vec w=\vec v^H λ\vec w.
+$$
+
+
+\a\aa
+
+\exe Let $AA^H=A^HA$ be Normal matrices, Show that eigenvectors of different eigenvalues of $A$ are automatically Hermitian orthogonal.
+
+\sol We first prove a lemma. That if $AA^H=A^HA$, then $Ax=0$ implies $A^Hx = 0$. Indeed,
+$$
+Ax = 0 ⟹   x^HA^HAx = 0 ⟹   x^HAA^Hx = 0 ⟹   A^H x=0
+$$
+Therefore $Ax=λx ⟹  A^Hx = ¯{λ}x ⟹   x^HA = λx^H$.
+
+
+$$
+\vec v^H μ\vec w = \vec v^HA\vec w = \vec v^H λ\vec w.
+$$
+
+
+\a\aa
+
+\exe Let $A=A^T$ be real, positive definite matrix. Then all eigenvalues of $A$ are positive
+
+\sol If $Av = λv$, then $0<v^TAv = λ\underbrace{v^Tv}_{>0}$ therefore $λ>0$
+
+\a{Exponential Functions}
+$$
+e^X=\lim_{n ⟶  ∞}\left(1+\frac Xn\right)^n
+$$
+
+\[cor]{For any $X_1,X_2,…,X_k$
+$$
+\lim_{n ⟶   ∞  }\left(1+\frac{X_1}n+\frac{X_2}{n^2}+…+\frac{X_k}{n^k}\right)^n = e^{X_1}
+$$
+In other words, all $X_2,…,X_k$ is ignorable.
+}
+
+\a\aa
+
+\exe Show that if $A$ is real matrix, $A=A^T$ and all eigenvalues of $A$ are positive, then $A$ is positive definite.
+
+\a\aa
+\exe If $AB=BA$, then $e^Ae^B=e^{A+B}$
+
+$$
+e^Ae^B = \lim_{n ⟶  ∞}(I+A/n)^n(I+B/n)^n = \lim_{n ⟶  ∞}((I+A/n)(I+B/n))^n 
+$$
+$$= \lim_{n ⟶  ∞}(I+(A+B)/n+AB/n^2)^n=e^{A+B}
+$$
+
+\a\aa
+\exe If $A=-A^H$, show that $e^A$ is a unitary matrix
+
+$$
+e^A(e^{A})^H=e^Ae^{A^H}=e^{A+A^H}=e^0=I
+$$
+\a\aa
+\exe If $A=A^H$, show that $e^A$ is a positive definite matrix.
+
+Since $A=A^H$, all eigenvalues are real numbers. We have $(e^A)^H=e^{A^H}=e^A$. Also $e^A$ is a real matrix. Furthermore, the eigenvalue of $e^A$ is $e^λ > 0 $. So $e^A$ is a real symmetric matrix with all positive eigenvalues, it is positive definite
+\a\aa
+\exe Show that any real positive definite matrix $A$ can be written as $e^X$ for a unique matrix $X$. We call this $X$ as $X=\ln A$
+
+\a\aa
+\exe Show that if $A$ $B$ are two positive definite matrix with $AB=BA$, then $AB$ is also a positive definite matrix.
+
+$$
+AB = e^{\ln A}e^{\ln B}=e^{\ln A+\ln B}
+$$
+so $AB$ is a positive definite matrix.
+\a\aa
+\exe If $A$ is a normal matrix. Show that $e^A$ admits a decomposition $e^A=PU$ where $P$ is a positive definite matrix, $U$ is a unitary matrix commute with $P$.
+\aaa
+\aaa{Eigenvalue and normal matrices}
+
+Show that if $A$ is skew-Hermitian, then $e^A$ is unitary
+\aaa

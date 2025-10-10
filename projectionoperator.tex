@@ -1,0 +1,170 @@
+
+\aaa{Projection operators}
+
+Projection operators are the most simple and intuitive, yet also the most important linear transformations. 
+\[defi]{For a vector space $V$ over $F$, a projection operator $T : V ⟶  V$(or an idempotent) is an operator such that
+$$
+T^2 = T.
+$$
+}
+
+\a{Geometric explaination of projection operator}
+
+
+We will firstly introduce the idea of the projection operator by \x{sun light model} before explaining this definition.
+\[exa]{\label{xiaomi}A vector standing straight at the origin (like a tree). The sunlight shines on it through some direction. The projection $T$ maps any vector $\vec v$ to its shadow $\vec w:=T\vec v$ on the floor.
+
+\[tikzpicture]{[scale=0.5]
+\draw[ultra thick](-7,0)--(7,0);
+\draw[ultra thick,->,blue](0,0)--(0,3) node[right]{$\vec v$};
+\draw[opacity=0.08,fill=cyan] (0,0)--(0,3)--(-3,0);
+\draw[ultra thick,->,cyan](0,0.05)--(-3,0.05) node[below]{$\vec w:=T\vec v$};
+\foreach\x in {-3,...,8}{
+	\draw [red,->](\x,4)--(-4+\x,0.1);
+}
+\draw[fill=red] (0,0) circle[radius=0.1] node[below]{$O$};
+}
+
+The sunlight direction \x{needs not} to be perpendicular to the floor.
+} 
+
+
+\a\aa
+\[rem]{In the definition, we have required $T^2=T$. Algebraically, this means that $T^2\vec v=T\vec v$ for any vector $\vec v$. Geometrically, it means that the shadow of a shadow is the shadow itself. Here is the explaination: Since $\vec w:=T\vec v$ represents the shadow of $\vec v$, the $\vec w$ lies on the floor. The shadow of a vector on the floor is itself. Therefore $T\vec w=\vec w$.}
+
+\a{Why a projection operator?}
+
+Intuitively, a projection needs to specify the floor and the sunlight. But we define them only by $T^2=T$.  Therefore, we need to answer the following questions:
+\[enumerate]{
+\item If $T^2=T$, how do we define the floor?
+\item If $T^2=T$, how do we define the direction of sunlight?
+\item After specifying the floor and the direction of sunlight, we have enough information to draw the projection geometrically. But why $T\vec v$ is the shadow of $\vec v$?
+}
+
+\a\aa
+To answer this question, we need an example of an actural projection.
+\[exa]{Let's assume $T$ is an actural projection. If a vector $\vec v$ is pointing to the sun, what does its shadow looks like? What is $\vec w=T\vec v$ in this case?
+
+\[tikzpicture]{[scale=0.5]
+\draw[ultra thick](-7,0)--(7,0);
+\draw[ultra thick,->,blue](0,0)--(3,3) node[right]{$\vec v$};
+%\draw[opacity=0.08,fill=cyan] (0,0)--(0,3)--(-3,0);
+%\draw[ultra thick,->,cyan](0,0.05)--(-3,0.05) node[below]{$\vec w:=T\vec v$};
+\foreach\x in {-3,...,8}{
+	\draw [red,->](\x,4)--(-4+\x,0.1);
+}
+\draw[fill=red] (0,0) circle[radius=0.1] node[below]{$O$};
+}
+
+Should $\vec v$ be an element in the following set?
+$$
+\{\vec v\in V:T\vec v=\vec 0\}.
+$$
+Why this set describes the direction of the sunlight?
+}
+
+\a\aa
+\[exa]{Let's assume $T$ is an actural projection. If a vector $\vec w$ is lying on the ground, what does its shadow looks like? What is $T\vec w$ in this case? Is $\vec w$ the same as $T\vec w$?
+
+\[tikzpicture]{[scale=0.5]
+\draw[ultra thick](-7,0)--(7,0);
+\draw[ultra thick,->,blue](0,.1)--(3,.1) node[above]{$\vec w$};
+%\draw[opacity=0.08,fill=cyan] (0,0)--(0,3)--(-3,0);
+%\draw[ultra thick,->,cyan](0,0.05)--(-3,0.05) node[below]{$\vec w:=T\vec v$};
+\foreach\x in {-3,...,8}{
+	\draw [red,->](\x,4)--(-4+\x,0.1);
+}
+\draw[fill=red] (0,0) circle[radius=0.1] node[below]{$O$};
+}
+
+Should $\vec w$ be an element of the following set?
+$$
+\{\vec w:\vec w=T\vec v\text{ for some }\vec v\in V\}.
+$$
+}
+\a\aa
+\[exa]{
+Furthermore, when $T$ is a projection, is the following statement equivalent?
+$$
+\vec w=T\vec v\text{ for some }\vec v\in V \iff T\vec w= \vec w.
+$$
+Which of the following set describes the floor? or both of them do?
+$$
+\{\vec w:\vec w=T\vec v\text{ for some }\vec v\in V\},\qquad \{\vec w\in V:\vec w=T\vec w\}.
+$$
+}
+
+\a\aa
+We define kernel and image for linear operators, this is just an analogue of null space and column space (if you think $T$ as a matrix)
+\[defi]{For any linear operator $T : V ⟶  V$, the kernel and image of $T$ are defined by
+$$
+\ker(T):=\{\vec v:T\vec v=\vec 0\},
+$$
+$$\im(T):=\{\vec w:\vec w=T\vec v\text{ for some }\vec v\in V\}.
+$$}
+\a\aa
+Come back to our abstract definition $T^2=T$. We may draw a line from the vector head along $\ker(T)$ until it hit $\im(T)$ to get its shadow, but why this is $T\vec v$? 
+
+\[exa]{Let $T$ be an operator with $T^2=T$. By drawing $\ker(T)$ and $\im(T)$, the sunlight and the ground have been determined. Along the direction of the sunlight, one finds the shadow $\vec w$ of $\vec v$. Why $\vec w=T\vec v$?
+
+\[zzz]{
+\draw[ultra thick](-7,0)--(7,0) node[right]{$\mathrm{Im} T$};
+\draw[ultra thick,red](-4,-4)--(4,4) node[right]{$\ker T$};
+\draw[ultra thick,->,blue](0,0)--(0,3) node[right]{$\vec v$};
+\draw[ultra thick,->,cyan](0,0.05)--(-3,0.05) node[below]{$\vec w$};
+\foreach\x in {-3,...,8}{
+	\draw [red,->](\x,4)--(-4+\x,0.1);
+}
+\draw[fill=red] (0,0) circle[radius=0.1] node[below]{$O$};
+}
+}
+\a\aa
+There are many operators with the same $\ker(T)$  and $\im(T)$ with $T$. 
+
+\[zzz]{
+\draw[ultra thick](-7,0)--(7,0) node[right]{$\mathrm{Im} T$};
+\draw[ultra thick,red](-4,-4)--(4,4) node[right]{$\ker T$};
+\draw[ultra thick,->,blue](0,0)--(0,3) node[right]{$\vec v$};
+\draw[ultra thick,->,cyan](0,0.05)--(-3,0.05) node[below]{$\vec w$};
+\foreach\x in {-3,...,8}{
+	\draw [red,->](\x,4)--(-4+\x,0.1);
+}
+}
+
+$T\vec v$ has to be a vector in $\im(T)$, but there are many choices. But only one choice makes
+$$
+T\vec v - \vec v ∈  \ker(T).
+$$
+
+Note that
+$$
+T^2 = T ⟺   T(T-I)=0 ⟺  T\vec v-\vec v ∈ \ker(T) “ for all “\vec v ∈ V.
+$$
+\a\aa
+
+\[summ]{As long as an operator $T : V ⟶  V$ satisfies $T^2=T$, it is a projection such that
+\[itemize]{
+\item For any vector $\vec v\in V$, $T\vec v$ represents the shadow and $\vec v-T\vec v=(I-T)\vec v$ is a vector pointing to the direction of the sun.
+\item $\{\vec v: T\vec v=\vec 0\}$ describes the direction of the sunlight, it consists of vectors $\vec v$ with $T\vec v=\vec 0$.
+\item $\{\vec v: T\vec v=\vec v\}$ describes the floor, it consists of all possible shadows $\vec w=T\vec v$. In particular, for any $\vec w\in\im(T)$, we have $T\vec w=\vec w$.
+}
+}
+
+\a\aa
+Projection operator also has other equivalent definition.
+
+\[prop]{Suppose $T : V ⟶  V$ is a linear operator, the following are equivalent
+\[itemize]{
+\item  $T^2=T$;
+\item For any $\vec v ∈  “Im“(T)$, we have $T\vec v =\vec v$;
+\item For any $\vec v ∈  V$, we have $T\vec v - \vec v ∈ \ker(T)$.
+}
+}
+
+Proof: Exercise.
+
+
+
+
+
+\aaa

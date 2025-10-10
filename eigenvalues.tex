@@ -1,0 +1,92 @@
+
+\aaa{Trace and determinant in terms of eigenvalues}
+\[defi]{An \x{eigenvalue} $λ$ of matrix $A$ is a value with 
+$$
+“det“(λI-A)=0.
+$$
+ Suppose one can factorize characteristic polynomial into
+$$
+“det“(tI-A)=(t-λ_1)(t-λ_2)\cdots(t-λ_n).
+$$
+Then we call the list $λ_1,λ_2,...,λ_n$ the list of its eigenvalues. (Note, the element can be repeated in the list.)
+}
+\a\aa
+\exe Suppose matrix $A$ has 
+$$
+“det“(tI-A) = (t-1)^3(t-2)^2(t-3)^5
+$$
+what is a list of its eigenvalues?
+
+\sol
+$$
+1,1,1,2,2,3,3,3,3,3.
+$$
+\a\aa
+\[prop]{If $“det“(tI-A)=“det“(tI-B)$, then the sum of \x{principal minors} of size $k$ in $A$ and in $B$ are the same, because they are all given by the coefficient of $(-1)^{n-k}t^k$.}
+Do you remember the definition of principal minor?? they are submatrices with diagonal on diagonal of its father...
+\def\q{{\h*}}
+$$
+\m\q\q*,\q\q*,***.
+␣
+\m***,*\q\q,*\q\q.
+␣
+\m\q*\q,***,\q*\q.
+$$
+
+\a\aa
+Therefore suppose $A$ is a matrix with
+$$
+“det“(tI-A) = (t-1)^2(t-2)^3
+$$
+Then we consider a diagonal matrix with the same chacracteristic polynomial with it, which can be written
+$$
+Λ = \m1{}{}{}{},{}1{}{}{},{}{}2{}{},{}{}{}2{},{}{}{}{}2.
+$$
+\a\aa
+$$
+\det(tI-Λ)
+$$
+$$=\m{t-1}{}{}{}{},{}{t-1}{}{}{},{}{}{t-2}{}{},{}{}{}{t-2}{},{}{}{}{}{t-2}.
+=(t-1)(t-1)(t-2)(t-2)(t-2)
+$$
+\x{Note, $Λ$ has nothing to do with $A$ except sharing the same characteristic polynomial with $A$.}
+Then we have 
+$$“sum of principal minor of size 1“=“tr“(A)=“tr“(Λ)=“sum of eigenvalues of “A$$
+$$“sum of principal minor of size n“=“det“(A)=“det“(Λ)=“product of eigenvalues “A$$
+\a\aa
+\[prop]{ n × n matrix has n eigenvalues. The trace of a matrix, equals to the sum of all its eigenvalues, the product of a matrix, equals to the product of all its eigenvalues.}
+
+\a\aa
+\exe Given one eigenvalue of the following matrix, are you able to find the other eigenvalue? and the determinant?
+$$ \m11,{-2}4. ␣ “Eigenvalue : 2, \_\_“ , ␣ “det“:$$
+$$ \m51,{1}5. ␣ “Eigenvalue : 4, \_\_“ ␣ “det“: $$
+$$ \m50,{1}5. ␣ “Eigenvalue : 5, \_\_“ ␣ “det“: $$
+%{The Vieta's formula}
+%Let $f(x)$ be a polynomial
+%$$
+%f(t) = ∏_{i=0}^n(t-x_i)
+%$$
+%Then 
+%$$
+%f(t) = t^n - a_1t^{n-1}+a_2t^{n-2}-\cdots+(-1)^n a_n
+%$$
+%Here
+%$a_i$ is the sum of all possible product of i many elements from the tuple $(x_1,...,x_i)$
+%\a\aa
+%For example, 
+%$$
+%(t-λ_1)(t-λ_2)(t-λ_3) = t^3 - (λ_1+λ_2+λ_3)t^2 + (λ_1λ_2+λ_2λ_3+λ_3λ_1)t - (λ_1λ_2λ_3).
+%$$
+
+
+
+%\a\aa
+%\[prop]{ For any matrix $A$, it has $n$ many eigenvalues (multiplicity counted), and the sum of eigenvalues is the trace of $A$, the product of those eigenvalues is the determinant of $A$. 
+%}
+\aaa
+
+%% trying to prove spectural theorem, how?
+
+%% f(t)-f(A)/t-A  is a polynomial of t, det(f(t)-f(A)) is divisible by t-A. 
+
+%% k-f(t) / 

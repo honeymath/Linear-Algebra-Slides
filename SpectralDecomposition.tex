@@ -1,0 +1,396 @@
+
+\aaa{Spectural decomposition}
+We summarize the method. Suppose $A$ is a matrix with 
+$$(A-λ_1I)(A-λ_2I)\cdots(A-λ_mI)=0,$$
+to find $g(A)$ for any polynomial $A$, we know it only depends on the value of $g(λ_1),...,g(λ_m)$. 
+
+%\vfill
+%Use lagurange interpolation, we got $f_{λ_1},...,f_{λ_m}$. We construct another polynomial $h(t)$ such that $h(λ_i)=g(λ_i)$
+%$$
+%g(t) = Q(t)(t-λ_1)\cdots(t-λ_m) + \underbrace{g(λ_1)f_{λ_1}(t)+\cdots+g(λ_m)f_{λ_m}(t)}_{h(t)}
+%$$
+%\a\aa
+
+%{
+%\bf Spectural decomposition for matrices satisfying polynomial of simple roots:}
+%
+%\x{Since $A$ is a matrix such that $(A-λ_1I)\cdots(A-λ_mI)=0$,} then pluging $A$ would simply cancel the quotient term away.
+%
+%$$
+%g(A) = Q(A) \cancel{(A-λ_1I)\cdots(A-λ_nI)} + g(λ_1)f_{λ_1}(A)+\cdots+g(λ_m)f_{λ_m}(A)
+%$$
+%we simply left with
+%$$
+%g(A) = g(λ_1)f_{λ_1}(A)+\cdots+g(λ_m)f_{λ_m}(A)
+%$$
+%This is called \x{Spectural decomposition}. Set $g(x)=x^k$, we write it into a more familar form
+%$$A^k
+%=λ_1^kf_{λ_1}(A) + \cdots+λ_n^kf_{λ_k}(A)
+%$$
+%
+%
+%\a\aa
+%\[thm]{If $A$ satisfies a polynomial with simple roots in the sense that
+%$$
+%(A-λ_1I)\cdots(A-λ_mI)=0
+%$$
+%for some \x{distinct} $λ_1,...,λ_m$. Letting $f_{λ_1}(t),...,f_{λ_m}(t)$ be any interpolation polynomials in the sense that $f_{λ_i}(λ_i)=1$ and $f_{λ_j}(λ_i)=0$ for $λ_i≠λ_j$, then we have
+%$$
+%g(A)
+%=g(λ_1)f_{λ_1}(A) + \cdots+g(λ_m)f_{λ_m}(A)
+%$$}
+%\a\aa
+%The thereom implies an important observation
+%$$
+%\overbrace{(a_1f_{λ_1}(A)+a_2f_{λ_2}(A)+...+a_m f_{λ_m}(A))}^{g(A)}
+%\overbrace{(b_1f_{λ_1}(A)+b_2f_{λ_2}(A)+...+b_m f_{λ_m}(A))}^{h(A)}
+%$$
+%$$
+%=\underbrace{
+%(a_1b_1f_{λ_1}(A)+a_2b_2f_{λ_2}(A)+...+a_mb_m f_{λ_m}(A))}_{j(A)}
+%$$
+%
+%Idea of proof:
+%
+%\t{g(x_1)}{g(x_2)}{$\cdots$}{g(x_m)},
+%{a_1}{a_2}{$\cdots$}{a_m}.
+%
+%\t{h(x_1)}{h(x_2)}{$\cdots$}{h(x_m)},
+%{b_1}{b_2}{$\cdots$}{b_m}.
+%
+%Let $f(x) = g(x)h(x)$
+%
+%\t{j(x_1)}{j(x_2)}{$\cdots$}{j(x_m)},
+%{a_1b_1}{a_2b_2}{$\cdots$}{a_mb_m}.
+%\a\aa
+%In fact, spectural decomposition is true in more general sense
+
+\[thm]{ Let $A$ be matrix with $
+(A-λ_1I)\cdots(A-λ_mI)=0
+$ then for any polynomial $g(x)$ and polynomial $h(x)$ such that $h(λ_i)≠0$
+$$
+\frac{g(A)}{h(A)}
+=\frac{g(λ_1)}{h(λ_1)}f_{λ_1}(A) + \cdots+\frac{g(λ_m)}{h(λ_m)}f_{λ_m}(A)
+$$
+}
+\a\aa
+We wanna prove
+$$
+g(A) = h(A)\left(\frac{g(λ_1)}{h(λ_1)}f_{λ_1}(A) + \cdots+\frac{g(λ_m)}{h(λ_m)}f_{λ_m}(A)\right)
+$$
+For this purpose, we compare the two polynomial
+$$
+g(t) “ v.s. “h(t)\left(\frac{g(λ_1)}{h(λ_1)}f_{λ_1}(t) + \cdots+\frac{g(λ_m)}{h(λ_m)}f_{λ_m}(t)\right)
+$$
+Note that this two polynomial have the same value when $t=λ_1, t=λ_2$ until $t=λ_m$. Therefore the theorem is true.
+
+\a{Some more details for spectural decomposition}
+
+\[prop]{
+Suppose $(A-λ_1I)(A-λ_2I)\cdots(A-λ_mI)=0$. Let $f_{λ_1}, f_{λ_2}, \cdots, f_{λ_m}$ be corresponding interpolation polynomials as before, denote by 
+$$
+P_{λ_i}:=f_{λ_i}(A),
+$$
+it is a projection matrix.
+}
+
+{\bf Proof:} Remember the polynomial $f_{λ_i}$ is defined by
+$$
+f_{λ_i}(λ_j) = \[cases]{
+1 & i=j\\
+0 & i≠j
+}
+$$
+No matter what value it takes, they all satisfies $f_{λ_i}(λ_j)^2=f_{λ_i}(λ_j)$ for any $j$. Therefore
+$$
+f_{λ_i}(A)^2 = f_{λ_i}(A) ⟹  P_{λ_i}^2 = P_{λ_i}
+$$
+is a projection matrix.
+%Note that our previous formula can be written as
+%$$
+%(a_1P_{λ_1}+a_2P_{λ_2}+\cdots+a_mP_{λ_m})
+%(b_1P_{λ_1}+b_2P_{λ_2}+\cdots+b_mP_{λ_m})
+%=
+%$$
+%$$
+%(a_1b_1P_{λ_1}+a_2b_2P_{λ_2}+\cdots+a_mb_mP_{λ_m})
+%$$
+%%Therefore $P_{λ_i}$ corresponds to 
+%Consider the case $b_i=a_i=1$ and $b_j=a_j=0$ if $i≠j$, then $a_ib_i=1$ and $a_jb_j=0$ if $i≠j$. So $P_{λ_i}^2=P_{λ_i}$.
+
+
+\a\aa
+\[prop]{We have 
+$$
+AP_{λ_i} = P_{λ_i}A = λ_i P_{λ_i}
+$$
+and
+$$
+A = λ_1P_{λ_1}+\cdots+λ_mP_{λ_m}
+$$
+$$
+I = P_{λ_1}+\cdots+P_{λ_m}
+$$
+}
+Note that either $AP_{λ_i}$ or $P_{λ_i}A$ is obtained by plug in $t=A$ to the polynomial $tf_{λ_i}(t) = f_{λ_i}(t)t$. And the matrix $λ_iP_{λ_i}$ is obtained by plug in $t=A$ into polynomial $λ_if_{λ_i}(t)$.
+
+
+\t{}{$t=λ_1$}{$\cdots$}{$t=λ_{i-1}$}{$t=λ_i$}{$t=λ_{i+1}$}{$\cdots$}{$t=λ_n$},
+{$λ_if_{λ_i}(t)$}0{$\cdots$}0{$λ_i$}0{$\cdots$}0,
+{$f_{λ_i}(t)t$}0{$\cdots$}0{$λ_i$}0{$\cdots$}0.
+\a\aa
+Therefore, the two polynomials $λ_if_{λ_i}(t)$ and $f_{λ_i}(t)t$ have the same value for all $λ_1,λ_2,...,λ_m$. Then we have $AP_{λ_i}=λ_iP_{λ_i}$ and $P_{λ_i}A=λ_iP_{λ_i}$
+\vfill
+To prove $A = λ_1P_{λ_1}+\cdots+λ_mP_{λ_m}$ and $I=P_{λ_1}+\cdots+P_{λ_m}$, we apply $h(t)=1$, $g(t)=t$ and $g(t)=1$ to the spectural decomposition 
+$$
+\frac{g(A)}{h(A)}
+=\frac{g(λ_1)}{h(λ_1)}P_{λ_1} + \cdots+\frac{g(λ_m)}{h(λ_m)}P_{λ_m}
+$$
+
+
+
+%To prove $A = λ_1P_{λ_1}+\cdots+λ_mP_{λ_m}$, we notice that $A=f(A)$ for $f(t)=t$. Therefore, we are comparing the value of two polynomials 
+%$$
+%f(t) “ v.s. “
+%$$
+\a\aa
+Another proof that $P_{λ_i}$ saties fies $AP=λP$ is easy. Note that the construction of Lagurange interpolation polynomial
+$$ f_{λ_i}(t)=\frac{(t-λ_1)\cdots(t-λ_{i-1})␣ (t-λ_{i+1})\cdots(t-λ_m)}{“Constant“} $$
+\vfill
+$$ P_{λ_i}=\frac{(A-λ_1)\cdots(A-λ_{i-1})␣ (A-λ_{i+1})\cdots(A-λ_m)}{“Constant“} $$
+\vfill
+Thus
+$$(A-λ_i)P_{λ_i} = \frac{(A-λ_1)\cdots(A-λ_{i-1}){\color{red}(A-λ_i)} (A-λ_{i+1})\cdots(A-λ_m)}{“Constant“}=0$$
+\a\aa
+The matrix $P_{λ_i}$ has something to do with
+
+\[defi]{A \x{non-zero} column vector $\vec v$ is called an eigenvector of eigenvalue λ if $A\vec v=λ\vec v$ for some saclar λ.  }
+
+\[defi]{A \x{non-zero} row vector $\vec w^T$ is called a left eigenvector of eigenvalue λ if $\vec w^TA=λ\vec w^T$ for some saclar λ.  }
+\a\aa
+\[cor]{All non-zero columns of $P_{λ_i}$ is a eigenvector of eigenvalue $λ_i$ of $A$. All non-zero rows of $P_{λ_i}$ is a left-eigenvector of eigenvalue $λ_i$ of $A$.
+}
+
+
+\a\aa
+If we write 
+$$ P_{λ_i} = \m 
+||\cdots|,
+{\vec v_1} {\vec v_2} \cdots {\vec v_n},
+||\cdots|.
+  $$
+Then
+$$ AP_{λ_i} = \m 
+||\cdots|,
+{A\vec v_1} {A\vec v_2} \cdots {A\vec v_n},
+||\cdots|.
+  $$
+and
+$$ λ_iP_{λ_i} = \m
+||\cdots|,
+ {λ_i\vec v_1} {λ_i\vec v_2} \cdots {λ_i\vec v_n},
+||\cdots|.
+$$
+then $AP_{λ_i} = λ_iP_{λ_i}$ implies $A\vec v_j = λ_i\vec v_j$.
+
+Therefore all columns are eigenvectors. 
+
+\a\aa
+For rows, we write
+$$
+P_{λ_i} = \m -{\vec w_1^T}-, -{\vec w_2}-, \vdots\vdots\vdots, -{\vec w_n}-.
+$$
+Note that
+$$
+P_{λ_i}A = \m -{\vec w_1^TA}-, -{\vec w_2A}-, \vdots\vdots\vdots, -{\vec w_nA}-.
+$$
+and that
+
+$$
+P_{λ_i}λ_i = \m -{λ_i\vec w_1^T}-, -{λ_i\vec w_2}-, \vdots\vdots\vdots, -{λ_i\vec w_n}-.
+$$
+\a\aa
+\exe Suppose $λ_1,λ_2,\cdots,λ_m$ are distinct numbers. $A$ is a matrix with
+$$ A = λ_1P_1 + λ_2P_2 + \cdots+ λ_mP_m $$
+$$ I = P_1 + P_2 + \cdots+ P_m $$
+How many different projection matrices can be written as polynomial $g(A)$ of $A$?
+
+\t{}{$t=λ_1$}{$t=λ_2$}{$\cdots$}{$t=λ_m$},
+{$g(t)$}{}{}{}{}.
+
+
+\a{Some application of spectural decomposition}
+
+\[thm]{If $\det(tI-A)$ is of simple roots, then $A$ satisfies a polynomial with simple roots.
+}
+This is because any matrix satiesfies its characteristic polynomial.
+
+\a\aa
+However, even if $\det(tI-A)$ is not of simple roots, it is still possible that $A$ satisfies a polynomial of simple roots. For example, for
+$$
+A = \m
+1{}{}{}{},
+{}2{}{}{},
+{}{}2{}{},
+{}{}{}3{},
+{}{}{}{}3.
+$$
+it has characteristic polynomial $(x-1)(x-2)^2(x-3)^2$. However, it satisfies the polynomial
+$$
+(A-I)(A-2I)(A-3I)=0
+$$
+\a{Criterion for matrices satisfying polynomial of simple roots}
+
+For any matrix $A$, we have its characteristic polynomial $f(t)=“det“(tI-A)$. If $f(t)$ is of simple roots, then $f(A)=0$ implies $A$ satisfying polynomial of simple roots as well.
+\vfill
+However, if $f(t)$ is not of simple roots, how do we know if or not $A$ satisfying polynomial of simple roots?
+
+\a\aa
+\[thm]{Suppose 
+$$
+“det“(tI-A) = (t-λ_1)^{n_1}\cdots(t-λ_k)^{n_k},
+$$
+then $A$ satisfies a polynomial of simple roots if and only if 
+$$
+(A-λ_1I)(A-λ_2I)\cdots(A-λ_kI)=0
+$$
+}
+In other words, we only need to check one polynomial $(t-λ_1)\cdots(t-λ_k)$, instead of checking for all polynomials of simple roots.
+\a\aa
+{\bf Proof:} Let's suppose $A$ satisfies a polynomial of simple roots.
+$$
+(A-x_1I)\cdots(A-x_mI) = 0.
+$$
+For any $x_i ∉ \{λ_1,..., λ_k\}$, we have $x_i-λ_j≠0$ and therefore $“det“(x_iI - A) =  (x_i-λ_1)^{n_1}\cdots(x_i-λ_k)^{n_k} ≠0$, this means $x_iI-A$ is invertible, therefore
+$$
+(A-x_1I)\cdotsˆ{(A-x_iI)}\cdots(A-x_mI) = 0.
+$$
+where 
+$$ˆ{(A-x_iI)}
+$$ means deleting the factor. Since all factor with root outside $\{λ_1,..., λ_k\}$ can be deleted, it only left with factors with root in $\{λ_1,..., λ_k\}$.
+\a\aa
+\exe Computer the characteristic polynomial of 
+$$
+A=\m 211,121,112.
+$$
+Will this matrix satisfies a polynomial of simple roots? why?
+\a\aa
+The characteristic polynoimal is 
+$$
+(t-4)(t-1)^2
+$$
+Therefore, to see if it satisfies a polynomial of simple roots, we only need to check if $(A-4I)(A-I)=0$. Indeed.
+$$
+\underbrace{\m 111,111,111.}_{A-I}\underbrace{\m{-2}11,1{-2}1,11{-2}.}_{A-4I} = \m000,000,000.
+$$
+
+\a\aa
+We see some applications of the spectural decomposition.
+\a\aa
+\exe Find a formula for 
+$$
+A^n:=\m101,010,101.^n
+$$ 
+\sol Firstly, we calculate characteristic polynomial of $A$
+$$
+\det\m{t-1}{}{-1},{}{t-1}{},{-1}{}{t-1}.=t(t-1)(t-2)
+$$
+By Calay -- Hamilton theorem, we have
+$$
+A(A-I)(A-2I)=0
+$$
+so it is diagonalizable! Based on the information, we need interpolation polynomials at point $0,1,2$. Now construct some.
+\a\aa
+\t{}{$\frac{(t-1)(t-2)}2$}{$-t(t-2)$}{$\frac{t(t-1)}2$},
+{t=0}100,
+{t=1}010,
+{t=2}001.
+
+Therefore, by Spectural Decomposition, we have
+$$
+A^n = 0^n \cdot \frac{(A-I)(A-2I)}2 - 1^n\cdot A(A-2I) + 2^n\cdot \frac{A(A-I)}2.
+$$
+For $n≥1$, this can be calculated as 
+$$
+-A(A-2I) +  2^{n-1}A(A-I).
+$$
+\a\aa
+Let us finish this exercise
+$$ A(A-I)= \m101,010,101.\m001,000,100.=\m101,000,101.  $$
+$$ A(A-2I)= \m101,010,101.\m{-1}01,0{-1}0,10{-1}.=\m000,0{-1}0,000. $$
+So \x{for $n≥1$}, we have
+$$
+A^n=\m
+{2^{n-1}}0{2^{n-1}},
+010,
+{2^{n-1}}0{2^{n-1}}.
+$$
+\a\aa
+\exe Suppose $a_0=0$, $a_1=1$ and 
+$$
+a_{n+1}=3a_n-2a_{n-1}
+$$
+Find a formula for $a_n$.
+
+\sol We may complete this equation as
+$$
+\[cases]{
+a_{n+1}&=3a_n - 2a_{n-1}\\
+a_n &= a_n
+}
+$$
+So we can write it as
+$$
+\m{a_{n+1}},{a_n}. =\m3{-2},10.\m{a_{n}},{a_{n-1}}.
+$$
+Since this formula is true for all $n$, we have an induction formula
+$$
+\m{a_{n+1}},{a_n}. = \m3{-2},10.^n\m{a_1},{a_0}. = \m3{-2},10.^n\m1,0.
+$$
+\a\aa
+To calculate 
+$$
+\m3{-2},10.^n,
+$$
+we need an annihilating polynomial. For this , 
+$$
+\det \m{t-3}2,{-1}t.=t(t-3)+2=t^2-3t+2=(t-1)(t-2).
+$$
+This motivate us to write $t^n$ via interpolation at $1$ and $2$.
+\t{}{-(t-2)}{t-1},
+{t=1}10,
+{t=2}01.
+$$
+t^n = Q(t)(t-1)(t-2) - 1^n(t-2)+2^n(t-1)
+$$
+\a\aa
+Plug in $t=A$, we have
+$$
+A^n = -(A-2I) + 2^n(A-I)
+$$
+$$
+=\m{-1}2,{-1}2. + 2^n\m2{-2},1{-1}.
+$$
+Therefore
+$$
+\m{a_{n+1}},{a_n}.=A^n\m1,0. = \m{-1},{-1}. + 2^n\m2,1. = \m{2^{n+1}-1},{2^n-1}.
+$$
+This implies that $a_n=2^n-1$.
+\a\aa
+\exe Rolling a coin, if face up, proceed 3 meters, if not, proceed 2 meters. Calculate the possibility that the man has stopped at n meters. 
+
+\sol To n meters, the man has to reach n-3 meterand proceed 3 meter, or reach n-2 meter and proceed 2 meters. Let $p_n$ be such probability. We have
+$$
+\[cases]{
+p_{n}=\frac12 p_{n-3}+\frac12 p_{n-2}.
+}
+$$
+$$
+\m0{.5}{.5},
+100,
+010.
+$$
+characteristic polynomial $t^3-.5t-.5=(t-1)(t^2+0.5t+1)$
+\aaa
+
+

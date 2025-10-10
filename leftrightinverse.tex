@@ -1,0 +1,585 @@
+
+\aaa{computation of rank}
+\exe Compute the rank of the following matrix
+$$
+\m{-3}111,
+1{-3}11,
+11{-3}1,
+111{-3}.
+$$
+
+\aaa
+
+
+
+
+\aaa{Left null space}
+
+\begin{defi}
+We define the left null space of $A$ to be $Null(A^T)$
+\end{defi}
+
+\a\aa
+\begin{rem}
+Strictly speaking, the left null space for a $m × n$ matrix $A$ should be 
+$$
+\{x: xA = 0\}
+$$
+However, $x$ in the left null space is a $1 × m$ row vector, so not an element in $ℝ^m$ (since $ℝ^m$ are set for column vectors). So \x{for adapting elementary level learners}, the textbook just transposes the whole expression
+$$
+xA = 0 ⟺   A^Tx^T  = 0
+$$
+to define left null space as $Null(A^T)$. You might find it unnatural.
+\end{rem}
+
+\a\aa
+\begin{defi}
+We define the row space of $A$ to be $Col(A^T)$
+\end{defi}
+\a\aa
+\begin{rem}
+Strictly speaking, the row space for a $m × n$ matrix $A$ should be 
+$$
+\{y: xA = y\}
+$$
+However, $y$ in the row space is a $1 × n$ row vector, so not an element in $ℝ^n$ (since $ℝ^n$ are set for column vectors). So \x{for adapting elementary level learners}, the textbook just transposes the whole expression
+$$
+xA = y ⟺   A^Tx^T  = y^T
+$$
+to define row space as $Col(A^T)$. You might find it unnatural.
+\end{rem}
+\a\aa
+We address the importance of the four subspaces here
+$$
+Col(A^T), ␣ Null(A^T), ␣ Col(A), ␣ Null(A).
+$$
+But in the future, you will see
+
+\begin{prop}
+If $Col(B^T) = Null(A)$, then $Col(A^T)=Null(B)$.
+\end{prop}
+In other words, the \x{row space} and \x{null space} are \x{determined each other}. This means they have the same amount of information.
+
+\[rem]{We will prove this proposition afterwards.}
+\a\aa
+\exe Suppose the null space of a matrix $A$ is spanned by the following vectors
+$$
+\m 1,2,1., ␣ \m 1,0,0.
+$$
+Please determine the row space of $A$. 
+
+\textbf{Solution}: It is same of asking, if a row space of matrix $B$ is given by the vector 
+$$
+\m 1,2,1., ␣ \m 1,0,0.
+$$
+then determine the null space of $B$, which is just
+$$
+“Col“(A^T) = “Null“(B) = “Null“\m121,100. = “span“\left\{\m0,{-1},2.\right\}
+$$
+\a{Row space}
+Let me copy the same proposition again, but replace $A$ by $A^T$:
+\begin{prop}
+If $Col(B^T) = Null(A^T)$, then $Col(A)=Null(B)$.
+\end{prop}
+It says that the left null space of $A$ if determined by the column space of $A$.
+
+\a{Conclusion for four fundamental subspaces}
+
+Therefore we have the following relation for the four fundamental subspaces.
+
+\vfill
+
+Let $A$ be $ m × n$ matrix of rank $r$.
+
+$$
+\underbrace{“Col“(A)}_{\substack{
+“Column space“ ⊆ ℝ^m\\
+“dim “ = r
+}}
+\underset{“determine each other“}{\leftrightarrow}
+\underbrace{“Null“(A^T)}_{\substack{
+“Left Null space“ ⊆ ℝ^m\\
+“dim “ = m - r
+}}
+$$
+
+$$
+\underbrace{“Null“(A)}_{\substack{
+“Null space“ ⊆ ℝ^n\\
+“dim “ = n-r
+}}
+\underset{“determine each other“}{\leftrightarrow}
+\underbrace{“Col“(A^T)}_{\substack{
+“Row space“ ⊆ ℝ^n\\
+“dim “ = r
+}}
+$$
+Therefore, \x{$“Col“(A)$ and $“Null“(A)$ have included all informations} of four fundamental subspaces.
+\aaa
+
+
+
+\aaa{Column spaces}
+
+From this part, we require you to know the definition of one set contains in another:
+\vfill
+$W ⊆ V$ ⟺   ($x ∈ W ⟹  x ∈ V$)
+\vfill
+The definition of two sets are equal is given by
+\vfill
+$W = V$ ⟺  ($W ⊆ V$ and $V ⊆ W$).
+\a\aa
+Recall the definition of Null space and column space. 
+\begin{defi}
+Let $A$ be an $m × n$ matrix. So $A$ has $m$ rows and $n$ columns.
+\begin{itemize}
+\item $“Null“(A) = \{x ∈ ℝ^n| Ax = 0\} ⊆ ℝ^n$
+\item $“Col“(A) = \{y ∈ ℝ^m| y = Ax \} ⊆ ℝ^m$
+\end{itemize}
+\end{defi}
+
+\begin{prop}Suppose $A$ is $m × n$ matrix
+\begin{itemize}
+\item $“Null“(A)=\{\vec 0\}$ ⟺  Columns of $A$ \li
+\item $“Col“(A)=ℝ^m$ ⟺  Columns of $A$ \sws
+\end{itemize}
+\end{prop}
+\a\aa
+
+\begin{prop}
+Let $A$ be $m × n$ and $B$ be $n × q$ matrices, then both $“Col“(A)$ and $“Col“(AB)$ are subsets of $ℝ^m$. In particular,
+$$
+“Col“(AB) ⊆ 
+“Col“(A) 
+$$
+\end{prop}
+$$
+y ∈ “Col“(AB)  ⟹   y = ABx “ for some “x
+$$
+$$
+⟹   y = At “ for “ t  = Bx 
+$$
+$$
+ ⟹   y ∈ “Col“(A).
+$$
+
+\a\aa
+One may understand $
+“Col“(AB) ⊆ 
+“Col“(A) 
+$
+by follwing:
+\vfill
+\[rem]{
+Columns of $AB$ are obtained from linear combination of columns of the left factor $A$. So $
+“Col“(AB) ⊆ 
+“Col“(A) 
+$
+}
+
+\exe Can you give some example that $“Col“(AB)≠“Col“(A)$?
+$$
+\underbrace{\m 100,010,001.}_A\underbrace{\m1,0,0. }_B = \underbrace{\m1,0,0. }_{AB}
+$$
+
+\x{Conclusion}: Multiplying a \x{\color{blue}right-factor}, column space \x{not getting bigger}.
+
+
+\a\aa
+
+\begin{prop}
+Let $A$ be $m × n$ and $B$ be $n × q$ matrices, then both $“Null“(B)$ and $“Null“(AB)$ are subsets of $ℝ^n$. In particular,
+$$
+  “Null“(AB)  ⊇ 
+“Null“(B)
+$$
+\end{prop}
+$$
+x ∈ “Null“(B)  ⟹   Bx=0 ⟹  ABx = 0 ⟹  x ∈ “Null“(AB)
+$$
+
+\a\aa
+The null space are linear relations. In the following example
+$$
+B = \m123,123,123.
+$$
+The second column is double of the first, so 
+$$
+\m {-1},2,0. ∈ “Null“(B).
+$$
+Note that doing whatever on rows, would not change the relation. For example, we double the second row and delete the last row
+$$
+\underbrace{\m 100,020.}_A\underbrace{ \m123,123,123.}_B =\underbrace{ \m123,246.}_{AB}
+$$
+Therefore $“Null“(B) ⊆ “Null“(AB)$
+\a\aa
+
+
+\x{Conclusion}: Multiplying a \x{\color{red}left-factor}, null space \x{not getting smaller}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\a{Factors that not changing column space}
+Multiplying factors might makes the null space bigger or column space smaller. What kind of factor would \x{not} change them?
+\a\aa
+\x{Warm up Question}: What kind of matrix have \x{\color{red} LEFT INVERSE}? (Choose two)
+
+
+\vfill
+A. Columns \li
+\vfill
+B. Columns \sws
+\vfill
+C. Rows \li
+\vfill
+D. Rows \sws.
+\vfill
+$$\m100,010.\m10,01,00. = \m 10,01.$$
+\a\aa
+\x{Warm up Question}: What kind of matrix have \x{\color{blue} RIGHT INVERSE}? (Choose two)
+
+\vfill
+A. Columns \li
+\vfill
+B. Columns \sws
+\vfill
+C. Rows \li
+\vfill
+D. Rows \sws.
+\vfill
+$$\m100,010.\m10,01,00. = \m 10,01.$$
+\a\aa
+\begin{prop}
+If the right factor $B$ have \x{\color{blue}right inverse}, then 
+$$
+“Col“(AB) = “Col(A)“
+$$
+\end{prop}
+
+$$
+“Col“(AB) ⊆  “Col(A)“
+$$
+Let $C$ be the right inverse of $B$, then $ABC = A$
+$$
+“Col“(A) = “Col“(ABC) ⊆ “Col“(AB)  ⊆ “Col“(A).
+$$
+
+\a{Factors that not changing null space}
+
+\begin{prop}
+If left factor $A$ have \x{\color{red}left inverse}, then 
+$$
+“Null“(AB) = “Null(B)“
+$$
+\end{prop}
+
+\a\aa
+\exe Please find a matrix $C$ such that 
+$$
+“Col“(C) = “span“\{\m1,2,0,1.\m1,1,1,1.\}
+$$
+$$
+“Null“(C)=“span“\{\m1,2,3.\}
+$$
+
+Our method is to write $C=AB$, where $A$ has \x{\color{red} left inverse} and $B$ has \x{\color{blue} right inverse}.
+\a\aa
+If we put
+$$
+A = \m 11,21,01,11. ⟹   “Col“(A)= “span“\{\m1,2,0,1.\m1,1,1,1.\}.
+$$
+
+$$
+B = \m2{-1}0,30{-1}. ⟹   “Null“(B)=“span“\{\m1,2,3.\}
+$$
+\vfill
+
+Clear $A$ \x{\color{red} has left inverse} and $B$ \x{\color{blue} has right inverse}. If we put $C=AB$, we gonna get $“Col“(C)=“Col“(A)$ and $“Null“(C)=“Null“(B)$.
+\vfill
+$$
+C = AB = \m 11,21,01,11.\m2{-1}0,30{-1}.= \m5{-1}{-1},7{-2}{-1},30{-1},5{-1}{-1}.
+$$
+
+
+\a\aa
+Recall that \x{invertible row operations } including row adding, row multiplying and row switching, all of them are the same as left multiplying an \x{invertible left factor}
+$$
+\underbrace{\m01,10.}_{\substack{“Row switching“\\“invertible“}}A
+␣ 
+\underbrace{\m1k,01.}_{\substack{“Row adding“\\“invertible“}}A
+␣ 
+\underbrace{\m 90,01.}_{\substack{“Row multiplying“\\“invertible“}}A
+$$
+Call the elementary matrices as $E$. Since $E$ is invertible, in particular it have \x{\color{blue} right inverse}. So
+$$
+“Null“(EA) = “Null“(A)
+$$
+\a\aa
+
+\begin{prop} \x{Invertible} Row operations does not change the row space and null space of $A$ \end{prop}
+
+\[rem]{
+However, deleting a row might change the row space or null space. Since deleting is not an invertible row action
+}
+\a\aa
+\exe After several row operations, we reduce a matrix into the following
+$$
+\m 1\square9,2\square0,3\square0. 
+\overset{“After invertible row operations“}\longrightarrow
+\m 120,001,000.
+$$
+Please fill in the missing number in $\square$!
+\a\aa
+A similar result holds for columns as well.
+\begin{prop} \x{Invertible} Column operations does not change the column space and left null space of $A$ \end{prop}
+
+\aaa
+
+
+
+\aaa{Left inverse and right inverse}
+
+\a{Left Inverse}
+\x{\color{red}Thin} full rank matrix ⟺   rank = number of columns ⟺  columns \li ⟺  having \x{\color{red}left inverse}
+
+
+
+$$
+\underbrace{\m100,010.}_{“\color{blue}fat matrix“}\underbrace{\m 10,01,00.}_{“\color{red}thin matrix“}=\m10,01.
+$$
+
+But left inverse not unique
+
+$$
+\m10a,01b.\m 10,01,00. = \m10,01.
+$$
+
+\a{Right Inverse}
+
+\x{\color{blue}Fat} full rank matrxi ⟺   rank = number of rows ⟺   columns \sws ⟺  having \x{\color{blue}right inverse}
+
+$$
+\underbrace{\m100,010.}_{“\color{blue}fat matrix“}\underbrace{\m 10,01,00.}_{“\color{red}thin matrix“}=\m10,01.
+$$
+
+But right inverse may not unique
+
+$$
+\m100,010.\m 10,01,ab. = \m10,01.
+$$
+\a{Invertible}
+
+\x{\color{purple}Square} full rank matrix ⟺  rank = number of cols = number of rows ⟺  columns \li and \sws (\bas) ⟺  have \x{\color{purple}both inverse}
+
+
+
+\vfill\x{Question:} Is the inverse of square matrix unique?
+\vfill\x{Question:} Is the {\color{red}left inverse} and {\color{blue}right inverse} of a square matrix the same?
+%If $AB = I_n$ and $CA= I_n$? Is that true $B=C$? 
+
+
+%The inverse of square matrix is unique. We solve this slides.
+
+
+
+
+\aaa
+
+
+
+\aaa{Inverse Pair}
+This slides study left and right inverse.
+$$
+\underbrace{\m1000,0100,0010.}_A\underbrace{\m100,010,001,000.}_B = \m 100,010,001.
+$$
+\a\aa
+A is $m × n$ matrix, B is $n × m$ matrix, 
+$$
+AB = I_m.
+$$
+
+\begin{itemize}
+\item $B$ is right inverse of $A$
+\item $A$ is left inverse of $B$
+\end{itemize}
+
+$$ “Col“(A) ⊇   “Col“(AB) = “Col“(I_m) = ℝ^m $$  ⟹   columns of $A$ must \sws
+$$ “Null“(B) ⊆    “Null“(AB) = “Null“(I_m) = \{\vec 0\} $$ ⟹  columns of $B$ must \li
+
+\a\aa
+
+%We would like to understand the pair $A$ and $B$ by their column and null spaces. Now already
+%$$
+%“Col“(A) = ℝ^m ␣ “Null“(B) = \{\vec 0\}
+%$$
+%What about $“Null“(A)$ and $“Col“(B)$? For this, we study
+%
+%$$
+%“Col“(B)=“Col“(BAB) ⊆  “Col“(BA) ⊆  “Col“(B)
+%$$
+%Therefore
+%$$
+%“Col“(B)=“Col“(BA)
+%$$
+%Similarly
+%$$
+%“Null“(A) = “Null“(ABA) ⊆ “Null“(BA) ⊆  “Null“(A).
+%$$
+%Therefore
+%$$
+%“Null“(A)=“Null“(BA)
+%$$
+%Therefore $BA$ has all information of $“Col“(B)$ and $“Null“(A)$.
+%
+%\a\aa
+\begin{prop}
+Suppose $A$ is $m × n$ matrix and $B$ is $n × m$ matrix such that $Null(B)=\{\vec 0\}$ and $Col(A)=ℝ^m$. Then
+$$
+AB “ is \inve “ ⟺   “Null“(A) ∩ “Col“(B) =\{\vec 0\}.
+$$
+\end{prop}
+
+(This is a homework)
+
+Hint: ⟹  is easy. For ⟸   part, show that $“Null“(AB)=0$, and that $AB$ is a square matrix.
+\a\aa
+
+\[rem]{We have important observation! If $AB$ is \inve 
+$$ (AB)^{-1}A “ is a \x{\color{red} left inverse} of “B.  $$
+$$ B(AB)^{-1} “ is a \x{\color{blue} right inverse} of “A.  $$
+}
+\a\aa
+\begin{cor}
+If $AB=I_m$, then $“Null“(A) ∩ “Col“(B) =\{\vec 0\}$
+\end{cor}
+
+
+\a\aa
+\begin{thm}
+Let $B$ be a full rank \x{\color{red}thin} $n × m$ matrix ($n ≥ m$, $“rank“(B) = m$). Then $“Col“(B) ⊆ ℝ^n$. Let $W ⊆ ℝ^n$ be a subspace such that
+$$
+W ∩ “Col“(B)= \{\vec 0\}␣
+“dim“(W) = n-m.
+$$
+Then there exists a unique left inverse $A$, such that 
+$$
+AB = I_m, ␣ 
+“Null“(A) = W.
+$$
+\end{thm}
+In other wrods, the left inverse is not unique, but it is uniquely determined by specifying a complement as a null space.
+\vfill
+In this case, a basis in Null(A) together with columns of B gives a basis for the whole space $ℝ^n$. You may think of finding left inverse as extending \li vectors into \bas.
+
+
+\a\aa
+\begin{thm}
+Let $A$ be a full rank \x{\color{blue}fat} $m × n$ matrix ($n ≥ m$, $“rank“(A) = m$). Then $“Null“(A) ⊆ ℝ^n$. Let $W ⊆ ℝ^n$ be a subspace such that
+$$
+W ∩ “Null“(A)= \{\vec 0\}␣
+“dim“(W) = n-m.
+$$
+Then there exists a unique {\color{blue}right inverse} $B$, such that 
+$$
+AB = I_m, ␣ 
+“Col“(B) = W.
+$$
+\end{thm}
+In other wrods, the {\color{blue}right inverse} is not unique, but it is uniquely determined by specifying a complement as a column space.
+\vfill
+In this case, a basis in Null(A) together with columns of B gives a basis for the whole space $ℝ^n$. You may think of finding right inverse as extending \li row-vectors into \bas.
+\a\aa
+\exe Let $A$ be the following matrix
+$$
+\m123,111.
+$$
+Find the right inverse $B$ of $A$ such that 
+$$
+“Col“(B) “ is “ \spab \m1,1,1.,\m1,2,3.
+$$
+
+\vfill
+
+Try $B = \m 11,12,13.$ and calculate
+$$
+AB = \m123,111.\m11,12,13.=\m6{14},36.
+$$
+\a\aa
+The right inverse of $A$ is then given by 
+$$
+B(AB)^{-1} 
+= \m 11,12,13.\m6{14},36.^{-1}
+$$
+$$
+= \m 1{-1},10,11.\m6{2},30.^{-1}
+$$
+$$
+= \m 4{-1},10,{-2}1.\m0{2},30.^{-1}
+$$
+$$
+= \m {-\frac12}{\frac43},0{\frac13},{\frac12}{-\frac23}.
+$$
+\a{Inverse pair and space complement}
+
+Therefore, studying a pair $A,B$ with $AB = I_m$ is the same as studying two subspaes $W_A$ and $W_B$ with 
+\[itemize]{
+\item $W_A ∩ W_B = \{\vec 0\}$
+\item $“dim“(W_A)=n-m$
+\item $“dim“(W_B)=m$
+\item $“Null“(A) = W_A$
+\item $“Col“(B) = W_B$
+}
+We call $W_A$ and $W_B$ complement to each other.
+
+\vfill
+
+Studying a pair of subspaces $W_A,W_B ⊆ ℝ^n$ with $W_A ∩ W_B = \{\vec 0\}$ and $“dim“(W_A)+“dim“(W_B)=n$ is the same as studying \x{projection matrices}(wil defined later)
+\a\aa
+Othorgonal Complement
+
+\[tikzpicture]{[scale=0.3]
+
+%	\draw[ultra thick,red] (-6,0)--(6,0) node[right]{$U_1$};
+	\draw[ultra thick,red] (0,-4)--(0,0);
+	\draw[fill=green,opacity=0.5] (-7,-1)--(1,-1)--(7,1) node[right]{$W_A$} --(-1,1)--(-7,-1);
+        \draw[ultra thick,red] (0,0)--(0,5) node[above]{$W_B$};
+%	\draw[ultra thick,red] (-6,-2)--(6,2) node [right]{$U_2$};
+	\draw[fill=red] (0,0) circle[radius=0.1] node[right]{$\vec 0$};
+	}
+
+Complement which not necessarily orthogonal
+
+\[tikzpicture]{[scale=0.3]
+\draw[ultra thick](-3,-6)--(0.9,-0.8);
+\draw[opacity=0.8,fill=cyan] (-6,-2)--(6,-2)--(10,0)--(-2,0)--(-6,-2);
+
+\draw[fill=cyan] (.9+.75*5,-.8+5) circle[radius=0.1,fill=cyan] node[left]{};
+\draw[fill=pink] (6+.75*5-0.2,-2+5) circle[radius=0.1] node[right]{};
+
+\draw[radius=0.05,fill=red] (0.9,-.8) circle;
+\draw[ultra thick](.9,-.8)--(6,6);
+
+}
+
+\a\aa
+Now, if $AB = I_m$, we are curious about $BA$. 
+\vfill
+Since $B$ has \x{\color{red}left inverse}
+$$
+W_A = “Null“(A) = “Null(BA)“ 
+$$
+\vfill
+Since $A$ has \x{\color{blue}right inverse}
+$$
+W_B = “Col“(B) = “Col(BA)“
+$$
+
+Therefore, $BA$ has all information of  $W_A$ and $W_B$!
+
+\aaa
+
+

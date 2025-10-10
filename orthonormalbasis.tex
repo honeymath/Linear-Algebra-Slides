@@ -1,0 +1,436 @@
+
+\aaa{Orthonormal basis}
+\[defi]{A \x{unit vector} is a vector of length $1$.
+}
+If $\vec u$ is a unit vector, then the orthogonal projection on its line can be written as
+$$
+\vec u (\vec u^T\vec u)^{-1}\vec u^T = \vec u\vec u^T.
+$$
+\a\aa
+\[defi]{An \x{orthonormal basis} of a space is a basis $\vec v_1,..., \vec v_n$ such that
+$$
+\vec v_i^T\vec v_j = \[cases]{
+0& i≠j “  (\x{ortho})“\\
+1& i=j “  (\x{normal})“
+}
+$$}
+Letting $Ω=\m{\vec v_1}\cdots{\vec v_n}.$ be the matrix of collections of these vectors. Then $\vec v_1,...,\vec v_n$ is an orthonormal basis if and only if $Ω^TΩ= I$
+\a\aa
+\[rem]{
+Note that columns of Ω being a basis means it is a squre matrix, and thus $Ω^TΩ= I$ is equivalent to $ΩΩ^T= I$ . Therefore, \x{columns being orthonormal basis  is equivalent as rows being orthogormal. }
+}
+Suppose $Ω=\m{\vec v_1}\cdots{\vec v_n}.$, then 
+$$
+Ω^T Ω = \m
+{\vec v_1^T\vec v_1}
+{\vec v_1^T\vec v_2}
+\cdots
+{\vec v_1^T\vec v_n},
+{\vec v_2^T\vec v_1}
+{\vec v_2^T\vec v_2}
+\cdots
+{\vec v_2^T\vec v_n},
+\cdots\cdots\ddots\cdots,
+{\vec v_n^T\vec v_1}
+{\vec v_n^T\vec v_2}
+\cdots
+{\vec v_n^T\vec v_n}.
+$$
+
+\aaa
+
+
+
+
+\aaa{Orthogonal (Symmetric) Cross-Filling}
+Let $A$ be a symmetric matrix, if we choose the center of the cross-filling to be on diagonal, then the cross-filling summands $A = A_1+A_2$ are all symmetric matrix!
+
+$$
+X = (Ae_i)(e_i^TAe_i)^{-1}(e_i^TA) = (Ae_i)(e_i^TAe_i)^{-1}(Ae_i)^T
+$$
+Symmetric!
+\a\aa
+\exe The following matrix
+$$
+\m{0.5}00{-0.5},0100,0010,{-0.5}00{0.5}.
+$$
+is a projection to the space 
+$$W:\left\{\m x,y,z,w. : x+y-z+w=0\right\}$$
+Find an orthonormal basis $\vec w_1,\vec w_2,\vec w_3$ of $W$.% \x{such that }$\vec w_i\perp\vec w_j$ for $i ≠ j$.
+
+\a\aa
+\sol %Since the projection is \x{symmetric}, it \x{is an orthogonal projection}. In order to have an orthogonal basis, we apply orthogonal cross-filling, which decomposes symmetric matrix into symmetric matrices.
+We wanna keep the matrix symmetric while cross-filling, the method is to choose crosses in a symmetric way - with centers on diagonal
+$$
+\m{0.5}00{-0.5},0100,0010,{-0.5}00{0.5}.
+$$
+$$=
+\m{\h0.5}{\y0}{\y0}{\y-0.5},{\y0}000,{\y0}000,{\y-0.5}00{0.5}.
++\m0{\y0}00,\0{\h1}\0\0,0\000,0\000.
++\m00\00,00\00,\0\0{\h1}\0,00\00.
+$$
+\a\aa
+We may decompose this into 
+$${\tiny\m{\h0.5},{\y0},{\y0},{\y-0.5}. \frac1{0.5}\m{\h0.5}{\y0}{\y0}{\y-0.5}.
++ \m \0,{\h1},\0,\0.\frac11\m \0{\h1}\0\0.
++ \m \0,\0,{\h1},\0.\frac11\m \0\0{\h1}\0.}$$
+Now we decompose it into 
+$${\tiny\m{\h0.5},{\y0},{\y0},{\y-0.5}. \frac1{\sqrt{0.5}}\frac1{\sqrt{0.5}}\m{\h0.5}{\y0}{\y0}{\y-0.5}.
++ \m \0,{\h1},\0,\0.\frac1{\sqrt1}\frac1{\sqrt1}\m \0{\h1}\0\0.
+}$$$${\tiny
++ \m \0,\0,{\h1},\0.\frac1{\sqrt1}\frac1{\sqrt1}\m \0\0{\h1}\0.}$$
+\a\aa
+ Therefore, with 
+$$
+\vec v_1 = \frac1{\sqrt{0.5}}\m{\h0.5}{\y0}{\y0}{\y-0.5}. , ␣ 
+\vec v_2 = \m \0,{\h1},\0,\0.
+\vec v_3 = \m \0,\0,{\h1},\0.
+$$
+We have already decomposed 
+$$
+P = \vec v_1\vec v_1^T+\vec v_2\vec v_2^T+\vec v_3\vec v_3^T
+$$
+Note that $P$ is projection, so the number $3$ has been reflected in $“tr“(P)$.
+
+\a\aa
+Since $P$ is a projection, so is $I-P$. $I$ is symmetric, so is $I-P$.
+
+$$
+I-P = \m
+{0.5}{0}{0}{0.5},
+0000,0000,
+{0.5}{0}{0}{0.5}.
+$$
+We can write it as
+$$
+\m
+{\h0.5},{\0},{\0},{\0.5}.
+\frac1{\sqrt{0.5}}
+\frac1{\sqrt{0.5}}
+\m
+{\h0.5}{\0}{\0}{\0.5}.
+=\vec v_4\vec v_4^T
+$$
+\a\aa
+Therefore, we have collected vectors
+$$
+P = \vec v_1\vec v_1^T+\vec v_2\vec v_2^T+\vec v_3\vec v_3^T ␣ 
+I-P = \vec v_4\vec v_4^T
+$$
+Therefore
+$$
+I_4 = 
+\underbrace{\m
+{\vec v_1}
+{\vec v_2}
+{\vec v_3}
+{\vec v_4}.}_{Ω}
+\underbrace{\m
+{\vec v_1^T}
+,{\vec v_2^T}
+,{\vec v_3^T}
+,{\vec v_4^T}.}_{Ω^T}
+$$
+This means columns of Ω is an orthonormal basis.
+\a\aa
+\exe Some students make this argument for a \x{$4 × 4$} symmetric matrix $A$
+$$
+A = \vec v_1\vec v_1^T+\vec v_2\vec v_2^T+\vec v_3\vec v_3^T
+$$
+$$
+I_4-A = \vec v_4\vec v_4^T+\vec v_5\vec v_5^T
+$$
+So he obtained that
+$$
+I_4 = 
+\underbrace{\m
+{\vec v_1}
+{\vec v_2}
+{\vec v_3}
+{\vec v_4}
+{\vec v_5}.}_{Ω}
+\underbrace{\m
+{\vec v_1^T}
+,{\vec v_2^T}
+,{\vec v_3^T}
+,{\vec v_4^T}
+,{\vec v_5^T}.}_{Ω^T}
+$$
+\x{Is columsn of Ω an orthonormal basis? why? }
+\a\aa
+\sol In order for columns to be a basis, one has to be a square matrix. So in ℝ^4 the columns of Ω can only be basis when it consists of 4 columns.
+\a\aa
+
+\[thm]{Suppose $P=P^T=P^2$ orthogonal projection matrix. Diagonal centered Cross-filling splits $P$ in to mutually orthogonal projections
+$$
+P = \underbrace{v_1v_1^T}_{P_1} + \cdots + \underbrace{v_rv_r^T}_{P_r}
+$$
+and $v_1,\cdots,v_r$ is an orthonormal basis of $“Col“(P)$.
+}
+\textbf{Proof}: Suppose $P$ is of size $n × n$, $“trace“(P)=“rank“(P)=r$. So $“trace“(I_n-P)=“rank“(I_n-P)=n-r$ . Since $P$ is symmetric, so $I_n-P$ is symmetric, using diagonal cross-filling we may decompose
+$$
+I_n-P = \underbrace{v_{r+1}v_{r+1}^T}_{P_{r+1}} + \cdots + \underbrace{v_nv_n^T}_{P_n}
+$$
+Since $\vec v_1\vec v_1^T+...+\vec v_n\vec v_n^T=I_n$, then $\vec v_1,...,\vec v_n$ is an orthonormal basis!
+
+\aaa
+
+
+
+
+
+
+\aaa{Gram--Schmidt orthogonalization}
+\exe Let $W ⊆ ℝ^3$ be subspace spaned by following vectors
+$$
+\m 1,0,1. \m 1,1,1.
+$$
+Determine an orthogonal basis for $W$.
+
+\sol. The standard way is to write 
+$$
+A = \m 11,01,11.
+$$
+and therefore $W = “Col“(A) $ We may use the formula of orthogonal projection to write
+$$
+P = A(A^TA)^{-1}A^T
+$$
+then $P$ is an orthogonal projection and we may use diagonal corss-filling to find an orthogonal basis. However, the \x{Gram--Schmidt} method is a simpler algorithm of doing so.
+
+\a{Description of the algorithm}
+
+Since $A$ is linearly independent, $A^TA$ is positive definite
+$$
+0= x^TA^TAx = (Ax)^T(Ax) ⟹   Ax = 0 ⟹   x=0.
+$$
+
+During the homework 1, we have showed that positive definite matrix always LU-decomposible. Therefore
+$$
+A^TA = L D L^T
+$$
+for some lower triangular matrix $L$ and all digaonals of $D$ is \x{positive}.
+.
+
+Therefore
+
+$$
+(A^TA)^{-1} = L^{T-1} D^{-1} L^{-1}
+$$
+This decomposes 
+
+$$
+P = \underbrace{AL^{T-1}\sqrt{D^{-1}}}_\Omega\underbrace{\sqrt{D^{-1}}L^{-1}A^T}_{\Omega^T}
+$$
+
+\a\aa
+$$
+P = \underbrace{AL^{T-1}\sqrt{D^{-1}}}_\Omega\underbrace{\sqrt{D^{-1}}L^{-1}A^T}_{\Omega^T}
+$$
+Because both $L$ and $D$ invertible, $A$ having left inverse implies that $\Omega$ having left inverse. So Ω^T have right inverse. Since $P = ΩΩ^T$ is a projection matrix, we have
+
+$$
+Ω^TΩ = I_m
+$$
+
+this implies columns of Ω is orthonormal basis of the column space of $A$.
+
+
+\a\aa
+\spy: Wait a moment, why $P = ΩΩ^T$ implies $Ω^TΩ = I_m$ ????
+
+\no: Is that because when $P=P^2$, then $P=AB$ implies $BA=I$?
+
+\buxie: You have to assume $A$ has left inverse and $B$ has right inverse for the statement
+
+\answer I am sure that we have learned it befroe. But it was not on the midterm so I did not review.  How to prove it? 
+
+\sinister Do you know the proof?
+\a{Just in case if you forgot}
+\sleep  Because $P^2=P$, we have $ABAB = AB=AIB$
+\vfill
+Sine $A$ has left inverse, so $BAB=IB$
+\vfill
+Since $B$ has right inverse, so $BA=I$.
+
+\man
+
+\a{Gram-Schmidt orgthogonalization}
+We describe the step of the algorithm for finding orthogonal basis of Column space of $A$.
+
+\[itemize]{
+\item Using LU-decomposition, write $A^TA = LDL^T$
+\item Columns of $AL^{T-1}\sqrt{D^{-1}}$ is an orthonormal basis of $“Col“(A)$.
+}
+
+\a\aa
+Let's finish the problem! 
+
+\exe Let $W ⊆ ℝ^3$ be subspace spaned by following vectors
+$$
+\m 1,0,1. \m 1,1,1.
+$$
+Determine an orthogonal basis for $W$.
+
+\sol. The standard way is to write 
+$$
+A = \m 11,01,11.
+$$
+
+Calculate 
+$$A^TA = \m22,23.$$
+\a\aa
+Using cross-filling to find LU decomposition
+$$
+\m22,23. = \m {\h2}\2,\22. +\m 0\0,\0{\h1}.
+$$
+So we got 
+$$
+A^TA = \m10,11.\m20,01.\m11,01.
+$$
+So
+$$
+(A^TA)^{-1} = \m1{-1},01.\m20,01.^{-1}\m10,{-1}1.
+$$
+An orthonormal basis is given by
+$$
+\underbrace{\m 11,01,11.}_{A} \underbrace{\m1{-1},01.}_{L^{T-1}}\underbrace{\m{\sqrt2}0,01.^{-1}}_{\sqrt{D^{-1}}} = 
+\m
+{\frac1{\sqrt2}}0,
+01,
+{\frac1{\sqrt2}}0.
+$$
+\a\aa
+Method to find \x{orthonormal basis} of a subspace
+
+\[summ]{
+\[itemize]{
+\item For a subspace given by image of projection $P$: Do diagonal cross-filling of $P$
+
+\item For a subspace with given basis $W=“Col“(A)$, A having left inverse : Using Gram-Schmidt method to do LU-decomposition of $A^TA=LDL^T$ and use the formula $AL^{T-1}\sqrt{D^{-1}}$.
+}
+}
+
+\a{QR decomposition}
+
+When $W$ is the whole space, then columns of $A$ being basis means that it is an invertible square matrix, the formula 
+$$
+AL^{T-1}\sqrt{D^{-1}}
+$$
+gives a square matrix with columns orthornormal basis for the whole space. Therefore, we write 
+$$
+Q = AL^{T-1}\sqrt{D^{-1}}, ␣ R = \sqrt{D}L^T 
+$$
+and we call
+$$
+A = QR
+$$
+the QR-decomposition of matrix $A$.
+
+\a\aa
+\exe Find QR decomposition of the matrix
+$$
+A=\m12,13.
+$$
+We calculate
+$$
+A^TA = \m 25,5{13}.
+$$
+Use cross-filling we decompose
+$$
+A^TA = \m25,5{12.5}.+\m00,0{0.5}. = \underbrace{\m10,{2.5}1.}_L\underbrace{\m20,0{0.5}.}_D \underbrace{\m1{2.5},01.}_{L^T}
+$$
+So
+$$
+R = \underbrace{\m{\sqrt{2}}0,0{\sqrt{0.5}}.}_{\sqrt{D}}\underbrace{\m1{2.5},01.}_{L^T}, ␣  Q= AR^{-1} = \m{\frac{\sqrt2}2}{-\frac{\sqrt2}2},{\frac{\sqrt2}2}{\frac{\sqrt2}2}.
+$$
+
+\a{Gram-Schmidt for abstract functions}
+
+Note that writting $A = \m{\vec v_1}{\vec v_2}\cdots {\vec v_n}.$, we have in fact
+$$
+A^T A = \m
+{\vec v_1^T\vec v_1}
+{\vec v_1^T\vec v_2}
+\cdots
+{\vec v_1^T\vec v_n},
+{\vec v_2^T\vec v_1}
+{\vec v_2^T\vec v_2}
+\cdots
+{\vec v_2^T\vec v_n},
+\cdots\cdots\ddots\cdots,
+{\vec v_n^T\vec v_1}
+{\vec v_n^T\vec v_2}
+\cdots
+{\vec v_n^T\vec v_n}.
+$$
+Symbolically, we write the inner product as a pair
+
+$$
+\vec v_1^T\vec v_2 =: \langle\vec v_1,\vec v_2\rangle
+$$
+it has property that $\langle\vec v_1,\vec v_2\rangle = \langle\vec v_2,\vec v_1\rangle $ and $\langle\vec v_1,\vec v_1\rangle=0 ⟺  \vec v_1=0.$ Having this pair is the same as having notion of length and angles.
+\a\aa
+Generally, we may be able to define length and angles for functions for future applications. For example, we may define
+$$
+\langle f(x), g(x) \rangle = \int_{0}^π f(x)g(x)dx
+$$
+In the abstract word, if the vector is given $\vec v = f(x)$, then the meaning of transpose is in fact a linear transformation
+$$
+\vec v^T = \langle f(x), - \rangle 
+$$ 
+and the projection can be written by
+$$
+\frac{\vec v\vec v^T}{\vec v^T\vec v} = \frac{f(x) \langle f(x), - \rangle}{\langle f(x), f(x) \rangle}
+$$
+\a\aa
+This approach is extremely useful in Fourier analysis. 
+
+\exe Let $W$ be vector space of polynomials with degree at most $2$. Find an orthonormal basis for the inner product defined by
+$$
+\langle f(x), g(x) \rangle = \int_0^1 f(x)g(x) dx.
+$$ 
+\sol
+Let $A = \m{1}x{x^2}.$ We find the table of inner product
+$$
+A^TA = \m1{\frac12}{\frac13},{\frac12}{\frac13}{\frac14},{\frac13}{\frac14}{\frac15}.
+=\m100,{\frac12}10,{\frac13}11.\m100,0{\frac1{12}}0,00{\frac1{180}}.\m1{\frac12}{\frac13},011,001.
+$$
+\a\aa
+So an orthonormal basis is given by
+$$
+\m{1}x{x^2}.\m1{\frac12}{\frac13},011,001.^{-1}\m100,0{{\sqrt{12}}}0,00{{\sqrt{180}}}. 
+$$
+
+
+\a{Application of orthonormal basis}
+Let 
+$v_1=f_1(x)$
+$v_2=f_2(x)$
+$v_3=f_3(x)$
+be orthonormal basis given as before. Note that this means
+$$
+\underbrace{\m{v_1^T},{v_2^T},{v_3^T}.}_{A^T}
+\underbrace{\m{v_1}{v_2}{v_3}.}_A
+=I.
+$$
+This implies that 
+$$P:=AA^T=v_1v_1^T+v_2v_2^T+v_3v_3^T$$ is an orthogonal projection matrix projecting to space spanned by $v_1,v_2,v_3$.
+Note that for any vector $w$, we have
+$$
+P w 
+= v_1v_1^Tw+v_2v_2^Tw+v_3v_3^Tw
+$$$$= v_1\langle v_1,w\rangle+v_2\langle v_2,w\rangle+v_3\langle v_3,w\rangle
+$$
+\a\aa
+This means that for any function $g$, the orthogonal projection to the subspace is given by the formula
+$$
+f_1(x)\cdot\int_0^1 f_1(x)g(x) dx+
+f_2(x)\cdot\int_0^1 f_2(x)g(x) dx+
+f_3(x)\cdot\int_0^1 f_3(x)g(x) dx
+$$
+\vfill
+
+Therefore, finding an orthonormal basis can help writing down orthogonal projections clearly.
+
+\aaa
+

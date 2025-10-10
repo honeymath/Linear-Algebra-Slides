@@ -1,0 +1,172 @@
+
+\aaa{The main theorem of diagonalization}
+
+\[thm]{
+The following conditions for $A$ are equivalent
+\[itemize]{
+\item $A$ is diagonalizable
+\item $A$ satisfies a polynomial of simple roots
+\item $A$ is a linear combination of projection matrices $P_1,...,P_k$ such that $P_1+\cdots+P_k=I$.
+}
+}
+
+We prove this theorem by proving 
+
+¡ “Condition 1“ ⟹  “Condition 2“ ⟹  “Condition 3“ ⟹  “Condition 1“
+
+\a\aa
+Condition 1 ⟹   Condition 2.
+
+Suppose $A$ is diagonalizable, we can write
+$$
+A = P^{-1} \m{λ_1}{}{}{}{},{}{λ_2}{}{}{},{}{}\ddots{}{},{}{}{}{λ_{n-1}}{},{}{}{}{}{λ_n}. P.
+$$
+Note that some of the diagonal entries might be repeated, therefore, we collect them into a set
+$$
+S = \{λ_1\} ∪ \{λ_2\} ∪ \cdots ∪ \{λ_n\}
+$$
+therefore we compose polynomial
+$$
+f(t)=∏_{μ_i ∈ S}(t-μ_i)
+$$
+\a\aa
+We have
+$$
+f(A) = P^{-1} \m{f(λ_1)}{}{}{}{},{}{f(λ_2)}{}{}{},{}{}\ddots{}{},{}{}{}{f(λ_{n-1})}{},{}{}{}{}{λ_n}. P=0
+$$
+\a\aa
+Condition 2 ⟹  Condition 3.
+
+Now if $A$ satisfies 
+$$
+(A-λ_1)(A-λ_2)\cdots(A-λ_n)=0
+$$
+for \x{distinct} $λ_1,\cdots,λ_n$, 
+then we may construct interpolation polynomials $f_{λ_1},\cdots,f_{λ_n}$ with the property that $f_{λ_j}(λ_i)=0$ for any $i≠j$ and $f_{λ_i}(λ_i)=1$. Using interpolation theorem, we interprating the constant function $g(t)=1$, we have
+$$ 1 = Q(t)(t- λ_1)(t-λ_2)\cdots(t-λ_n) + f_{λ_1}(t) + f_{λ_2}(t)+\cdots+f_{λ_k}(t) $$
+letting $g(t)=t$, we have
+$$ t = Q(t)(t- λ_1)(t-λ_2)\cdots(t-λ_n) +\x{λ_1} f_{λ_1}(t) + \x{λ_2}f_{λ_2}(t)+\cdots+\x{λ_k}f_{λ_k}(t) $$
+\a\aa
+Plug in $t=A$ to those two polynomials, we denote
+$$
+P_{λ_i}:= f_{λ_i}(A),
+$$
+we know $P_{λ_i}$ are projection matrices, therefore
+$$
+I = P_{λ_1}+P_{λ_2}+\cdots+P_{λ_k}
+$$
+and
+$$
+A =  λ_1P_{λ_1}+λ_2P_{λ_2}+\cdots+λ_kP_{λ_k}
+$$
+
+\a\aa
+Condition 3 ⟹  Condition 1.
+
+Recall that by cross filling, we essentially decompose each projection matrices into rank 1 projection matrices
+
+$$
+P = \vec v_1\vec w_1^T +\cdots 
+$$
+
+Therefore, $A$ is also a linear combination of rank-1 proejction matrices
+$$ A = μ_1\vec v_1\vec w_1^T + μ_2\vec v_2\vec w_2^T +\cdots+μ_n\vec v_n\vec w_n^T.  $$
+$$ I = \vec v_1\vec w_1^T + \vec v_2\vec w_2^T +\cdots+\vec v_n\vec w_n^T.  $$
+Note that each rank one projection must be trace one. Since the trace of $I$ is $n$, we know there are \x{exactly} n many rank-1 projections.
+Therefore we may write it into matrix form
+$$
+A = 
+\m
+||\cdots|,
+{\vec v_1}{\vec v_2}\cdots{\vec v_n},
+||\cdots|.
+\m{μ_1}{}{},{}\ddots{},{}{}{μ_n}.
+\m
+-{\vec w_1^T}-,
+%-{\vec w_2^T}-,
+\vdots\vdots\vdots,
+-{\vec w_n^T}-.
+$$
+\a\aa
+and
+$$
+\m
+||\cdots|,
+{\vec v_1}{\vec v_2}\cdots{\vec v_n},
+||\cdots|.
+\m
+-{\vec w_1^T}-,
+%-{\vec w_2^T}-,
+\vdots\vdots\vdots,
+-{\vec w_n^T}-.
+=I$$
+Since the two matrices are square matrices, so let 
+$$
+P = 
+\m
+||\cdots|,
+{\vec v_1}{\vec v_2}\cdots{\vec v_n},
+||\cdots|.
+$$
+Then
+$$P^{-1}
+=
+\m
+-{\vec w_1^T}-,
+%-{\vec w_2^T}-,
+\vdots\vdots\vdots,
+-{\vec w_n^T}-.
+$$
+We have $A=P
+\m{μ_1}{}{},{}\ddots{},{}{}{μ_n}.
+P^{-1}$, therefore $A$ is diagonalizable.
+
+
+%% Spectural decomposition of orthogonal reflection.
+
+\a\aa
+Let's think about the following equivalent conditions
+
+\[itemize]{
+\item $A$ is diagonalizable 
+\item $A$ satisfies a polynomial of simple roots
+\item $A$ is a linear combination of projection matrices $P_1,...,P_k$ such that $P_1+\cdots+P_k=I$.
+}
+
+\exe Suppose $A=λ_1P_1+λ_2P_2+\cdots+λ_mP_m$ is a linear combination of matrices such that $P_1+P_2+\cdots+P_m$ is a projection, is $A$ diagonalizable? why?
+
+\a\aa
+\sol Denote by $P := P_1+P_2+\cdots+P_m$, since $P$ is a projection, so is $I-P$. Let $P_{m+1}=I-P$, we have
+$$
+P_1+P_2+\cdots+P_m+P_{m+1}=I
+$$
+and
+$$A=λ_1P_1+λ_2P_2+\cdots+λ_mP_m+\underbrace0_{λ_{m+1}}P_{m+1}$$
+Therefore $A$ is diagonalizable
+
+\a\aa
+
+Can you find a linear combination of projection matrices such that it is not diagonalizable?
+\a\aa
+$$
+\m11,00.+\m00,01. = \underbrace{\m11,01.}_{“NOT DIAGONALIZABLE!“}
+$$
+
+
+\a\aa
+\exe Diagonalize the following matrix
+$$
+\m211,121,112.
+$$
+
+\a\aa
+\exe If
+$$
+A = λ_1P_1+\cdots+λ_mP_m
+$$
+however, 
+$$P_1+\cdots+P_m≠I,$$
+ but 
+$$(P_1+\cdots+P_m)^2=P_1+\cdots+P_m$$
+is a projection. Is $A$ a diagonalizable matrix ? why?
+\aaa

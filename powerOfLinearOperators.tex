@@ -1,0 +1,132 @@
+
+\newcommand\map[3]{#1:{#2}\longrightarrow  {#3}}
+\newcommand\maps[5]{{#1}:{#2}\longrightarrow {#3},{#4} \mapsto {#5}}
+\newcommand\ZZ{\mathbb{Z}}
+
+\aaa{Applying Polynomial on Linear Operators}
+Remember the definition of linear operators
+\[defi]{
+A linear operator $\map TVV$ is a \lt with domain identical to the codomain.
+}
+\a\aa
+
+Since domain and codomain are identical, To obtain a matrix representation, we only need to take a basis in $V$. 
+
+$$
+T\obasis\ee n=\obasis\ee n M
+$$
+
+Onece we have another basis 
+$$
+\obasis\vv n=\obasis\ee n P
+$$
+We obtain
+$$
+T\obasis\vv n = \obasis\vv nP^{-1}MP
+$$
+\a\aa
+\[defi]{We say two matrices $A,B$ similar to each other if there is an \inve matrix $P$ such that 
+$$
+B= P^{-1}AP
+$$}
+
+Similar matrices essentially could be a matrix representation for the same linear transformation. 
+
+If a property is essentially defined for linear transformation, they shares for similar matrices.
+
+\aaa
+
+\aaa{Polynomials on Linear Operators}
+Now we only consider one Linear Operator $\map TVV$. By
+$$
+T^n:=\underbrace{T\circ T\circ\cdots\circ T}_{n\text{ many }T}
+$$
+we define many new operators on $V$. 
+We can also make linear combinations of them to define things like
+$$
+T^2+2T+\id_V
+$$
+You found it is exactly equals to
+$$
+(T+\id_V)^2
+$$
+For our convenience, we abbreviate $\id_V$ as $I$.
+
+\a\aa
+This motivates us we can apply any degree polynomial
+$$
+p(x)=a_mx^m+a_{m-1} x^{m-1}+\cdots+a_0
+$$
+to the operator $T$ by evaluating $P$ at $x=T$ by defining
+$$
+p(T):=a_mT^m+a_{m-1} T^{m-1}+\cdots+a_0
+$$
+\[cor]{Suppose $\mathcal E\subset V$ is a basis, we have
+$$
+[p(T)]^{\mathcal E}=p([T]^{\mathcal E})
+$$
+}
+i.e. The matrix of applying polynomial is applying polynomial on the matrix of the linear operator.
+\a\aa
+\exe Suppose $T$ is a linear operator on $V$ such that 
+$$
+(T-I)^2=0.
+$$
+Show that $T$ is invertible.
+\vfill
+\textbf{Proof.}
+We have $T^2-2T+I=0$, therefore $-T^2+2T=I$, so $T(2-T)=I$. This implies $T$ is invertible and 
+$$
+T^{-1}=2-T.
+$$
+
+\aaa
+
+\aaa{Power series on Nilpotent Operators}
+\[defi]{A linear operator $\map TVV$ is \x{nilpotent} if $T^n=0$ for some $n\in\ZZ_+$.}
+At this time we should be careful for power series because it might cause convergence problem. But for a some operators $T$ that
+$$
+T^n=0\text{ for some }n\in\ZZ_+
+$$
+Since $T^n=0\implies T^{n+1}=0$. Apply power series to it would only result finitely many non-zero terms. Therefore it is the same as applyting a Polynomial to it.
+\a\aa
+\exe Let $V=\lPP xabc$, define $T(f(x))=f'(x)$ Consider the power series
+$$
+\mathrm{exp}(-x)=1-x+\frac{x^2}2-\frac{x^3}6+\cdots
+$$
+Evaluate $\mathrm{exp}(-T)(x^2)$
+\vfill
+\sol We have
+$$
+\[cases]{
+I(x^2)=x^2.\\
+T(x^2)=2x.\\
+T^2(x^2)=2.\\
+T^k(x^2)=0. \text{ for }k\geq 3.}
+$$
+Therefore $$\mathrm{exp}(-T)(x^2)=I(x^2)-T(x^2)+\frac{T^2(x^2)}2=x^2-2x+1=(x-1)^2.$$
+
+\a\aa
+Suppose $T$ is a linear operator on $V$ such that
+$$
+T^3=0.
+$$
+Show that $I-T$ is invertible.
+\vfill
+\textbf{Idea:} Let $p(x)=1-x$, we realize $I-T=p(T)$. We want to find it inverse so the idea is to apply $\frac1{p(x)}$ on it, which has the Talor Expansion
+$$
+\frac1{p(x)}=\frac1{1-x}=1+x+x^2+x^3+\cdots
+$$
+Since $T^3=0$, so we think
+$$
+\frac1{p(T)}=1+T+T^2+0+0+\cdots=1+T+T^2.
+$$
+So the idea is try $1+T+T^2$.
+
+\a\aa
+\textbf{Proof:} Since
+$$(I-T)(I+T+T^2)=(I+T+T^2)-T(I+T+T^2)=I-T^4=I.$$
+This implies $I-T$ is invertible and its inverse is given by $I+T+T^2$.
+\vfill
+\aaa
+

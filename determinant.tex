@@ -1,0 +1,811 @@
+
+
+\def\1{\y1}
+\def\2{\y2}
+\def\3{\y3}
+\def\4{\y4}
+\def\5{\y5}
+\def\6{\y6}
+\def\7{\y7}
+\def\8{\y8}
+\def\9{\y9}
+\def\0{\y0}
+\def\-{\y-}
+
+\aaa{Determinant}
+\textbf{Warm up}: Suppose the area of each  small rectangle (for example, the pink colored one) is 1. How to calculate the {\color{cyan}blue area}? 
+
+\[zz]{
+	\wangge {-3}{-3}33
+\draw[->](-4,0)--(4,0) node[right] {x};
+\draw[->](0,-4)--(0,4) node[above] {y};
+\draw[fill = pink,opacity=0.5] (0,0)--(1,0)--(1,1)--(0,1)--(0,0);
+\draw[fill= cyan,opacity = 0.5] (0,0)--(-1,-2)--(-3,0)--(-2,2)--(0,0);
+	}
+\a\aa
+The blue area is determined by two vectors, which describe the sides of the parallelogram. We put the function \x{determinant to describe the area of this part}
+\[columns]{
+	\co 5
+\[zz]{
+	\wangge {-3}{-3}33
+\draw[->](-4,0)--(4,0) node[right] {x};
+\draw[->](0,-4)--(0,4) node[above] {y};
+\draw[fill = pink,opacity=0.5] (0,0)--(1,0)--(1,1)--(0,1)--(0,0);
+\draw[fill= cyan,opacity = 0.5] (0,0)--(-1,-2)--(-3,0)--(-2,2)--(0,0);
+\draw[->,ultra thick] (0,0)--(-1,-2) node [below]{$\m{-1},{-2}.$};
+\draw[->,ultra thick] (0,0)--(-2,2) node [above]{$\m{-2},{2}.$};
+	}
+	\co 5
+$$
+\det\m{-2}{-1},2{-2}. = \text{\color{cyan}Blue area}
+$$
+}
+\a{Positive area v.s. negative area}
+What is the area of the rectangle enclosed by the vector $\vv_1$ and $\vv_2$?
+\[columns]{\co 5
+\[zz]{
+	\wangge {-3}{-3}33
+\draw[->](-4,0)--(4,0) node[right] {x};
+\draw[->](0,-4)--(0,4) node[above] {y};
+%\draw[fill = pink,opacity=0.5] (0,0)--(1,0)--(1,1)--(0,1)--(0,0);
+\draw[fill= cyan,opacity = 0.5] (0,0)--(3,0)--(3,2)--(0,2)--(0,0);
+\draw[->,ultra thick] (0,0)--(3,0) node [right]{$\vv_1$};
+\draw[->,ultra thick] (0,0)--(0,2) node [above]{$\vv_2$};
+	}
+
+\co 5
+
+Since the area is base times height, the area is $3\times 2 = 6$.
+	}
+
+\a\aa
+However, if I put the height in another direction, it makes more sense to define the height to be a negative number
+\[columns]{\co 5
+\[zz]{
+	\wangge {-3}{-3}33
+\draw[->](-4,0)--(4,0) node[right] {x};
+\draw[->](0,-4)--(0,4) node[above] {y};
+%\draw[fill = pink,opacity=0.5] (0,0)--(1,0)--(1,1)--(0,1)--(0,0);
+\draw[fill= cyan,opacity = 0.5] (0,0)--(3,0)--(3,-2)--(0,-2)--(0,0);
+\draw[->,ultra thick] (0,0)--(3,0) node [right]{$\vv_1$};
+\draw[->,ultra thick] (0,0)--(0,-2) node [above]{$\vv_2$};
+	}
+
+\co 5
+
+Since the area is base times height, the area is $3\times (-2) = -6$.
+	}
+
+
+\a\aa
+This signed area is called the \x{oriented area}. We call $\vv_1$ the base vector, and $\vv_2$ the height vector.
+\vfill
+If the height vector is on the counterclockwise side of the base vector, the area is positive. Otherwise, the area is negative. 
+\a{Intended properties of determinant}
+Before defining determinant, we should study what are the properties we are expecting for areas. Let's start with the easiest $2\times 2$ matrices.
+\vfill
+\textbf{Multilinearity}: We should have
+$$
+\det\m{\vv_1+\ww}{\vv_2}. = \det\m{\vv_1}{\vv_2}.+\det\m{\ww}{\vv_2}.
+$$
+and
+$$
+\det\m{\lambda\vv_1}{\vv_2}.=\lambda\det\m{\vv_1}{\vv_2}..
+$$
+\a{Explaination of multiplinearity}
+The area of parallelogram expanded by $\vv_1+\ww$ and $\vv_2$ should have the same area as the sum of the one expanded by $\vv_1,\vv_2$ and $\ww,\vv_2$. The reason is explained in the following graph.
+
+\dis{
+\[z]{
+	\ve12{\vec v_1}\vve1221{}\ve33{\vec w}\ve20{\vec v_2}
+%\para[red,opacity=0.5]002012
+%\para[yellow,opacity=0.5]122021
+\para[green,opacity=0.3]002033
+\draw (2,0)--(5,3);
+\draw (2,0)--(3,2);
+\draw (3,2)--(5,3);
+}
+}
+{
+\[z]{
+\ve12{\vec v_1}\vve1221{}\ve33{\vec w}\ve20{\vec v_2}
+\para[red,opacity=0.5]002012
+\para[yellow,opacity=0.5]122021
+%\para[green,opacity=0.3]002033
+\draw (2,0)--(5,3);
+}
+
+
+}
+\a\aa
+
+\[z]{
+\ve12{\vec v_1}\ve20{\vec v_2}\ve60{3\cdot\vec v_2}
+\para[red,opacity=0.5]002012
+\para[pink,opacity=0.3]006012
+%\para[green,opacity=0.3]002033
+}
+
+\a\aa
+The preceding properties yeilds another important property, the \textbf{\color{cyan}column swapping property}:
+$$
+\det\m{\vv_1}{\vv_2}. = -\det\m{\vv_2}{\vv_1}.
+$$
+This property can be deduced by the following steps
+$$
+0=\det\m{\vv_1+\vv_2}{\vv_1+\vv_2}.
+$$
+$$ 0=\det\m{\vv_1}{\vv_1}.  $$
+$$ 0=\det\m{\vv_2}{\vv_2}.  $$
+Then the expansion of $\det\m{\vv_1+\vv_2}{\vv_1+\vv_2}.$ gives
+$$
+\det\m{\vv_1}{\vv_1}. +\det\m{\vv_1}{\vv_2}.+\det\m{\vv_2}{\vv_1}.+ \det\m{\vv_2}{\vv_2}.
+$$
+%$$
+%{
+%\[split]{
+%{\det\m{\vv_1}{\vv_2}.}&=
+%{
+%\underbrace{\det\m{-\vv_2}{-\vv_2}.}_{=0}
+%-\underbrace{\det\m{\vv_1+\vv_2}{\vv_1+\vv_2}.}_{=0}
+%+\underbrace{\det\m{\vv_1}{\vv_1}.}_{=0}
+%+\det\m{\vv_1}{\vv_2}.} 
+%\\\\
+%&=
+%{
+%\det\m{-\vv_2}{-\vv_2}.
+%-\det\m{\vv_1+\vv_2}{\vv_1+\vv_2}.
+%+\det\m{\vv_1}{\vv_1+\vv_2}.} 
+%\\\\
+%&=
+%{
+%\det\m{-\vv_2}{-\vv_2}.
+%+\det\m{-\vv_2}{\vv_1+\vv_2}.} 
+%\\\\
+%&=
+%{
+%\det\m{-\vv_2}{\vv_1}.}
+%\\\\
+%&=
+%{
+%-\det\m{\vv_2}{\vv_1}.}
+%\\\\
+%}
+%}
+%$$
+
+
+\a{Normalization}
+Don't forget that we are assuming the basic square box has area one. Therefore, we should have
+$$
+\det\m10,01.=1
+$$
+\[columns]{
+	\co 5
+\[zz]{
+	\wangge {-3}{-3}33
+\draw[->](-4,0)--(4,0) node[right] {x};
+\draw[->](0,-4)--(0,4) node[above] {y};
+\draw[fill = pink,opacity=0.5] (0,0)--(1,0)--(1,1)--(0,1)--(0,0);
+\draw[->, ultra thick] (0,0)--(1,0);
+\draw[->, ultra thick] (0,0)--(0,1);
+	}
+\co 5
+In general, we will denote $\vec e_1=\m1,0.$ and $\vec e_2=\m0,1.$. We can denote $\det\m{\ee_1}{\ee_2}.=1.$
+}
+\aaa
+%
+%\aaa{Summary}
+%These properties motivates us to give the following definition.
+%\[defi]{A function 
+%$$\map f{\mathrm{Mat}_{2\times 2}(F)}{F}$$
+%is called \x{multiplinear} if 
+%$$f(\lambda\ww+\mu\vv_1,\vv_2)=\lambda f(\ww,\vv_2)+\mu f(\vv_1,\vv_2),$$ 
+%$$f(\vv_1,\lambda\ww+\mu\vv_2)=\lambda f(\vv_1,\ww)+\mu f(\vv_1,\vv_2)$$ for any $\lambda,\mu\in F$ and $\ww,\vv_1\in F^2$.
+%Furthermore, it is called \x{alternating} if
+%$$f(\vv_1,\vv_2)=-f(\vv_2,\vv_1)$$
+%for any $\ww,\vv_1\in F^2$.
+%}
+%\a\aa
+%In one word, an alternating multilinear function satisfies all required properties to describe parallelogram areas enclosed by two vectors.
+%\a\aa
+%
+%\[lem]{If $\map f{\mathrm{Mat}_{2\times 2}(F)}{F}$ is multilinear, then $f(\vec 0,\vv)=f(\vv,\vec 0)=0$}
+%\[proof]{Since $0\cdot\vec 0=\vec 0$, we have
+%$$
+%f(\vec 0,\vv)=f(0\cdot \vec 0,\vv)=0f(\vec 0,\vv) = 0.
+%$$
+%The proof for $f(\vv,\vec 0)=0$ is similar.}
+%\a\aa
+%
+%\[lem]{If $\map f{\mathrm{Mat}_{2\times 2}(F)}{F}$ is alternating, then $f(\vv,\vv)=0$.}
+%\[proof]{
+%	We have $f(\vv,\vv) = -f(\vv,\vv)$, therefore $f(\vv,\vv)=0$.
+%	}
+%\a\aa
+%\[cor]{\label{multi}If $\map f{\mathrm{Mat}_{2\times 2}(F)}{F}$ is multiplinear and alternating, then $f(\lambda\vv,\vv)=0$ for any $\lambda\in F$.}
+%\[rem]{The geometric intuition for this proposition is clear: the parallelogram enclosed by colinear vectors must have area zero.}
+%
+%
+%\a\aa
+%\[defi]{The determiant function $\map \det{\mathrm{Mat}_{2\times 2}(F)}{F}$ is an \x{alternating} \x{multiplinear} function which is normalized in the sense that
+%$$
+%\det\m10,01. = 1.
+%$$
+%}
+%
+\aaa{Formula for determinant}
+
+%Using the definition, it is not hard to deduce the formula of any multilinear alternating functions.
+%\[lem]{If $\map f{\mathrm{Mat}_{2\times 2}(F)}{F}$ is multiplinear and alternating, then
+%$$
+%f\m ab,cd. = (ad - bc)f\m 10,01..
+%$$
+%}
+%\a\aa
+%\textbf{Proof}:Before entering to the proof, we claim that
+%$$
+%f \m00,cd. = 0
+%$$
+%by Corollary \ref{multi} since the second column is a scalar multiple of the first column.
+%
+%By multiplinearity, we can write
+%$$
+%f\m ab,cd. = f\m a0,cd.+f\m 0b,cd..
+%$$
+%Note that
+%$$
+%f\m a0,cd. = f\m a0,0d.+f\m 00,cd. = ad\cdot f\m10,01.+0
+%$$
+%and that
+%$$
+%f\m 0b,cd. = f\m 00,cd.+f\m 0b,c0. = -bc\cdot f\m10,01.+0.
+%$$
+%\a\aa
+%Therefore 
+%$$
+%f\m ab,cd.=(ad-bc)\cdot f\m10,01.
+%$$
+%as desired.
+
+\[prop]{We have
+$$
+\det\m ab,cd. = ad-bc.
+$$}
+\a\aa
+This formula can be well-explained by the folloging graph. The red area of the parallelogram enclosed by the vector 
+$$
+\m a,c.,\m b,d.
+$$
+can be cut off from a rectangle with length $a+b$, height $c+d$ by the following way.
+
+\[columns]{
+\co5
+\[z]{
+\para[red,opacity=0.5]001221\draw[fill=yellow,opacity=0.3](0,0)--(2,1)--(2,0)--(0,0);
+\draw[fill=yellow,opacity=0.3](1,2)--(1,3)--(3,3)--(1,2);
+\draw[fill=green,opacity=0.3](0,0)--(1,2)--(0,2)--(0,0);
+\draw[fill=green,opacity=0.3](2,1)--(3,1)--(3,3)--(2,1);
+\draw[fill=cyan,opacity=0.3](2,0)--(2,1)--(3,1)--(3,0)--(2,0);
+\draw[fill=cyan,opacity=0.3](1,2)--(1,3)--(0,3)--(0,2)--(1,2);
+\draw[|-|](0,-0.2)-- node[below]{a} ++(2,0);
+\draw[|-|](2,-0.2)-- node[below]{b} ++(1,0);
+\draw[|-|](3.2,0)-- node[right]{c} ++(0,1);
+\draw[|-|](3.2,1)-- node[right]{d} ++(0,2);
+\draw[|-|](3,3.2)-- node[above]{a} ++(-2,0);
+\draw[|-|](1,3.2)-- node[above]{b} ++(-1,0);
+\draw[|-|](-0.2,3)-- node[left]{c} ++(0,-1);
+\draw[|-|](-0.2,2)-- node[left]{d} ++(0,-2);
+}
+\co5
+$$
+(a+b)(c+d)-bc-bd-ac = ?
+$$
+}
+\a\aa
+\exe Using the formula of the determinant, calculate the following
+\[enumerate]{
+\item $\det\m 12,01.$
+\item $\det\m 21,32.$
+\item $\det\m 10,80.$
+	}
+\aaa
+
+\aaa{Definition of determinant}
+
+\[summ]{
+\[itemize]{
+\item Axiom 1:  
+$$\det(\vec v_1,...,\vec v_i+\vec z_i,...,\vec v_n)=\det(\vec v_1,...,\vec v_i,...,\vec v_n)+\det(\vec v_1,...,\vec z_i,...,\vec v_n)$$
+
+\item Axiom 2: For any $\lambda\in\mathbb R$, $\det(\vec v_1,\vec v_2,\cdots,\lambda\cdot\vec v_i,\cdots,\vec v_n)=\lambda\cdot \det(\vec v_1,\vec v_2,\cdots,\vec v_i,\cdots,\vec v_n)$ .
+\item Axiom 3: $\det(\cdots,\vec v,\cdots,\vec v,\cdots)=0$ for any $\vec v\in V$.
+\item Axiom 4: $\det I_n=\det(\vec e_1,\vec e_2,\cdots,\vec e_n)=1$.
+}
+}
+Here  $\vec e_i$ are the $i$'th column in identity matrix $I_n$. 
+%For example
+%$$
+%\vec e_1:=\m1,0,0.\quad
+%\vec e_2:=\m0,1,0.\quad
+%\vec e_3:=\m0,0,1.\quad\qquad
+%I_3:=\m100,010,001..
+%$$
+
+\x{These axiomizes the notion of volumn in that space.}
+
+\x{We require the matrix for determinant calculation to be a square matrix!}
+
+\a{Common Mistakes}
+Axiom 1: 
+$$\det(\vec v_1,...,\vec v_i+\vec z_i,...,\vec v_n)=\det(\vec v_1,...,\vec v_i,...,\vec v_n)+\det(\vec v_1,...,\vec z_i,...,\vec v_n)$$
+It states only for one column, other columns has to be fixed.
+
+What is wrong with the following calculation???
+
+\[exa]{
+\x{\color{red}WRONG!}
+$$
+\det \m{1+2}{1+3},
+{2+1}{3+2}.
+=
+\det
+\m11,23.+\det\m23,12.
+$$
+}
+\a\aa
+The determinant is pretty like calculation of factors
+In general, we have
+$$
+(x+y)(a+b)(c+d) = x(a+b)(c+d) + y (a+b)(c+d)
+$$
+but you can not do
+$$
+\x{\color{red}WRONG!} (\x x+y)(\x a+b)(c+d) = \x x\x a(c+d) + yb(c+d)
+$$
+Instead, there are intersection terms
+$$
+(x+y)(a+b)(c+d) = 
+xa(c+d)+
+xb(c+d)+
+ya(c+d)+
+yb(c+d)
+$$
+\a\aa
+For determinant, similar situation happens, if you wanna expand multiple columns, you have to take care of intersection terms
+$$
+\det\m{v_1+w_1}{v_2+w_2}{v_3}.
+$$$$=
+\det\m{v_1}{w_1}{v_3}.+
+\det\m{v_2}{w_1}{v_3}.+
+\det\m{v_1}{w_2}{v_3}.+
+\det\m{v_2}{w_2}{v_3}.
+$$
+\a\aa
+Axiom 2: For any $\lambda\in\mathbb R$, $\det(\vec v_1,\vec v_2,\cdots,\lambda\cdot\vec v_i,\cdots,\vec v_n)=\lambda\cdot \det(\vec v_1,\vec v_2,\cdots,\vec v_i,\cdots,\vec v_n)$ .
+\vfill
+What is wrong for the following?
+\[exa]{\x{\color{red}WRONG}
+$$
+\det (2A) = 2\det A?
+$$
+}
+\a\aa
+If fact, if $A=\m{v_1}{v_2}{v_3}.$, then $2A=\m{2v_1}{2v_2}{2v_3}.$
+We have
+$$
+\det 2A = \det\m{2v_1}{2v_2}{2v_3}. = 2 \det\m{v_1}{2v_2}{2v_3}. 
+$$$$= 4 \det\m{v_1}{v_2}{2v_3}. = 8\det\m{v_1}{v_2}{v_3}. = 2^3\det A.
+$$
+\aaa
+
+\aaa{Algebraic cofactor}
+
+\begin{equation}\label{general}
+A:=\m{\vec v_1}{\vec v_2}\cdots{\vec v_n}.=\m
+{a_{11}}{a_{12}}\cdots{a_{1n}},
+{a_{21}}{a_{22}}\cdots{a_{2n}},
+\vdots\vdots\ddots\vdots,
+{a_{n1}}{a_{n2}}\cdots{a_{nn}}..
+\end{equation}
+Define \x{algebraic cofactors} by the \x{scalar}
+$$
+A_{ij}=\det\m{\vec v_1}{\vec v_2}\cdots{(\text{replace }\vec v_j\text{ by }\vec e_i)}\cdots{\vec v_n}..
+$$ 
+A quickway to remember $A_{ij}$ is to replace the element at ith row jth column by $1$ and put 0 to else where in its columns.
+\a\aa
+For example, 
+\begin{equation}\label{special}
+\text{ put }A=\m123,456,789.\implies A_{32}=\det\m103,406,7\19.
+\end{equation}
+
+ For this $A$ in \eqref{special}, please write down $A_{21}$, $A_{22}$ and $A_{23}$ as well (you don't need to calculate determinant for the exact number).
+
+\a\aa
+
+For 
+$$
+A=\m123,456,789.
+$$
+\vfill
+$$
+A_{12}=\det\m1\13,406,709. ␣ 
+A_{22}=\det\m103,4\16,709. ␣ 
+A_{32}=\det\m103,406,7\19.
+$$
+
+\a\aa
+
+First important observation: Algebraic cofactors can be used for calculating the determinant with replaced columns.
+
+$$
+A[“replace 2nd col by another vector“]
+=
+\m1 
+{\h x_1}3,4
+{\h x_2}5,6
+{\h x_3}9.
+$$
+Then
+$$
+\det \m1 
+{\h x_1}3,4
+{\h x_2}5,6
+{\h x_3}9.
+=
+\x{\color{red}x_1}\underbrace{\det\m1\13,406,709.}_{A_{12}}
++
+\x{\color{red}x_2}\underbrace{\det\m103,4\16,709.}_{A_{22}}
++
+\x{\color{red}x_3}\underbrace{\det\m103,406,7\19.}_{A_{32}}
+$$
+
+This is called \x{Laplacian Expansion}.
+
+\a\aa
+Question: In the laplacian Expansion formula, which axiom did we used? and how did we use that?
+
+$$
+\det \m1 
+{\h x_1}3,4
+{\h x_2}5,6
+{\h x_3}9.
+=
+\x{\color{red}x_1}\underbrace{\det\m1\13,406,709.}_{A_{12}}
++
+\x{\color{red}x_2}\underbrace{\det\m103,4\16,709.}_{A_{22}}
++
+\x{\color{red}x_3}\underbrace{\det\m103,406,7\19.}_{A_{32}}
+$$
+
+\[itemize]{
+\item Axiom 1:  
+$$\det(\vec v_1,...,\vec v_i+\vec z_i,...,\vec v_n)=\det(\vec v_1,...,\vec v_i,...,\vec v_n)+\det(\vec v_1,...,\vec z_i,...,\vec v_n)$$
+
+\item Axiom 2: For any $\lambda\in\mathbb R$, $\det(\vec v_1,\vec v_2,\cdots,\lambda\cdot\vec v_i,\cdots,\vec v_n)=\lambda\cdot \det(\vec v_1,\vec v_2,\cdots,\vec v_i,\cdots,\vec v_n)$ .
+\item Axiom 3: $$\det(\cdots,\vec v,\cdots,\vec v,\cdots)=0 ␣ “   for any “␣   \vec v\in V.$$
+}
+
+\a\aa
+\exe Look at the formula, think about the question. Originally 
+$$
+A = \m1\23,4\56,7\89.
+$$
+$$
+\det \m1 
+{\h x_1}3,4
+{\h x_2}5,7
+{\h x_3}9.
+=
+\x{\color{red}x_1}\underbrace{\det\m1\13,406,709.}_{A_{12}}
++
+\x{\color{red}x_2}\underbrace{\det\m103,4\16,709.}_{A_{22}}
++
+\x{\color{red}x_3}\underbrace{\det\m103,406,7\19.}_{A_{32}}
+$$
+which choicse of $x_1$, $x_2$, $x_3$ could make the following equation true?
+$$
+\det A = \x{\color{red}x_1}A_{12} + \x{\color{red}x_2}A_{22} + \x{\color{red}x_3}A_{32}
+$$
+
+\a\aa
+\exe Any repeated column will result $0$ for the determinant, therefore we have
+$$
+0 = \m1\13,4\46,7\79.
+␣ 
+0 = \m1\33,4\66,7\99.
+$$
+Recall the formula
+$$
+\det \m1 
+{\h x_1}3,4
+{\h x_2}5,7
+{\h x_3}9.
+=
+\x{\color{red}x_1}\underbrace{\det\m1\13,406,709.}_{A_{12}}
++
+\x{\color{red}x_2}\underbrace{\det\m103,4\16,709.}_{A_{22}}
++
+\x{\color{red}x_3}\underbrace{\det\m103,406,7\19.}_{A_{32}}
+$$
+Please come up with more $x_1,x_2,x_3$ to keep the following equation true
+
+$$
+0 = \x{\color{red}x_1}A_{12} + \x{\color{red}x_2}A_{22} + \x{\color{red}x_3}A_{32}
+$$
+
+\a\aa
+Clear, we may write 
+
+$$
+\det \m1 
+{\h x_1}3,4
+{\h x_2}5,7
+{\h x_3}9.
+=
+\x{\color{red}x_1}A_{12} + \x{\color{red}x_2}A_{22} + \x{\color{red}x_3}A_{32}
+=
+\m{A_{12}}{A_{22}}{A_{32}}. \m
+{\h x_1},
+{\h x_2},
+{\h x_3}.
+$$
+Would you please filling scalars in the following slot?
+$$
+\m\square\square\square. = \m{A_{12}}{A_{22}}{A_{32}}.\m1\23,4\56,7\89.
+$$
+\a\aa
+
+$$
+\m0{“det“(A)}0. = \m{A_{12}}{A_{22}}{A_{32}}.\m1\23,4\56,7\89.
+$$
+\a\aa
+
+Now let us do first and third columns
+
+$$
+A_{11} = \m \123,056,089. ␣ 
+A_{21} = \m 023,\156,089. ␣ 
+A_{31} = \m 023,056,\189. ␣ 
+$$
+
+$$
+\det \m 
+{\h x_1}23,
+{\h x_2}56,
+{\h x_3}89.
+=
+\m{A_{11}}{A_{21}}{A_{31}}. \m
+{\h x_1},
+{\h x_2},
+{\h x_3}.
+$$
+
+
+$$
+\m\square\square\square. = \m{A_{11}}{A_{21}}{A_{31}}.\m\123,\456,\789.
+$$
+
+\a\aa
+
+Let's do last column
+
+
+$$
+A_{13}=\m 12\1, 450, 780. ␣ 
+A_{23}=\m 120, 45\1, 780. ␣ 
+A_{33}=\m 120, 450, 78\1. ␣ 
+$$
+
+$$
+\det \m 12
+{\h x_1},45
+{\h x_2},78
+{\h x_3}.
+=
+\m{A_{13}}{A_{23}}{A_{33}}. \m
+{\h x_1},
+{\h x_2},
+{\h x_3}.
+$$
+
+$$
+\m\square\square\square. = \m{A_{13}}{A_{23}}{A_{33}}.\m12\3,45\6,78\9.
+$$
+
+\a\aa
+Put all these together, what is your discovery?
+$$
+\m
+{A_{11}}{A_{21}}{A_{31}},
+{A_{12}}{A_{22}}{A_{32}},
+{A_{13}}{A_{23}}{A_{33}}.
+\m123,456,789. = 
+\m
+\square\square\square,
+\square\square\square,
+\square\square\square.
+$$
+
+\[defi]{Let $A$ be $ n × n$ matrix, we call the matrix
+$$
+A^* := 
+\m
+{A_{11}}{A_{21}}\cdots{A_{n1}},
+{A_{12}}{A_{22}}\cdots{A_{n2}},
+\vdots\vdots\ddots\vdots,
+{A_{1n}}{A_{2n}}\cdots{A_{nn}}.
+$$
+The \x{adjugate} of matrix $A$. We have 
+$$
+AA^* = (\det A)\cdot I_n.
+$$
+}
+\a\aa
+Please be very careful on how position of the cofactors put into adjugate
+
+$$
+\m
+{A_{11}}{\y A_{21}}{A_{31}},
+{A_{12}}{A_{22}}{A_{32}},
+{A_{13}}{A_{23}}{A_{33}}. ␣ 
+A_{21}=
+\m023,\156,089.
+$$
+
+Note:
+
+$$
+A^*
+=
+\m
+{A_{11}}{\y A_{21}}{A_{31}},
+{A_{12}}{A_{22}}{A_{32}},
+{A_{13}}{A_{23}}{A_{33}}.
+=
+\m
+{A_{11}}{ A_{12}}{A_{13}},
+{\y A_{21}}{A_{22}}{A_{23}},
+{A_{31}}{A_{32}}{A_{33}}.^T
+$$
+
+\a{Inverse matrix formula}
+\[thm]{
+If $\det A ≠ 0$, we have a formula for its inverse, given by
+$$
+A^{-1}=\frac{A^*}{\det A}.
+$$
+}
+
+\a\aa
+If $A$ is $2 × 2$ matrix, let's calculate the adjugate matrix of $A$
+
+$$
+A = \m ab,cd.
+$$
+
+$$
+A_{11} = \m \1b,0d.␣ 
+A_{21} = \m 0b,\1d.␣ 
+$$
+
+$$
+A_{12} = \m a\1,c0.␣ 
+A_{22} = \m a0,c\1.␣ 
+$$
+
+Therefore
+
+$$
+A^* = \m d{-b},{-c}a. ⟹   A^{-1}=\frac1{ad-bc}\m d{-b},{-c}a.
+$$
+
+
+\a{Cramer's rule}
+
+Now that we have inverse matrix formula
+$$
+A^{-1} = \frac1{\det A}A^*.
+$$
+
+Suppose we wanna solve an equation
+$$
+\underbrace{A}_{n × n “ matrix “}
+\m{x_1},{x_2},\vdots,{x_n}.
+=
+\m{b_1},{b_2},\vdots,{b_n}.
+$$
+where we are in lucky situations that $A$ invertible, then the solution is given by
+$$
+\m{x_1},{x_2},\vdots,{x_n}.
+= A^{-1}\m{b_1},{b_2},\vdots,{b_n}.
+$$
+\a\aa
+Therefore, we may write
+$$
+\m{x_1},{x_2},\vdots,{x_n}.
+=
+\frac{A^*}{“det“(A)}\m{b_1},{b_2},\vdots,{b_n}.
+$$
+So
+$$
+\m{x_1},{x_2},\vdots,{x_n}.
+=
+\frac1{“det“(A)}{\m
+{A_{11}}{A_{21}}\cdots{A_{n1}},
+{A_{12}}{A_{22}}\cdots{A_{n2}},
+\vdots\vdots\ddots\vdots,
+{A_{1n}}{A_{2n}}\cdots{A_{nn}}.
+}\m{b_1},{b_2},\vdots,{b_n}.
+$$
+\a\aa
+This gives a formula
+$$
+x_i = \frac1{“det“(A)}\m{A_{1i}}{A_{2i}}\cdots{A_{ni}}.\m{b_1},{b_2},\vdots,{b_n}.
+$$
+However, we remembered that the expression 
+$$
+\m{A_{1i}}{A_{2i}}\cdots{A_{ni}}.\m{b_1},{b_2},\vdots,{b_n}.
+$$
+is the determinant of replacing $\m{b_1},{b_2},\vdots,{b_n}.$ to $i$'th column of $A$.
+
+\a{Cramer's rule}
+
+\[thm]{Suppose 
+$$
+\underbrace{A}_{n × n “ matrix “}
+\m{x_1},{x_2},\vdots,{x_n}.
+=
+\underbrace{\m{b_1},{b_2},\vdots,{b_n}.}_{\vec b}
+$$
+is a system of linear equations with $A$ invertible so that this equation has unique solution. Then $x_i$ is given by the formula
+$$
+x_i=\frac{\det A_i}{\det A}
+$$
+where $A_i$ is the matrix by replacing ith column of $A$ by constant $\vec b$
+}
+
+\a\aa
+\exe Using Cramer's rule, write a formula for the component of the following solution in terms of determinant
+
+$$
+\m182,392,112. \m x,y,z. = \m1,2,1.
+$$
+
+$$
+x=\frac{\det\m
+\square\square\square,
+\square\square\square,
+\square\square\square.
+}{
+\det\m
+\square\square\square,
+\square\square\square,
+\square\square\square.
+}␣ 
+y=\frac{\det\m
+\square\square\square,
+\square\square\square,
+\square\square\square.
+}{
+\det\m
+\square\square\square,
+\square\square\square,
+\square\square\square.
+}␣ 
+z=\frac{\det\m
+\square\square\square,
+\square\square\square,
+\square\square\square.
+}{
+\det\m
+\square\square\square,
+\square\square\square,
+\square\square\square.
+}␣ 
+$$
+
+
+
+
+\aaa

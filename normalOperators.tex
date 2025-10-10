@@ -1,0 +1,353 @@
+
+\aaa{Conjugate Transpose}
+
+The vector space $ℝ^n$ has an inner product, where we can define the length of a vector by 
+$$
+||\vec v||=\sqrt{\vec v^T\vec v}
+$$ 
+
+\a\aa
+We would like to generalize the concept of length and angle for vectors in $ℂ^n$, but we have a problem:
+
+What is the length of the vector
+$$\m1,i.$$
+\vfill
+After calculation
+$$
+\m1i.\m1,i. = 1-1 = 0.
+$$
+The length of this vector is zero. This could be meaning ful, but, ...
+
+\a\aa
+
+Generalization of inner product of $ℝ^n$ to $ℂ^n$: 2 approach
+
+\[enumerate]{
+\item First generalization: $\vec v · \vec w = \vec v^T\vec w$ ;
+\item Second generaliztion: $\vec v · \vec w = \overline{\vec v^T}\vec w$.
+}
+
+
+The second generalization has been used by god to create our universe, it appears repeatedly in the quantum machanics.
+
+\x{In this class, we will study the second generalization}, the inner product over $ℂ^n$ defined by $\vec v · \vec w = \overline{\vec v^T}\vec w$. This is called \x{Hermitian inner product}
+
+\vfill
+
+To simplify the notation, we also denote by
+$$
+\vec v^H := \overline{\vec v^T}.
+$$
+
+The letter $H$ refers to Hermitian.
+
+\a\aa
+\[defi]{
+For a matrix $A$, we define
+$$
+A^H := \overline{A^T}
+$$
+and call it the \x{Hermitian transpose}
+}
+The Hermitian transpose is a direct generalization of the transpose for real number matrices.
+\[prop]{$A^H = A^T$ if and only if $A$ is a real-coefficeint matrix.}
+\a\aa
+\[prop]{
+The Hermitian transpose clearly have the following properties.
+\[itemize]{
+\item For any $A,B$ of the same size, $(A+B)^H = A^H+B^H$
+\item For any $A,B$, we have $(AB)^H= B^HA^H$
+}
+}
+
+\a{Generalization of positivity lemma}
+Recall that the properties of inner product
+
+\[thm]{ For any \x{non-zero vector } $\vec 0 ≠ \vec v  ∈ ℝ^n$, we have $\vec v^T\vec v > 0$.
+}
+This is because if we write $\vec v=\m{x_1}{x_2}\cdots{x_n}.^T$, then $\vec v^T\vec v=x_1^2+…+x_n^2 > 0$.
+The result directly generalizes to matrices
+\[lem]{
+For any \x{non-zero} matrix $M$, we have $M^TM≠0$. 
+}
+\a\aa
+Clear, the above positivity property no longer holds for the \x{first generalization} of inner product to $\vec v^T\vec w$ for $ℂ^n$, because
+$$
+\vec v = \m 1,i.
+$$
+\vfill
+$$
+\vec v^T\vec v = \m1i.\m1,i.=1^2+i^2=0
+$$
+A non-zero vector of length 0? A non-zero vector perpendicular to itself?
+
+\a\aa
+For the second generalization, the length of $\m1i.^T$ is no longer zero
+$$
+\vec v^H\vec v = \m1{-i}.\m1,i. = 1^2-i^2 = 2 = 0.
+$$
+
+\a\aa
+The positivity lemma holds. Idea:
+
+$$
+\m{¯{x_1}}{¯{x_2}}{…}{¯{x_n}}.
+\m {x_1},{x_2},{…},{x_n}.
+=
+¯x_1x_1+¯x_2x_2+…+¯x_nx_n
+$$
+$$
+=
+\underbrace{|x_1|^2+|x_2|^2+…+|x_n|^2}_{“all non-negative real numbers“} > 0
+$$
+
+\a{Positivity for Hermitian Inner Product}
+\[thm]{ For any \x{non-zero vector } $\vec 0 ≠ \vec v  ∈ ℂ^n$, we have $\vec v^H\vec v > 0$.
+}
+This is because if we write $\vec v=\m{x_1}{x_2}\cdots{x_n}.^T$, then $\vec v^H\vec v=|x_1|^2+…+|x_n|^2 > 0$.
+The result directly generalizes to matrices
+\[lem]{
+For any \x{non-zero} complex coefficient matrix $M$, we have $M^HM≠0$. 
+}
+\a\aa
+\[defi]{A matrix $M$ is called \x{(Hermitian) Normal} if 
+$$
+M^HM = MM^H
+$$
+}
+
+\a\aa
+Next, we show a \x{general philosophy} in linear algebra, roughly speaking, that
+\vfill
+$$
+“Normal under an \x{involution} with positivity lemma“ ⟹   “Diagonalizable“
+$$
+
+\a\aa
+To work on a more general settings, we introduce
+\[defi]{An \x{involution} ι is an action associate each $n × n$ matrix $M$ with another matrix $M^{ι}$, such that 
+\[itemize]{
+\item $(A+B)^ι=A^{ι}+B^{ι}$ 
+\item $(AB)^{ι}=A^{ι}B^{ι}$ or $(AB)^{ι}=B^{ι}A^{ι}$
+\item For any scalar, $λ$, there is a scalar $λ^{ι}$, such that $(λI_n)^ι = λ^{ι}I_n$
+}
+}
+Any involution satisfies the above property would satisfy
+$$
+p(A^{ι})=(p(A))^{ι}
+$$
+for any polynomial $p$.
+
+For $ι=T$, $ι=H$ they are all involutions. But $A ↦  -A$ or $A ↦  A^{-1}$ is not an involution.
+\a\aa
+\[defi]{Let ι be an involution, a matrix is called \x{ι-normal} if $AA^{ι}=A^{ι}A$.}
+
+\a\aa
+\[thm]{Let ι be an involution on n × n matrices, if ι \x{satisfies the positivity lemma} $A^{ι}A=0 ⟹  A=0$ for all matrices $A$, then any ι-normal matrices $A$ with 
+$$
+\det(tI-A) = ∏_{i=1}^k(t-λ_i)^{m_i}
+$$
+are \x{diagonalizable}}
+\textbf{Proof}: Without loss of generality we may say $λ_1,…,λ_k$ are distinct roots, let
+$$
+N = ∏_{i=1}^k(A-λ_iI_n)
+$$
+Then $A “is diagonalizable“ ⟺   N=0$. By Caylay Hamilton Theroem, we know $N^n=0$. 
+\a\aa
+Since $A$ is $ι$-normal, $A^{ι}A=AA^{ι}$,  $N$ must be normal 
+$N^{ι}N=NN^{ι}$.
+
+Now 
+$$
+\underbrace{NN…N}_{n-“many“} = 0
+⟹
+\underbrace{NN…N}_{n-“many“}
+\underbrace{N^{ι}N^{ι}…N^{ι}}_{n-“many“}=0
+$$
+Since $N$ commute with $N^ι$, we have
+$$
+\underbrace{NN^{ι}NN^{ι}NN^{ι}…NN^{ι}}_{n-“many “ NN^{ι}}=0
+$$
+If $n$ is odd, we replace $n$ by $n+1$, we separate
+$$
+\underbrace{NN^{ι}…NN^{ι}}_{\frac n2-“many“}
+\underbrace{NN^{ι}…NN^{ι}}_{\frac n2-“many“}=0
+$$
+However, this equals to
+$$
+\underbrace{NN^{ι}…NN^{ι}}_{\frac n2-“many“}
+(\underbrace{NN^{ι}…NN^{ι}}_{\frac n2-“many“})^{ι}=0
+$$
+Therefore $\underbrace{NN^{ι}…NN^{ι}}_{\frac n2-“many“}=0$
+\a\aa
+Use this strategy again and again, we finally got
+$$
+NN^{ι}=0
+$$
+Therefore $N=0$. This implies that the matrix $A$ is diagonalizable.
+\a\aa
+In particular, if $A$ is a matrix with complex numbers, any complex-coefficient polynomial can be written in the form 
+$$ ∏_{i=1}^k(t-λ_i)^{m_i}$$
+\[cor]{Let $A$ be a Hermitian Normal matrix in the sense that $A^HA=AA^H$, then $A$ is diagonalizable.}
+\a\aa
+We are not satisfied. 
+
+\[defi]{A matrix $A$ is called \x{Hermitian-symmetric} if $A=A^H$}
+\[defi]{A matrix $A$ is called \x{ι-symmetric} if $A=A^{ι}$}
+An example of Hermitian symmetric matrix
+$$
+\m1i,{-i}2.
+$$
+
+\a\aa
+
+\[defi]{A matrix $A$ is called \x{unitary} if $AA^H=A^HA=I$}
+\[defi]{A matrix $A$ is called \x{ι-orthogonal} if $AA^{ι}=A^{ι}A=I$}
+An example of Hermitian orthogonal matrix
+$$
+\m{\sqrt{0.5}}{i\sqrt{0.5}},{\sqrt{0.5}}{-i\sqrt{0.5}}.
+$$
+\a\aa
+In our lecture, we will prove this theroem
+
+\[thm]{Let $A$ be a \x{Hermitian normal } matrix, then there exists \x{unitary} matrix $Ω={Ω^{-1}}^H$, such that 
+$$
+Ω^{-1}AΩ=Ω^HAΩ = Λ
+$$
+is a diagonal matrix!
+}
+\a\aa
+Note that in spectural decomposition
+$$
+g(A) = g(λ_1)P_1+g(λ_2)P_2+…+g(λ_k)P_k
+$$
+All matrices $P_i$ are obtained by plugging $A$ into interpolation polynomials, so if $A$ is Hermitian-normal, then $P_i$ are normal as well!
+
+\a\aa
+\[lem]{If $P=P^2$ is a projection and normal
+$$
+P^HP=PP^H
+$$
+Then $P$ must be Hermitian symmetric $P^H = P$.
+}
+\textbf{Proof}: Consdier 
+$$
+(P-P^HP)(P-P^HP)^H = PP^H - PP^HP - P^HP^HP +(P^HP)^2 
+$$
+$$= PP^H - 2P^HP + P^HP = 0
+$$
+By \x{positivity lemma} for $^H$, we have $P-P^HP=0$, this implies $P=P^HP$. So
+$$
+P = P^HP=(P^HP)^H = P^H.
+$$
+\a\aa
+\[rem]{The above proof essentially only uses positivity. Therefore, if $ι$ is an involution with positivity lemma, any $ι$-normal projection is $ι$-symmetric.
+}
+\a\aa
+\[cor]{Suppose $A$ is a normal matrix over $ℂ$, then $A$ is diagonalizable and its spectural decomposition
+$$
+g(A) = g(λ_1)P_1+…+g(λ_k)P_k
+$$
+all eigenspace projection are Hermitian symmetric.
+}
+Recall previously, we leaned a projection $P$ is symmetric iff $“ker“(P) \perp “Im“(P)$. In real number matrices, we have learned that if $P_1+…+P_k=I$ and $P_i^T=P_i$, then all $“Im“(P_i)$ are orthogonal to each other.
+
+\a\aa
+
+\[defi]{Two vector $\vec v, \vec w$ is called \x{Hermitian orthogonal}, if 
+$$
+\vec v^H\vec w=0
+$$}
+
+\[defi]{Two subspaces $W_1,W_2$ are called \x{Hermitian orthogonal } if and only if for any $\vec v\in W_1$ and $\vec w\in W_2$, we have $\vec v^H\vec w=0$. In this case, we denote it by $W_1 \perp W_2$.}
+
+\a\aa
+
+\[thm]{A matrix $A$ is normal if and only if it is diagonalizable with \x{mutually Hermitian-orthogonal eigenspaces}.}
+
+
+\a\aa
+
+
+
+To obtain an unitary diagonalization, we simply use diagonal cross-filling. 
+
+\a\aa
+\exe Find an unitary diagonalization of the following matrix
+$$
+\m{-2}11,1{-2}1,11{-2}.
+$$
+Eigenvalues $0,3$.
+
+\a{Special types of normal operators and eigenvalues}
+We have the following special type of normal matrices, 
+
+\[itemize]{
+\item Hermitian symmetric matrices $A^H = A$;
+\item skew-Hermitian symmetric matrices $A^H = -A$;
+\item Unitary matrices $A^H = A^{-1}$;
+}
+They are all normal operators!! 
+
+\vfill
+
+How can we visualize them in the context of spectural decomposition???
+$$
+g(A) = g(λ_1)P_1 + … + g(λ_k)P_k ␣  P_i^H = P_i
+$$
+\a\aa
+Note that complex conjugation are the one compatible with $^H$
+
+$$
+(λI_n)^H = ¯λ I_n
+$$
+
+\a\aa
+\[thm]{A matrix $A$ is \x{Hermitian symmetric} $A=A^H$ if and only if $A$ is diagonalizable, eigenspaces mutually Hermitian orthogonal \x{with real eigenvalues}.}
+
+\textbf{Proof}: 
+$$A= A^H$$
+⟺  
+$$
+λ_1P_1+…+λ_kP_k = ¯λ_1P_1+…+¯λ_kP_k,  ␣ P_k^H=P_K
+$$
+
+Note that $λ=¯λ$ means $λ ∈ ℝ$
+
+\a\aa
+\[thm]{A matrix $A$ is \x{skew-Hermitian symmetric} $A=-A^H$ if and only if $A$ is diagonalizable, eigenspaces mutually Hermitian orthogonal \x{with purly imaginary eigenvalues}.}
+
+\textbf{Proof}: 
+$$A= A^H$$
+⟺  
+$$
+λ_1P_1+…+λ_kP_k = -¯λ_1P_1+…+-¯λ_kP_k,  ␣ P_k^H=P_K
+$$
+
+Note that $λ=-¯λ$ means $λ=bi$
+
+
+\a\aa
+\[thm]{A matrix $A$ is \x{unitary} $A^H=A^{-1}$ if and only if $A$ is diagonalizable, eigenspaces mutually Hermitian orthogonal \x{with all eigenvalues of absolute value $1$}.}
+
+\textbf{Proof}: 
+$$A= A^H$$
+⟺  
+$$
+λ_1P_1+…+λ_kP_k = ¯λ_1^{-1}P_1+…+¯λ_k^{-1}P_k,  ␣ P_k^H=P_K
+$$
+
+Note that $λ=¯λ^{-1}$  ⟺   $λ¯λ=1$ ⟺   $|λ|=1$.
+
+\a\aa
+Over complex plane, the distribution of eigenvalues determines the property of matrix
+
+\[z]{
+\draw (0,0) circle[radius=1] ;
+\draw (1,1) node[above]{Unitary};
+\draw (-4,0) -- (4,0) node[right]{Hermitian symmetric};
+\draw (0,-4)--(0,4) node[right]{Skew Hermitian Symmetric};
+}
+
+
+\aaa

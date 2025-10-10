@@ -1,0 +1,62 @@
+
+\newcommand\map[3]{#1:{#2}\longrightarrow  {#3}}
+\newcommand\maps[5]{{#1}:{#2}\longrightarrow {#3},{#4} \mapsto {#5}}
+\aaa{Transformation addition and matrix addition}
+Given \lt from $V$ to $W$, we can construct new \lt by taking linear combinations of those \lt. This is corresponding to linear combination of matrices.
+\a\aa
+\[defi]{For two \lt $\map T VW$ and $\map SVW$, we can define their linear combination for any scalar $\lambda,\mu\in F$ by
+$$
+\maps{\lambda T+\mu S}VW{\vv}{\lambda T(\vv)+\mu S(\vv)}
+$$
+}
+\a\aa
+\[prop]{[Distribution law]Let $V,W,U$ be vector spaces, then for the following \lt and arbitrary scalar $\lambda,\mu\in F$
+$$
+\xymatrix{V\ar[r]^T\ar[r]_S&W\ar[r]^R&U}
+$$
+We have
+$$
+R\circ(\lambda S+\mu T)=\lambda (R\circ S)+\mu (R\circ T);
+$$
+For 
+$$
+\xymatrix{U\ar[r]^R&V\ar[r]^T\ar[r]_S&W}
+$$
+We have
+$$
+(\lambda S+\mu T)\circ R=\lambda(S\circ R)+\mu(T\circ R);
+$$
+}
+\a\aa
+We leave the above proof as an Excercise since it is straightforward.
+\a\aa
+
+\[prop]{Let $V,W$ be vector spaces, 
+$$
+\ce\text{ basis for }V\quad \cw\text{ basis for }W 
+$$
+For a pair of \lt
+$$
+\xymatrix{V\ar[r]^T\ar[r]_S& W}
+$$
+Suppose $A$ is the matrix for $T$ under bases $\ce,\cw$ and $B$ is the matrix for $S$ under bases $\ce,\cw$. Then for any scalar $\mu,\lambda\in F$, the matrix for $\lambda T+\mu S$ under bases $\ce,\cw$ is given by
+$$
+\lambda A+\mu B.
+$$
+
+}
+\a\aa
+\textbf{Proof:} By what given, we have
+$$T\underbrace{\obasis\ee n}_\ce = \underbrace{\obasis\ww m}_\cw A$$
+$$S\underbrace{\obasis\ee n}_\ce = \underbrace{\obasis\ww m}_\cw B$$
+So
+$$\lambda T\underbrace{\obasis\ee n}_\ce = \underbrace{\obasis\ww m}_\cw \lambda A$$
+$$\mu S\underbrace{\obasis\ee n}_\ce = \underbrace{\obasis\ww m}_\cw \mu B$$
+Then
+$$
+(\lambda T+\mu S)\underbrace{\obasis\ee n}_\ce = \underbrace{\obasis\ww m}_\cw (\lambda A+\mu B)
+$$
+
+\aaa
+
+

@@ -1,0 +1,34 @@
+
+\newcommand\map[3]{#1:{#2}\longrightarrow  {#3}}
+\newcommand\maps[5]{{#1}:{#2}\longrightarrow {#3},{#4} \mapsto {#5}}
+\aaa{Left and right inverse for Linear Transformations}
+We add those pages for completness, read those proofs by yourself as a homework. And try to prove it directly without using induced transformation and cancellation rule.
+\a{Left Inverse for injective}
+\[prop]{\RI Let $V,W$ be finite dimensional vector spaces. If $\map TVW$ is an \inj \lt, then it has a \liv $\map RWV$ with 
+$$
+R\circ T=\id_V
+$$}
+{\textbf{Proof:}Let $\ce$ be a basis of $V$, since $T$ is \inj, then $T\ce$ is also \li in $W$(By Prop.\CI). Therefore there exists a \lt $\map RWV$ with $R(T\ce)=\ce$(By Prop. \IS), therefore,
+$$
+R\circ T\circ L_\ce=L_\ce=\id_V\circ L_\ce
+$$
+Since $\ce$ \sws, $L_\ce$ is a \sur, use the \rc rule we have
+$$
+R\circ T=\id_V.
+$$
+}
+\a{Right Inverse for surjective}
+\[prop]{\RS Let $V,W$ be finite dimensional vector spaces. If $\map TVW$ is an \sur \lt, then it has a \riv $\map RWV$ with 
+$$
+T\circ R=\id_W
+$$}
+{\textbf{Proof:}Let $\ce$ be a basis of $V$, since $T$ is \sur, then $T\ce$ \sws $W$(By Prop.\CS). Let $\cw$ be a subtuple of $\ce$ such that $T\cw$ is a \bas of $W$. Then there exists a \lt
+$
+\map RWV
+$
+with $R(T\cw)=\cw$(By Prop \IS). So $T(R(T\cw))=T\cw$
+
+Now we have $$T\circ R\circ L_{T\cw}=L_{T\cw}=\id_W\circ L_{T\cw}$$
+Since $T\cw$ \sws, $L_{T\cw}$ is a \sur, by \rc rule we have $T\circ R=\id_W$.
+}
+\aaa

@@ -1,0 +1,383 @@
+
+\aaa{The exponential function}
+Recall what we called exponential
+
+$$
+e^x:= \lim \left(1+\frac xn\right)^n.
+$$
+\a\aa
+Recall the Binomial Expansion
+$$
+(1+x)^n = 1 + \frac n{1!} x +\frac{n(n-1)}{2!} x^2 +\cdots+\frac{n(n-1)(n-2)}{3!} x^3+\cdots
+$$
+\a\aa
+We may think $e^x = (1+\frac x{{∞}})^{∞}$, the binomial expansion is then 
+$$
+\left(1+\frac x{{∞}}\right)^{∞} = 1 + \frac {∞}{1!} \frac x{∞} +\frac{{∞}({∞}-1)}{2!} \frac {x^2}{{∞}^2} +\cdots+\frac{{∞}({∞}-1)({∞}-2)}{3!} \frac{x^3}{{∞}^3}+\cdots
+$$
+
+Note that
+$$
+\frac{∞}{∞} = \frac{∞-1}{∞} = \frac{∞-2}{∞} = \cdots = 1.
+$$
+So finally we have the \x{Binomial Expansion}
+
+$$
+e^x = 1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+\cdots
+$$
+\aaa
+
+
+\aaa{Motivation of Exponential}
+Consider the differential equation
+$$
+y' = 2y.
+$$
+How to understand it?
+
+\vfill
+The differential equation \( y' = 2y \) represents a scenario where the rate of change of \( y \) (speed) is proportional to its current value (distance).
+
+
+\a\aa
+Consider \( y(t) \) as a function of \( t \). When we examine the value of \( y \) at a very small time, say \( \frac{1}{n} \), we notice that \( y\left(\frac{1}{n}\right) \) is almost the same as \( y(0) \), since the time interval is extremely small.
+
+\vfill
+Given our differential equation \( y' = 2y \), the speed of change at \( t = 0 \) is \( 2y(0) \). %We can approximate the change in \( y \) over this small interval \( \frac{1}{n} \) as the speed times the time interval. Hence, the approximation is:
+
+$$
+y\left(\frac{1}{n}\right) \approx y(0) + \frac{1}{n} \cdot 2y(0)
+$$
+
+This leads to the expression:
+
+$$
+y\left(\frac{1}{n}\right) = y(0)\left(1 + \frac{2}{n}\right)
+$$
+
+Note that we have factored out \( y(0) \) to highlight the proportional change in \( y \) over the interval \( \frac{1}{n} \).
+\a\aa
+
+%Now, let's extend this idea to a larger time frame. We can iteratively apply the same reasoning for each small interval of time \( \frac{1}{n} \). 
+Since the rate of change \( y' = 2y \) remains consistent over each interval, we can approximate the value of \( y \) at each step.
+\vfill
+For the next small interval, starting from \( \frac{1}{n} \), we use the updated value of \( y \) and apply the same formula:
+\vfill
+$$
+y\left(\frac{2}{n}\right) = y\left(\frac{1}{n}\right)\left(1 + \frac{2}{n}\right)
+$$
+
+Repeating this process \( n \) times to reach time \( t = 1 \), we have:
+
+$$
+y(1) = y(0)\left(1 + \frac{2}{n}\right)^n
+$$
+
+\a\aa
+As \( n \) becomes very large, this expression approaches the form of an exponential function:
+
+$$
+y(1)=\lim_{n \rightarrow \infty} y(0)\left(1 + \frac{2}{n}\right)^n = y(0)e^{2}
+$$
+
+%This demonstrates that the solution to the differential equation \( y' = 2y \) is indeed an exponential function. The value of \( y(t) \) grows exponentially over time, with the growth rate continuously proportional to its current value.
+\a\aa
+% Extending to General Time s Using Small Time Steps:
+For finidng $y(s)$, consider extending our approach to a general time \( s \) using small time steps \( \frac{1}{n} \).
+\vfill
+% Small Time Step Analysis:
+%For each step, we approximate \( y \) using our earlier logic, where the change in \( y \) is proportional to its current value. 
+%This is akin to the approximation \( y\left(\frac{1}{n}\right) = y(0)\left(1 + \frac{2}{n}\right) \).
+
+% Reaching General Time s in ns Steps:
+To reach a general time \( s \), we perform \( ns \) such steps. After \( ns \) steps, the approximation is:
+$$
+y(s) \approx y(0)\left(1 + \frac{2}{n}\right)^{ns}
+$$
+
+% Taking the Limit as n -> infinity:
+As \( n \) becomes very large, this expression approaches the form of an exponential function:
+$$
+\lim_{n \rightarrow \infty} y(0)\left(1 + \frac{2}{n}\right)^{ns} = y(0)e^{2s}
+$$
+
+% Conclusion: Solving the Differential Equation:
+\a\aa
+This result  
+$$ y(s) = y(0)e^{2s} $$
+ the solution to the differential equation \( y' = 2y \) .
+
+\aaa
+ 
+\aaa{Matrix Differential Equation}
+
+% Introduction to Vector Differential Equation:
+Consider the vector differential equation \( \mathbf{y}' = A\mathbf{y} \), where \( \mathbf{y} \) is a vector and \( A \) is a matrix. This equation describes a system where the rate of change of each component of the vector \( \mathbf{y} \) is determined by a linear combination of all components of \( \mathbf{y} \), with the coefficients provided by the matrix \( A \).
+
+% Defining Matrix Exponential:
+To solve this equation, we introduce the concept of a matrix exponential, denoted as \( e^{At} \). The matrix exponential is defined as:
+$$
+e^{At} = \lim_{n ⟶  ∞}(1+\frac An)^n 
+$$
+It has binomial expansion
+$$
+e^{At}=I + At + \frac{1}{2!}A^2t^2 + \frac{1}{3!}A^3t^3 + \cdots
+$$
+where \( I \) is the identity matrix.
+
+% Solving the Vector Differential Equation:
+Now, let's solve the differential equation \( \mathbf{y}' = A\mathbf{y} \) using a method analogous to the scalar case:
+
+\a\aa
+% Step 1: Small Time Step Analysis:
+Consider a small time step \( \frac{1}{n} \). For each step, we approximate the change in \( \mathbf{y} \) using the matrix \( A \) and the small time step, leading to:
+$$
+\mathbf{y}\left(\frac{1}{n}\right) \approx \mathbf{y}(0) + \frac{1}{n} A\mathbf{y}(0)
+$$
+
+% Step 2: Iterative Process for General Time s:
+To reach a general time \( s \), perform \( ns \) such steps. The approximation after \( ns \) steps is:
+$$
+\mathbf{y}(s) \approx \left(I + \frac{1}{n} A\right)^{ns}\mathbf{y}(0)
+$$
+
+% Step 3: Taking the Limit as n -> infinity:
+As \( n \) becomes very large, this expression approaches the form of the matrix exponential function:
+$$
+\lim_{n \rightarrow \infty} \left(I + \frac{1}{n} A\right)^{ns}\mathbf{y}(0) = e^{As}\mathbf{y}(0)
+$$
+
+% Conclusion:
+This shows that the solution to the vector differential equation \( \mathbf{y}' = A\mathbf{y} \) is given by the matrix exponential \( e^{As}\mathbf{y}(0) \), illustrating how the state of the system \( \mathbf{y}(s) \) evolves over time.
+
+\a\aa
+% Introduction to the Example System:
+Consider the matrix \( A = \begin{pmatrix} 0 & -1 \\ 2 & 3 \end{pmatrix} \) and the vector differential equation \( \mathbf{y}' = A\mathbf{y} \), where \( \mathbf{y} = \begin{pmatrix} y_1 \\ y_2 \end{pmatrix} \) is a vector. This equation represents a system of linear differential equations.
+
+% Writing Down the System Explicitly:
+The system can be written explicitly as:
+$$
+\begin{pmatrix} y_1' \\ y_2' \end{pmatrix} = \begin{pmatrix} 0 & -1 \\ 2 & 3 \end{pmatrix} \begin{pmatrix} y_1 \\ y_2 \end{pmatrix}
+$$
+
+% Breaking Down Componentwise:
+This breaks down to the following componentwise equations:
+\begin{align*}
+y_1' &= -y_2 \\
+y_2' &= 2y_1 + 3y_2
+\end{align*}
+
+\a\aa
+As we discussed, the solution of this system is given by
+$$
+\mathbf{y}(s)= e^{As}\mathbf{y}(0)
+$$
+Now let us directly calculate $e^{As}$.
+
+Firstly, $A$ has characteristic polynomial $“det“(tI - A) = (t-1)(t-2)$. Therefore, $A$ satisfies
+$$
+(A-I)(A-2I) = 0.
+$$
+\a\aa
+Using \x{interpolation polynomials}, we may decompose every polynomial $g(x)$ into the form
+$$
+g(x) = Q(x)(x-1)(x-2) + g(1)\frac{x-2}{1-2} + g(2) \frac{x-1}{2-1}.
+$$
+Use interpolations to construct \x{eigenspace projections}
+$$
+P_1 = \frac{A-2I}{1-2}=\m21,{-2}{-1}. ␣ 
+P_2 = \frac{A-I}{2-1} = \m {-1}{-1},22.
+$$
+Plug in $A$ into the equation, we have a spectural decomposition, for any polynomial $g$ that
+$$
+g(A) = g(1)P_1 + g(2)P_2.
+$$
+\a\aa
+How to calculate $e^As$? We actually use polynomials first
+$$
+\left(I+\frac An\right)^{ns} = 
+\left(1+\frac 1n\right)^{ns}P_1
++ 
+\left(1+\frac 2n\right)^{ns}P_2
+$$
+Now letting $s ⟶  ∞$, we obtain
+$$
+e^{As} = e^s \m21,{-2}{-1}. +e^{2s }\m {-1}{-1},22.
+$$
+Going back to the original equation, we have
+$$
+\m
+{y_1(s)},
+{y_2(s)}.
+=
+e^{As}
+\m
+{y_1(0)},
+{y_2(0)}.
+=
+\m
+{(2e^s-e^{2s})y_1(0) + (e^s-e^{2s})y_2(0)},
+{(-2e^s+2e^{2s})y_1(0)+(-e^s+2e^{2s})y_2(0)}.
+$$
+We solved it!
+\a{Geometric understanding via eigenvectors}
+
+
+% Introduction to Eigenvectors:
+We will now explore how eigenvectors and eigenvalues of a matrix can be used to solve the differential equation \( \mathbf{y}' = A\mathbf{y} \). But first, let's review what eigenvectors and eigenvalues are.
+
+\a\aa
+% Definition of Eigenvector and Eigenvalue:
+An eigenvector of a matrix \( A \) is a non-zero vector \( \mathbf{v} \) that, when multiplied by \( A \), results in a scalar multiple of itself. This scalar is known as the eigenvalue. Mathematically, it is expressed as:
+$$
+A\mathbf{v} = \lambda\mathbf{v}
+$$
+where:
+\begin{itemize}
+\item \( \mathbf{v} \) is the eigenvector,
+\item \( \lambda \) is the eigenvalue associated with \( \mathbf{v} \),
+\item \( A \) is the matrix in question.
+\end{itemize}
+% Idea Behind Eigenvectors:
+%The idea of eigenvectors is fundamental in understanding the behavior of linear transformations represented by matrices. 
+Eigenvectors point in directions that are unaffected by the transformation, except for being scaled by their corresponding eigenvalues.
+
+% Application to Differential Equations:
+%In the context of differential equations, eigenvectors and eigenvalues provide a way to decouple the system and find solutions that grow (or decay) exponentially over time. Each eigenvector provides a direction in which the system evolves, and the corresponding eigenvalue determines the rate of this evolution.
+
+% Conclusion:
+%Understanding eigenvectors and eigenvalues is crucial in solving systems of linear differential equations, as they reveal the underlying structure and behavior of the system represented by the matrix \( A \).
+\a\aa
+Recall that we have used interpolations to construct \x{eigenspace projections}
+$$
+P_1 = \frac{A-2I}{1-2}=\m21,{-2}{-1}. ␣ 
+P_2 = \frac{A-I}{2-1} = \m {-1}{-1},22.
+$$
+We have $P_1+P_2=I$, this gives a decomposition to any vector, in particular
+$$
+\m
+{y_1(0)},
+{y_2(0)}.
+=
+\m21,{-2}{-1}.\m
+{y_1(0)},
+{y_2(0)}.
++
+\m {-1}{-1},22.
+\m
+{y_1(0)},
+{y_2(0)}.
+$$
+Our idea is to name this two components as
+$$
+\textbf{w}(s)=\m
+{w_1(s)},
+{w_2(s)}.
+=
+\m21,{-2}{-1}.\m
+{y_1(s)},
+{y_2(s)}.
+$$
+and
+$$
+\textbf{u}(s)=\m
+{u_1(s)},
+{u_2(s)}.
+=
+\m {-1}{-1},22.\m
+{y_1(s)},
+{y_2(s)}.
+$$
+\a\aa
+With this decomposition, 
+$$
+\mathbf y(s)=\mathbf w(s)+\mathbf u(s).
+$$
+and
+$$
+A\mathbf y(s)=A\mathbf w(s)+A\mathbf u(s) = \mathbf w(s)+2\mathbf u(s).
+$$
+Therefore, we are in fact solving two equations
+$$ \mathbf w'(s) = A\mathbf w(s) = \mathbf w(s)  ⟹   \mathbf w(s) = e^s\mathbf w(0) $$
+$$ \mathbf u'(s) = A\mathbf u(s) = 2\mathbf u(s)  ⟹   \mathbf u(s) = e^{2s}\mathbf u(0) $$
+
+This illustrates the idea that
+$$
+\mathbf y(s) = \mathbf w(s)+\mathbf u(s) = e^s\mathbf w(0) + e^{2s}\mathbf u(0).
+$$
+
+\aaa
+
+\aaa{Exponential of Differential Operator and Talor Expansion}
+To try to understand exponential function better, we give an intuitive understanding of 
+$$
+\exp\left(\frac{\dd}{\dd x}\right)[f](x)=f(x+1)
+$$
+Since $\exp(x)=1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+\cdots$. You can also write it as 
+$$
+f(x)+f'(x)+\frac{f''(x)}{2!}+\frac{f'''(x)}{3!}+\cdots = f(x+1)
+$$
+This is the same as \x{Talor} expansion. You know mathematically, but \x{why}?
+\a\aa
+Remember exponential functions are defined by
+$$
+\exp(x)=\lim_{n\rightarrow \infty}\left(1+\frac xn\right)^n
+$$
+Therefore, in nature, 
+$$
+\exp\left(\frac{\dd}{\dd x}\right)=\lim_{n\rightarrow \infty}\left(I+\frac1n\frac{\dd}{\dd x}\right)^n
+$$
+\vfill
+What does the linear operator $I+\frac1n\frac{\dd}{\dd x}$ do for functions? 
+\vfill
+It maps $f(x)$ to $f(x)+\frac1n f'(x)$. We claim this is approximately $f\left(x+\frac1n\right)$. \x{To understand why, see next slides.}
+\a\aa
+To understand why 
+$$
+f(x)+\frac1n f'(x)\approx f\left(x+\frac1n\right)
+$$
+We firstly assume $f(x)$ is a linear function $f(x)=kx+b$, then
+$$
+f(x)+\frac1n f'(x)=kx+b+\frac kn=k(x+\frac1n)+b
+$$
+Geometrically, shifting a line $y=kx+b$ up by $\frac kn$ is shifting it left by $\frac1n$.
+
+\[zzz]{
+\draw[->] (-4,0)--(4,0) node [right]{$x$};
+\draw[->] (0,-4)--(0,4) node {$y$};
+\draw[thick,red] (-2,-4)--(2,4);
+\draw[thick,red] (-3,-4)--(1,4);
+\draw[ultra thick,blue,->] (0,0)--(0,2);
+\draw[ultra thick,blue,->] (0,0)--(-1,0);
+}
+\a\aa
+Since at the range $(x,x+\frac 1n)$, any function will become more straight. It can be approximate by line segments, therefore, the effect of $f(x)+\frac1n f'(x)$ when $n\rightarrow\infty$, is shifting the whole function to the left by $\frac 1n$. It changes $f(x)$ to $f\left(x+\frac1n\right)$.
+\begin{tikzpicture}
+      \draw[->] (-3,0) -- (4.2,0) node[right] {$x$};
+      \draw[->] (0,-3) -- (0,4.2) node[above] {$y$};
+      \draw[scale=0.5,domain=-3:3,smooth,variable=\x,blue,thick] plot ({\x},{\x*\x});
+      \draw[scale=0.5,domain=-3:3,smooth,variable=\x,red] plot ({\x-0.2},{\x*\x});
+    \end{tikzpicture}\a\aa
+When $n$ is large. Apply this change $n$ times, 
+$$
+\underbrace{f(x)\rightarrow f(x+\frac1n)\rightarrow f(x+\frac 2n)\rightarrow \cdots\rightarrow f(x+1)}_{n\text{ times}}
+$$
+\vfill
+the total will change $f(x)$ to $f(x+1)$. Therefore 
+$$
+\exp\left(\frac{\dd}{\dd x}\right)[f](x)=f(x+1)
+$$
+\x{This is a geometric understanding of Talor Expansion.}
+\a\aa
+Now use the binomial expansion we have that
+$$
+e^{\frac{\dd}{\dd x}}=\left(1+\frac1{∞}\frac{\dd}{\dd x}\right)^{∞} = 1+\frac{\dd}{\dd x}+\frac1{2!}\frac{\dd^2}{\dd x^2} + \frac1{3!}\frac{\dd^3}{\dd x^3} + \cdots
+$$
+Apply this operator to $f$, we know that 
+$$
+f(x+1) = f(x) + f'(x)+\frac{f''(x)}{2!} + \frac{f'''(x)}{3!}+\cdots
+$$
+This is Taylor expansion! Taylor expansion is nothing more than binomial expansion.
+
+\exe Use the same method, deduce a formula for $f(x+s)$ for general $s$.
+\aaa

@@ -1,0 +1,1433 @@
+
+\def\1{\y1}
+\def\2{\y2}
+\def\3{\y3}
+\def\4{\y4}
+\def\5{\y5}
+\def\6{\y6}
+\def\7{\y7}
+\def\8{\y8}
+\def\9{\y9}
+\def\0{\y0}
+\def\-{\y-}
+\aaa{Spectural Decomposition}
+Recall our setting
+
+$$
+F(x)=(x-λ_1)^{n_1}…(x-λ_i)^{n_i}…(x-λ_k)^{n_k}
+$$
+We define $K_i(x)$ to be the \x{complementary factor} such that
+$$
+F(x)=K_i(x)(x-λ_i)^{n_i}
+$$
+Note that $K_i(λ_i)≠0$.
+
+The symbol $ε$ represents infinitesimal (very very small) and 
+$$
+∞ := \frac1{ε}
+$$
+represents infinity.  We are allowing arithmetic calculation with symbols $∞$ and $ε$ so one can talk about $a_{-N}∞+\cdots+a_0+a_1ε+\cdots$.
+\a\aa
+Recall our original formula of partial fraction decomposition
+$$
+\frac{g(x)}{F(x)}=Q(x) + ∑_{i=1}^k“Const“_ε\left(g(λ_i+ε)·\frac1{ε^{n_i-1}}·\frac1{K_i(λ_i+ε)}·\frac1{x-λ_i-ε}\right)
+$$
+We may multiply $F(x)$ on both sides and obtain
+$$
+g(x)=
+$$
+$$Q(x)F(x) + ∑_{i=1}^k \underbrace{F(x)·“Const“_ε\left(g(λ_i+ε)·{∞^{n_i-1}}·\frac1{K_i(λ_i+ε)}·\frac1{x-λ_i-ε}\right)}_{“interpolation summand“}
+$$
+Why each interpolation summand a polynomial?
+\a\aa
+
+Since $$F(x)=…+0∞^2+0∞+F(x)+0ε+0ε^2+…$$, we may put $F(x)$ inside, and note $F(x)=(x-λ_i)^{n_i}K_i(x)$ write
+$$
+“Interpolation summand“=“Const“_ε\left(g(λ_i+ε)·{∞^{n_i-1}}·\frac{K_i(x)}{K_i(λ_i+ε)}·\frac{(x-λ_i)^{n_i}}{x-λ_i-ε}\right)
+$$
+
+At this far, since $x$ appears in denomenator, we have no idea why this is a polynomial. 
+\vfill
+However, consider
+$$
+“Const“_ε\left(
+\overbrace{
+\underbrace{g(λ_i+ε)}_{=a_0+a_1ε+\cdots}·{∞^{n_i-1}}·K_i(x)·\underbrace{\frac{1}{K_i(λ_i+ε)}}_{=b_0+b_1ε+…;}·\underbrace{\frac{ε^{n_i}}{x-λ_i-ε}}_{=ε^{n_i}+\frac{ε^{n_i+1}}{x-λ_i}+…;}
+}^{=a_0b_0K_i(x)ε+*ε^2+*ε^3+\cdots}\right)
+=0
+$$
+\a\aa
+Subtract one equation from another, you see that the whole term is indeed a polynomial.
+
+$$ “Interpolation summand“= ␣ ␣ ␣ ␣ ␣ ␣ ␣ ␣ ␣ ␣ ␣ ␣ ␣ ␣ $$$$ 
+“Const“_ε\left(g(λ_i+ε)·{∞^{n_i-1}}·\frac{K_i(x)}{K_i(λ_i+ε)}·\underbrace{\frac{(x-λ_i)^{n_i}-ε^{n_i}}{x-λ_i-ε}}_{“polynomial“}\right)
+$$
+
+
+$$
+“Hint“:␣  \frac{A^n-B^n}{A-B}=A^{n-1}+A^{n-2}B+A^{n-3}B^2+\cdots+B^{n-1}
+$$
+\a\aa
+\[defi]{
+Define the polynomial (involving ε and ∞ as coefficients)
+$$
+f_{λ_i}(x) = {∞^{n_i-1}}·\frac{K_i(x)}{K_i(λ_i+ε)}·\frac{(x-λ_i)^{n_i}-ε^{n_i}}{x-λ_i-ε}
+$$
+and call it the \x{infinite interpolation polynomial at $λ_i$ for $F(x)=(x-λ_1)^{n_1}\cdots(x-λ_k)^{n_k}$}
+}
+\[prop]{We have infinite Lagurange interpolation theroem
+$$
+g(x) = Q(x)F(x) + ∑_{i=1}^k “Const“_ε(g(λ_i+ε)f_{λ_i}(x)).
+$$
+}
+
+
+\a\aa
+In the previous argument, we are using the idea that small enough scalars does not change the computation of constant part
+$$
+“Const“((a_n∞^n+…+a_0+\underbrace{a_{-1}ε+…}_{“does not affect“})(b_0+b_1ε+…+b_nε^n+\underbrace{b_{n+1}ε^{n+1}+…}_{“does not affect“}))
+$$
+$$
+=a_nb_n+a_{n-1}b_{n-1}+\cdots+a_0b_0.
+$$
+In other words, we do not need take care of all coefficient. 
+
+\a{Big O notation}
+To make the notation lighter, we write any terms like
+$$
+a_nε^n+a_{n+1}ε^{n+1}+a_{n+2}ε^{n+2}\cdots  \sim O(ε^n)
+$$
+In other words, we may write both $ε+3ε^2$ and $ε+5ε^2+6ε^3$ as $ε+O(ε^2)$. The notation $O(ε^n)$ introduces some ambiguity.
+
+The infinite scalar can be thought of some expression as 
+$$
+a_n∞^n+\cdots+a_0+O(ε).
+$$
+The multiplication of formal and infinite scalar has already determined up to $ε^n$ and nothing to do with $ε^{n+1}$
+$$“Const“\left((a_n∞^n+\cdots+a_0+O(ε))(b_0+b_1ε+\cdots+b_nε^n+O(ε^{n+1}))\right)$$
+the result has determined and has nothing to do with $O(ε)$ of first factor and $O(ε^{n+1})$ of second factor.
+
+\a{Algorithms of big O}
+The big O notation follows the rule
+$$ O(ε^n)\pm O(ε^m) \sim O(ε^{\min\{n,m\}}) $$
+$$ O(ε^n)· O(ε^m) \sim O(ε^{n+m}) $$
+\a\aa
+
+%In the application, we only calculate expressions like
+%$$
+%“Const“((a_0+a_1ε+a_2ε^2+\cdots)(\cdots+M_{-1}ε+P_{λ_i}+N_{λ_i}∞+N_{λ_i}^2∞^2+\cdots+N_{λ_i}^{n_i-1}∞^{n_i-1}) )
+%$$
+%The result is $a_0P_{λ_i}+a_1N_{λ_i}+a_2N_{λ_i}^2+\cdots+a_{n_{i}-1}N_{λ_i}^{n_i-1}$, the matrix $M_{-1}$ have never been used, the infinitesimal part does not matter.
+%\vfill
+Intuitively, we don't care $O(ε)$ since it vanishes as $ε ⟶  0$, the infinitesimal part will have no influence of the limit at all.
+\a\aa
+\[defi]{We call 
+$$
+a_{-n}∞^n+a_{-n+1}∞^{n-1}+\cdots+a_0+O(ε)
+$$
+an \x{infinite scalar}, and when the context is clear, we simply write it as
+$$
+a_{-n}∞^n+a_{-n+1}∞^{n-1}+\cdots+a_0
+$$
+}
+\a\aa
+
+\[rem]{
+Each Laurent scalar corresponds to a unique infinite scalar, we denote such correspondence by 
+$$
+␣ ␣ a_{-n}∞^n+a_{-n+1}∞^{n-1}+\cdots+a_0+a_1ε+a_2ε^2+\cdots
+$$
+$$
+ ≡  \;\;\; a_{-n}∞^n+a_{-n+1}∞^{n-1}+\cdots+a_0+O(ε) ␣ ␣ 
+$$
+}
+\a\aa
+\[defi]{
+Two different Laurent scalars α, β might corresponds to the same infinite scalar. When this happens, we simply denote by α ≡ β.
+}
+\[defi]{
+Further abuse the notation, no matter α or β is infinite scalars or Laurent scalars, by α ≡ β we always mean they are the same as infinite scalars.
+}
+\[exa]{
+$3∞+2+ε ≡ 3∞+2+3ε+2ε^2 ≡ 3∞+2+O(ε)$.
+}
+%\a\aa
+%We introduce a equivilence relation:
+%\vfill
+%\[defi]{
+% Two  α and β are equivalent $α ≡ β$ if $α-β$ is a formal scalar with constant equal to $0$
+%$$
+%a_{-n}∞^n+a_{-n+1}∞^{n-1}+\cdots+a_0+a_1ε+a_2ε^2+\cdots 
+%$$
+%$$
+%≡ 
+%b_{-n}∞^n+b_{-n+1}∞^{n-1}+\cdots+b_0+b_1ε+b_2ε^2+\cdots 
+%$$
+%if and only if
+%$$
+%a_{-n}=b_{-n},\cdots,a_0=b_0.␣ “ but no restricitons to “a_1,b_1,a_2,\cdots
+%$$
+%The Laurant scalar, with infinitesimal part ignored, we call it the \x{infinite scalar}.
+%}
+%\a\aa
+%\[rem]{Claming a infinite scalar introduced some ambiguity at first. For example, as an infinite scalar, 
+%$$
+%3∞+2
+%$$
+%could represent $3∞+2$, represent $3∞+2+ε$ or $3∞+2+3ε+2ε^2$. 
+%}
+\a\aa
+Because infinite scalars has ambiguity of $O(ε)$, we \x{only allow infinite scalar to add or subtract } since $O(ε)±O(ε)=O(ε)$, \x{multiplication or division} is not allowed.
+\vfill
+Nevertheless, we can still multiply a formal scalar to an infinite scalar, the result is another infinite scalar.
+$$
+(2+3ε)(3∞+2) ≡ 6∞+13.
+$$
+\a\aa
+$$ “{\color{red} Infinite scalar} “ + “{\color{red} Infinite scalar} “ ≡  “{\color{red} Infinite scalar} “ $$
+$$ “{\color{red} Infinite scalar} “ - “{\color{red} Infinite scalar} “ ≡  “{\color{red} Infinite scalar} “ $$
+$$ “{\color{red} Infinite scalar} “ ×  “{\color{red} Infinite scalar} “ = “NOT ALLOWED “ $$
+$$ “{\color{red} Infinite scalar} “ \div  “{\color{red} Infinite scalar} “ = “NOT ALLOWED “ $$
+$$“{\color{blue} Formal scalar} “+“{\color{blue} Formal scalar} “=“{\color{blue} Formal scalar} “$$
+$$“{\color{blue} Formal scalar} “-“{\color{blue} Formal scalar} “=“{\color{blue} Formal scalar} “$$
+$$“{\color{blue} Formal scalar} “ × “{\color{blue} Formal scalar} “=“{\color{blue} Formal scalar} “$$
+$$“{\color{blue} Formal scalar} “ \div\underbrace{“{\color{blue} Formal scalar} “}_{“non-zero“}=“{\color{cyan} Laurent scalar} “$$
+$$ “{\color{blue} Formal scalar} “ × “{\color{red} Infinite scalar} “≡ “{\color{red} Infinite scalar} “ $$
+$$ \underbrace{“{\color{cyan} Laurent scalar} “}_{“that not a formal scalar“} × “{\color{red} Infinite scalar} “=“NOT ALLOWED“ $$
+\a{Degree of infinite scalar}
+\[defi]{Call an infinite scalar 
+$$
+a_n∞^n+a_{n-1}∞^{n-1}+\cdots+a_0
+$$
+of degree $n$ if $a_n≠0$.
+}
+\a\aa
+\[defi]{An infinite matrix is a matrix of infinite scalars. Define the degree of such matrix to be the maximal degree of its entries. }
+\[defi]{An infinite vector is a $n × 1$ infinite matrix.}
+\[prop]{The set of $m × n$ infinite matrix is closed under addition, subtraction, and formal scalar multiplication. But we can not define product of two infinite matrix!}
+%\[prop]{Let $\vec v$ and $\vec u$ be infinite vectors, then $\vec v+\vec u$ and $\vec v-\vec u$ are all infinite vectors. For any formal scalar
+%$$
+%λ=λ_0+λ_1ε+λ_2ε^2+\cdots,
+%$$
+%the 
+%$$
+%λ\vec v
+%$$
+%defines an infinite vector.}
+
+
+
+
+
+
+
+
+
+
+
+\a\aa
+Recall the infinite interpolation formula
+$$
+f_{λ_i}(x) = {∞^{n_i-1}}·\frac{K_i(x)}{K_i(λ_i+ε)}·\frac{(x-λ_i)^{n_i}-ε^{n_i}}{x-λ_i-ε}
+$$
+$$
+g(x)=
+Q(x)F(x) + ∑_{i=1}^k“Const“_ε\left(g(λ_i+ε)·f_{λ_i}(x)\right)
+$$
+
+Let $A$ be a matrix with $F(A)=0$,  we have specutral decomposition
+
+\[prop]{
+$$
+g(A) = ∑_{i=1}^k“Const“_ε\left(g(λ_i+ε)·𝒫_{λ_i}\right)
+$$
+where
+$$
+𝒫_{λ_i}:=f_{λ_i}(A)
+$$
+}
+\a\aa
+Recall our settings
+\[itemize]{
+\item $F(x)=(x-λ_1)^{n_1}\cdots(x-λ_{k})^{n_k} = K_i(x)(x-λ_i)^{n_i}$ for all $i$.
+\item $F(A)=0$
+\item $f_{λ_i}(x) = {∞^{n_i-1}}·\frac{K_i(x)}{K_i(λ_i+ε)}·\frac{(x-λ_i)^{n_i}-ε^{n_i}}{x-λ_i-ε}$
+\item $𝒫_{λ_i}=f_{λ_i}(A)$
+}
+\a\aa
+Our goal in this lecture:
+
+\[enumerate]{
+\item We have
+$$
+A 𝒫_{λ_i} ≡ 𝒫_{λ_i}A ≡  (λ_i+ε)𝒫_{λ_i}
+$$
+Later on we call such thing an \x{infinite eigenmatrix} of $A$ with eigenvalue $λ_i+ε$.
+\item We have $$
+𝒫_{λ_i} ≡ P_{λ_i}+N_{λ_i}∞+N_{λ_i}^2∞^2+\cdots+N_{λ_i}^{n_i-1}∞^{n_i-1}
+$$
+for some  $P_{λ_i}^2=P_{λ_i}$, $N_{λ_i}^{n_i}=0$ and $N_{λ_i}P_{λ_i}=P_{λ_i}N_{λ_i}$. Later on, we will call such thing \x{infinite projection matrix}.
+\item We have
+$$
+P_{λ_1}+P_{λ_2}+\cdots+P_{λ_k}= I.
+$$
+}
+
+\a\aa
+Let us prove the first, note that our goal is equivalent to show
+$$
+(A-(λ_i+ε)I)𝒫_{λ_i}≡  
+𝒫_{λ_i}(A-(λ_i+ε)I)≡ 0.
+$$
+Note that
+$$
+\cancel{(x-(λ_i+ε))}· \underbrace{{∞^{n_i-1}}·\frac{K_i(x)}{K_i(λ_i+ε)}·\frac{(x-λ_i)^{n_i}-ε^{n_i}}{\cancel{x-λ_i-ε}}}_{f_{λ_i}(x)}
+$$
+$$
+= {∞^{n_i-1}}·\frac{K_i(x)·((x-λ_i)^{n_i}-ε^{n_i})}{K_i(λ_i+ε)}
+$$
+$$
+=\frac{∞^{n_i-1}·\overbrace{K_i(x)·(x-λ_i)^{n_i}}^{=F(x)}}{K_i(λ_i+ε)}
+-\overbrace{\frac{K_i(x)·∞^{n_i-1}·ε^{n_i}}{K_i(λ_i+ε)}}^{≡ 0}
+$$
+\a\aa
+
+{\bf Conclusion}: $(x-(λ_i+ε))f_{λ_i}(x) ≡ ∞^{n_i-1}F(x)/K_i(λ_i+ε)$
+\vfill
+Since $F(A)=0$, $𝒫_{λ_i}=f_{λ_i}(A)$, plug in $x=A$, 
+
+$$(A-(λ_i+ε))f_{λ_i}(A) ≡ ∞^{n_i-1}F(A)/K_i(λ_i+ε) = ∞^{n_i-1} 0/K_i(λ_i+ε) = 0 $$
+we finish the proof.
+
+
+\a\aa
+
+\[defi]{We call an infinite square matrix $𝒫$ an \x{infinite eigenmatrix} of eigenvalue $λ+ε$ of $A$ if 
+$$
+A 𝒫 ≡ 𝒫 A ≡ (λ+ε)𝒫 .
+$$}
+\[defi]{We call a \x{non-zero} infinite vector $\vec v$ the \x{infinite eigenvector} of eigenvalue $λ+ε$ if 
+$$
+A\vec v  ≡  (λ+ε)\vec v.
+$$}
+\a\aa
+Example.
+$$
+A = \m11,01., ␣ 
+\vec v ≡ \m{∞},1.
+$$
+is an infinite eigenvector of eigenvalue $1+ε$. Indeed
+$$
+A\vec v ≡ \m11,01.\m{∞},1. ≡  \m{∞+1},1.  ≡  (1+ε)·\m{∞},1.
+$$
+
+\a\aa
+Infinite eigenvector are generalizations of eigenvector:
+\[rem]{\[itemize]{
+\item A (classical) eigenvector is an infinite eigenvector of degree 0.
+\item A constant matrix $A$ has a \x{non-classical infinite eigenvector} of eigenvalue $λ+ε$ ($λ ∈ ℂ $) if and only if it is \x{non-digaonalizable}.(Try to prove it yourself.)
+}
+}
+\a\aa
+Scaling property
+\[prop]{Any formal scalar multiple of infinite eigen vector $μ\vec v$ is either zero vector or an infinite eigenvector of the same eigenvalue.  }
+
+$$
+A\vec v = (λ+ε)\vec v ⟹  Aμ\vec v=μA\vec v = μ(λ+ε)\vec v=(λ+ε)μ\vec v
+$$
+
+\a\aa
+
+ Example:
+$$
+\m11,01.\m{∞},1. ≡ (1+ε)\m{∞},1.   ␣  “Infinite eigenvector of degree 1“
+$$
+\vfill
+$$ \m11,01.\m1,0.  ≡  (1+ε)\m1,0. ␣  \substack{“Classical eigenvector;“\\“Infinite eigenvector of degree 0“} $$
+\vfill
+Relation of these two infinite eigenvectors
+ $$ \m1,0. ≡ \underbrace{ε}_{\substack{“formal“\\“scalar“\\“multiple“}}\m{∞},1.  $$
+\a\aa
+The appearance of infinite eigenvectors indicates that there are multiple eigenspaces repeated to each other. And the infinite eigenvector have some cosins.
+\vfill
+\textbf{Philosophy}
+Recall the theory of interpolation polynomials, the appearance of interpolation polynomial 
+$$f_{λ_i}(x)=*∞^{n_i-1}+*∞^{n_i-2}+…+*∞+*$$ indicates the existence of repeated root of multiplicity $n_i$, and $f_{λ_i}$ has $n_i-1$ other cosins, when summing them up, \x{the infinity cancels} and it gives a finite value $“Const“(f_{λ_i})$.
+\a\aa
+How to understand the infinite eigenvector ? Let's introduce a variable $a$.
+$$
+\m{1+a}1,01.
+$$
+When $a=0$, the matrix is NOT diagonalizable and results an infinite eigenvector
+$$
+\m11,01.\m{∞},1.=(1+ε)\m{∞},1.
+$$
+However, \x{when $a≠0$}, the matrix is \x{always diagonalizable} and admits a spectural decomposition
+$$
+g\m{1+a}1,01. = g(1+a)\m1{\frac1a},00.+g(1)\m0{-\frac1a},01..
+$$
+\a\aa
+To visualize the change of eigenvector along $a$, we fix a vector and look its eigenvector decomposition (which is unique)
+$$
+\m 0,1. = \underbrace{\m{\frac1a},0.}_{\substack{“eigenvalue“\\=1+a}}+\underbrace{\m{-\frac1a},1.}_{\substack{“eigenvalue“\\=1}}
+$$
+\a\aa
+Let's visualize what happens when $a ⟶ 0$ The blue vector is our fixed vector, and red vector is its decomposition as eigenvectors
+\vfill
+
+This is what happend for $a=0.1$
+
+\[z]{[scale=0.2]
+\draw[->,ultra thick,blue](0,0)--(0,1);
+\draw[->,ultra thick,red](0,0)--(-10,1);
+\draw[->,ultra thick,red](0,0)--(10,0);
+}
+
+This is what happend for $a=0.05$
+
+\[z]{[scale=0.2]
+\draw[->,ultra thick,blue](0,0)--(0,1);
+\draw[->,ultra thick,red](0,0)--(-20,1);
+\draw[->,ultra thick,red](0,0)--(20,0);
+}
+
+This is what happend for $a=0.03$
+
+\[z]{[scale=0.2]
+\draw[->,ultra thick,blue](0,0)--(0,1);
+\draw[->,ultra thick,red](0,0)--(-30,1);
+\draw[->,ultra thick,red](0,0)--(30,0);
+}
+
+When $a=0$, \x{eigenvectors goes to infinities} in opposite direction. \x{But the sum} of this two eigenvector \x{is a finite vector}, which is our fixed one.
+
+\[z]{[scale=0.2]
+\draw[->,ultra thick,blue](0,0)--(0,1);
+\draw[->,ultra thick,red](-30,0)--(30,0);
+}
+\a\aa
+The supper big red vector is described by infinite eigenvector
+$$
+\m{∞},1.
+$$
+\[z]{[scale=0.2]
+\draw[->,ultra thick,blue](0,0)--(0,1);
+\draw[->,ultra thick,red](-30,0)--(30,0);
+}
+
+The sum of these two supper big eigenvector, is described as what we known as the constant part
+$$
+“Const“\m{∞},1.= \m0,1.
+$$
+\a\aa
+From the perspective of eigenspace, as $a ⟶ 0$, the eigenspaces are running close to each other.
+
+This is what happend for $a=0.1$
+
+\[z]{[scale=0.2]
+\draw[thick,orange](-30,-3)--(30,3);
+\draw[thick,orange](-30,0)--(30,0);
+}
+
+This is what happend for $a=0.05$
+
+\[z]{[scale=0.2]
+\draw[thick,orange](-30,-1.5)--(30,1.5);
+\draw[thick,orange](-30,0)--(30,0);
+}
+
+This is what happend for $a=0.03$
+
+\[z]{[scale=0.2]
+\draw[thick,orange](-30,-1)--(30,1);
+\draw[thick,orange](-30,0)--(30,0);
+}
+
+This is what happend for $a=0.01$
+
+\[z]{[scale=0.2]
+\draw[thick,orange](-30,-0.3)--(30,0.3);
+\draw[thick,orange](-30,0)--(30,0);
+}
+
+
+\a\aa
+We now answer the second question, determine the structure of $𝒫_{λ_i} $.
+
+Recall that
+$$
+f_{λ_i}(x) = {∞^{n_i-1}}·\frac{K_i(x)}{K_i(λ_i+ε)}·\frac{(x-λ_i)^{n_i}-ε^{n_i}}{x-λ_i-ε},
+$$
+and
+$$
+𝒫_{λ_i}:=f_{λ_i}(A).
+$$
+the coefficients of $f_{λ_i}$ has ∞-degree at most $n_i-1$.
+
+Therefore, 𝒫_{λ_i} is a matrix with ∞-degree at most $n_i-1$, we have
+
+$$
+𝒫_{λ_i} ≡ P_0+N_1∞+N_2∞^2+…+N_{n_i-1}∞^{n_i-1}
+$$
+for some constant matrices $P_0,N_1,…,N_{n_i-1}$. Now we determine the properties of these matrices.
+
+
+
+
+
+
+\a\aa
+Using spectral decomposition,  we obtain two expressions for $g(A)h(A)$
+$$
+\underbrace{∑_{i=1}^k“Const“_ε\left(g(λ_i+ε)·h(λ_i+ε)·𝒫_{λ_i}\right)}_{g(A)h(A)}
+=
+$$
+$$\underbrace{\left(
+∑_{i=1}^k“Const“_ε\left(g(λ_i+ε)·𝒫_{λ_i}\right)
+\right)}_{g(A)}
+·
+\underbrace{\left(
+∑_{i=1}^k“Const“_ε\left(h(λ_i+ε)·𝒫_{λ_i}\right)
+\right)}_{h(A)}
+$$
+\a\aa
+Let α,β be two arbitrary formal scalars, put
+\t
+{}{$λ_1+ε$}{$λ_2+ε$}{$\cdots$}{$λ_i+ε$}{$\cdots$}{$λ_k+ε$},
+{$g(x)$}{$0+O(ε^{n_1})$}{$0+O(ε^{n_2})$}{$\cdots$}{$α+O(ε^{n_i})$}{$\cdots$}{$0+O(ε^{n_k})$},
+{$h(x)$}{$0+O(ε^{n_1})$}{$0+O(ε^{n_2})$}{$\cdots$}{$β+O(ε^{n_i})$}{$\cdots$}{$0+O(ε^{n_k})$},
+{$g(x)h(x)$}{$0+O(ε^{n_1})$}{$0+O(ε^{n_2})$}{$\cdots$}{$αβ+O(ε^{n_i})$}{$\cdots$}{$0+O(ε^{n_k})$}.
+
+From the table,
+$$ g(A)= ∑_{i=1}^k“Const“_ε\left(g(λ_i+ε)·𝒫_{λ_i}\right) =“Const“_ε\left(α·𝒫_{λ_i}\right) $$
+$$ h(A)= ∑_{i=1}^k“Const“_ε\left(h(λ_i+ε)·𝒫_{λ_i}\right) =“Const“_ε\left(β·𝒫_{λ_i}\right) $$
+$$ g(A)h(A)= ∑_{i=1}^k“Const“_ε\left(g(λ_i+ε)h(λ_i+ε)·𝒫_{λ_i}\right) =“Const“_ε\left(αβ·𝒫_{λ_i}\right) $$
+
+%We call $𝒫_{λ_i}$ the infinite eigenspace projection of eigenvalue $λ_i+ε$.
+
+\a\aa
+The above argument proves that
+$$
+“Const“_ε\left(α·𝒫_{λ_i}\right)“Const“_ε\left(β·𝒫_{λ_i}\right)=“Const“_ε\left(αβ·𝒫_{λ_i}\right)
+$$
+for any formal scalar α,β.
+
+\[defi]{We call an infinite matrix 𝒫 an \x{infinite projection} matrix, if 
+$$
+Const(x𝒫)
+Const(y𝒫)
+=
+Const(xy𝒫)
+$$
+for any \x{formal scalar} $x,y$
+}
+
+\a\aa
+\[defi]{A constant matrix $P$ is called \x{projection} if $P^2=P$. }
+\[rem]{To see analogue with infinite projection, $P^2=P$ is equivalent to  $(aP)(bP)=(abP)$.}
+\[defi]{A constant matrix $N$ is called \x{nilpotent} if $N^k=0$ for some integer $k$.}
+\a\aa
+\[thm]{An infinite matrix $𝒫$ of degree at most $m-1$ is an infinite projection matrix if and only if
+$$
+𝒫 =P+N∞+N^2∞^2+\cdots+N^{m-1}∞^{m-1}
+$$
+with $P^2=P$, $PN=NP=N$, and $N^m=0$.
+}
+{\bf Proof}: If 𝒫 is an infinite projection, assume
+$$
+𝒫=P+N∞+N_2∞^2+\cdots+N_{m-1}∞^{m-1}
+$$
+$$
+PP=“Const“(1·𝒫)“Const“(1·𝒫)=“Const“(1·1·𝒫)=P.
+$$
+$$PN=“Const“(1·𝒫)“Const“(ε·𝒫)=“Const“(1·ε·𝒫)“=Const“(ε·𝒫)=N.  $$
+$$NP=“Const“(ε·𝒫)“Const“(1·𝒫)=“Const“(ε·1·𝒫)“=Const“(ε·𝒫)=N.  $$
+$$N_k=“Const“(ε^k𝒫) = “Const“(ε𝒫)^k = N^k ⟹   N_k=N^k$$
+$$
+N^m = “Const“(ε·𝒫)^m = “Const“(ε^m·𝒫) = 0.
+$$
+\a\aa
+\textbf{Proof of the other direction}: Suppose $P^2=P$, $PN=NP=N$, and $N^m=0$, and 
+$$
+𝒫 =P+N∞+N^2∞^2+\cdots+N^{m-1}∞^{m-1}
+$$
+To prove 
+$$
+“Const“(\underbrace{(a_0+a_1ε+…+O(ε^m))}_{α}𝒫)
+“Const“(\underbrace{(b_0+b_1ε+…+O(ε^m))}_{β}𝒫)
+$$
+$$
+=
+“Const“(\underbrace{(a_0+a_1ε+…+O(ε^m))(b_0+b_1ε+…+O(ε^m))}_{αβ}𝒫)
+$$
+It suffices to prove
+$$
+“Const“(ε^k 𝒫 )
+“Const“(ε^n 𝒫 )=
+“Const“(ε^{k+n} 𝒫 ) ␣ 
+$$
+for $m,n≥0$. This is the same as proving
+$$
+P^2=P, PN^n = N^n, N^kP=N^k, N^kN^n=N^{k+n}, N^m=0,
+$$
+which is obviously true.
+
+\a\aa
+\[rem]{A classical projection is an infinite projection $𝒫=P$ 
+$$
+𝒫 =P+N∞+N^2∞^2+\cdots+N^{m-1}∞^{m-1}
+$$
+with the case $N=0$.
+}
+Therefore, the appearence of non-zero nilpotent matrix indicates the eigenspace projection could go to infinity, making non-classical infinite eigenvectors possible, and therefore implies the matrix non-diagonalizable.
+\a\aa
+
+Recall that when $A$ satisfies $(A-λ_1)^{n_1}…(A-λ_k)^{n_k}=0$, our method to check diagonalizability of $A$ is by checking whether 
+$$(A-λ_1)…(A-λ_k)=0.$$ 
+\vfill
+The reason behind it is because that
+$$
+(A-λ_1)^{n_1}…(A-λ_k)^{n_k}=0 ⟹  (A-λ_1)…(A-λ_k) “ nilpotent“.
+$$
+\vfill
+Intuitively, if the nilpotent part $=0$, we were in the situation that no eigenspace projection goes to infinity, and therefore the matrix is diagonalizable.
+\a\aa
+The philosophy that nilpotent matrix is the infinite part of infinite projection seems deep. Let's consider this.
+
+\vfill
+It is true that
+$$
+\frac{wv^T}{v^Tw}
+$$
+is always a rank 1 projection matrix. What happens if $v^Tw=0$? Then the denomenator is $0$, the whole matrix goes to infinity. However, when $v^Tw=0$, the matrix $wv^T$ must be nilpotent since
+$$
+(wv^T)^2=wv^Twv^T = w\underbrace{(v^Tw)}_{=0}v^T=0.
+$$
+Therefore, when $v^Tw=0$, you may view this as a 
+$$
+\underbrace{\frac1{v^Tw}}_{\substack{“scalar“\\“roughly “∞}}·\underbrace{wv^T}_{“nilpotent matrix“}
+$$
+This gives you an idea why nilpotency is an inifnite part of infinite projection.
+\a\aa
+Sun set: Please visualize infinite projection $𝒫 $ in the following picture.
+
+\[tikzpicture]{[scale=0.4]
+\draw[ultra thick](-7,0)--(7,0);
+\draw[ultra thick,->,blue](0,0)--(0,3) node[right]{$\vec v=\m0,1.$};
+\draw[opacity=0.08,fill=cyan] (0,0)--(10,0)--(10,3)--(0,3)--(0,0);
+\draw[ultra thick,cyan](0,0.05)--(7,0.05) node[below]{infinite shadow}--(15,0.05) ;
+\foreach\x in {0,0.5,...,4}{
+	\draw [red,->](-8,\x)--(8,\x);
+}
+\draw[fill=red] (0,0) circle[radius=0.1] node[below]{$O$};
+}
+
+The vector $\m1,0.$ is on the groud, so its shadow is itself. We have
+$$
+𝒫\m1,0. = \m1,0.
+$$
+
+The vector $\m0,1.$ stands up, and its shadow goes to infinity, so
+$$
+𝒫\m0,1. = \m{∞},1.
+$$
+\a\aa
+Therefore, this infinite projection takes the form
+
+$$
+𝒫 = 𝒫 \m 10,01. = \m 1{∞},01. = \underbrace{\m10,01.}_{“projection matrix“}+∞\underbrace{\m01,00.}_{“nilpotent matrix“}.
+$$
+
+\a\aa
+\exe For $𝒫_{λ_i}=P_{λ_i}+N_{λ_i}∞+…+N_{λ_i}^{n_i-1}∞^{n_i-1}$. What is the relation between $A$, $P_{λ_i}$ and $N_{λ_i}$?
+\vfill
+\sol $A𝒫_{λ_i}=(λ_i+ε)𝒫 $
+
+So $(A-λ_i)𝒫_{λ_i}=ε 𝒫_{λ_i}$. Taking the constant part on both sides,
+$$
+(A-λ_iI)“Const“(𝒫_{λ_i})=“Const“(ε 𝒫_{λ_i})
+$$
+so 
+$$
+(A-λ_iI)P_{λ_i}=N_{λ_i}
+$$
+\aaa
+
+
+
+\aaa{Infinite eigenvector decomposition}
+We have left the last property
+$$
+P_{λ_1}+
+P_{λ_2}+
+…
++P_{λ_k}=I.
+$$
+This is easist property by taking $g(x)=1$, then
+$$
+I = g(A) = ∑_{i=1}^k (g(λ_i+ε)𝒫_{λ_i})=
+∑_{i=1}^k (𝒫_{λ_i})
+=∑_{i=1}^k P_{λ_i}.
+$$
+\a\aa
+\[thm]{
+For $(A-λ_1)^{n_1}…(A-λ_k)^{n_k}=0$, there are infinite-matrix $𝒫_{λ_i}$ with
+\[enumerate]{
+\item $𝒫_{λ_i}$ is infinite eigenmatrix of eigenvalue $λ_i+ε$
+$$
+A 𝒫_{λ_i} ≡ 𝒫_{λ_i}A ≡  (λ_i+ε)𝒫_{λ_i}
+$$
+\item $𝒫_{λ_i}$ is infinite projection
+$$
+𝒫_{λ_i} ≡ P_{λ_i}+N_{λ_i}∞+N_{λ_i}^2∞^2+\cdots+N_{λ_i}^{n_i-1}∞^{n_i-1}
+$$
+\item We have
+$$
+P_{λ_1}+P_{λ_2}+\cdots+P_{λ_k}= I.
+$$
+\item We have for any polynomial $g$,
+$$
+g(A)=∑_{i=1}^k“Const“(g(λ_i)𝒫_{λ_i}).
+$$
+}
+}
+\a\aa
+In this lecture, we introduce two big picture:
+
+\[itemize]{
+\item \x{Infinite eigenvector decomposition}: Decomposing every vector into infinite eigenvectors.
+\item \x{Infinite eigenbasis}: Fix some infinite eigenvectors so that every vector can be represents as their linear combination.
+}
+
+\a{Review classical decomposition}
+We review eigenvector decomposition in diagonalizable cases. Let us just say a matrix
+$$
+A = \m
+{λ_1}{}{}{},
+{}{λ_1}{}{},
+{}{}{λ_2}{},
+{}{}{}{λ_3}.
+$$
+with $λ_1≠λ_2≠λ_3≠λ_1$.
+Then every vector can be decomposed into eigenvectors of $A$
+$$
+\m a,b,c,d. = 
+\underbrace{\m a,b,0,0. }_{\substack{“eigenvalue“\\=λ_1}}
++\underbrace{\m0,0,c,0. }_{\substack{“eigenvalue“\\=λ_2}}
++ \underbrace{\m0,0,0,d.}_{\substack{“eigenvalue“\\=λ_3}}
+$$
+This is eigenvector decomposition.
+\a\aa
+However, eigenbasis means a fixed eigen vector, and we are writing any vector into linear combination of them. For example, the list
+$$
+\underbrace{\m 1,0,0,0.}_{\substack{“eigenvalue“\\=λ_1}} , ␣ 
+\underbrace{\m 0,1,0,0.}_{\substack{“eigenvalue“\\=λ_1}} , ␣ 
+\underbrace{\m 0,0,1,0.}_{\substack{“eigenvalue“\\=λ_2}} , ␣ 
+\underbrace{\m 0,0,0,1.}_{\substack{“eigenvalue“\\=λ_3}}  
+$$
+is an eigenbasis and we gonna write any vector by linear combination of them
+$$
+\m a,b,c,d. = 
+\m 1,0,0,0.a +
+\m 0,1,0,0.b +
+\m 0,0,1,0.c +
+\m 0,0,0,1.d 
+$$
+\a\aa
+For non-diagonalizable matrices, its anihilating polynomial have repeated roots. We imagine its roots come together as clusters.
+
+\[z]{
+\draw (0,0)--(10,0);
+\draw[fill=red] (0,0) circle[radius=0.1];
+\draw[fill=red] (0.2,0) circle[radius=0.1];
+\draw[fill=red] (0.4,0) circle[radius=0.1];
+\draw[fill=red] (7,0) circle[radius=0.1];
+\draw[fill=red] (7.2,0) circle[radius=0.1];
+\draw[fill=red] (3,0) circle[radius=0.1];
+\draw[fill=red] (3.2,0) circle[radius=0.1];
+\draw[fill=red] (3.4,0) circle[radius=0.1];
+}
+
+It is hard to seperate them, so we should not consider just one eigenvalue, consider them together. 
+\a\aa
+Let's come back tO easieR diAgonalizaBle CAsEs
+\[z]{
+\draw (0,0)--(10,0);
+\draw[fill=red] (0,0) circle[radius=0.1];
+\draw[fill=red] (7,0) circle[radius=0.1];
+\draw[fill=red] (3,0) circle[radius=0.1];
+}
+
+\a\aa
+In the above decomposition, 
+$$
+\m a,b,c,d. = 
+\underbrace{\m a,b,0,0. }_{\substack{“eigenvalue“\\=λ_1}}
++\underbrace{\m0,0,c,0. }_{\substack{“eigenvalue“\\=λ_2}}
++ \underbrace{\m0,0,0,d.}_{\substack{“eigenvalue“\\=λ_3}}
+$$
+
+We can say 
+$$ \m a,b,0,0.   ␣ “the “λ_1-“ component “ ␣  \m 0,0,c,0.   ␣ “the “λ_2-“ component “ ␣ $$$$ \m 0,0,0,d.   ␣ “the “λ_3-“ component “ $$
+\a\aa
+$$
+\m a,b,c,0. ␣ “the“ (λ_1,λ_2)-“component“ ␣ 
+\m a,b,0,d. ␣ “the“ (λ_1,λ_3)-“component“
+$$
+
+$$
+\m 0,0,c,d. ␣ “the“ (λ_2,λ_3)-“component“ ␣ 
+\m a,b,c,d. ␣ “the“ (λ_1,λ_2,λ_3)-“component“
+$$
+Note that multivalue component are no longer eigenvectors!
+\a\aa
+The idea of multi-eigenvalue component is that when eigenvalue are given 
+$$
+(λ_1,λ_2,…,λ_n)
+$$
+Any partitioN oF the above list would give a decomposition, where $(λ_i,λ_j,...,λ_k)$-component means a vector $\vec w$ with
+$$
+(A-λ_iI)(A-λ_jI)…(A-λ_kI)\vec w=\vec 0.
+$$
+\a\aa
+$λ_1$-component means $(A-λ_1I)\vec v=\vec 0$
+
+
+$(λ_1,λ_2)$-component means $(A-λ_1I)(A-λ_2I)\vec v=\vec 0$
+\a\aa
+
+For $𝒫_{λ_i}=P_{λ_i}+N_{λ_i}∞+…+N_{λ_i}^{n_i-1}∞^{n_i-1}$.
+
+Any classical vector $\vec v$ can be decomposed into
+$$
+\vec v = I\vec v=
+P_{λ_1}\vec v+
+P_{λ_2}\vec v+
+…+
+P_{λ_k}\vec v.
+$$
+
+Note that
+$$
+(A-λ_iI)^{n_i}P_{λ_i}=(A-λ_iI)^{n_i}“Const“(𝒫_{λ_i})
+=“Const“((A-λ_iI)^{n_i}𝒫_{λ_i})
+$$
+$$
+=“Const“(ε^{n_i}𝒫_{λ_i})=0.
+$$
+
+Therefore, 
+$$
+P_{λ_i}\vec v
+$$
+is an $(\underbrace{λ_i,λ_i,…λ_i}_{n_i“many“})$-component of $\vec v$
+\a\aa
+Similar to diagonalizable cases, in the decomposition 
+$$
+\vec v = I\vec v=
+P_{λ_1}\vec v+
+P_{λ_2}\vec v+
+…+
+P_{λ_k}\vec v.
+$$
+\vfill
+Each $P_{λ_i}\vec v$ is not an eigenvector if $n_i≥2$. Instead, it represents the sum of certain eigenvectors. In the non-diagonalizable cases, it can be viewed as the sum of infinite eigenvectors, and it is finite since the infinite part has been canceled. 
+\a\aa
+To decompose further, we may see
+$$
+\underbrace{P_{λ_i}\vec v}_{\substack{(\underbrace{λ_i,λ_i,…,λ_i}_{n_i-“many“})-“component“\\“Not an eigenvector if “n_i≥2}} = \overbrace{“Const“(\underbrace{𝒫_{λ_i}\vec v}_{\substack{λ_i-“component“\\“eigenvector“}})}^{“the sum of each “λ_i-component}
+$$
+\vfill
+
+Taking constant part of an infinite vector is analogue of summing up infinite eigenvector of \x{the same, but infinitesimally different} eigenvalues.  This euqaion represents the decomposition of $(λ_i,λ_i,…,λ_i)$-component to $λ_i$-component, which is a true infinite eigenvector.
+\a\aa
+Therefore, we regard
+$$
+\vec v = “Const“(𝒫_{λ_1}\vec v)+“Const“(𝒫_{λ_2}\vec v)+…+“Const“(𝒫_{λ_k}\vec v)
+$$
+as the \x{infinite eigenvector decomposition} of any vector $\vec v$.
+
+\a\aa
+Review In diagonalization theory, we also have a theorem
+\[thm]{Suppose $A$ is diagonalizable matrix, eigenvectors with different eigenvalues must be linearly independent.
+}
+The proof is easy, since we have spectural decomposition
+$$
+P_{λ_1}+P_{λ_2}+…+P_{λ_k}=I  
+$$
+Suppose $A\vec v=λ_i\vec v    ⟹  P_{λ_j}\vec v =\vec 0 $ for $i≠j$ because the construction of $P_{λ_j}$ has the factor of $(A-λ_iI)$. 
+Therefore only $ P_{λ_i}\vec v=I\vec v=\vec v$.
+\vfill
+Suppose $\vec v_{λ_1},…,\vec v_{λ_k}$ are eigenvectors of eigenvalues $λ_1,…λ_k$. 
+$$
+a_1\vec v_{λ_1}+a_2\vec v_{λ_2}+…+a_k\vec v_{λ_k}=\vec 0.
+$$
+$$
+a_i\vec v_{λ_i} = P_{λ_i}\vec 0=\vec 0. ⟹  a_i=0.
+$$
+\a\aa
+To summarise, if $A\vec v_{λ_i}=λ_i\vec v_{λ_i}$, then
+$$
+a_1\vec v_{λ_1}+\cdots+a_k\vec v_{λ_k}=\vec 0 ⟹   a_i\vec v_{λ_i}=\vec 0 “ for all “i.
+$$ 
+
+\a\aa
+We carry out the similar situation. 
+
+\[lem]{Suppose $\vec v$ is an infinite eigenvector of $A$ with eigenvalue $λ+ε$, then 
+$$
+“Const“(\vec v)=0 ⟺   \vec v ≡ 0.
+$$}
+{\textbf{Understanding(not proof)}}:$“Const“(\vec v)$ may be understood as the sum of the inifinte eigenvector with its friends, different friend have slightly different eigenvalue, so the sum is zero implies each individual is zero.
+\a\aa
+\textbf{Proof}: If $\vec v ≡ 0$, then clearly $“Const“(\vec v)=0$.
+\vfill
+On the contary, suppose $\vec v=\vec v_0+\vec v_1∞+\vec v_2∞^2+…$
+$$
+\vec v_0=“Const“(\vec v)=\vec 0   $$
+$$ ⟹  \vec v_n=“Const“(ε^n\vec v)=“Const“((A-λI)^n\vec v) = (A-λI)^n“Const“(\vec v)$$
+
+$$=(A-λI)^n\vec 0=\vec 0.
+$$
+
+Therefore $\vec v = \vec 0+\vec 0∞+\vec 0∞^2+\cdots=\vec 0$.
+
+\a\aa
+Now we proceed to \x{infinite eigenbasis}. 
+\[defi]{An \x{infinite eigenbasis} is a list of infinite eigenvectors $$\vec w_{λ_1,1},␣ \vec w_{λ_1,2} ␣ …,␣  \vec w_{λ_k,s_k} ,$$ such that for all classical vector $\vec v$, \x{there exists } formal scalars $a_{λ_1,1},…,a_{λ_k,s_k}$ and \x{unique} $a_{λ_1,1}\vec w_{λ_1,1},…,a_{λ_k,s_k}\vec w_{λ_k,s_k}$ such that we may represent $\vec v$ as the constant part of a linear combination of fixed those vectors
+$$
+\vec v = “Const“(a_{λ_1,1}\vec w_{λ_1,1})+“Const“(a_{λ_1,2}\vec w_{λ_1,2})+…+“Const“(a_{λ_k,s_k}\vec w_{λ_k,s_k})
+$$
+}
+\vfill
+In this part, we will give algorithm on finding those $\vec w_{λ_1,1}$. Again, when finding a basis, we use \x{cross-filling}. 
+\a\aa
+We say unique $a\vec w$ instead of unique $a$ since $\vec w$ is an infinite vector, and $a$ is a formal scalar, we would view $a,b$ equivalent when $a\vec w ≡ b\vec w$. Therefore, it is more accurate to say unique $a\vec w$ instead of unique $a$.
+\vfill
+For examle, 
+$$
+(3+ε)\m{∞},2. ≡ (3+ε+5ε^2)\m{∞},2.
+$$
+but as a formal scalar $3+ε≠3+ε+5ε^2$.
+\a\aa
+To obtain such a basis, we apply cross-filling to the infinite matrix.
+
+
+%%% Example of cross-filling
+
+
+
+\a\aa
+\[defi]{Let $\vec v_1,\cdots,\vec v_n$ be a list of \x{non-zero} infinite vectors. We say they are \x{linearly independent} if any linear combination of formal scalars
+$$
+a_1\vec v_1+a_2\vec v_2+\cdots+a_n\vec v_n ≡ \vec 0
+$$
+implies
+$$
+a_1\vec v_1 ≡ a_2\vec v_2 ≡ \cdots ≡ a_n\vec v_n ≡ 0.
+$$
+}
+
+\a\aa
+when cross-filling infinite matrix, the cross-center must choose at the largest degree
+$$
+\m{2∞-1}{2∞}{∞},
+{∞^2}{∞^2}{∞^2},
+{∞}{∞}1.
+$$
+
+$$
+=\m
+{∞}{∞}{\y∞},
+{\y∞^2}{\y∞^2}{\e∞^2},
+11\1.+
+\m{\y∞-1}{\e∞}\0,0\00,{∞-2}{\y∞-1}0. +\m\000,\000,{\e1}\0\0.
+$$
+%% Demonstration that vectors from cross-filling are linearly independent.
+\a\aa
+The cross cOlumns must be lInEARly iNDEpenDENt
+$$
+a_1\m{\y∞},{\e∞^2},{\1}.
++
+a_2\m{\e∞},{\y0},{\y∞-1}.
++a_3\m\0,\0,{\e1}. ≡ 0
+$$
+by looking at the rows from the first cross center, 
+$$
+a_1∞^2 ≡ 0 ⟹   a_1 ~ O(ε^2) ⟹   a_1\m{\y∞},{\e∞^2},{\1}. ≡ \m0,0,0.
+$$
+\a\aa
+Therefore
+$$
+a_2\m{\e∞},{\y0},{\y∞-1}.
++a_3\m\0,\0,{\e1}. ≡ 0
+$$
+Looking at the first cross center␣ $a_2∞=0$ so
+$$
+a_2\m{\e∞},{\y0},{\y∞-1}. ≡ \m0,0,0.
+$$
+Inductively, we also show
+$$
+a_3\m\0,\0,{\e1}. ≡ 0.
+$$
+This inductively shows that \x{the cross-filling will always produce linearly independent vectors.} In fact, it produces basis for the column space of the matrix.
+\a\aa
+\[defi]{
+For an infinite vector
+$$
+\vec v = \vec v_0 + \vec v_1∞+\vec v_2∞^2+\cdots+\vec v_m∞^m
+$$
+we call $\vec v_0$, $\vec v_1$, $…$, $\vec v_m$ its components.
+}
+\a\aa
+\[lem]{Suppose infinite vectors $\vec w_1,\vec w_2,…,\vec w_k$ is a basis of $“Im“(𝒫_λ)$, then the collection of its non-zero components is a (classical) basis of $“Im“(P_λ)$ .}
+\a\aa
+\textbf{Proof}: Since
+$$ε^j\vec w_i ∈  “Im“(𝒫)$$
+$$“Const“(ε^j\vec w_i) ∈ “Im“(P).$$
+Let $e_k$ be k'th column of $I_n$
+$$𝒫 e_k = \sum_i \sum_ja_{i,j}ε^j\vec w_i$$
+$$P e_k = \sum_i \sum_ja_{i,j}“Const“\left(ε^j\vec w_i\right)$$
+Therefore, $“Const“\left(ε^j\vec w_i\right)$ spans $“Im“(P)$.
+\a\aa
+Test of linearly independency. Assume $a_{i,j}$ are constant scalars with
+$$ \sum_i \sum_ja_{i,j}“Const“\left(ε^j\vec w_i\right)=\vec 0 $$
+$$ ⟹  “Const“\left(\underbrace{\sum_i \sum_ja_{i,j}ε^j\vec w_i}_{\substack{“infinite eigenvector“\\“eigenvalue “λ+ε}}\right)=\vec 0 $$
+
+$$ ⟹  \sum_i \sum_ja_{i,j}ε^j\vec w_i=\vec 0 $$
+$$ ⟹  a_{i,j}ε^j\vec w_i=\vec 0 “ by linearly independence of “\vec w_i$$
+$$ ⟹  a_{i,j}“Const“\left(ε^j\vec w_i\right)=\vec 0 $$
+This implies non-zero vectors in set $\{“Const“(ε^j\vec w_i)\}_{i,j}$ is linearly independent.
+\a\aa
+
+Let $\vec e_j$ be $j$'th column of $I_n$. We have
+$$
+𝒫_{λ_i}\vec e_j = a_1\vec w_1+…+a_l\vec w_l.
+$$
+$$
+“Const“(𝒫_{λ_i}\vec e_j) = P_{λ_i}\vec e_j = \underbrace{“Const“(a_1\vec w_1)}_{\substack{“linear combination of “\\“components of “\vec w_1}}+…+“Const“(a_l\vec w_l)
+$$
+Therefore, components of $\{\vec w_i\}$ forms a basis of $P_{λ_i}$
+
+\a\aa
+
+Since $P_{λ_i}$ is projection, a basis of $“Im“(P_{λ_i})$ has $“tr“(P_{λ_i})$ many element, denote these elements by
+$$
+v_{λ_i,1},…,v_{λ_i,“tr“(P_{λ_i})}
+$$
+It is basis, any vector of the form $P_{λ_i}\vec v$ can be written into linear combinations of them.
+\vfill
+Collecting all these basis across all $λ_i$, 
+$$
+ℰ:=\{
+v_{λ_1,1},…,v_{λ_1,“tr“(P_{λ_1})}
+v_{λ_i,1},…,v_{λ_i,“tr“(P_{λ_i})}
+…
+v_{λ_k,1},…,v_{λ_k,“tr“(P_{λ_k})}\}
+$$
+Then any vector $\vec v = P_{λ_1}\vec v+P_{λ_2}\vec v+…+P_{λ_k}\vec v$ can be written as linear combination of them, then $ℰ$ \sws.
+
+Counting the element, $ℰ$ has $“tr“(P_{λ_1})+“tr“(P_{λ_2})+…+“tr“(P_{λ_k})=“tr“(I_n)=n$ many element, the dimension of the whole space. So $ℰ$ is \bas. This basis is called the \x{Canonical basis}.
+\a\aa
+Using canonical basis , the matrix $A$ is similar to Jordan canonical form. Jordan canonical form is a \x{block-digaonal matrix} with Jordan block
+$$
+\m
+{λ}10\cdots0,
+0{λ}1\cdots0,
+00{λ}\ddots0,
+\vdots\vdots\vdots\ddots1,
+000\cdots{λ}.
+$$
+\a\aa
+The Following is a spctural decoMpositION oF JordAn cAnOnIcAL ForM
+$$
+A=\m
+\1\1000000,
+0\1\100000,
+00\100000,
+000\1\1000,
+0000\1000,
+00000\2\10,
+000000\20,
+0000000\3.
+$$
+characteristic polynomial $(t-1)^5(t-2)^2(t-3)$
+\a\aa
+$$
+𝒫_1=\m
+\1{\y∞}{\y∞^2}00000,
+0\1{\y∞}00000,
+00\100000,
+000\1{\y∞}000,
+0000\1000,
+00000000,
+00000000,
+00000000.
+\;
+P_1=
+\m
+\10000000,
+0\1000000,
+00\100000,
+000\10000,
+0000\1000,
+00000000,
+00000000,
+00000000.
+$$
+$$
+N_1=
+\m
+{\x0}\10000000,
+0{\x0}\1000000,
+00{\x0}000000,
+000{\x0}\10000,
+0000{\x0}0000,
+00000000,
+00000000,
+00000000.
+$$
+\a\aa
+$$
+𝒫_2=\m
+00000000,
+00000000,
+00000000,
+00000000,
+00000000,
+00000\1{\y∞}0,
+000000\10,
+00000000.
+$$
+$$
+𝒫_3=\m
+00000000,
+00000000,
+00000000,
+00000000,
+00000000,
+00000000,
+00000000,
+0000000\1.
+$$
+\a\aa
+\exe Find the matrix $P$ such that $P^{-1}AP$ is a Jordan Canonical form, and find this Jordan canonical form.
+$$
+A=\m2001,{-2}225,{-2}043,10{-1}1.
+$$
+By calculation, the characteritic polynomial is.
+$$
+\det(tI_4-A)=(t-2)^3(t-3)
+$$
+Note , the index of $t-3$ implies that $𝒫_3$ is a classical projection. We would first caluclate that by interpolation. 
+$$
+𝒫_3=P_3=\frac{(A-2I)^3}{(3-2)^3}=\m
+10{-1}{-1},
+10{-1}{-1},
+{-1}0{1}{1},
+10{-1}{-1}.
+$$
+This is already a rank $1$ matrix.
+\a\aa
+We have no idea what $𝒫_2$ is, let us assume
+$$
+𝒫_2=P_2+N_2∞+N_2^2∞^2.
+$$
+Use the fact that $P_2+P_3=I_4$, we know
+$$
+P_2 = \m0011,{-1}111,100{-1},{-1}012.
+$$
+\a\aa
+To find the nilpotent part, use that
+$$
+A = “Const“\left((3+ε)𝒫_3+(2+ε)𝒫_2\right) = 3P_3+2P_2+N_2
+$$
+So
+$$
+N_2=A-3P_3-2P_2 = \m{-1}012,{-3}036,{-1}012,0000..
+$$
+By a simple calculation, we see
+$$
+N_2^2=0
+$$
+Therefore
+$$
+𝒫_2 = \underbrace{\m0011,{-1}111,100{-1},{-1}012.}_{P_2}+∞\underbrace{\m{-1}012,{-3}036,{-1}012,0000.}_{N_2}
+$$
+\a\aa
+Or we can write
+$$
+𝒫_2=\m{-∞}0{∞+1}{2∞+1},
+{-3∞-1}1{3∞+1}{6∞+1},
+{-∞+1}0{∞}{2∞-1},
+{-1}012.
+$$
+\a\aa
+Since this is not a rank $1$ matrix, we can do cross-filling decomposition
+$$
+\m{-∞}0{∞+1}{2∞+1},
+{-3∞-1}1{3∞+1}{6∞+1},
+{-∞+1}0{∞}{2∞-1},
+{-1}012.
+$$
+$$
+=
+\m{-∞}0{\y∞+1}{2∞+1},
+{-3∞+2}0{\y3∞+1}{6∞-1},
+{\y-∞+1}\0{\e∞}{\y2∞-1},
+{-1}0\12.
++
+\m0\000,\3{\e1}\0{\y-2},0\000,0\000.
+$$
+\a\aa
+
+Eigenvector of eigenvalue $3+ε$
+$$
+\m1,1,{-1},1.
+$$
+Eigenvector of eigenvalue $2+ε$
+$$
+\m0,1,0,0. ␣ \m{∞+1},{3∞+1},{∞},1.
+$$
+\a\aa
+All vectors can be decomposed as 
+$$
+a_1\m1,1,{-1},1.+a_2\m0,1,0,0.
++“Const“\left((a_3+a_4ε)\m{∞+1},{3∞+1},{∞},1.\right)
+$$
+\a\aa
+However, if we just trying to decompose vectors into only classical eigenvectors, we are making $a_3=0$
+$$
+a_1\m1,1,{-1},1.+a_2\m0,1,0,0.
++(0+a_4ε)\m{∞+1},{3∞+1},{∞},1.
+$$
+
+$$
+a_1\m1,1,{-1},1.+a_2\m0,1,0,0.
++a_4\m{1},{3},{1},0.
+$$
+Then there are not enough eigenvectors.
+\a\aa
+
+$$
+A
+\m1011,1131,{-1}010,1001.
+=
+\m1011,1131,{-1}010,1001.
+\m3{}{}{},
+{}2{}{},
+{}{}2{1},
+{}{}{}2.
+$$
+\vfill
+
+$$
+\m1011,1131,{-1}010,1001.^{-1}A\m1011,1131,{-1}010,1001.=\m3{}{}{},
+{}2{}{},
+{}{}2{1},
+{}{}{}2.
+$$
+\a\aa
+\exe Solve the differential equation
+$$
+y' = \m2001,{-2}225,{-2}043,10{-1}1.y
+$$
+for 
+$$
+y(0)=\m a,b,c,d.
+$$
+
+\sol The solution is give by
+$$
+y(t)=exp{\m2001,{-2}225,{-2}043,10{-1}1.t}y(0).
+$$
+\a\aa
+By spectural decomposition
+$$
+g(A) = 
+$$
+$$g(3)\m
+10{-1}{-1},
+10{-1}{-1},
+{-1}0{1}{1},
+10{-1}{-1}.
+$$
+$$
++“Const“\left(
+g(2+ε)
+\m{-∞}0{∞+1}{2∞+1},
+{-3∞-1}1{3∞+1}{6∞+1},
+{-∞+1}0{∞}{2∞-1},
+{-1}012.\right)
+$$
+\a\aa
+Therefore
+$$
+e^{At} = 
+$$
+$$
+e^{3t}\m
+10{-1}{-1},
+10{-1}{-1},
+{-1}0{1}{1},
+10{-1}{-1}.
+$$
+$$
++“Const“\left(e^{(2+ε)t}\m{-∞}0{∞+1}{2∞+1},
+{-3∞-1}1{3∞+1}{6∞+1},
+{-∞+1}0{∞}{2∞-1},
+{-1}012.\right)
+$$
+Note that $e^{2t+εt}=e^{2t}(1+εt+O(ε^2))$
+\a\aa
+where
+$$
+“Const“\left(e^{(2+ε)t}\m{-∞}0{∞+1}{2∞+1},
+{-3∞-1}1{3∞+1}{6∞+1},
+{-∞+1}0{∞}{2∞-1},
+{-1}012.\right)
+$$
+$$=
+e^{2t}\m0011,{-1}111,100{-1},{-1}012.+te^{2t}\m{-1}012,{-3}036,{-1}012,0000.
+$$
+\a\aa
+So the complete solution $e^{At}$ equals to
+$$
+e^{3t}\m
+10{-1}{-1},
+10{-1}{-1},
+{-1}0{1}{1},
+10{-1}{-1}.+e^{2t}\m0011,{-1}111,100{-1},{-1}012.+te^{2t}\m{-1}012,{-3}036,{-1}012,0000.
+$$
+%\a\aa
+
+
+%
+%$$
+%\m{-∞}0{∞+1}{2∞+1},
+%{-3∞+2}0{3∞+1}{6∞-1},
+%{-∞+1}0{∞}{2∞-1},
+%{-1}012.
+%$$
+%
+%$$
+%\m0000,310{-2},0000,0000.
+%$$
+
+
+\a\aa
+%\a{A standard form of infinite cross-filling}
+%
+%We do a cross filling of infinite matrix. We note the cross-center 
+%\a\aa
+%
+%\[lem]{Suppose the infinite matrix $M$ suffers an infinite cross-filling
+%$$
+%M = 
+%v_1∞^{k_1}w_1^T+
+%v_2∞^{k_2}w_2^T+
+%v_m∞^{k_m}w_m^T
+%$$
+%where $v_i$ and $w_i$ are formal vectors and $∞^{k_i}$ is an infinite scalar. Then the list of infinite vectors
+%$$ v_1∞^{k_1}, ␣ v_2∞^{k_2}, ␣\cdots, ␣  v_m∞^{k_m} $$
+%$$ w_1∞^{k_1}, ␣ w_2∞^{k_2}, ␣\cdots, ␣  w_m∞^{k_m} $$
+%are linearly independent.
+%}
+%If $M = 
+%v_1∞^{k_1}w_1^T+
+%v_2∞^{k_2}w_2^T+
+%v_m∞^{k_m}w_m^T$ is a cross filling, so is  
+%$M^T = 
+%w_1∞^{k_1}v_1^T+
+%w_2∞^{k_2}v_2^T+
+%w_m∞^{k_m}v_m^T$. We only need to prove for $v_i$
+%% The choice of cross-center must be biggest order, formal scalar multiple
+%\a\aa
+%\[defi]{A component of an infinite vector is the coefficient vector of some $∞^k$.
+%}
+%\a\aa
+%\[lem]{If the constant part of an infinite eigenvector is zero vector,
+%$$
+%“Const“(\vec v)=\vec 0
+%$$ then the infinite eigenvector is zero vector.
+%$$
+%\vec v ≡ \vec 0.
+%$$
+%}
+%Letting 
+%$$
+%\vec v = \vec v_0 + \vec v_1∞ + \vec v_2∞^2+\cdots+\vec v_k∞^k
+%$$
+%Then we have
+%$$
+%\vec v_k = “Const“(ε^k\vec v) = “Const“((A-λI)^k\vec v) = (A-λI)^k“Const“(\vec v)=(A-λI)^k\vec 0=\vec 0.
+%$$
+%Therefore all components of this infinite eigenvector is zero vector, the vector is zero vector.
+%\a\aa
+%\[prop]{If $M$ is an infinite eigenmatrix of $A$ of eigenvalue $λ+ε$ with the cross-filling of infinite projection given by 
+%$M = 
+%v_1∞^{k_1}w_1^T+
+%v_2∞^{k_2}w_2^T+
+%v_m∞^{k_m}w_m^T$
+%Then components of 
+%$$ v_1∞^{k_1}, ␣ v_2∞^{k_2}, ␣\cdots, ␣  v_m∞^{k_m} $$
+%and components of
+%$$ w_1∞^{k_1}, ␣ w_2∞^{k_2}, ␣\cdots, ␣  w_m∞^{k_m} $$
+%are all linearly independent.
+%}
+%A linear combination of component is the constant part of a formal linear combination of these vectors, which is again infinite eigenvectors. Therefore, since the constant part of it is zero, itself is zero, all summand is zero vector, so all the coefficient is zero.
+%
+%\a\aa
+%Recall the lemma
+%$$
+%P_0 = 
+%\m
+%||\cdots|,
+%{v_1}{v_2}{\cdots}{v_k},
+%||\cdots|.
+%\m
+%-{w_1^T}-,
+%-{w_2^T}-,
+%\vdots\vdots\vdots,
+%-{w_k^T}-.
+%$$
+%is a projection, then $w_i^Tv_i=1$ and therefore $v_iw_i^T$ are rank-1 projections.  
+%%% We are close to JCF, now it just how to group them, by index?
+%
+%
+%
+%%%% Do one have to introduce the infinitesimal conjugation?
+%%%% After JCF, relation between infinite eigenvector, and its constant part. 
+%
+%
+%%%% Just by the part of JCF, describe what is in P, and so 
+%
+%
+%%%% Describe the relation between Spectural decomposition and JCF
+%
+%%%% Describe the spectural theorem, like specutral mapping theorem. 
+%
+%%%% Describe the rank and the equation.
+%
+%%%%%  How to understand the minimal polynomial criterion. 
+%
+%
+%%%% How to visualize the Calay Hamilton Theorem from Jordan Canonical Form.
+%
+%
+%%%% A question o f what matrix is diagonalizable.
+%
+%%%% Normal matrices are diagonalizable.
+%
+%%%% A^HA = 0 then A = 0
+%
+%%% A generalization of whatever whatever
+%%%% P is commute with P^H, then (P-PP^H)(P^H-PP^H)=0  so P=PP^H=P^H, then P^H is hermitian orthogonal projection. and thus in fact interesting.
+%
+%
+%
+%
+%
+%
+%
+\aaa

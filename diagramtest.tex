@@ -1,0 +1,114 @@
+\aaa{diagramtest}
+%$$
+%\xymatrix{
+%	%\text{View from coordinate:}
+%	&F^n\ar[rr]\oldcaret{L_P}\ar[d]\oldunderscore{L_\ce}&&F^m\ar[d]\oldcaret{L_\cw}\\
+%	%\text{View from actual map:}
+%	&V\ar[rr]\oldunderscore T&&W\\
+%}
+%$$
+
+
+%\let\oldar = \ar
+%
+%\def\ar[####1]####2####3{\expunder\expupper\eat\oldar[####1]####2\eat^ placeholder _ placeholder\tae{####3}}
+%\def\expunder####1_####2\tae{####1\oldunderscore####2\tae}
+%\def\expupper####1^####2\tae{####1\oldcaret####2\tae}
+%\def\eat####1\eat####2\tae{####1}
+
+%%%% The testing command, the testing is failed.
+%\def\ar[####1]####2####3{\def\saved{####3}\expar[####1]####2\tae\saved}
+%%%% second part of testing command
+%\def\expar[####1]####2\tae{\expunder\expupper\eat OLDAR [####1]####2\eat^ placeholder _ placeholder\tae}
+%\def\expunder####1_####2\tae{####1\oldunderscore####2\tae}
+%\def\expupper####1^####2\tae{####1\oldcaret####2\tae}
+%\def\eat####1\eat####2\tae{####1}
+%\def\expar[####1]####2\tae{}
+%%\ar[1]234
+%\expar[123]34\tae
+
+
+
+%% Test command: We replace the active command by AR, and OLDUNDERSCORE and OLCARET to see if it works.
+%\def\ar[####1]####2####3{\expunder\expupper\eat AR [####1]####2\eat^ placeholder _ placeholder\tae####3}
+%\def\expunder####1_####2\tae{####1 OLDUNDERSCORE ####2\tae}
+%\def\expupper####1^####2\tae{####1 OLDCARET ####2\tae}
+%\def\eat####1\eat####2\tae{####1}
+%% Testing
+%\ar[rr]^34   %expect AR [rr] OLDCARET 34 
+%\ar[rr]_34_4  %expect AR [rr] OLDUNDERSCORE 34_4   % the last _4 should not be translated
+
+
+%\def\test####1####2####3{####1####2####3}
+
+
+
+$$
+\xymatrix{
+	A\ar[rrr]^\alpha\ar[dd]_\beta\ar[rd]^\gamma&&&B\ar[dd]^\delta\ar[ld]_\epsilon\\
+	&C\ar[r]^\zeta&D&\\
+	E\ar[ru]^\iota\ar[rrr]^\theta&&&F\ar[lu]_\mu\\
+}
+$$
+
+
+$$
+\xymatrix{
+	F^n\ar[rr]^{L_P}&&F^m\\
+}
+$$
+
+
+
+
+%$$
+%\xymatrix{
+%	\ar[rr]\ar[rd]{}{}&&\ar[ld]\\
+%	&&
+%	}
+%$$
+%
+$$
+\xymatrix{
+	A\ar[rr]^{L_P}\ar[rd]_{L_c}{}{}&&B\ar[ld]^{L_c}\\
+	&V
+	}
+$$
+
+%$$
+%\xymatrix{
+%	A\ar[rr]^{L_P}\ar[rd]_{L_c}&&B\ar[ld]^{L_cw}\\
+%	&V
+%	}
+%$$
+%%
+%
+$$
+\xymatrix{
+	\ar[r]{}{}\ar[d]{}{}&\ar[d]{}{}\\
+	\ar[r]{}{}&\\
+	}
+$$
+
+
+
+$$
+\xymatrix{
+	\f^n\ar[rr]^{L_P}\ar[rd]_{L_\ce}&&\f^m\ar[ld]^{L_\cw}\\
+	&V
+	}
+$$
+%
+%
+
+%$$
+%\xymatrix{
+%	f^n\ar[rr]^{L_P}\ar[rd]_{L_c}&&f^m\ar[ld]^{L_cw}\\
+%	&V
+%	}
+%$$
+
+
+
+
+\aaa

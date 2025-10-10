@@ -1,0 +1,972 @@
+
+\let\oldepsilon\epsilon
+\def\epsilon{{\color{blue}\bf\oldepsilon}}
+\let\oldinfty\infty
+\def\infty{{\color{red}\bf\oldinfty}}
+
+\aaa{Review Lagurange Interpolation Polynomial construction}
+
+Consider polynomial \( F(x) = (x-\lambda_1)(x-\lambda_2)(x-\lambda_3) \) with $λ_1≠λ_2≠λ_3≠λ_1$.
+\vfill
+If a matrix $A$ satisfies $F(A)=0$, then 
+\vfill
+ $$g(A)=g(λ_1)P_{λ_1}+g(λ_2)P_{λ_2}+g(λ_3)P_{λ_3}$$
+\vfill
+where each projection $P_{λ_1} = f_{λ_1}(A)$ is obtained by plugging $A$ into the
+interpolation at \( \lambda_1 \): 
+$$ f_{λ_1}:=\frac{(x-\lambda_2)(x-\lambda_3)}{(\lambda_1-\lambda_2)(\lambda_1-\lambda_3)} .$$
+\vfill
+ The value $g(A)$ only depends on $g(λ_1), g(λ_2), g(λ_3)$.
+
+
+\a\aa
+Construction of $f_{λ_1}$ follow the value table
+\t{}{$x=λ_1$}{$x=λ_2$}{$x=λ_3$},
+{$f_{λ_1}(x)$}100.
+
+Construction of $f_{λ_1}$ by 3 steps.
+\vfill
+First, consider $F(x)$, giving value $0$ at the three specific points 
+
+\t{}{$x=λ_1$}{$x=λ_2$}{$x=λ_3$},
+{$F_{λ_1}(x)$}000.
+\a\aa
+Then, realizing that we want $f_{λ_1}(λ_1)≠0$, we consider the product $F(x)·\frac1{x-λ_1}$
+
+\t{}{$x=λ_1$}{$x=λ_2$}{$x=λ_3$},
+{$F(x)·\frac1{x-λ_1}$}{$(λ_1-λ_2)(λ_1-λ_3)≠0$}00.
+\vfill
+In this slides, we call $\frac1{x-λ_1}$ the \x{$λ_1$-factor replacer}. It replaces the factor $(x-λ_1)$ in $F$ by $1$.(Name only for this slides, not general terminology.)
+$$
+F(x)·\frac1{x-λ_1} = (x-λ_2)(x-λ_3)
+$$
+\a{Some side notes for simplification}
+Some side notes: when evaluating at $x=λ_1$
+
+$$
+\left.F(x)·\frac1{x-λ_1}\right|_{x=λ_1} = \left.(x-λ_2)(x-λ_3)\right|_{x=λ_1} = \underbrace{(λ_1-λ_2)(λ_1-λ_3)}_{“looks complicated“}
+$$
+
+Since direct evaluation $\left.F(x)·\frac1{x-λ_1}\right|_{x=λ_1} = \frac 00 $ is an undefined form, we may also use L'hospital rule,
+$$
+\lim_{x ⟶  λ_1} F(x)·\frac1{x-λ_1} = \lim_{x ⟶  λ_1}\frac d{dx}F_{λ_1}(x)·\frac1{\frac d{dx}(x-λ_1)} = F'(λ_1)
+$$
+
+So one may write 
+$$
+\left.F(x)·\frac1{x-λ_1}\right|_{x=λ_1} = \underbrace{(λ_1-λ_2)(λ_1-λ_3)}_{“looks complicated“} = F'(λ_1)
+$$
+\a\aa
+The table from last step
+\t{}{$x=λ_1$}{$x=λ_2$}{$x=λ_3$},
+{$F(x)·\frac1{x-λ_1}$}{$F'(λ_1)≠0$}00.
+\vfill
+
+To get desired result, we divide $F'(λ_1)$
+
+\t{}{$x=λ_1$}{$x=λ_2$}{$x=λ_3$},
+{$F_{λ_1}(x)\cdot\frac1{x-λ_1}·\frac1{F'(λ_1)}$}{$1$}00.
+
+To sumarize, the interpolation polynomial has the following parts
+
+$$
+f_{λ_1}(x) = F_{λ_1}(x)·\underbrace{\frac1{F'(λ_1)}}_{“normalizer“}\cdot\underbrace{\frac1{x-λ_1}}_{“replacer“}.
+$$
+%\a\aa
+%
+%Expressing \( F'(x) \) at points \( \lambda_1, \lambda_2, \lambda_3 \):
+%\begin{itemize}
+%  \item \( F'(\lambda_1) = (\lambda_1-\lambda_2)(\lambda_1-\lambda_3) \)
+%  \item \( F'(\lambda_2) = (\lambda_2-\lambda_1)(\lambda_2-\lambda_3) \)
+%  \item \( F'(\lambda_3) = (\lambda_3-\lambda_2)(\lambda_3-\lambda_1) \)
+%\end{itemize}
+%
+%\a\aa
+%Recall \( F(x) = (x-\lambda_1)(x-\lambda_2)(x-\lambda_3) \).
+%\vfill
+%To express \( \frac{F(x)}{x-\lambda_i} \) explicitly for each \( \lambda_i \), we expand as follows:
+%\vfill
+%
+%For \( \lambda_1 \):
+%$$ \frac{F(x)}{x-\lambda_1} = (x-\lambda_2)(x-\lambda_3) $$
+%
+%For \( \lambda_2 \):
+%$$ \frac{F(x)}{x-\lambda_2} = (x-\lambda_1)(x-\lambda_3) $$
+%
+%For \( \lambda_3 \):
+%$$ \frac{F(x)}{x-\lambda_3} = (x-\lambda_1)(x-\lambda_2) $$
+%
+%Each expression represents \( F(x) \) divided by the factor corresponding to the excluded root.
+%
+%
+%\a\aa
+%$$ \frac{F(x)}{x-\lambda_1} \cdot \frac{1}{F'(\lambda_1)} = \frac{(x-λ_2)(x-λ_3)}{(λ_1-λ_2)(λ_1-λ_3)}$$.
+\a\aa
+
+In the interpolation theorem, for any polynomial $g(x)$, recall that we have
+$$ g(x) = Q(x)F(x) + \sum_{i=1}^{3} \underbrace{g(\lambda_i)}_{“interpolator“}\frac{F(x)}{(x-\lambda_i)F'(\lambda_i)} $$.
+
+We call the scalar $g(\lambda_i)$ \x{interpolator}, 
+\vfill
+\t{}{$x=λ_1$}{$x=λ_2$}{$x=λ_3$},
+{$g(λ_1)·F_{λ_1}(x)\cdot\frac1{x-λ_1}·\frac1{F'(λ_1)}$}{$g(λ_1)$}00,
+{$g(λ_2)·F_{λ_2}(x)\cdot\frac1{x-λ_2}·\frac1{F'(λ_2)}$}0{$g(λ_2)$}0,
+{$g(λ_3)·F_{λ_3}(x)\cdot\frac1{x-λ_3}·\frac1{F'(λ_3)}$}00{$g(λ_3)$}.
+
+
+\a\aa
+
+$$ g(x) = Q(x)F(x) + \sum_{i=1}^{3} g(\lambda_i)\frac{F(x)}{(x-\lambda_i)F'(\lambda_i)} $$.
+
+Analyse each term in the interpolation
+
+$$
+F(x)\cdot\underbrace{g(\lambda_i)}_{“Interpolator“}
+\cdot \underbrace{\frac{1}{(x-\lambda_i)}}_{“Replacer“}
+\underbrace{\frac1{F'(\lambda_i)}}_{“Normalizer“}
+$$
+ we give the following names.
+\[itemize]{
+\item $F(x)$: Make sure the value at $λ_j$ is 0 for $j≠i$.
+\item \x{Replacer}: Make sure the value at $λ_i$ is non-zero
+\item \x{Normalizer}: Make the value at $λ_i$ to be $1$
+\item \x{Interpolator}: Make sure the value at $λ_i$ agrees with $g(λ_i)$
+}
+
+
+
+\a{Interpolation and Partial Fraction Decomposition}
+For a better elaboration, we introduce \x{partial fraction decomposition} and its close connection between interpolation. 
+\vfill
+The original interpolation formula
+$$
+g(x) = Q(x){\color{red}F(x)} + \sum_{i=1}^{3} g(\lambda_i)\frac{\color{red}F(x)}{(x-\lambda_i)F'(\lambda_i)}
+$$
+can be simplified into:
+$$ \frac{g(x)}{\color{red}F(x)} = Q(x) + \sum_{i=1}^{3} \frac{g(\lambda_i)}{F'(λ_i)}\cdot \frac1{x-\lambda_i} $$.
+
+This form is called \x{Partial fraction decomposition}.
+
+\a\aa
+Note the equivalence between 
+$$“\x{Lagurange interpolation}“ ⟺    “\x{Partial fraction decomposition}“$$
+Partial fraction decomposition provides another point of view for Lagurange interpolation.
+\a\aa
+General simple partial fraction decomposition takes the form
+
+$$
+\frac{g(x)}{(x-λ_1)(x-λ_2)\cdots(x-λ_n)} = Q(x) + \frac{a_1}{x-λ_1}+\frac{a_2}{x-λ_2}+\cdots+\frac{a_n}{x-λ_n}.
+$$
+
+where $a_1,\cdots,a_n$ are \x{scalars}. 
+
+\vfill
+$$
+“Lagurange interpolation“ ⟹   “Partial Fraction Decomposition“
+$$
+
+The Lagurange interpolation \x{proves} the existence of such a formula, and \x{gives a precise formula for each coefficient} $a_i=\frac{g(λ_i)}{F'(λ_i)}$.
+
+\a\aa
+$$
+\frac{g(x)}{(x-λ_1)(x-λ_2)\cdots(x-λ_n)} = Q(x) + \frac{a_1}{x-λ_1}+\frac{a_2}{x-λ_2}+\cdots+\frac{a_n}{x-λ_n}.
+$$
+
+However, sometimes, it might be \x{easier} and \x{more understandable} to \x{determine the coefficient $a_i$ directly} rather than using Lagurange interpolation formula.
+\vfill
+For this purpose, we introduce the notion of infinity ∞ and infinitesimal symbol ε.
+\a{Infinitesimals and infinities}
+The symbol ε is a variable, we are using it to repsent a scalar that it \x{too small to be a number}, ideally speaking,
+$$
+ε = 0.\underbrace{00\cdots\cdots\cdots\cdots01}_{“infintitly many“}.
+$$
+We may introduce expressions like
+$$
+3+ε = 3.00\cdots\cdots\cdots\cdots03
+$$
+$$
+1+2ε+5ε^2=1.00\cdots\cdots\cdots\cdots020\cdots\cdots\cdots\cdots05.
+$$
+The expression can have infinitely many terms of $ε^i$, for example
+$$
+1+2ε+3ε^2+4ε^3+\cdots = 1.0\cdots\cdots\cdots\cdots020\cdots\cdots\cdots\cdots030\cdots\cdots\cdots\cdots040\cdots\cdots\cdots\cdots05\cdots
+$$
+
+Our ε is too ideal to be a number, so we would only represent it as a symbol ε.
+\a\aa
+However, when thinking of ε, we may try to use number to approach it, the smaller number you choose, the better it behaves.
+
+For example, choosing
+$$
+ε ≈ 0.01
+$$
+You may understand the expression
+$$
+\frac1{1-ε}=1+ε+ε^2+ε^3+ε^4+\cdots
+$$
+In parctice, you may find
+$$
+\frac1{0.99} = 1.0101010101010101\cdots
+$$
+When choosing $ε ≈ 0.001$
+$$
+\frac1{0.999}=1.001001001001\cdots
+$$
+\a{Infiniteies}
+We define
+$$
+∞ = \frac1{ε}
+$$
+You may understand that
+$$
+∞ = 100\cdots\cdots0.
+$$
+We may have expressions like
+$$
+∞+2+3ε+4ε^2
+$$
+to represents, something ideally like
+$$
+100\cdots\cdots2\;.\; 0\cdots\cdots030\cdots\cdots04
+$$
+\a{Terminologies}
+We introduce some terminalogies. The following terminology is mathematics terminology where you can find on Wikipedia
+
+\x{Polynomials}: Finite sum, must be non-negative index $$∑_{i=0}^ka_ix^i$$
+\x{Formal Power series}: Possibly infinite sum with non-negative index $$∑_{i=0}^{\oldinfty}a_ix^i$$
+\x{Laurent series}: Possibly infinite sum, allow finitely many negative index $$∑_{i=-N}^{\oldinfty}a_ix^i$$
+\a\aa
+We give some name to our new-introduced number systems. (Terminologies only in our slides!)
+
+\x{Laurant scalar:} Could have infinitly many terms involving $ε^i$, but only finitly many terms involving $∞^i$
+$$
+\underbrace{a_{-N}∞^N + a_{-N+1}∞^{N-1}+\cdots+a_{-1}∞}_{“infinite part“}+\underbrace{a_0}_{“constant“}+\underbrace{a_1ε+a_2ε^2+\cdots}_{“infinitesimal part“}
+$$
+\x{Formal scalar:} A special Laurant scalar with infinite part equal to $0$.
+$$
+a_0+a_1ε+a_2ε^2+\cdots
+$$
+Note: All coefficients $a_i$ here are classical scalars a_i∈ ℂ.
+\a{Arithmetic of Laurent scalars}
+Any two Laurent scalars can add, subtract , and multiply together.
+\vfill
+A Laurent scalar can divide another non-zero Laurent scalar.
+\vfill
+The process of calculating expressions involving ε or ∞ and representing it to standard form like $a_{-N}∞^N+\cdots+a_0+a_1ε+\cdots$ is called \x{Laurent expansion} (or \x{Taylor expansion} if there is no ∞ involves.)
+$$
+\frac1{(1-ε)^2}=1+2ε+3ε^2+4ε^3+\cdots
+$$
+\a{Some calculation strategy}
+In some cases, we have a complicated formal scalar
+$$
+\frac{(1+ε)^2}{(1-2ε)^3}=a_0+a_1ε+a_2ε^2+\cdots
+$$
+and \x{suppose we only want} $a_0$, and don't care about infinitesimal part $a_1,\cdots,a_n$, then we may just evaluate at $ε=0$ and obtain
+$$
+a_0=\frac{1^2}{1^3}=1.
+$$
+\a{Partial fraction decomposition}
+
+\exe: Decompose the function \( \frac{g(x)}{(x-1)(x-2)(x-3)} \) into partial fractions.
+
+\sol Express \( \frac{g(x)}{(x-1)(x-2)(x-3)} \) as a sum of partial fractions:
+$$
+Q(x)+\frac{A}{x-1} + \frac{B}{x-2} + \frac{C}{x-3}
+$$
+where A, B, and C are constants to be determined.
+
+\a\aa
+$$
+Q(x)+\frac{A}{x-1} + \frac{B}{x-2} + \frac{C}{x-3} = \frac{g(x)}{(x-1)(x-2)(x-3)}
+$$
+
+Determine A, B, and C by:
+
+Let $x=1+ε$, then the this equation specialized to
+$$
+Q(1+ε) + A∞+\frac B{-1+ε}+\frac C{-2+ε} = \frac{g(1+ε)}{(-1+ε)(-2+ε)}∞
+$$
+Compare the coefficient at ∞, we obtain
+$$
+A=\frac{g(1)}{(-1)(-2)}=\frac{g(1)}2.
+$$
+Letting $x=2+ε$, we may find $B$, for $x=3+ε$, we may find $C$.
+%\a\aa
+%Let's find $A$ for example.
+%
+%$$
+%(x-1)Q(x)+A + (x-1)\frac{B}{x-2} + (x-1)\frac{C}{x-3} = \frac{g(x)}{(x-2)(x-3)}
+%$$
+%Plug in $x=1$
+%$$
+%A= \frac{g(1)}{(1-2)(1-3)} = \underbrace{g(1)}_{“Interpolator“} \underbrace{\frac1{(1-2)(1-3)}}_{“Normalizer“}
+%$$
+%Similar method can help us find $B$ and $C$. 
+%$$
+%x=2 ⟹   B = \frac{g(2)}{(2-1)(2-3)} = \underbrace{g(2)}_{“Interpolator“} \underbrace{\frac1{(2-1)(2-3)}}_{“Normalizer“}
+%$$
+%
+%$$
+%x=3 ⟹   C = \frac{g(3)}{(3-1)(3-2)} = \underbrace{g(3)}_{“Interpolator“} \underbrace{\frac1{(3-1)(3-2)}}_{“Normalizer“}
+%$$
+\a\aa
+Therefore, from the partial fraction decomposition, we realized that
+$$
+\frac{g(x)}{(x-1)(x-2)(x-3)}
+$$
+$$=Q(x)+\underbrace{g(1)}_{“Interpolator“} \underbrace{\frac1{(1-2)(1-3)}}_{“Normalizer“}\underbrace{\frac1{x-1}}_{“replacer“} + \underbrace{g(2)}_{“Interpolator“} \underbrace{\frac1{(2-1)(2-3)}}_{“Normalizer“}\underbrace{\frac{1}{x-2} }_{“replacer“}
+$$
+$$+ \underbrace{g(3)}_{“Interpolator“} \underbrace{\frac1{(3-1)(3-2)}}_{“Normalizer“}\underbrace{\frac{1}{x-3}}_{“replacer“}
+$$
+
+To obtain the Lagurange interpolation, we only need to multiply $F(x)=(x-λ_1)(x-λ_2)(x-λ_3)$ on both sides.
+
+\aaa
+
+
+\aaa{Repeated roots}
+Next we consider a new problem. When we obtain a matrix $A$ with $$A^2(A-I)=0$$ and suppose we want to compute $g(A)$, then the following decomposition is crutial for our first step
+\vfill
+\exe Decompose $$\frac{g(x)}{x^2(x-1)}.$$
+\a\aa
+However, the decomposition of 
+$$
+\frac{g(x)}{x^2(x-1)}
+$$
+is unclear since the denomenator \x{have repeated roots}. The factor $x$ shows twice. If we keep using the original formula, we would face some problem.
+$$
+\frac{g(x)}{(x-0)(x-0)(x-1)}
+$$
+$$=Q(x)+\overbrace{\underbrace{g(0)}_{“Interpolator“} \underbrace{\frac1{(0-0)(0-1)}}_{“Normalizer“}\underbrace{\frac1{x-0}}_{“replacer“}}^{{\color{red}∞}} + \overbrace{\underbrace{g(0)}_{“Interpolator“} \underbrace{\frac1{(0-0)(0-1)}}_{“Normalizer“}\underbrace{\frac{1}{x-0} }_{“replacer“}}^{{\color{red}∞}}
+$$
+$$+ \underbrace{g(3)}_{“Interpolator“} \underbrace{\frac1{(3-1)(3-2)}}_{“Normalizer“}\underbrace{\frac{1}{x-3}}_{“replacer“}
+$$
+\a\aa
+Idea: since we would have ∞-problem when dealing with repeated roots. We may slightly change the denomenator, and finally use limit 
+
+$$
+\frac{g(x)}{x^2(x-1)} = \lim_{ε ⟶  0}\frac{g(x)}{(x^2-ε^2)(x-1)} = \lim_{ε ⟶  0} \frac{g(x)}{(x-ε)(x+ε)(x-1)}.
+$$
+\vfill
+
+In our formalism of ε,∞, the Partial fraction decomposition of $$\frac{g(x)}{x^2(x-1)}$$ is \x{the constant term } of the partial fraction decomposition of $$\frac{g(x)}{(x-ε)(x+ε)(x-1)}.$$
+
+\aaa
+
+\aaa{Example of two term}
+\textbf{Introduction:} Decompose \( \frac{g(x)}{(x-1)x^2} \) as \( \varepsilon \rightarrow 0 \) into \( \frac{g(x)}{(x-1)(x^2-\varepsilon^2)} \).
+\vfill
+\textbf{Decomposition Strategy:} Express as \( \frac{g(x)}{(x-1)(x-\varepsilon)(x+\varepsilon)} \).
+\vfill
+
+$$
+\frac{g(x)}{(x-1)(x-\varepsilon)(x+ε)} = Q(x)+\frac{A}{x-1} + \frac{B}{x-ε} + \frac{C}{x+ε}
+$$
+
+This partial fraction decomposition results
+
+$$
+\underbrace{
+\frac{g(1)}{(1-ε)(1+ε)} 
+}_A
+\cdot \frac1{x-1}
++
+\underbrace{
+\frac{g(ε)}{(ε-1)(ε+ε)}
+}_B
+\cdot \frac1{x-ε}
++ 
+\underbrace{
+\frac{g(-ε)}{(-ε-1)(-ε-ε)}
+}_C
+\cdot \frac1{x+ε}
+$$
+\a\aa
+What pattern between the two terms:
+
+$$
+\underbrace{
+\frac{g(ε)}{(ε-1)(ε+ε)}
+}_B
+\cdot \frac1{x-ε}
+␣ ␣ 
+\underbrace{
+\frac{g(-ε)}{(-ε-1)(-ε-ε)}
+}_C
+\cdot \frac1{x+ε}
+$$
+
+\vfill
+
+Observation: Substituting $ε  \leftrightarrow -ε$ one obtain the other.
+
+\a\aa
+
+$$
+\underbrace{g(ε)}_{“interpolator“}\overbrace{\frac1{\underbrace{(ε-1)}_{\color{red}\substack{“outside“\\“normalizer“}}\underbrace{(ε+ε)}_{\color{red}\substack{“inside“\\“normalizer“}}}}^{“normalizer“}·\underbrace{ \frac 1{x-ε}}_{“replacer“}
+$$
+
+\vfill
+We seperate the normalizer into two groups.
+
+Outside Normalizer: This part would not go to infinity when $ε ⟶  0$
+
+Inside normalizer: This are all factors that contributes as ∞ when $ε ⟶  0$.
+
+\aaa
+
+\aaa{Geometric Series}
+How can we calculate
+
+$$
+\frac1{x-ε} ␣  \frac1{ε-1}?
+$$
+We use the following formula
+$$
+\frac 1{x-ε} = \frac1x + \frac{ε}{x^2} + \frac{ε^2}{x^3} +\cdots
+$$
+
+\a\aa
+\textbf{Proof}:
+Let \( S = \frac{1}{x} + \frac{\varepsilon}{x^2} + \frac{\varepsilon^2}{x^3} + \cdots \). We need to show that \( S \times (x - \varepsilon) = 1 \).
+
+First, compute \( S \times x \) and \( S \times \varepsilon \):
+\begin{align*}
+S \times x &= \left(\frac{1}{x} + \frac{\varepsilon}{x^2} + \frac{\varepsilon^2}{x^3} + \cdots\right) \times x \\
+           &= 1 + \frac{\varepsilon}{x} + \frac{\varepsilon^2}{x^2} + \cdots \\
+S \times \varepsilon &= \left(\frac{1}{x} + \frac{\varepsilon}{x^2} + \frac{\varepsilon^2}{x^3} + \cdots\right) \times \varepsilon \\
+                     &= \frac{\varepsilon}{x} + \frac{\varepsilon^2}{x^2} + \frac{\varepsilon^3}{x^3} + \cdots
+\end{align*}
+
+Now, subtract the second equation from the first:
+\begin{align*}
+(S \times x) - (S \times \varepsilon) &= \left(1 + \frac{\varepsilon}{x} + \frac{\varepsilon^2}{x^2} + \cdots\right) - \left(\frac{\varepsilon}{x} + \frac{\varepsilon^2}{x^2} + \frac{\varepsilon^3}{x^3} + \cdots\right) \\
+                                      &= 1
+\end{align*}
+
+Therefore, \( S \times (x - \varepsilon) = 1 \).
+
+\aaa
+
+
+\aaa{Calculation}
+Now let us go back to the summand in partial fraction decomposition
+$$
+\underbrace{g(ε)}_{“interpolator“}\frac{1}{\underbrace{(ε-1)}_{\substack{“outside “\\“normalizer“}}\underbrace{(ε+ε)}_{\substack{“inside“\\“ normalizer“}}}
+\cdot \frac1{x-ε}
+$$
+$$
+=
+\frac1{(ε+ε)}
+\underbrace{
+(a_0+a_1ε+\cdots)
+}_{g(ε)}
+\underbrace{
+(-1-ε-ε^2-\cdots)
+}_{\frac1{ε-1}}
+\underbrace{
+\left(\frac1x+ε\frac1{x^2}+ε^2\frac1{x^3}+\cdots\right)
+}_{\frac1{x-ε}}
+$$
+$$ =\frac12\cdot\frac1{ε}(*+*ε+*ε^2+\cdots) $$
+$$ =\frac12\cdot\left(\frac*{ε}+*+*ε+*ε^2+\cdots\right) $$
+\vfill
+
+Question: Does the limit exists when $ε ⟶  0$? what happens?
+\a\aa
+Conclusion, the limit
+$$
+\lim_{ε ⟶  0} \frac{g(ε)}{(ε-1)(ε+ε)}
+\cdot \frac1{x-ε}
+$$
+does not exist in general
+
+\a\aa
+
+Then, how about 
+
+$$
+\lim_{ε ⟶  0} \left(
+\frac{g(ε)}{(ε-1)(ε+ε)}
+\cdot \frac1{x-ε}
++
+\frac{g(-ε)}{(-ε-1)(-ε-ε)}
+\cdot \frac1{x+ε}
+\right)
+$$
+
+\a\aa
+Let us say
+$$
+\frac{g(ε)}{(ε-1)(ε+ε)}
+\cdot \frac1{x-ε}
+=
+\frac12\cdot\left(\frac{c_{-1}(x)}{ε}+c_0(x)+c_1(x)ε+c_2(x)ε^2+\cdots\right)
+$$
+
+Then
+$$
+\frac{g(-ε)}{(-ε-1)(-ε-ε)}
+\cdot \frac1{x+ε}
+= \frac12\cdot\left(\frac{c_{-1}(x)}{-ε}+c_0(x)+c_1(x)(-ε)+c_2(x)(-ε)^2+\cdots\right)
+$$
+
+\a\aa
+$$
+\left(
+\frac{g(ε)}{(ε-1)(ε+ε)}
+\cdot \frac1{x-ε}
++
+\frac{g(-ε)}{(-ε-1)(-ε-ε)}
+\cdot \frac1{x+ε}
+\right)
+$$
+$$=
+c_0(x)+c_2(x)ε^2+c_4(x)ε^4+\cdots
+$$
+
+\a\aa
+
+$$
+\lim_{ε ⟶  0} \left(
+\frac{g(ε)}{(ε-1)(ε+ε)}
+\cdot \frac1{x-ε}
++
+\frac{g(-ε)}{(-ε-1)(-ε-ε)}
+\cdot \frac1{x+ε}
+\right)
+=
+c_0(x)
+$$
+$$=“Const“_ε\left(\frac{g(ε)}{(ε-1)(ε+ε)}
+\cdot \frac1{x-ε}\right)
+$$
+
+
+\aaa
+
+
+
+\aaa{Example of general term}
+$$\frac{g(x)}{x^n(x-1)^2}$$
+
+We consider it as when $ε ⟶  0$
+$$\frac{g(x)}{(x^n-ε^n)(x-1)^2}$$
+
+To factorize $(x^n-ε^n)$, we need $n$'th root of unity $ζ_n$, 
+\a\aa
+The n-th roots of unity are given by:
+$$
+\zeta_n^k = \exp\left(\frac{2\pi i k}{n}\right) = i\sin \frac{2\pi  k}{n}+\cos \frac{2\pi  k}{n}, \quad k = 0, 1, \ldots, n-1.
+$$
+where \( i =\sqrt{-1}\) is the imaginary unit and \( \exp \) denotes the exponential function.
+
+The polynomial $x^n-ε^n$ has the following factorization
+
+$$
+x^n-ε^n = (x-ε)(x-ζ_nε)(x-ζ_n^2ε)\cdots(x-ζ_n^{n-1}ε).
+$$
+\a\aa
+For simplicity, we start with an example of $n=3$
+$$\frac{g(x)}{(x^3-ε^3)(x-1)^2}$$
+Let $ζ_3$ to denote the 3rd root of unity. $ζ_3^3=1$ but $ζ_3≠1$, $ζ_3^2≠1$.
+
+
+$$\frac{g(x)}{(x-ε)(x-ζ_3ε)(x-ζ_3^2ε)(x-1)^2}$$
+
+\a\aa
+We structurize the normalizer by calling the following
+$$
+\cdots + 
+\underbrace{
+g(ε)}_{“interpolator“}
+\cdot
+\overbrace{
+\underbrace{\frac{1}{(ε-ζ_3ε)(ε-ζ_3^2ε)}}_{“Inside Normalizer“}
+\cdot
+\underbrace{\frac{1}{(ε-1)^2}}_{“Outside Normalizer“}
+}^{“Normalizer“}
+\cdot
+\underbrace{\frac1{x-ε}
+}_{“Replacer“}
++\cdots
+$$
+\vfill
+
+\[tikzpicture]{
+\draw[->] (-4,0) -- (4,0);
+\draw[fill=blue] (0,0) circle[radius=0.1] node[blue,above]{me};
+\dian{0.2}0
+\dian{0.4}0
+\dian{2}0
+\dian{2.2}0
+\draw[->,thick,blue] (0,-0.2) -- (.2,-.2) node[right]{Inside factors};
+\draw[->,thick,blue] (0,-0.4) -- (.4,-.4);
+\draw[->,thick,red] (0,-0.6) -- (2,-.6);
+\draw[->,thick,red] (0,-0.8) -- (2.2,-.8) node[right]{Outside factors};
+}
+
+\a\aa
+The summand associated to the factor $x-ε$
+$$
+\cdots + g(ε)\cdot\frac{1}{(ε-ζ_3ε)(ε-ζ_3^2ε)}\cdot\frac{1}{(ε-1)^2}\cdot\frac1{x-ε}+\cdots
+$$
+\vfill
+Question 1: What is the summand associated to other factors $x-ζ_3ε$ and $x-ζ_3^2ε$?
+
+\a\aa
+We factor out ε
+$$
+\cdots + g(ε)\cdot\frac{1}{ε^2(1-ζ_3)(1-ζ_3^2)}\cdot\frac{1}{(ε-1)^2}\cdot\frac1{x-ε}+\cdots
+$$
+\vfill
+Question 2: What is the product $(1-ζ_3)(1-ζ_3^2)$ equal?
+\a\aa
+Answer to question 2:
+$$
+x^3-1= (x-1)(x-ζ_3)(x-ζ_3^2)
+$$
+Take derivative on both sides
+$$
+3x^2 = (x-1)(x-ζ_3) + (x-ζ_3)(x-ζ_3^2) + (x-1)(x-ζ_3^2)
+$$
+
+Let $x=1$, we have
+$$
+3=(1-ζ_3)(1-ζ_3^2)
+$$
+
+\[rem]{In general, for $ζ_n = i\sin \frac{2π}n + \cos\frac{2π}n$, we have
+$$
+(1-ζ_n)(1-ζ_n^2)\cdots(1-ζ_n^{n-1}) = n
+$$
+}
+\a\aa
+Now we have arrived to the stage
+$$
+\cdots + g(ε)\cdot
+\underbrace{\frac{1}{ε^2(1-ζ_3)(1-ζ_3^2)}}_{\frac13\cdot\frac1{ε^2}}
+\cdot\frac{1}{(ε-1)^2}\cdot\frac1{x-ε}+\cdots
+$$
+Finally, this equals to
+
+$$
+\underbrace{\frac13\cdot\frac{1}{ε^2}}_{“Inside normalizer“}
+·
+\underbrace{\left(*+*ε+*ε^2+\cdots\right)}_{“Outside normalizer × Replacer × Interpolator“}
+$$
+We can write it to 
+$$
+\frac13\left(\frac{c_{-2}(x)}{ε^2}+\frac{c_{-1}(x)}{ε}+c_0(x)+c_1(x)ε+\cdots\right)
+$$
+
+where $c_i(x)$ are some polynomials of $x$.
+
+\a\aa
+
+The summand associated to the factor $x-ε$ gives
+$$
+\frac13\left(\frac{c_{-2}(x)}{ε^2}+\frac{c_{-1}(x)}{ε}+c_0(x)+c_1(x)ε+\cdots\right)
+$$
+
+The summand associated to the factor $x-ζ_3ε$ gives
+$$
+\frac13\left(\frac{c_{-2}(x)}{(ζ_3ε)^2}+\frac{c_{-1}(x)}{ζ_3ε}+c_0(x)+c_1(x)(ζ_3ε)+\cdots\right)
+$$
+
+The summand associated to the factor $x-ζ_3^2ε$ gives
+$$
+\frac13\left(\frac{c_{-2}(x)}{(ζ_3^2ε)^2}+\frac{c_{-1}(x)}{ζ_3^2ε}+c_0(x)+c_1(x)(ζ_3^2ε)+\cdots\right)
+$$
+\a\aa
+The sum of the above three summand equals 
+
+$$c_0(x) + c_3(x)ε^3 + c_6(x)ε^6 + c_9(x)ε^9 + \cdots$$
+
+
+which using the fact that
+$$
+1^n+ζ_3^n+ζ_3^{2n} = \[cases]{
+3& n ∈ 3 ℤ \\
+0& n ∉ 3 ℤ 
+}
+$$
+\a\aa
+\newcommand\buchang2
+\newcommand\hahaha{
+\begin{tikzpicture}
+    \draw (0,0) circle (1cm); % Draws the unit circle
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {Re}; % x-axis
+    \draw[->] (0,-1.5) -- (0,1.5) node[above] {Im}; % y-axis
+
+    % Define points for roots of unity
+    \foreach \k in {1,\buchang,...,\nnn} {
+        \pgfmathsetmacro{\angle}{360/\nnn*\k}
+        \pgfmathsetmacro{\xcoord}{cos(\angle)}
+        \pgfmathsetmacro{\ycoord}{sin(\angle)}
+
+        % Draw vector to each root of unity
+        \draw[->, ultra thick, blue] (0,0) -- (\xcoord,\ycoord);
+
+        % Place node for each root of unity
+        \node at (\xcoord,\ycoord) [circle,fill,inner sep=1.5pt]{};
+        \node at (\xcoord,\ycoord) [anchor=south west] {\(\zeta_\nnn^{\k}\)};
+    }
+\end{tikzpicture}
+}
+
+\newcommand\nnn3 \hahaha
+\renewcommand\nnn4\hahaha
+\renewcommand\nnn5\hahaha
+\renewcommand\nnn6\hahaha
+
+\a\aa
+\newcommand\buchang1
+\newcommand\hahaha{
+\begin{tikzpicture}[scale=0.9]
+    \draw (0,0) circle (1cm); % Draws the unit circle
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {Re}; % x-axis
+    \draw[->] (0,-1.5) -- (0,1.5) node[above] {Im}; % y-axis
+
+    % Define points for roots of unity
+    \foreach \k in {1,...,\nnn} {
+        \pgfmathsetmacro{\angle}{360/\nnn*\k*\buchang}
+        \pgfmathsetmacro{\xcoord}{cos(\angle)}
+        \pgfmathsetmacro{\ycoord}{sin(\angle)}
+
+        % Draw vector to each root of unity
+        \draw[->, ultra thick, blue] (0,0) -- (\xcoord,\ycoord);
+
+        % Place node for each root of unity
+        \node at (\xcoord,\ycoord) [circle,fill,inner sep=1.5pt]{};
+        \node at (\xcoord,\ycoord) [anchor=south west] {\(\zeta_\nnn^{\k*\buchang}\)};
+    }
+\end{tikzpicture}
+}
+\newcommand\nnn{6}\hahaha
+\renewcommand\buchang2\hahaha
+\renewcommand\buchang3\hahaha
+\renewcommand\buchang4\hahaha
+\renewcommand\buchang5\hahaha
+\renewcommand\buchang6\hahaha
+\a\aa
+
+$$ζ_6+ζ_6^2+ζ_6^3+ζ_6^4+ζ_6^5+ζ_6^6=0$$
+$$(ζ_6^2)+(ζ_6^2)^2+(ζ_6^2)^3+(ζ_6^2)^4+(ζ_6^2)^5+(ζ_6^2)^6=0$$
+$$(ζ_6^3)+(ζ_6^3)^2+(ζ_6^3)^3+(ζ_6^3)^4+(ζ_6^3)^5+(ζ_6^3)^6=0$$
+$$(ζ_6^4)+(ζ_6^4)^2+(ζ_6^4)^3+(ζ_6^4)^4+(ζ_6^4)^5+(ζ_6^4)^6=0$$
+$$(ζ_6^5)+(ζ_6^5)^2+(ζ_6^5)^3+(ζ_6^5)^4+(ζ_6^5)^5+(ζ_6^5)^6=0$$
+$$(ζ_6^6)+(ζ_6^6)^2+(ζ_6^6)^3+(ζ_6^6)^4+(ζ_6^6)^5+(ζ_6^6)^6=6$$
+In general
+$$
+1^n+ζ_n^k+(ζ_n^2)^{k}+\cdots+(ζ_n^{n-1})^k = \[cases]{
+n& k ∈ n ℤ \\
+0& k ∉ n ℤ 
+}
+$$
+\aaa
+
+
+\aaa{Partial fraction decomposition for repeated roots}
+The general form of partial fraction decomposition for with repeated roots.
+\[thm]{
+Suppose
+$$
+F(x) = (x-λ_1)^{n_1}(x-λ_2)^{n_2}\cdots(x-λ_k)^{n_k}
+$$
+and let
+$$
+K_i(x) = \frac{F(x)}{(x-λ_i)^{n_i}}
+$$
+Then we have \x{partial fraction decomposition}
+$$
+\frac{g(x)}{F(x)}=Q(x) + ∑_{i=1}^k“Const“_ε\left(g(λ_i+ε)·\frac1{ε^{n_i-1}}·\frac1{K_i(λ_i+ε)}·\frac1{x-λ_i-ε}\right)
+$$
+}
+%\a\aa
+%Multiplying $F(x)$, the partial fraction decomposition become Lagurange Interpolation Polynomials.
+%\a\aa
+%\[thm]{
+%Suppose
+%$$
+%F(x) = (x-λ_1)^{n_1}(x-λ_2)^{n_2}\cdots(x-λ_k)^{n_k}
+%$$
+%and put outside factors
+%$$
+%K_i(x) = \frac{F(x)}{(x-λ_i)^{n_i}}
+%$$
+%Then we have \x{Lagurange Interpolation }
+%$$
+%F(x)Q(x) + ∑_{i=1}^kF(x)“Const“_ε\left(g(λ_i+ε)·\frac1{ε^{n_i-1}}·\frac1{K_i(λ_i+ε)}·\frac1{x-λ_i-ε}\right)
+%$$
+%}
+\a\aa
+The formula is resonable but hard to memorize. We wanna simplify it by writting each term as Laurant series of ε and focus on its coefficients
+$$
+\underbrace{g(λ_i+ε)·\frac1{ε^{n_i-1}}·\frac1{K_i(λ_i+ε)}}_{“interpolator·normalizer“}·\underbrace{\frac1{x-λ_i-ε}}_{“replacer“}
+$$
+\a\aa
+Now we define some notion to describe how large it would be \x{around $x = λ_i$}. Define
+
+$$
+λ_i-“infinite-degree“\left(\frac{∞^a}{(x-λ_i)^b}\right) = a+b
+$$
+This describes that when $x ⟶  λ_i$, the result is around ∞^{a+b}, in other words, it is describing the value at $x=λ_i+ε$
+$$
+\frac{∞^a}{((λ_i+ε)-λ_i)^b} = \frac{∞^a}{ε^b}=∞^a∞^b=∞^{a+b}.
+$$
+
+Let $A(x,ε)$ be of $λ_i$-inf-deg $a$ and $B(x,ε)$ be of $λ_i$-inf-deg $b$, then $A(x,ε)B(x,ε)$ has $λ_i$-inf-deg $a+b$.
+
+\a\aa
+The coeffficeint for the replacer using geometric expansion
+$$
+\frac1{x-λ_i-ε}=\frac1{x-λ_i} + \frac{ε}{(x-λ_i)^2}+\cdots
+$$
+Each of the above summand \x{is of infinite degree $-1$.}
+\vfill
+When multiplying by ∞^{n_i-1},
+$$
+\frac1{ε^{n_i-1}}·\frac1{x-λ_i-ε} = \frac{∞^{n_i-1}}{x-λ_i}  + \frac{∞^{n_i-2}}{(x-λ_i)^2}+\cdots + \frac1{(x-λ_i)^{n_i}}+\frac{ε}{(x-λ_i)^{n_i+1}}+\cdots
+$$
+
+Observation: \x{Each term is of infinite degree $n_i$.}
+\a\aa
+The coefficeint for the normalizer and interpolator, since they do not contain variable $x$, we can write 
+$$
+g(λ_i+ε) = a_0+a_1ε+a_2ε^2+\cdots ␣ 
+\frac1{K_i(λ_i+ε)} = b_0+b_1ε+b_2ε^2+\cdots 
+$$
+for $a_i, b_i  ∈ ℂ $. 
+Note all their coefficient are \x{scalars}!
+
+Observation on degree: All summand has $λ_i$-inf-degree ≤ 0.
+\a\aa
+Therefore, as a polynomial of $ε$, when calculating their product
+$$
+\underbrace{g(λ_i+ε)·\frac1{ε^{n_i-1}}·\frac1{K_i(λ_i+ε)}}_{“scalar coefficient“}·\underbrace{\frac1{x-λ_i-ε}}_{\frac1{(x-λ_i)^k}-“coefficient“}
+$$
+Each coefficient of $∞^i$ or $ε^i$ can only be taken as product and sum by elements from the set
+$$
+\{“scalars“\} ∪ \left\{\frac1{x-λ_i}, \frac1{(x-λ_i)^2}, \frac1{(x-λ_i)^3},\cdots\right\}
+$$
+
+{\bf First Observation:}Each coefficient of ∞^i or ε^i can only be in the form 
+$$\frac{a_1}{x-λ_i}+\frac{a_2}{(x-λ_i)^2}+\frac{a_3}{(x-λ_i)^3}+\cdots␣ a_i ∈ ℂ $$
+\a\aa
+Now we Consider the infinite degree at λ_i. The term for ∞^k
+$$
+\left(\frac{a_1}{x-λ_i}+\frac{a_2}{(x-λ_i)^2}+\frac{a_3}{(x-λ_i)^3}+\cdots\right)∞^k
+$$
+Since all its terms can only have $λ_i$-inf-degree ≤ n_i, the coefficeint is at most sum up to $n_i-k$, like $$
+\left(\frac{a_1}{x-λ_i}+\frac{a_2}{(x-λ_i)^2}+\frac{a_3}{(x-λ_i)^3}+\cdots+\frac{a_{n_i-k}}{(x-λ_i)^{n_i-k}}\right)∞^k
+$$
+\a\aa
+Therefore
+$$
+“Const“_ε\left(g(λ_i+ε)·\frac1{ε^{n_i-1}}·\frac1{K_i(λ_i+ε)}·\frac1{x-λ_i-ε}\right)
+$$
+$$
+=“Coefficient of “ε^0 in the expansion 
+$$
+$$
+=
+\frac{a_1}{x-λ_i}+
+\frac{a_2}{(x-λ_i)^2}+
+\frac{a_3}{(x-λ_i)^3}+
+\cdots+
+\frac{a_{n_i}}{(x-λ_i)^{n_i}}
+$$
+for some scalar $a_1,a_2,\cdots ∈ ℂ $ The sum is of degree up to $n_i$
+\a\aa
+Therefore, although the formula
+$$
+\frac{g(x)}{F(x)}=Q(x) + ∑_{i=1}^k“Const“_ε\left(g(λ_i+ε)·\frac1{ε^{n_i-1}}·\frac1{K_i(λ_i+ε)}·\frac1{x-λ_i-ε}\right)
+$$
+is explicit and concrete, we would like to emphasis its 
+\[thm]{
+The general partial fraction decomposition we can decompose
+$$\frac{g(x)}{(x-λ_1)^{n_1}(x-λ_2)^{n_2}\cdots(x-λ_k)^{n_k}}
+=Q(x)+∑_{i=1}^k∑_{j=1}^{n_i}\frac{a_{i,j}}{(x-λ_i)^j}
+$$
+}
+
+
+\aaa
+
+
+%
+%
+%\a\aa
+%The following formula is simpler than ever
+%
+%\[thm]{
+%Suppose
+%$$
+%F(x) = (x-λ_1)^{n_1}(x-λ_2)^{n_2}\cdots(x-λ_k)^{n_k}
+%$$
+%and let
+%$$
+%K_i(x) = \frac{F(x)}{(x-λ_i)^{n_i}}
+%$$
+%Then we have Lagurange Interpolation $g(x)$ equals to
+%$$
+%F(x)Q(x) + ∑_{i=1}^k“Const“_ε\left(g(λ_i+ε)·\sum_{j=0}^{n_i-1}\left(\frac{x-λ_i}{ε}\right)^{j}\frac{K_i(x)}{K_i(λ_i+ε)}\right)
+%$$
+%}
+%\a{Replacer}
+%Consider the following special term in the formula
+%$$
+%F(x)Q(x) + ∑_{i=1}^k“Const“_ε\left(g(λ_i+ε)·{\color{blue}\sum_{j=0}^{n_i-1}\left(\frac{x-λ_i}{ε}\right)^j}\frac{K_i(x)}{K_i(λ_i+ε)}\right)
+%$$
+%
+%In general, how do we calculate
+%$$
+%“Const“_ε\left({\color{blue}\sum_{j=0}^{n}\left(\frac{x-λ_i}{ε}\right)^j}(a_0+a_1ε+a_2ε^2+\cdots+a_nε^n+\cdots)\right)
+%$$
+%This is just \x{replace each ε to $x-λ_i$} the term until $ε^n$, which equals to
+%$$
+%a_0+a_1(x-λ_i)+a_2(x-λ_i)^2+a_3(x-λ_i)^3+\cdots + a_n(x-λ_i)^n.
+%$$
+%\aaa
+
+
+\aaa{Interpolation for repeated root}
+
+\exe Find a function with the following property
+$$
+g(1)=2 ␣  g'(1) = 3 ␣  g(2)=3 ␣ g'(2)=1
+$$
+
+This is $g(1+ε)=2+3ε$ and $g(2+ε)=3+ε$.
+\vfill
+\sol
+
+Using the decomposition, we may decompose this fraction into
+$$
+\frac{g(x)}{(x-1)^2(x-2)^2} = Q(x) + \frac{a}{x-1}+\frac{b}{(x-1)^2}+\frac c{x-2} + \frac d{(x-2)^2}
+$$
+
+\a\aa
+Plug in $ x = 1+ε$, we have
+$$
+\frac{g(1+ε)}{((1+ε)-1)^2((1+ε)-2)^2} 
+$$
+$$= Q(1+ε) + \frac{a}{(1+ε)-1}+\frac{b}{((1+ε)-1)^2}+\frac c{(1+ε)-2} + \frac d{((1+ε)-2)^2}
+$$
+We only interested in coefficient of ∞ and ∞^2. now calculate left hand side
+$$
+\frac{g(1+ε)}{((1+ε)-1)^2((1+ε)-2)^2}  = 
+\frac{g(1+ε)}{ε^2(-1+ε)^2}  = 
+\frac{2+3ε}{(-1+ε)^2}∞^2  
+$$
+$$= (2+7ε+*ε^2+..)∞^2 = 2∞^2 + 7∞ + * +*ε+\cdots
+$$
+At the same time, the right hand side equals
+$$
+*+a∞+b∞^2+*+*
+$$
+So $a=7, ␣ b=2$
+\a\aa
+We use the same method to find the value of $c$ and $d$. By plug in 
+\aaa

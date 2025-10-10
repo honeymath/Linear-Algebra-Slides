@@ -1,0 +1,249 @@
+
+
+\aaa{Projection Matrices}
+The importance of projection matrix comes from the following observation
+
+\begin{defi}
+An $n × n$ square matrix $P$ is a \x{projection matrix} if 
+$$
+P^2 = P.
+$$
+\end{defi}
+
+\begin{prop}
+If $AB = I_m$, then $BA$ is a projection matrix.
+\end{prop}
+$$
+(BA)² =BABA = B(AB)A=BI_mA=BA
+$$
+\a\aa
+It is very easy to verify if a vector is in $“Col“(P)$ or $“Null“(P)$ since 
+\begin{prop}
+Let $P$ be an $n × n$ projection matrix. For any vector $x ∈ ℝ^n$, we have
+$$
+y ∈ “Col“(P) ⟺   Py = y, ␣
+x ∈ “Null“(P) ⟺   Px = 0.
+$$
+\end{prop}
+If $y ∈ “Col“(P)$, then $y = Px$ for some $x$. Then $Py = PP x = Px = y$. Conversely, if $Py=y$, then $y ∈ “Col“(P)$ by definition.
+
+Please finish the proof of $x ∈ “Null“(P) ⟺   Px = 0$ by yourself!
+\a\aa
+\exe The following matrix is a projection matrix
+$$
+P=\m000,{-1}10,{-1}01.
+$$
+Calculate $\underbrace{\m000,{-1}10,{-1}01.}_P\m0,2,0.$Is that true that $\m0,2,0. ∈ “Col“(P)$?
+\vfill
+(Hint: Since $P$ is a projection, $“Col“(P) = \{y | Py=y\}$ )
+
+\a\aa
+\begin{prop}
+If $P$ is a $n × n$ projection matrix, then $I_n-P$ is also a projection matrix.
+\end{prop}
+
+(Homework, you only need to check $(I_n-P)² = I_n-P $)
+
+
+
+\a\aa
+\begin{prop}
+If $P$ is a $n × n$ projection matrix, then 
+$$
+“Col“(P)=“Null“(I_n-P) ␣ 
+“Col“(I_n-P)=“Null“(P)
+$$
+\end{prop}
+(Homework)
+
+\begin{rem}
+Therefore $P$ and $I-P$ \x{interchanges} their columns space and null spaces! What a beautiful phenomenon!
+\end{rem}
+\aaa
+
+
+\aaa{Decomposition of Projection}
+Recall that just from $AB = I_m$, we create a projection matrix
+$$
+P = BA.
+$$
+\vfill
+Are all projection matrices arises this way?
+
+
+\a\aa
+Giving a projection matrix $P$, recall that we might use cross-filling method
+$$
+\underbrace{\m000,{-1}10,{-1}01.}_P = \m0{\y0}0,{\y-1}{\y1}{\y0},0{\y0}0.+\m00{\y0},00{\y0},{\y-1}{\y0}{\y1}.
+$$
+This decompsoes
+$$
+\underbrace{\m000,{-1}10,{-1}01.}_P = \underbrace{\m00,10,01.}_B\underbrace{\m{-1}10,{-1}01.}_A
+$$
+Last time, we have learned that corss-filling process automatially give \li rows and columns, therefore, $A$ must have \x{\color{blue}right inverse} and $B$ must have \x{\color{red}left inverse}.
+\vfill
+But is that true that $AB=I_m$? if true, then all projection matrices arises from $P=BA$ with ivnerse pairs $AB=I_m$.
+\a\aa
+Cross-Filling decomposes $n × n$ rank $m$ projection matrix $P$ into
+
+$$
+P = BA
+$$
+where $B$ of size $n × m$ and $A$ of size $m × n$, and the cross-filling garantees that
+
+\begin{itemize}
+\item Columns of $B$ \li
+\item Rows of $A$ \li.
+\end{itemize}
+
+So $B$ has {\color{red}left inverse}, $A$ has {\color{blue}right inverse}
+
+\vfill
+\x{Our question}: Is that true $AB=I_m$?
+
+\a\aa
+Yes! It is true, for simple reasons!!!
+
+$$
+P² = P ⟺  BABA = BA
+$$
+
+Since $A$ has right inverse
+$$
+BAB=B
+$$
+Since $B$ has left inverse
+$$
+AB = I_m.
+$$
+
+\a\aa
+
+\begin{prop}
+If $P$ is a projection matrix, then 
+$$
+“rank“(P) = “tr“(P).
+$$
+\end{prop}
+Let $m=“rank“(P)$. Let $P=BA$ be obtained from cross-filling process. Then we must have $AB = I_m$.
+\vfill
+$“rank“(P)=m=“tr“(I_m)=“tr“(AB)=“tr“(BA)=“tr“(P)$.
+
+\a\aa
+\exe The following matrix is a projeciton matrix $P=P^2$, directly find out the rank of the matrix!
+$$
+\m00000,
+{-1}1000,
+{-1}0100,
+{-1}0010,
+{-1}0001.
+$$
+\exe The following matrix is a projection matrix, what is its rank?
+
+$$
+\m
+{-4}{-9}54{-3},
+49{-5}{-4}3,
+{-8}{-18}{10}8{-6},
+8{18}{-10}{-8}6,
+{-8}{-18}{10}8{-6}.
+$$
+\aaa
+
+
+
+\aaa{Cross-Filling for projection matrices}
+This implies important observations.
+Suppose one can decompose projection matrix by cross-filling
+
+$$
+P = c_1r_1^T + c_2r_2^T + \cdots +c_mr_m^T.
+$$
+
+The cross-filling process garantees that both $\m{c_1}\cdots{c_m}.$ and $\m{r_1}\cdots{r_m}.$ \li. Then we write
+
+$$
+P = \underbrace{\m{c_1}\cdots{c_m}.}_B\underbrace{\m{r_1^T},\vdots,{r_m^T}.}_A
+$$
+By what we learned before, using left and right cancelations, we must have $AB = I_m$!
+\a\aa
+But $I_m=AB$ gives this result
+$$
+\m 
+10\cdots0,
+01\cdots0,
+\vdots\vdots\ddots\vdots,
+00\cdots0.
+=
+\underbrace{\m{r_1^T},\vdots,{r_m^T}.}_A\underbrace{\m{c_1}\cdots{c_m}.}_B
+=
+\m
+{r_1^Tc_1}{r_1^Tc_2}\cdots{r_1^Tc_n},
+{r_2^Tc_1}{r_2^Tc_2}\cdots{r_2^Tc_n},
+\vdots\vdots\ddots\vdots,
+{r_2^Tc_1}{r_2^Tc_2}\cdots{r_2^Tc_n}.
+$$
+This means
+$$
+r_i^Tc_j = \begin{cases}
+1& i=j\\
+0& i≠j\\
+\end{cases}
+$$
+
+\a\aa
+\[thm]{Let $P=P^2$ be a $n × n$ projection martrix. Let $c_1,c_2,...,c_m$ and $r_1,r_2,...,r_m$ be two lists of linearly independent $n × 1$ matrices such that
+$$
+P = ∑_{i=1}^m c_ir_i^T
+$$
+Let $P_i:= c_ir_i^T$, so $P = P_1+P_2+\cdots+P_m$, and we have
+\[itemize]{
+\item $“rank“(P)=m$
+\item $P_i$ are rank $1$ projection matrices in the sense that $P_i^2=P_i$.
+\item $P_iP_j=0$ if $i ≠ j$, 
+}
+}
+\x{Conclusion}: The cross-filling decomposes projection matrix into good rank-1 projections. We will address the importance of this in the future.
+
+\aaa
+
+
+
+\aaa{Rank 0 matrix}
+Next, we finish our discussion of square matrices. Recall the question. If $A$ is a square matrix, does its right inverse equal to its left inverse?
+\a\aa
+\begin{prop}
+A rank $0$ matrix is zero matrix.
+\end{prop}
+
+Because zero dimensional space can only have zero vector. A matrix with zero columns is a zero matrix.
+
+\a{Full rank projection matrix}
+\begin{prop}
+%A $n × n$ projection matrix $P$ with $“tr“(P)=n$
+An $n × n$ invertible perjection matrix $P$ must be $P=I_n$
+\end{prop}
+
+Because $I_n-P$ is a projection matrix of trace $0$, so is of rank $0$, therefore $I_n-P=0$.
+
+\a\aa
+
+\exe Please fill in the blanks so that the following matrix can be a projection matrix
+$$
+P = \m{0.5}\square,{0.5}\square.
+$$
+
+
+\a{Inverse for square matrices}
+
+\begin{prop}
+Supose $A$ is $n × n$ matrix with right inverse $B$ in the sense $AB=I_n$, then we have $BA=I_n$ as well.
+\end{prop}
+
+Because $BA$ must be a projection matrix with $“tr“(AB)=“tr“(BA)=n$, so $BA=I_n$.
+
+
+\aaa
+
+
+

@@ -1,0 +1,338 @@
+
+\newcommand\map[3]{#1:{#2}\longrightarrow  {#3}}
+\newcommand\maps[5]{{#1}:{#2}\longrightarrow {#3},{#4} \mapsto {#5}}
+
+
+\aaa{Image}
+Image of a \lt describes how far away a \lt is from being \sur.
+\a\aa
+
+There are three type of elements in codomain $W$ for a \lt $\map TVW$
+
+\[itemize]{
+\item {\it lonely } element : there is \x{no} element in $V$ corresponds to it.
+\item {\it faithful, loyal element}: there is only one element in $V$ corresponds to it.
+\item {\it unfaithful, unloyal element}: there is two or more element in $V$ corresponds to it.	
+	}
+\vfill
+The $\im T$ is the subset of all element of the second and third type.
+\vfill
+
+Any element outside of $\im T$ are {\it lonely}, do not have elements in $V$ to corresponds to it.
+
+
+\a{Image}
+
+\sur means no {\it lonely} element, so we use image to describe how close it is from being a \sur.
+\vfill
+
+\[defi]{\LS We define the Image of a map $\map TVW$ as
+$$
+\im T=\{\ww\in W:T(\vv)=\ww\text{ for some }\vv\in V\}
+$$
+}
+
+
+\a\aa
+if there is no {\it lonely} element, which is $\im T=W$, the map become a \sur.
+\[prop]{\SS\LS A linear map $\map TVW$ is \sur if and only if
+$$
+\Im T=W.
+$$
+}
+
+
+
+
+
+\a\aa
+
+\[prop]{
+For any map $\map SVW$ and $\map TWU$, we have
+$$\im(T\circ S) = T\left(\im S\right).$$
+}
+\[proof]{ Firstly we prove $\im(T\circ S) \subset T\left(\im S\right)$. For any $\uu\in \im(T\circ S)$, there exists $\vv\in V$ with $\uu = T\circ S(\vv)$. So $\uu=T(\ww)$ with $\ww=S(\vv)\in\im S$, therefore $\uu\in T(\im S)$.
+
+Then we prove $\im(T\circ S) \supset T\left(\im S\right)$. For any $\uu\in T\left(\im S\right)$, one can write $\uu=T(\ww)$ for some $\ww\in \im S$, so one can write $\ww=S(\vv)$ for some $\vv\in V$. As total, $\uu=T(S(\vv))$ for some $\vv$, then $\uu\in\im(T\circ S)$.
+	}
+
+
+
+
+
+\a\aa
+\[prop]{For any map $\map SVW$ and $\map TWU$, we have
+$$\im(T\circ S)\subset\im T.$$
+}
+\[proof]{If $\uu\in\im(T\circ S)$, this implies $\uu=T\circ S(\vv)$ for some $\vv\in V$, let $\ww=S(\vv)$ then $\uu=T(\ww)$. Therefore $\uu\in\im(T)$ we proved $$\im(T\circ S)\subset\im(T).$$}
+\a\aa
+\[prop]{If $\map SVW$ is an \sur, for any map $\map TWU$, we have
+$$
+\im(T\circ S)=\im T
+$$
+}
+\[proof]{ It is clear from previous proposition $\im(T\circ S)\subset\im T.$
+
+To show inclusion in the other way, if $\uu\in\im(T)$, then $\uu=T(\ww)$ for some $\ww\in W$, since $S$ is a \sur,$\ww=S(\vv)$  for some $\vv\in V$. so $\uu= T\circ S(\vv)$ so $\uu\in\im(T\circ S)$. So $$\im(T\circ S)\supset\im(T).$$}
+
+\a{Subspace by constructive language}
+
+Previous arguments are all for maps. When they a \lt,
+\[prop]{If $\map TVW$ is a \lt. Then $\im T$ is a subspace.}
+
+\[proof]{For any $\ww_1,\ww_2\in\im T$ and any scalar $\lambda\in F$. Since $\ww_1,\ww_2$ are in image, we can find $\vv_1,\vv_2\in V$ such that
+$$\ww_1=T(\vv_1)\qquad \ww_2=T(\vv_2)$$
+Then because $T$ is linear
+$$
+\lambda\ww_1+\ww_2=\lambda T(\vv_1)+T(\vv_2)=T(\lambda \vv_1+\vv_2)\in \im T.
+$$
+Therefore $\im T$ is a subspace.
+}
+
+
+
+\a\aa
+
+The way we describe Image is \enuv. That is, we listed elements of the set one by one with a parametrization, where parameters are in domain. 
+
+$$
+\im T=\{\ww\in W:T(\vv)=\ww\text{ \x{for some} }\vv\in V\}
+$$
+\vfill
+In fact, any subspace described by \enu should essentially related to image of a linear transformation.
+
+\a\aa
+\exe Let $V$ be the following vector spaces over $\Field$, verify the following subsets $W\subset V$ is a \x{subspace} of $V$. 
+
+\[itemize]{
+\item $V=\lPP xabc$,  $W=\lP xab\subset V$ 
+}
+(See some footnote\footnote{In fact, $W$ can be described as a image of a \lt $\map T{F^2}V$ with $\m a,b.\mapsto ax+b$. If you can check this map is linear, you automatically know it is a subspace without further proof.})
+	
+\aaa
+
+\aaa{Kernel}
+
+Now let us turn to subspaces by \des. With the rise of kernel, you will undestand such a subspaces always can be described by a kernel of a linear transformation.
+
+\a{Three type of vectors in codomain -- Once again}
+
+There are three type of elements in codomain $W$ for a \lt $\map TVW$
+
+\[itemize]{
+\item {\it lonely } element : there is \x{no} element in $V$ corresponds to it.
+\item {\it faithful, loyal element}: there is only one element in $V$ corresponds to it.
+\item {\it unfaithful, unloyal element}: there is two or more element in $V$ corresponds to it.	
+	}
+\vfill
+
+To measure unfaithful elements. Review the definition of preimage
+
+\[defi]{[Reminder from previous slides]\LI
+For any map $\map fXY$ and any subset $S\subset Y$, the \pimg of $S$ is defined by
+$$
+f^{-1}(S):=\{x\in X: f(x)\in S\}
+$$}
+\a\aa
+
+Now we can use preimage to describe those three type of elements: Let $\map fXY$ be a map
+
+\[itemize]{
+\item $y\in Y$ is {\it lonely } element : $f^{-1}(\{y\})=\emptyset$.
+\item $y\in Y$ is {\it faithful, loyal element}: $f^{-1}(\{y\})=\{x\}$ for some $x\in X$.
+\item $y\in Y$ is {\it unfaithful, unloyal element}: $f^{-1}(\{y\})$ has more than 1 element.	
+	}
+
+\a{Superposition Principal}
+
+\inj map means there is no {\it unfaithful } element. If a map is \inj, it means preimage of any singleton is a singleton or empty set. 
+\vfill
+
+For a linear transformation, the preimage of two different singletons have a relation described by \x{Superposition Principal}. It concluds that for any linear transformation, faithful and unfaithful element can not appear simutaneously in the codomain of the same map. 
+\a\aa
+\[lem]{Let $\map TVW$ be a \lt. Suppose $\vv_1\in V$ and $\vv_2\in V$ with $\vv_1\in T^{-1}(\{\ww_1\})$ and $\vv_2=T^{-1}(\{\ww_2\})$, then for any $\lambda,\mu\in F$, 
+$$\lambda\vv_1+\mu\vv_2\in T^{-1}(\{\lambda\ww_1+\mu\ww_2\})$$}
+
+\[proof]{
+	$\vv_1\in T^{-1}(\{\ww_1\})$ and $\vv_2=T^{-1}(\{\ww_2\})$ implies $\ww_1=T(\vv_1)$ and $\ww_2=T(\vv_2)$.
+	
+Since $T$ is a \lt, So
+$$
+\lambda\ww_1+\mu\ww_2=\lambda T(\vv_1)+\mu T(\vv_2)=T(\lambda\vv_1+\mu\vv_2)
+$$
+This implies
+$\lambda\vv_1+\mu\vv_2\in T^{-1}(\{\lambda\ww_1+\mu\ww_2\})$
+}
+\a\aa
+
+\[prop]{[Superposition Principal--Addition] Let $\map TVW$ be a \lt. For any $\ww_1,\ww_2\in \Im T$, let $\vv_1,\vv_2\in V$ be such that $\vv_1\in T^{-1}(\{\ww_1\})$ and $\vv_2=T^{-1}(\{\ww_2\})$, we have an isomorphism between their preimages
+$$
+\maps {+_{\vv_2-\vv_1}}{T^{-1}\left(\{\ww_1\}\right)}{T^{-1}\left(\{\ww_2\}\right)}{\vec x}{\vec x+(\vv_2-\vv_1)}
+$$}
+\[proof]{This is indded a map, if $\vec x\in T^{-1}(\{\ww_1\})$, since $\vv_2-\vv_1\in T^{-1}(\ww_2-\ww_1)$, this implies $\vec x+(\vv_2-\vv_1)\in T^{-1}(\{\ww_1+\ww_2-\ww_1\})=T^{-1}(\{\ww_1\})$.
+
+The inverse is given by $\vec x\mapsto \vec x-(\vv_2-\vv_1)$. So is an isomorphism.
+	}
+\a\aa
+In plain words, it means the preimage of $\{\ww_1\}$ is obtained from preimage of $\{\ww_2\}$ by translation of $\vv_2-\vv_1$. Use the following visualize \x{example of projection} to understand superposition principal.
+
+\[zzz]{
+
+	\draw[->] (-6,0)--(6,0) node[right]{x};
+	\draw[->] (0,-4)--(0,5) node[above]{y};
+	\draw[->] (-6,-2)--(6,2) node [right]{z};
+%	\draw[fill=pink,opacity=0.5] (-7,-1)--(1,-1)--(7,1)--(-1,1)--(-7,-1);
+	\draw[fill=pink,opacity=0.5] (-7,1)--(1,1)--(7,3)--(-1,3)--(-7,1);
+	\draw[->,thick] (2,1.9)--(2,2.9) node[midway,right] {$\vv_1-\vv_2$};
+	\draw[fill=green,opacity=0.5] (-7,2)--(1,2)--(7,4)--(-1,4)--(-7,2);
+	\draw[ultra thick] (13,-4)--(13,5);
+	\draw[fill=red] (13,2) circle[radius=0.1] node[right]{$\ww_2$};
+	\draw[fill=green] (13,3) circle[radius=0.1] node[right]{$\ww_1$};
+	\foreach \i in {-4,...,4}{
+		\draw[->,dotted,ultra thick,gray] (8,\i)--(11,\i);
+	}
+	\draw[fill = green] (2,2.9) circle[radius=0.1] node[above]{$\vv_1$};
+	\draw[fill = red] (2,1.9) circle[radius=0.1] node[below]{$\vv_2$};
+	\draw[color=green!30!black!70] (-4.6,2.4) node {\tiny $T^{-1}(\{\ww_1\})$};
+	\draw[color=red!30!black!70] (-4.6,1.4) node {\tiny $T^{-1}(\{\ww_2\})$};
+	}
+
+Please note the preimages in this picture are \x{not} subspaces as it does not contain the origin.
+\a\aa
+\exe Try to state the superposition principal for saclar multiplication. In other words, when comparing the preimage of $T^{-1}(\{\ww\})$ and $T^{-1}(\{\lambda\ww\})$ for a scalar $\lambda\in F$, how to construct a natural isomorphism between those two sets?
+
+\vspace{3cm}
+
+\a{Uniqueness problem and the kernel}
+
+All preimages of a singleton in a \lt is either empty or can be translated to each other. 
+\vfill
+We pick up the most representative preimage, $T^{-1}(\{\0\})$, to measure how large is the preimage for every singleton, which describe how for a \lt is from being an \inj.
+
+\[defi]{[kernel]\LI We define the \x{Kernel} of a linear map $\map TVW$ as
+$$
+\ker T=\{\vv\in V:T(\vv)=\0\}
+$$
+}
+\a\aa
+
+Picture of kernel in the previous example of projection.
+\[zzz]{
+
+	\draw[->] (-6,0)--(6,0) node[right]{x};
+	\draw[->] (0,-4)--(0,5) node[above]{y};
+	\draw[->] (-6,-2)--(6,2) node [right]{z};
+%	\draw[fill=pink,opacity=0.5] (-7,-1)--(1,-1)--(7,1)--(-1,1)--(-7,-1);
+	\draw[fill=gray,opacity=0.5] (-7,-1)--(1,-1)--(7,1)--(-1,1)--(-7,-1);
+	\draw[ultra thick] (13,-4)--(13,5);
+	\draw[fill=gray] (13,0) circle[radius=0.1] node[right]{$\0$};
+	\foreach \i in {-4,...,4}{
+		\draw[->,dotted,ultra thick,gray] (8,\i)--(11,\i);
+	}
+	\draw (-0.5,0.5) node {\tiny $\ker T=T^{-1}(\{\0\})$};
+	}
+
+
+
+\a{Superposition Principal and kernel}
+
+\[prop]{Suppose $\map TVW$ is a \lt. Let $\vv\in V$ and $T(\vv)=\ww$. Then the preimage of $\{\ww\}$ is given by
+$$
+T^{-1}(\{\ww\})=\{\vv\}+\ker T:=\{\vv+\vec x:\vec x\in\ker T\}.
+$$
+	}
+\[proof]{Since $\ker T=T^{-1}(\{\0\})$, this is clear from previous arguments}
+\a\aa
+No \unp for every element make it to be an \inj.
+\[prop]{\II\LI A linear map $\map TVW$ is \inj if and only if
+$$
+\ker T=\{\0\}.
+$$
+}
+\[proof]{($T$ \inj$\implies\ker T =\{\0\}$)Since $T(\0)=\0$ so $\0\in\ker(T)$, so $\ker(T)\neq \emptyset$. If $\vv\in\ker T$, then $T(\vv)=\0=T(\0)$, since $T$ is an \inj, so $\vv=\0$. ~\\
+
+\vspace{0.5cm}
+
+($\ker T =\{\0\}\implies$$T$ \inj)Suppose $T(\vv_1)=T(\vv_2)$, then $T(\vv_1-\vv_2)=\0$(footnote\footnote{This step essentially use the idea of superposition principal.}), so $\vv_1-\vv_2\in\ker T$ then $\vv_1=\vv_2$. ~\\
+
+
+}
+
+
+
+
+
+\a{Properties of kernel}
+\[prop]{For any \lt $\map TVW$  and \lt $\map SUV$, we have
+$$
+\ker(T\circ S)=S^{-1}(\ker T)$$
+}
+\[proof]{$$\vv\in\ker(T\circ S)\iff T(S(\vv))=\0\iff S(\vv)\in\ker T\iff \vv\in S^{-1}(\ker T)$$}
+\a\aa
+\[prop]{For any \lt $\map TVW$  and \lt $\map SUV$, we have
+$$
+\ker(T\circ S)\supset\ker S
+$$
+}
+\[proof]{Since $\ker(T\circ S)=S^{-1}(\ker T)$ and $\ker T\supset \{\0\}$, so
+$$
+S^{-1}(\ker T)\supset S^{-1}(\{\0\})=\ker S.
+$$
+}
+
+
+
+
+\a\aa
+\[prop]{If $\map TVW$ is an \inj, for any \lt $\map SUV$, we have
+$$
+\ker(T\circ S)=\ker S
+$$
+}
+\[proof]{ Since $\ker(T\circ S)=S^{-1}(\ker T)$, if $T$ is \inj then $\ker T=\{\0\}$, so in this case
+$$
+\ker(T\circ S)=S^{-1}(\ker T)=S^{-1}(\{\0\})=\ker S.
+$$}
+
+\a{Subspaces described by descriptive language}
+We choose the preimage of $\0$ because it is the only subset who become a subspace.
+
+\[cor]{For any \lt, $\map TVW$, $\ker T$ is a subspace.}
+
+\[proof]{[Standard Proof] For any $\vv_1,\vv_2\in \ker T$ and any scalar $\lambda\in F$, we have
+$$
+T(\lambda\vv_1+\vv_2)=\lambda T(\vv_1)+T(\vv_2)=\lambda 0+0=0
+$$
+So $\lambda\vv_1+\vv_2\in \ker T$, which means it is a subspace.
+}
+\a\aa
+We can also understand it is a subspace from the superposition principal. 
+
+\vfill
+
+We have learned adding a vector in $T^{-1}(\{\ww_1\})$ with a vector in $T^{-1}(\{\ww_2\})$ will result a vector in $T^{-1}(\{\ww_1+\ww_2\})$. Therefore, if $\ww_1=\ww_2=\0$, then it means $T^{-1}(\{\0\})$ is closed under addition (and also in the same way closed under scalar multiplication).
+\vfill
+
+Therefore $\ker T=T^{-1}(\{\0\})$ is a subspace.
+
+\a\aa
+
+The way we describe Kernel is \desv. That is, we describe it to be set of all element that have the property of mapping to 0. 
+
+$$
+\ker T=\{\vv\in V:T(\vv)=\0\}
+$$
+\vfill
+In fact, any subspace described by \des should essentially related to kernel of a linear transformation.
+
+\a\aa
+\exe Let $V$ be the following vector spaces over $\Field$, verify the following subsets $W\subset V$ is a \x{subspace} of $V$. 
+
+\[itemize]{
+\item $V=\lPP xabc$,  $W=\{f\in V: f(1)=0\} $
+}
+(See some footnote\footnote{In fact, $W$ can be described as the kernel of a \lt of evaluation map $\map TV{F^2}$ with $f \mapsto f(1)$. If you can check this map is linear, you automatically know it is a subspace without further proof.})
+	
+\vspace{3cm}
+
+\aaa

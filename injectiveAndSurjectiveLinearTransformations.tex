@@ -1,0 +1,454 @@
+
+\newcommand\map[3]{#1:{#2}\longrightarrow  {#3}}
+\newcommand\maps[5]{{#1}:{#2}\longrightarrow {#3},{#4} \mapsto {#5}}
+\aaa{Problems while taking the inverse}
+
+When there is a map $\map TVW$. We would like to know is that possible to have an inverse of the map
+$$
+\map{T^{-1}}WV
+$$
+\a\aa
+Let's consider the example of the restaruant before
+
+
+\xymatrix{
+\bigbento\ar[rrr]{}{}&&&\sinister: Maruko\\
+\bigsoup\ar[urrr]{}{}&&&\boss: Shin\\
+\bigapple\ar[urrr]{}{}&&&\homework: Nobita\\
+}
+
+The map is assign each food to a customer. Its inverse is to assign customer to a food. As a map, the assignment must be exists and unique.
+
+
+\a\aa
+
+Let's consider if that is possible to assign in the inverse way. You are working in this food shop. One day I come and ask you: Give me \x{the} food that \sinister ordered, which of the following question would you ask me:
+
+\[itemize]{
+\item[A.] \np. It will be ready in 1 munites.
+\item[B.] \unp: She ordered multiple foods, which one do you refer? The food she order is not \un.
+\item[C.] \excp: He never order food with us? Would you chek it again? The food he order does not \exi.
+}  
+\a\aa
+I change my request to \x{the} food that custormer \boss or \homework ordered, fill in the following table of your answer
+\vfill
+\t{I wanna food of}\sinister\boss\homework,{Your Question:}{B.\unp}{}{}.
+
+
+\aaa
+
+
+
+\aaa{Concepts of injective and surjective}
+
+The previous example shows that it is generally impossible to define an inverse of a map. It might have \unp or \excp. We want to focus on maps that \x{do not} has those problems. 
+
+\vfill
+
+Therefore we define \inj and \sur maps.
+
+\aaa
+
+
+
+\aaa{Injective Maps}
+For maps that defining the inverse of it \x{does not} have \unp, we call it an \inj
+
+\xymatrix{
+\bigbento\ar[rrrd]{}{}&&&\sinister: Maruko\\
+\bigsoup\ar[urrr]{}{}&&&\boss: Shin\\
+&&&\homework: Nobita\\
+}
+\a\aa
+For above situation. Fill in the following table when I request foods.
+\vfill
+\t{I wanna food of}\sinister\boss\homework,{Your Question:}{A.\np}{}{}.
+
+
+\aaa
+
+
+
+\aaa{Surjective Maps}
+For maps that that defining the inverse of it \x{does not} have \excp for all element, we call it an \sur
+
+\xymatrix{
+\bigbento\ar[rrrd]{}{}&&&\sinister: Maruko\\
+\bigsoup\ar[urrr]{}{}&&&\boss: Shin\\
+\bigapple\ar[uurrr]{}{}&&&\\
+}
+\a\aa
+For above situation. Fill in the following table when I request foods.
+\vfill
+\t{I wanna food of}\sinister\boss,{Your Question:}{B.\unp}{}.
+\aaa
+
+
+\aaa{Invertible Maps}
+For maps that that defining the inverse of has \np, we call it \inve
+
+\xymatrix{
+\bigbento\ar[rrrd]{}{}&&&\sinister: Maruko\\
+\bigsoup\ar[urrr]{}{}&&&\boss: Shin\\
+\bigapple\ar[rrr]{}{}&&&\homework: Nobita\\
+}
+\a\aa
+For above situation. Fill in the following table when I request foods.
+\vfill
+\t{I wanna food of}\sinister\boss\homework,{Your Question:}{A.\np}{}{}.
+
+In this case, find the food that each custormer ordered.
+
+\t{I wanna food of}\sinister\boss\homework,{Food:}{A.\bigsoup}{}{}.
+
+The above table is the \x{inverse} of this map.
+\aaa
+
+
+
+
+
+\aaa{Injective linear transformation}
+Let $\map{T}{V}V$ be a linear map defined by the orthogonal projection to $\spann\left\{\ee_1+2\ee_2\right\}$.
+$$
+\begin{tikzpicture}[scale=0.4]
+\wangge{-5}{-5}55
+\org
+\draw[ultra thick,green](-3,-6)--(3,6);
+\dasis\ee
+\end{tikzpicture}
+$$
+Why $T$ is not invertible?
+\a\aa
+There is an \unp. 
+we don't know which value should be assigned to $T^{-1}(\ww)$.
+\x{All blue points seems wants to project on $\ww$.}
+$$
+T(\vv_1)=T(\vv_2)=T(\vv_3)=\cdots=\ww
+$$
+$$
+\begin{tikzpicture}[scale=0.4]
+\wangge{-5}{-5}55
+\org
+\draw[ultra thick,green](-3,-6)--(3,6);
+\huadian12\ww
+\huadiandian31{\vv_1}
+\huadiandian50{\vv_2}
+\huadiandian{-3}4{\vv_3}
+\huadiandian{-1}3{\vv_4}
+\end{tikzpicture}
+$$
+$$
+T^{-1}(\ww)=\vv_1?\qquad \vv_2 ?\qquad \vv_3?
+$$
+\a\aa
+We call a linear map that does not have \unp for defining inverse as \inj
+\[defi]{A linear map $\map TVW$ is called an \inj if $T(\vv_1)=T(\vv_2)$ implies $\vv_1=\vv_2$ for any $\vv_1,\vv_2\in V$. 
+}
+In this situation, if $T(\vv_1)=T(\vv_2)=T(\vv_3)=\cdots=\ww$ , we have $\vv_1=\vv_2=\cdots$ and we could \x{possibly} just define the inverse $T^{-1}(\ww)$ by $\vv_1$.
+
+But remember, even if for \inj maps there is \textbf{NO} \unp, we can define $T^{-1}(\ww)$ for some $\ww$, we may not able to define $T^{-1}$ for other vectors, since it \textbf{MAY} have \excp.
+\a{An alternative definition for injective maps}
+\[prop]{A linear map $\map TVW$ is an \inj if and only if $T(\vv)=\0$ implies $\vv=\0$ for all $\vv\in V$.
+}
+\[proof]{If $T(\vv)=\0$ implies $\vv=0$ for all $\vv\in V$, then for any $\vv_1,\vv_2\in V$ if $T(\vv_1)=T(\vv_2)$, then $T(\vv_1-\vv_2)=\0$ therefore $\vv_1-\vv_2=\0$ so $\vv_1=\vv_2$. 
+
+On the contary, if $T(\vv_1)=T(\vv_2)$ implies $\vv_1=\vv_2$ for any $\vv_1,\vv_2\in V$. Then if $T(\vv)=\0$, then we have $T(\vv)=T(\0)$, this implies $\vv=\0$.
+
+We proved this two defitition are equivalent.
+}
+\aaa
+
+
+\aaa{Properties of injective maps}
+From this section we demonstrate three important properties of injective maps.
+\a{Left Cancellation for Injective linear maps}
+\textbf{Three important properties of \inj map: No.1}
+\begin{prop} Let $\map TWU$ and $\map SVW$ $\map RVW$ be linear maps, if $T$ is an \inj map, then \lc rule holds for $T$.
+$$
+T\circ R=T\circ S\implies R=S
+$$
+\end{prop}
+\begin{proof}We need to show for any $\vv\in V$, $R(\vv)=S(\vv)$, indeed, let $\ww$ be the element
+$$
+\ww=T(R(\vv)) = T(S(\vv)).
+$$
+Since $T$ is an \inj, we have
+$
+R(\vv)=S(\vv)
+$. Our proof does not depends on the choice of $\vv$, therefore $R=S$.
+\end{proof}
+\a\aa
+We understand Left cancellation in plain words, in the following diagram.
+
+$$
+	\xymatrix{V\ar[r]^S&W\ar[r]^T&U}
+	$$
+
+One may ask if one can choose a different $S$ but keep the composition $T\circ S$. Let us say for some $\uu$ we have $T\circ S(\vv)=\uu$, then the freedom of the choice of $S$ should garantee $S(\vv)$ in the preimage $T^{-1}(\{\uu\})$
+$$
+S(\vv)\in T^{-1}(\{\uu\})
+$$
+
+In general, $T^{-1}(\{\uu\})$ might have more than 2 elements so we can choose different $S$ without influencing $T\circ S$. But when $T$ is \inj, every preimage of a point is \un. So there is no other way to choose a different $S$.
+
+
+\a{Composition of Injective linear maps}
+\textbf{Three important properties of \inj map: No.2}
+\[prop]{
+Let $\map TVU$, $\map SUW$ be two \inj linear maps, then $S\circ T$ is also an \inj map.
+}
+\[proof]{
+We assume $$S(T(\vv_1))=S(T(\vv_2))$$
+Since $S$ is an \inj this implies
+$$
+T(\vv_1)=T(\vv_2).
+$$
+Since $T$ is an \inj this implies
+$$
+\vv_1=\vv_2.
+$$
+}
+
+\a\aa
+
+
+
+In plain words, in the following diagram.
+
+$$
+	\xymatrix{V\ar[r]^S&W\ar[r]^T&U}
+	$$
+
+If both maps are \inj, then for any two different element in $V$, it keep different after each step. The total effect is they are still different element in $U$. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\a{Right Factor of injective composition}
+\textbf{Three important properties of \inj map: No.3}
+\[prop]{
+Let $\map TVU$, $\map SUW$ be two linear maps, suppose $S\circ T$ is \inj map, then the \rf $T$ must be \inj.
+}
+\begin{proof}
+Assume $T(\vv_1)=T(\vv_2)$, Left compose with $S$ we have
+$$
+S\circ T(\vv_1)=S\circ T(\vv_2)
+$$
+Since $S\circ T$ is an \inj, therefore
+$$
+\vv_1=\vv_2.
+$$
+We proved $T(\vv_1)=T(\vv_2)$ implies $\vv_1=\vv_2$, therefore $T$ is an \inj.
+\end{proof}
+
+\a\aa
+
+
+In plain words, in the following diagram.
+
+$$
+	\xymatrix{V\ar[r]^S&W\ar[r]^T&U}
+	$$
+
+If the composition of two maps are \inj, then any two different element in $V$ has to keep different until it reaches the destination $U$, to do so, they must still keep different in $W$, otherwise if they stick together in $W$, they will never become different in $U$.
+
+
+
+
+
+\aaa
+\aaa{Surjective Maps}
+Let $\map{T}{V}V$ be a linear map defined by the orthogonal projection to $\spann\left\{\ee_1+2\ee_2\right\}$.
+$$
+\begin{tikzpicture}[scale=0.4]
+\wangge{-5}{-5}55
+\org
+\draw[ultra thick,green](-3,-6)--(3,6);
+\dasis\ee
+\end{tikzpicture}
+$$
+Why $T$ is not invertible?
+\a\aa
+There is an \excp. 
+\x{There is no $\vv$ such that $T(\vv)=\ww$.}
+we can't assign any value to $T^{-1}(\ww)$.
+$$
+T(?)=\ww
+$$
+$$
+\begin{tikzpicture}[scale=0.4]
+\wangge{-5}{-5}55
+\org
+\draw[ultra thick,green](-3,-6)--(3,6);
+\huadian42\ww
+\end{tikzpicture}
+$$
+$$
+T^{-1}(\ww)=?
+$$
+\a\aa
+We call a linear map that does not have \excp for defining inverse as \sur
+\[defi]{A linear map $\map TVW$ is called an \sur if for all $\ww\in W$, there always \exi $\vv\in V$ such that $T(\vv)=\ww$. 
+}
+In this situation, we could \x{possibly} define the inverse $T^{-1}(\ww)$ by some element.
+
+But remember, even if for \sur maps there is \textbf{NO} \excp, we might not able to define $T^{-1}(\ww)$ since it \textbf{MAY} have \unp.
+
+\aaa
+\aaa{Three properties of surjective maps}
+\textbf{Three important properties of \sur map: No.1}
+\begin{prop} Let $\map TVW$ and $\map SWU$ $\map RWU$ be linear maps, if $T$ is an \sur map, then \rc rule holds for $T$.
+$$
+R\circ T=S\circ T\implies R=S
+$$
+\end{prop}
+\begin{proof}We need to show for any $\ww\in W$, $R(\ww)=S(\ww)$. Since $T$ is an \sur map, \te $\vv\in V$ such that $\ww=T(\vv)$, since $R\circ T=S\circ T$, we have 
+$$
+R(T(\vv))=S(T(\vv)).
+$$
+Therefore $R(\ww)=S(\ww).$.
+\end{proof}
+\a\aa
+
+
+
+In plain words, in the following diagram.
+
+$$
+	\xymatrix{V\ar[r]^T&W\ar[r]^S&U}
+	$$
+
+One may ask if one can choose a different $S$ but keep the composition $S\circ T$. Since $S\circ T$ only see the correspondance between $V$ and $U$, this correspondance is transfered by $W$. So there might be some {\it lonely} element in $W$ which does not corresponds by any $\vv \in V$. For those {\it lonely} element $\ww\in W$, no matter how we define $S(\ww)$, it does not affect the composition $S\circ T$.
+
+In the case of \sur, there is no {\it lonely } element, therefore we have no freedom to change $S$ without $S\circ T$ changed. This is the main sense of the right cancellation.
+
+
+
+
+\a{Composition of Surjective linear maps}
+\textbf{Three important properties of \sur map: No.2}
+\[prop]{
+Let $\map TVU$, $\map SUW$ be two \sur linear maps, then $S\circ T$ is also an \sur map.
+}
+\[proof]{For any $\ww\in W$, since $S$ is an \sur, \te $\vec u\in U$ such that 
+$$\ww=S(\vec u)$$
+For this $\vec u$, \te $\vv\in V$ such that $T(\vv)=\vec u$.
+
+The whole proof indicates for any $\ww\in W$ we could found $\vv\in V$ such that $\ww=S\circ T(\vv)$. Therefore $S\circ T$ is a \sur.
+}
+\a\aa
+
+
+
+
+
+
+In plain words, in the following diagram.
+
+$$
+	\xymatrix{V\ar[r]^T&W\ar[r]^S&U}
+	$$
+
+If both are \sur, then all element in $V$ maps on all element in $W$, then all element in $W$ maps on all element in $U$.
+\vfill
+Totally, all elements in $V$ maps on all elements in $U$, by $S\circ T$, so $S\circ T$ is a \sur.
+
+
+
+\a{Left Factor of injective composition}
+\textbf{Three important properties of \sur map: No.3}
+\[prop]{
+Let $\map TVU$, $\map SUW$ be two linear maps, suppose $S\circ T$ is a \sur map, then the \lf $S$ must be \sur.
+}
+\begin{proof}
+For $\ww\in W$, since $S\circ T$ is surjective, \te $\vv\in V$ such that
+$$
+\ww=S(T(\vv)).
+$$
+Let $\vec u=T(\vv)$, so $\ww=S(\vec u)$.
+We proved for any $\ww\in W$, \te $\vec u\in U$, such that $\ww=S(\vec u)$, therefore $S$ is a \sur.
+\end{proof}
+\a\aa
+
+
+
+
+
+In plain words, in the following diagram.
+
+$$
+	\xymatrix{V\ar[r]^T&W\ar[r]^S&U}
+	$$
+
+If $S\circ T$ is a \sur, then all elemnts in $V$ maps on all elemnts in $U$, since element in $V$ arrives $U$ throught $W$, \x{think element in} $W$ \x{as a car}. All elements in $W$ that carrying an element in $V$ must maps to all elements in $U$. Therefore all non-empty cars maps onto $U$.($S$ is a \sur)
+\vfill
+
+Non-empty cars has already occupied all element in $U$, no matter where those empty car go, All cars occupied all elements in $U$. 
+
+
+\aaa
+\aaa{Invertible linear transformation}
+We call a linear map that have \np for defining inverse as \iso.
+\[defi]{A linear map $\map TVW$ is called an \iso if for all $\ww\in W$, \teun $\vv\in V$ such that $T(\vv)=\ww$. 
+}
+In this situation, we could define the inverse $T^{-1}(\ww)=\ww$. This linear transformation saitiesfies
+$$
+T^{-1}\circ T=\id_V;\qquad T\circ T^{-1}=\id_W.
+$$
+\a{Three important properties for isomorphisms}
+\[prop]{An \iso map have both \lc and \rc rule.}
+\[prop]{A compostition of two \iso must be an \iso. }
+\[prop]{Let $\map TVU$, $\map SUW$ be two linear maps, suppose $S\circ T$ is a \iso, then the \lf $S$ must be \sur and \rf $T$ must be \inj.}
+
+\a\aa
+\exe The last proposition didn't say both $T,S$ be \iso. Find a counter example that two linear maps $\map TVU$, $\map SUW$ with $S\circ T$ an \iso, but both of them are not \iso.
+
+\sol Consider maps $\map TF{F^3}$ $\map S{F^3}F$ defined by
+$$
+T=\m 1,0,0.  \qquad S=\m 100.
+$$
+Then
+$$
+S\circ T = \m100.\m 1,0,0. =1 
+$$
+is invertible. But each $S$ or $T$ is not. This is also an example, the product of two matrices is invertible but each of them may not.
+\aaa
+
+\aaa{Properties of Isomorphisms}
+We call a linear map that have \np for defining inverse as \iso.
+\[defi]{A linear map $\map TVW$ is called an \iso if for all $\ww\in W$, \teun $\vv\in V$ such that $T(\vv)=\ww$. 
+}
+In this situation, we could define the inverse $T^{-1}(\ww)=\ww$. This linear transformation saitiesfies
+$$
+T^{-1}\circ T=\id_V;\qquad T\circ T^{-1}=\id_W.
+$$
+\a{Three important properties for isomorphisms}
+\[prop]{An \iso map have both \lc and \rc rule.}
+\[prop]{A compostition of two \iso must be an \iso. }
+\[prop]{Let $\map TVU$, $\map SUW$ be two linear maps, suppose $S\circ T$ is a \iso, then the \lf $S$ must be \sur and \rf $T$ must be \inj.}
+
+\a\aa
+\exe The last proposition didn't say both $T,S$ be \iso. Find a counter example that two linear maps $\map TVU$, $\map SUW$ with $S\circ T$ an \iso, but both of them are not \iso.
+
+\sol Consider maps $\map TF{F^3}$ $\map S{F^3}F$ defined by
+$$
+T=\m 1,0,0.  \qquad S=\m 100.
+$$
+Then
+$$
+S\circ T = \m100.\m 1,0,0. =1 
+$$
+is invertible. But each $S$ or $T$ is not. This is also an example, the product of two matrices is invertible but each of them may not.
+\aaa

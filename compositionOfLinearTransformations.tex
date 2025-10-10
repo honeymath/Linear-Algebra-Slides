@@ -1,0 +1,118 @@
+
+\newcommand\map[3]{#1:{#2}\longrightarrow  {#3}}
+\newcommand\maps[5]{{#1}:{#2}\longrightarrow {#3},{#4} \mapsto {#5}}
+
+\aaa{Composition of lienar transformations}
+
+
+Next part, we will see that the matrix multiplication interpretes the composition of linear transformations.
+
+
+\a\aa
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\[prop]{Let $V,W,U$ be linear spaces with bases
+$$
+\ce\text{ basis for }V\quad \cw\text{ basis for }W \quad \cd\text{ basis for }U
+$$
+Consider the following linear transformation
+$$
+\xymatrix{V\ar[r]^T&W\ar[r]^S&U}
+$$
+
+Then the matrix representation of $S\circ T$ is the product of matrix representations of $S$ and $T$ in corresponding bases.
+}
+\a\aa
+We suppose the linear transformation has the following matrix representations
+
+$$
+T\underbrace{\obasis\ee n}_\ce = \underbrace{\obasis\ww m}_\cw A
+$$
+
+$$
+S\underbrace{\obasis\ww m}_\cw = \underbrace{\obasis\uu p}_\cd B
+$$
+
+
+The proof is straightforward when looking at the commutative diagram
+
+$$
+\xymatrix{
+	V\ar[rr]^T&&W\ar[rr]^S&&U\\
+	\\
+F^n\ar[rr]^{L_A}\ar[uu]^{L_\ce}&&F^m\ar[rr]^{L_B}\ar[uu]^{L_\cw}&&F^p\ar[uu]^{L_\cd}
+	}
+$$
+\a\aa
+
+\textbf{Induced transformation proof}:
+$$
+\xymatrix{
+	V\ar[rr]^T&&W\ar[rr]^S&&U\\
+	\\
+F^n\ar[rr]^{L_A}\ar[uu]^{L_\ce}&&F^m\ar[rr]^{L_B}\ar[uu]^{L_\cw}&&F^p\ar[uu]^{L_\cd}
+	}
+$$
+Let $C$ be the matrix of $S\circ T$ on the basis $\ce$ and $\cd$. We want to show $C=BA$. To do so, we only need to prove 
+$$
+L_C=L_B\circ L_A
+$$
+Since $L_C=L^{-1}_\cd\circ S\circ T\circ L_\ce$, $L_B = L_\cd^{-1}\circ S\circ L_\cw$, $L_A=L_\cw^{-1}\circ T\circ L_\ce$. Then
+$$
+L_B\circ L_A = L_\cd^{-1}\circ S\circ L_\cw\circ L_\cw^{-1}\circ T\circ L_\ce=L^{-1}_\cd\circ S\circ T\circ L_\ce=L_C.
+$$
+\a\aa
+
+\textbf{Standard Proof:}
+Since we have $$
+T\underbrace{\obasis\ee n}_\ce = \underbrace{\obasis\ww m}_\cw A
+$$
+
+$$
+S\underbrace{\obasis\ww m}_\cw = \underbrace{\obasis\uu p}_\cd B
+$$
+
+\[equation]{
+	\[split]{
+		S\circ T\underbrace{\obasis\ee n}_\ce& = S\underbrace{\obasis\ww m}_\cw A\\
+		&=\underbrace{\obasis\uu p}_\cd BA
+		}
+	}
+
+This implies 
+$$
+S\circ T\underbrace{\obasis\ee n}_\ce=\underbrace{\obasis\uu p}_\cd BA
+$$
+\a\aa
+
+\[cor]{Let $V,W$ be linear spaces with bases
+$$
+\ce\text{ basis for }V\quad \cw\text{ basis for }W
+$$
+Suppose $\map TVW$ is \inve and represented by matrix $A$ on those bases, then its inverse $\map{T^{-1}}WV$ is represented by $A^{-1}$}
+\a\aa
+\app
+By what given, we have
+$$T\underbrace{\obasis\ee n}_\ce = \underbrace{\obasis\ww m}_\cw A$$
+Apply $T^{-1}$ on both hand, we have
+$$\underbrace{\obasis\ee n}_\ce = T^{-1}\underbrace{\obasis\ww m}_\cw A$$
+Right multiplying $A^{-1}$, we have
+$$\underbrace{\obasis\ee n}_\ce A^{-1}= T^{-1}\underbrace{\obasis\ww m}_\cw$$
+This proves the corollary.
+\ppa
+\aaa
+
+
+

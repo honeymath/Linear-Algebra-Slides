@@ -1,0 +1,145 @@
+
+\newcommand\map[3]{#1 : {#2}⟶  {#3}}
+\newcommand\maps[5]{{#1}:{#2}⟶  {#3}, {#4} ↦ {#5}}
+\aaa{Matrix of linear transformations}
+To represent a linear transformation, we will use matrices.
+\a\aa
+
+
+In previous example, whenever we have a receipe table, it gives a linear transformation \x{from space of drink combinations} to \x{space of material combinations}.
+
+
+
+\t{}\cola\tea,\bean21,\leaf11.
+
+
+
+\[columns]{
+\co4
+
+\[zz]{
+\org
+%	\pgftransformcm{1}{2}{1}{1}{\pgfpoint{0}{0}}
+\grid[red!60!white!40]{-1}{-1}11
+\draw[color=orange] (1,1) circle[radius=0.3] node {\sbento};
+\draw[color=red] (0,1) circle[radius=0.3] node {\scola};
+\draw[color=red] (1,0) circle[radius=0.3] node {\stea};
+	}
+
+\co1
+$$\longrightarrow$$
+\co5
+
+\[zzz]{
+\org
+\grid{-3}{-3}33
+\draw[color=blue] (1,0) circle[radius=0.3] node {\sleaf} (0,1) circle[radius=0.3] node {\sbean};
+\draw[color=red] (1,2) circle[radius=0.3] node {\scola} (1,1) circle[radius=0.3] node {\stea};
+\draw[color=orange] (2,3) circle[radius=0.3] node {\sbento};
+	\pgftransformcm{1}{2}{1}{1}{\pgfpoint{0}{0}}
+\grid[red!60!white!40]{-1}{-1}11
+%\draw (1,1) node {\sbento};
+	}
+
+
+}
+
+
+\a\aa
+If we call this map $T$. Then we use \cola, \tea as symbols for those drinks in the domain. And 
+$$T\left(\cola\right)\qquad T\left(\tea\right)$$ as symbols for its position in the codomain. Since materials are all in the codomain, it makes more sense to write our table as
+
+
+\t{}{$T\left(\cola\right)$}{$T\left(\tea\right)$},\bean21,\leaf11.
+
+\a\aa
+This table can be written as an expression
+
+$$
+\m{T\cola}{T\tea}. = \m\bean\leaf. \m21,11.
+$$
+
+Factor $T$ out, we can write
+$$
+T\m{\cola}{\tea}. = \m\bean\leaf. \m21,11.
+$$
+
+Note that here (\cola,\tea) is a basis of the domain, and (\bean,\leaf) is a basis of the codomain. We call the matrix
+$$
+\m21,11.
+$$
+The matrix representation of $T$ in the basis (\cola,\tea) and (\bean,\leaf). It determines the linear transformation completely.
+
+
+
+\aaa
+
+
+
+
+
+\aaa{Matrix Representation of Linear Transformation}
+\[defi]{For a linear transformation $\map TVW$, let 
+\[itemize]{
+\item $\ce=\obasis\vv n$ be a basis of domain $V$
+\item $\cw=\obasis\ww m$ be a basis of codomain $W$. 
+}The \x{matrix representation} of $T$ with respect to $\ce$ and $\cw$, is the matrix $P$ such that
+$$
+T\obasis\vv n=\obasis\ww m P
+$$
+%We denote by $P=\nota T\ce\cw$
+}
+In other words, the matrix representation is the recipe table to make $T\obasis\vv n$ by materials $\obasis\ww m$.
+\a\aa
+The matrix representation $P$ of $\map TVW$ with basis $\ce$ and $\cw$, is the coordinate matrix of
+$$
+T\ce=\obasis{T\ee}n
+$$
+in the following basis of codomain $W$
+$$
+\cw = \obasis\ww m.
+$$
+The matrix $P$ fits into the following linear combination equation
+$$
+\overbrace{\obasis{T\ee}n}^{T\ce} = \overbrace{\obasis\ww m}^{\cw}P 
+$$
+Each column of $P$ is the coordinate of $T\ee_i$ in the \bas $\cw$.
+$$
+P=\m{\nota{T\ee_1}{}\cw}{\nota{T\ee_2}{}\cw}\cdots{\nota{T\ee_n}{}\cw}.
+$$
+\a\aa
+\exe Let $V=\lPP xabc$, $W=\lPP tabc$
+
+Consider a linear map 
+$$\maps TVW{f(x)}{f(t+1)}$$
+
+Find matrix representation of $T$ with bases 
+$$\cw=\m1t{t^2}.\text{ in }V\qquad \ce=\m1{2x+1}{x^2+1}.\text{ in }W$$
+
+\a\aa
+\sol: Apply the \lt $T$ on each of the function on \bas and write the coordinate in \bas of the target.
+We find 
+\[equation*]{\[split]{
+	T(1)=1 &={\underbrace{\m1t{t^2}.}_\cw\underbrace{\m1,0,0.}_{[T(1)]^\cw}}\\
+T(2x+1)=2(t+1)+1 &={\underbrace{\m1t{t^2}.}_\cw\underbrace{\m3,2,0.}_{[T(2x+1)]^\cw}}\\
+T(x^2+1)=(t+1)^2+1&={\underbrace{\m1t{t^2}.}_\cw\underbrace{\m2,2,1.}_{[T(x^2+1)]^\cw}}
+}
+}
+
+\a\aa
+We write this into a matrix form
+$$
+T\underbrace{\m1{2x+1}{x^2+1}.}_\ce=\underbrace{\m1t{t^2}.}_\cw\m132,022,001.
+$$
+
+We know the matrix representation of $T$ is $ \m132,022,001.$
+
+\aaa
+
+
+
+
+
+
+
+

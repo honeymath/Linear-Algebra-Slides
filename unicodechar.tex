@@ -1,0 +1,432 @@
+%%%%% This is somecommand to center
+\def\tocenter#1
+
+{\centerline{#1}\noindent}
+% Redefining ^ and _ as active characters
+
+\catcode`_=8
+\let\oldunderscore=_
+\catcode`_=13
+\newcommand_{\ifmmode\oldunderscore\else\expandafter\Unders\fi}
+
+\catcode`^=7
+\let\oldcaret=^
+\catcode`^=13
+\newcommand^{\ifmmode\oldcaret\else\expandafter\Supers\fi}
+
+\def\Unders{\Start\unders}
+\def\Supers{\Start\supers}
+
+\def\unders#1{\ensuremath{{\oldunderscore{#1}}}}
+\def\supers#1{\ensuremath{{\oldcaret{#1}}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%Come afejio%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\def\EatVerify#1{\NowVerify\s}
+\def\NowVerify#1\s\s#2{#2#1\s\s#2}
+\def\fail#1\suc#2\s#3\fail{#2}
+\def\suc#1\fail{}
+\def\IfNotSingleChar#1\Then#2\else{\def\fk #1\fail{}\EatVerify#1\s\suc#2\s\s\fail
+}
+\def\MatchWord#1\IfMatch#2\IfNotMatch#3\endmatch#4\wordlist#5\endwordlist{\def\findword ##1#1##2\s##3\s##4\endfind{##3}\findword #5\s#2\s #1 \s#3\s\endfind#4\wordlist#5\endwordlist
+}
+\def\Strip#1\tempchar#2\endvariables{#1\tempchar#2\endvariables}
+\def\Start#1{\InitializeWith{}\wordlist ∎ 𝘼 𝘽 𝘾 𝘿 𝙀 𝙁 𝙂 𝙃 𝙄 𝙅 𝙆 𝙇 𝙈 𝙉 𝙊 𝙋 𝙌 𝙍 𝙎 𝙏 𝙐 𝙑 𝙒 𝙓 𝙔 𝙕 𝔸 𝔹 ℂ 𝔻 𝔼 𝔽 𝔾 ℍ 𝕀 𝕁 𝕂 𝕃 𝕄 ℕ 𝕆 ℙ ℚ ℝ 𝕊 𝕋 𝕌 𝕍 𝕎 𝕏 𝕐 ℤ 𝒜 ℬ 𝒞 𝒟 ℰ ℱ 𝒢 ℋ ℐ 𝒥 𝒦 ℒ ℳ 𝒩 𝒪 𝒫 𝒬 ℛ 𝒮 𝒯 𝒰 𝒱 𝒲 𝒳 𝒴 𝒵 𝕬 𝕭 𝕮 𝕯 𝕰 𝕱 𝕲 𝕳 𝕴 𝕵 𝕶 𝕷 𝕸 𝕹 𝕺 𝕻 𝕼 𝕽 𝕾 𝕿 𝖀 𝖁 𝖂 𝖃 𝖄 𝖅 𝖆 𝖇 𝖈 𝖉 𝖊 𝖋 𝖌 𝖍 𝖎 𝖏 𝖐 𝖑 𝖒 𝖓 𝖔 𝖕 𝖖 𝖗 𝖘 𝖙 𝖚 𝖛 𝖜 𝖝 𝖞 𝖟 α β γ δ ε ζ η θ ι κ λ μ ν ξ ο π ρ σ τ υ φ χ ψ ω Γ Δ Θ Λ Ξ Π Σ Φ Ψ Ω ∞ ± × \endwordlist\cmd#1\endcmd\variables \tempword \tempchar \endvariables
+}
+\def\InitializeWith#1{\Absorb#1\endabsorb}
+\def\Absorb#1\endabsorb#2\tempchar#3\endvariables#4{\IfNotSingleChar{#4}\Then\ReleaseAll\else\Generate{#1#4}#2\tempchar{{#4}}\endvariables
+}
+\def\Generate#1{\Strip\CombineBC\MatchWord{#1}\IfMatch\IfNotMatch\ReleaseAll\endmatch\MatchWord{ #1 }\IfMatch\RecordA#1\endrecord\IfNotMatch\endmatch\InitializeWith{#1}
+}
+\def\CombineBC#1\tempword#2\tempchar#3\endvariables{#1\tempword#2#3\tempchar\endvariables
+}
+\def\RecordA#1\endrecord#2\variables#3\tempword#4\tempchar#5\endvariables{#2\variables{{#1}}\tempword\tempchar\endvariables}
+\def\ReleaseAll#1\cmd#2\endcmd#3\variables#4\tempword#5\tempchar#6\endvariables{#2#4#5#6}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Redefine ' to avoid double superscript problem
+\makeatletter
+\catcode`\'=\active
+\def'{\ensuremath{{\oldcaret\prime}}}
+\makeatother
+
+
+% Redefine xymatrix to use the correct catcode.
+\let\tempxymatrix = \xymatrix
+\def\xymatrix{
+\catcode`^=7
+\catcode`_=8
+\hatematrix
+}
+
+\def\hatematrix#1{
+\tempxymatrix{
+#1
+}
+\catcode`^=13
+\catcode`_=13
+}
+
+
+
+
+
+
+\usepackage{newunicodechar}
+
+
+ \newunicodechar{𝔸}{\ensuremath{\mathbb A}}
+ \newunicodechar{𝔹}{\ensuremath{\mathbb B}}
+ \newunicodechar{ℂ}{\ensuremath{\mathbb C}}
+ \newunicodechar{𝔻}{\ensuremath{\mathbb D}}
+ \newunicodechar{𝔼}{\ensuremath{\mathbb E}}
+ \newunicodechar{𝔽}{\ensuremath{\mathbb F}}
+ \newunicodechar{𝔾}{\ensuremath{\mathbb G}}
+ \newunicodechar{ℍ}{\ensuremath{\mathbb H}}
+ \newunicodechar{𝕀}{\ensuremath{\mathbb I}}
+ \newunicodechar{𝕁}{\ensuremath{\mathbb J}}
+ \newunicodechar{𝕂}{\ensuremath{\mathbb K}}
+ \newunicodechar{𝕃}{\ensuremath{\mathbb L}}
+ \newunicodechar{𝕄}{\ensuremath{\mathbb M}}
+ \newunicodechar{ℕ}{\ensuremath{\mathbb N}}
+ \newunicodechar{𝕆}{\ensuremath{\mathbb O}}
+ \newunicodechar{ℙ}{\ensuremath{\mathbb P}}
+ \newunicodechar{ℚ}{\ensuremath{\mathbb Q}}
+ \newunicodechar{ℝ}{\ensuremath{\mathbb R}}
+ \newunicodechar{𝕊}{\ensuremath{\mathbb S}}
+ \newunicodechar{𝕋}{\ensuremath{\mathbb T}}
+ \newunicodechar{𝕌}{\ensuremath{\mathbb U}}
+ \newunicodechar{𝕍}{\ensuremath{\mathbb V}}
+ \newunicodechar{𝕎}{\ensuremath{\mathbb W}}
+ \newunicodechar{𝕏}{\ensuremath{\mathbb X}}
+ \newunicodechar{𝕐}{\ensuremath{\mathbb Y}}
+ \newunicodechar{ℤ}{\ensuremath{\mathbb Z}}
+
+\newunicodechar{𝒜}{\ensuremath{\mathscr A}}
+\newunicodechar{ℬ}{\ensuremath{\mathscr B}}
+\newunicodechar{𝒞}{\ensuremath{\mathscr C}}
+\newunicodechar{𝒟}{\ensuremath{\mathscr D}}
+\newunicodechar{ℰ}{\ensuremath{\mathscr E}}
+\newunicodechar{ℱ}{\ensuremath{\mathscr F}}
+\newunicodechar{𝒢}{\ensuremath{\mathscr G}}
+\newunicodechar{ℋ}{\ensuremath{\mathscr H}}
+\newunicodechar{ℐ}{\ensuremath{\mathscr I}}
+\newunicodechar{𝒥}{\ensuremath{\mathscr J}}
+\newunicodechar{𝒦}{\ensuremath{\mathscr K}}
+\newunicodechar{ℒ}{\ensuremath{\mathscr L}}
+\newunicodechar{ℳ}{\ensuremath{\mathscr M}}
+\newunicodechar{𝒩}{\ensuremath{\mathscr N}}
+\newunicodechar{𝒪}{\ensuremath{\mathscr O}}
+\newunicodechar{𝒫}{\ensuremath{\mathscr P}}
+\newunicodechar{𝒬}{\ensuremath{\mathscr Q}}
+\newunicodechar{ℛ}{\ensuremath{\mathscr R}}
+\newunicodechar{𝒮}{\ensuremath{\mathscr S}}
+\newunicodechar{𝒯}{\ensuremath{\mathscr T}}
+\newunicodechar{𝒰}{\ensuremath{\mathscr U}}
+\newunicodechar{𝒱}{\ensuremath{\mathscr V}}
+\newunicodechar{𝒲}{\ensuremath{\mathscr W}}
+\newunicodechar{𝒳}{\ensuremath{\mathscr X}}
+\newunicodechar{𝒴}{\ensuremath{\mathscr Y}}
+\newunicodechar{𝒵}{\ensuremath{\mathscr Z}}
+
+
+
+\newunicodechar{𝕬}{\ensuremath{\mathfrak A}}
+\newunicodechar{𝕭}{\ensuremath{\mathfrak B}}
+\newunicodechar{𝕮}{\ensuremath{\mathfrak C}}
+\newunicodechar{𝕯}{\ensuremath{\mathfrak D}}
+\newunicodechar{𝕰}{\ensuremath{\mathfrak E}}
+\newunicodechar{𝕱}{\ensuremath{\mathfrak F}}
+\newunicodechar{𝕲}{\ensuremath{\mathfrak G}}
+\newunicodechar{𝕳}{\ensuremath{\mathfrak H}}
+\newunicodechar{𝕴}{\ensuremath{\mathfrak I}}
+\newunicodechar{𝕵}{\ensuremath{\mathfrak J}}
+\newunicodechar{𝕶}{\ensuremath{\mathfrak K}}
+\newunicodechar{𝕷}{\ensuremath{\mathfrak L}}
+\newunicodechar{𝕸}{\ensuremath{\mathfrak M}}
+\newunicodechar{𝕹}{\ensuremath{\mathfrak N}}
+\newunicodechar{𝕺}{\ensuremath{\mathfrak O}}
+\newunicodechar{𝕻}{\ensuremath{\mathfrak P}}
+\newunicodechar{𝕼}{\ensuremath{\mathfrak Q}}
+\newunicodechar{𝕽}{\ensuremath{\mathfrak R}}
+\newunicodechar{𝕾}{\ensuremath{\mathfrak S}}
+\newunicodechar{𝕿}{\ensuremath{\mathfrak T}}
+\newunicodechar{𝖀}{\ensuremath{\mathfrak U}}
+\newunicodechar{𝖁}{\ensuremath{\mathfrak V}}
+\newunicodechar{𝖂}{\ensuremath{\mathfrak W}}
+\newunicodechar{𝖃}{\ensuremath{\mathfrak X}}
+\newunicodechar{𝖄}{\ensuremath{\mathfrak Y}}
+\newunicodechar{𝖅}{\ensuremath{\mathfrak Z}}
+
+
+\newunicodechar{𝖆}{\ensuremath{\mathfrak a}}
+\newunicodechar{𝖇}{\ensuremath{\mathfrak b}}
+\newunicodechar{𝖈}{\ensuremath{\mathfrak c}}
+\newunicodechar{𝖉}{\ensuremath{\mathfrak d}}
+\newunicodechar{𝖊}{\ensuremath{\mathfrak e}}
+\newunicodechar{𝖋}{\ensuremath{\mathfrak f}}
+\newunicodechar{𝖌}{\ensuremath{\mathfrak g}}
+\newunicodechar{𝖍}{\ensuremath{\mathfrak h}}
+\newunicodechar{𝖎}{\ensuremath{\mathfrak i}}
+\newunicodechar{𝖏}{\ensuremath{\mathfrak j}}
+\newunicodechar{𝖐}{\ensuremath{\mathfrak k}}
+\newunicodechar{𝖑}{\ensuremath{\mathfrak l}}
+\newunicodechar{𝖒}{\ensuremath{\mathfrak m}}
+\newunicodechar{𝖓}{\ensuremath{\mathfrak n}}
+\newunicodechar{𝖔}{\ensuremath{\mathfrak o}}
+\newunicodechar{𝖕}{\ensuremath{\mathfrak p}}
+\newunicodechar{𝖖}{\ensuremath{\mathfrak q}}
+\newunicodechar{𝖗}{\ensuremath{\mathfrak r}}
+\newunicodechar{𝖘}{\ensuremath{\mathfrak s}}
+\newunicodechar{𝖙}{\ensuremath{\mathfrak t}}
+\newunicodechar{𝖚}{\ensuremath{\mathfrak u}}
+\newunicodechar{𝖛}{\ensuremath{\mathfrak v}}
+\newunicodechar{𝖜}{\ensuremath{\mathfrak w}}
+\newunicodechar{𝖝}{\ensuremath{\mathfrak x}}
+\newunicodechar{𝖞}{\ensuremath{\mathfrak y}}
+\newunicodechar{𝖟}{\ensuremath{\mathfrak z}}
+
+\newunicodechar{𝗮}{\ensuremath{\mathbf a}}
+\newunicodechar{𝗯}{\ensuremath{\mathbf b}}
+\newunicodechar{𝗰}{\ensuremath{\mathbf c}}
+\newunicodechar{𝗱}{\ensuremath{\mathbf d}}
+\newunicodechar{𝗲}{\ensuremath{\mathbf e}}
+\newunicodechar{𝗳}{\ensuremath{\mathbf f}}
+\newunicodechar{𝗴}{\ensuremath{\mathbf g}}
+\newunicodechar{𝗵}{\ensuremath{\mathbf h}}
+\newunicodechar{𝗶}{\ensuremath{\mathbf i}}
+\newunicodechar{𝗷}{\ensuremath{\mathbf j}}
+\newunicodechar{𝗸}{\ensuremath{\mathbf k}}
+\newunicodechar{𝗹}{\ensuremath{\mathbf l}}
+\newunicodechar{𝗺}{\ensuremath{\mathbf m}}
+\newunicodechar{𝗻}{\ensuremath{\mathbf n}}
+\newunicodechar{𝗼}{\ensuremath{\mathbf o}}
+\newunicodechar{𝗽}{\ensuremath{\mathbf p}}
+\newunicodechar{𝗾}{\ensuremath{\mathbf q}}
+\newunicodechar{𝗿}{\ensuremath{\mathbf r}}
+\newunicodechar{𝘀}{\ensuremath{\mathbf s}}
+\newunicodechar{𝘁}{\ensuremath{\mathbf t}}
+\newunicodechar{𝘂}{\ensuremath{\mathbf u}}
+\newunicodechar{𝘃}{\ensuremath{\mathbf v}}
+\newunicodechar{𝘄}{\ensuremath{\mathbf w}}
+\newunicodechar{𝘅}{\ensuremath{\mathbf x}}
+\newunicodechar{𝘆}{\ensuremath{\mathbf y}}
+\newunicodechar{𝘇}{\ensuremath{\mathbf z}}
+
+\newunicodechar{𝘼}{\ensuremath{\mathcal A}}
+\newunicodechar{𝘽}{\ensuremath{\mathcal B}}
+\newunicodechar{𝘾}{\ensuremath{\mathcal C}}
+\newunicodechar{𝘿}{\ensuremath{\mathcal D}}
+\newunicodechar{𝙀}{\ensuremath{\mathcal E}}
+\newunicodechar{𝙁}{\ensuremath{\mathcal F}}
+\newunicodechar{𝙂}{\ensuremath{\mathcal G}}
+\newunicodechar{𝙃}{\ensuremath{\mathcal H}}
+\newunicodechar{𝙄}{\ensuremath{\mathcal I}}
+\newunicodechar{𝙅}{\ensuremath{\mathcal J}}
+\newunicodechar{𝙆}{\ensuremath{\mathcal K}}
+\newunicodechar{𝙇}{\ensuremath{\mathcal L}}
+\newunicodechar{𝙈}{\ensuremath{\mathcal M}}
+\newunicodechar{𝙉}{\ensuremath{\mathcal N}}
+\newunicodechar{𝙊}{\ensuremath{\mathcal O}}
+\newunicodechar{𝙋}{\ensuremath{\mathcal P}}
+\newunicodechar{𝙌}{\ensuremath{\mathcal Q}}
+\newunicodechar{𝙍}{\ensuremath{\mathcal R}}
+\newunicodechar{𝙎}{\ensuremath{\mathcal S}}
+\newunicodechar{𝙏}{\ensuremath{\mathcal T}}
+\newunicodechar{𝙐}{\ensuremath{\mathcal U}}
+\newunicodechar{𝙑}{\ensuremath{\mathcal V}}
+\newunicodechar{𝙒}{\ensuremath{\mathcal W}}
+\newunicodechar{𝙓}{\ensuremath{\mathcal X}}
+\newunicodechar{𝙔}{\ensuremath{\mathcal Y}}
+\newunicodechar{𝙕}{\ensuremath{\mathcal Z}}
+
+%% The greek letters
+
+
+\newunicodechar{α}{\ensuremath{\alpha}}
+\newunicodechar{β}{\ensuremath{\beta}}
+\newunicodechar{γ}{\ensuremath{\gamma}}
+\newunicodechar{δ}{\ensuremath{\delta}}
+\newunicodechar{ε}{\ensuremath{\epsilon}}
+\newunicodechar{ζ}{\ensuremath{\zeta}}
+\newunicodechar{η}{\ensuremath{\eta}}
+\newunicodechar{θ}{\ensuremath{\theta}}
+\newunicodechar{ι}{\ensuremath{\iota}}
+\newunicodechar{κ}{\ensuremath{\kappa}}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{μ}{\ensuremath{\mu}}
+\newunicodechar{ν}{\ensuremath{\nu}}
+\newunicodechar{ξ}{\ensuremath{\xi}}
+\newunicodechar{ο}{\ensuremath{\omicron}}
+\newunicodechar{π}{\ensuremath{\pi}}
+\newunicodechar{ρ}{\ensuremath{\rho}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+\newunicodechar{τ}{\ensuremath{\tau}}
+\newunicodechar{υ}{\ensuremath{\upsilon}}
+\newunicodechar{φ}{\ensuremath{\phi}}
+\newunicodechar{χ}{\ensuremath{\chi}}
+\newunicodechar{ψ}{\ensuremath{\psi}}
+\newunicodechar{ω}{\ensuremath{\omega}}
+
+\newunicodechar{Γ}{\ensuremath{\Gamma}}
+\newunicodechar{Δ}{\ensuremath{\Delta}}
+\newunicodechar{Θ}{\ensuremath{\Theta}}
+\newunicodechar{Λ}{\ensuremath{\Lambda}}
+\newunicodechar{Ξ}{\ensuremath{\Xi}}
+\newunicodechar{Π}{\ensuremath{\Pi}}
+\newunicodechar{Σ}{\ensuremath{\Sigma}}
+\newunicodechar{Φ}{\ensuremath{\Phi}}
+\newunicodechar{Ψ}{\ensuremath{\Psi}}
+\newunicodechar{Ω}{\ensuremath{\Omega}}
+
+\newunicodechar{∑}{\ensuremath{\sum}}
+\newunicodechar{∏}{\ensuremath{\prod}}
+\newunicodechar{∐}{\ensuremath{\coprod}}
+\newunicodechar{⟶}{\ensuremath{\;\longrightarrow\;}}
+\newunicodechar{⤍}{\ensuremath{\;\dashrightarrow\;}}
+\newunicodechar{⟵}{\ensuremath{\;\longleftarrow\;}}
+\newunicodechar{⤌}{\ensuremath{\;\dashleftarrow\;}}
+\newunicodechar{⟺}{\ensuremath{\;\iff\;}}
+\newunicodechar{⟹}{\ensuremath{\;\implies\;}}
+\newunicodechar{⟸}{\ensuremath{\;\impliedby\;}}
+\newunicodechar{∈}{\ensuremath{\in}}
+\newunicodechar{∋}{\ensuremath{\ni}}
+\newunicodechar{∌}{\ensuremath{\not\ni}} 
+\newunicodechar{⊆}{\ensuremath{\subset}}
+\newunicodechar{⊈}{\ensuremath{\not\subset}}
+\newunicodechar{∉}{\ensuremath{\not\in}} 
+\newunicodechar{⊇}{\ensuremath{\supset}}
+\newunicodechar{⊉}{\ensuremath{\not\supset}}
+\newunicodechar{∩}{\ensuremath{\cap}}
+\newunicodechar{∪}{\ensuremath{\cup}}
+\newunicodechar{⊕}{\ensuremath{\oplus}}
+\newunicodechar{⨁}{\ensuremath{\oplus}}
+\newunicodechar{⊗}{\ensuremath{\otimes}}
+\newunicodechar{⨂}{\ensuremath{\otimes}}
+\newunicodechar{≅}{\ensuremath{\cong}}
+\newunicodechar{≇}{\ensuremath{\not\cong}}
+\newunicodechar{±}{\ensuremath{\pm}}
+\newunicodechar{∓}{\ensuremath{\mp}}
+\newunicodechar{⋀}{\ensuremath{\wedge}}
+\newunicodechar{⁎}{\ensuremath{_{*}}}
+\newunicodechar{⁰}{\ensuremath{^{0}}}
+\newunicodechar{²}{\ensuremath{^{2}}}
+\newunicodechar{³}{\ensuremath{^{3}}}
+\newunicodechar{⁴}{\ensuremath{^{4}}}
+\newunicodechar{⁵}{\ensuremath{^{5}}}
+\newunicodechar{⁶}{\ensuremath{^{6}}}
+\newunicodechar{⁷}{\ensuremath{^{7}}}
+\newunicodechar{⁸}{\ensuremath{^{8}}}
+\newunicodechar{⁹}{\ensuremath{^{9}}}
+\newunicodechar{∀}{\ensuremath{\forall}}
+\newunicodechar{∃}{\ensuremath{\exists}}
+\newunicodechar{∄}{\ensuremath{\not\exists}}
+\newunicodechar{∇}{\ensuremath{\nabla}}
+\newunicodechar{↦}{\ensuremath{\longmapsto}}
+\newunicodechar{×}{\ensuremath{\times}}
+\newunicodechar{≥}{\ensuremath{\geq}}
+\newunicodechar{≤}{\ensuremath{\leq}}
+\newunicodechar{∫}{\ensuremath{\int}}
+\newunicodechar{≠}{\ensuremath{\neq}}
+\newunicodechar{≈}{\ensuremath{\approx}}
+\newunicodechar{≡}{\ensuremath{\equiv}}
+\newunicodechar{∂}{\ensuremath{\partial}}
+\newunicodechar{∖}{\ensuremath{\backslash}}
+\newunicodechar{ø}{\ensuremath{\varnothing}}
+\newunicodechar{˚}{\ensuremath{^\circ}}
+\newunicodechar{⚬}{\ensuremath{\circ}}
+\newunicodechar{•}{\ensuremath{\bullet}}
+\newunicodechar{·}{\ensuremath{\cdot}}
+\newunicodechar{⊠}{\ensuremath{\boxtimes}}
+\newunicodechar{␣}{\ensuremath{\qquad}}
+\newunicodechar{‹}{\ensuremath{\langle}}
+\newunicodechar{›}{\ensuremath{\rangle}}
+
+
+\newunicodechar{–}{\item}
+\newunicodechar{⊥}{\ensuremath{\perp}}
+\newunicodechar{⌈}{\ensuremath{\lceil}}
+\newunicodechar{⌉}{\ensuremath{\rceil}}
+\newunicodechar{⌊}{\ensuremath{\lfloor}}
+\newunicodechar{⌋}{\ensuremath{\rfloor}}
+
+\newunicodechar{¯}{\Start\qiruioverline}
+\def\qiruioverline#1{\ensuremath{\overline{#1}}}
+
+\newunicodechar{˘}{\Start\qiruibreve}
+\def\qiruibreve#1{\ensuremath{\breve{#1}}}
+
+\newunicodechar{ˆ}{\Start\qiruihat}
+\def\qiruihat#1{\ensuremath{\widehat{#1}}}
+
+\newunicodechar{˜}{\Start\qiruitilde}
+\def\qiruitilde#1{\ensuremath{\widetilde{#1}}}
+
+\newunicodechar{∎}{\qiruisquare}
+\long\def\qiruisquare#1∎#2∎{\begin{#1}#2\end{#1}}
+
+\newunicodechar{🏷}{\label}
+
+\newunicodechar{₀}{\ensuremath{_{0}}}
+\newunicodechar{₁}{\ensuremath{_{1}}}
+\newunicodechar{₂}{\ensuremath{_{2}}}
+\newunicodechar{₃}{\ensuremath{_{3}}}
+\newunicodechar{₄}{\ensuremath{_{4}}}
+\newunicodechar{₅}{\ensuremath{_{5}}}
+\newunicodechar{₆}{\ensuremath{_{6}}}
+\newunicodechar{₇}{\ensuremath{_{7}}}
+\newunicodechar{₈}{\ensuremath{_{8}}}
+\newunicodechar{₉}{\ensuremath{_{9}}}
+
+\newunicodechar{₋}{\ensuremath{_{-}}}
+\newunicodechar{₊}{\ensuremath{_{+}}}
+\newunicodechar{⁺}{\ensuremath{^{+}}}
+\newunicodechar{⁻}{\ensuremath{^{-}}}
+\newunicodechar{−}{\ensuremath{-}}
+
+\newunicodechar{⥱}{\ensuremath{\overset\cong\longrightarrow}}
+
+
+\DeclareMathAlphabet{\mathmybb}{U}{bbold}{m}{n}
+\newunicodechar{𝟙}{\ensuremath{\mathmybb{1}}}
+\newunicodechar{𝟘}{\ensuremath{\mathmybb{0}}}
+
+
+\newunicodechar{ϖ}{\ensuremath{\varpi}}
+
+\newunicodechar{“}{\qiruimathlike}
+
+\newunicodechar{¡}{\tocenter}
+
+\def\qiruimathlike#1“{\text{#1}}
+
+
+
+
+
+
+
+
+
+
+\let \tempgeq = \geq
+\renewcommand\geq{\ensuremath{\tempgeq}}
+
+
+%%% Here is the idea for the next project:
+%\ensuremath{
+%\CD 
+%G @> “superman is coming“>> D \cr
+%\endCD
+%}
+%%%
+\let\oldar = \ar
+
+\def\ar[#1]#2#3{\expunder\expupper\eat\oldar[#1]#2\eat^ placeholder _ placeholder\tae{#3}}
+\def\expunder#1_#2\tae{#1\oldunderscore#2\tae}
+\def\expupper#1^#2\tae{#1\oldcaret#2\tae}
+\def\eat#1\eat#2\tae{#1}

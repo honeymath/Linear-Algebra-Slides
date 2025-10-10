@@ -1,0 +1,468 @@
+
+\newcommand\map[3]{#1:{#2}\longrightarrow  {#3}}
+\newcommand\maps[5]{{#1}:{#2}\longrightarrow {#3},{#4} \mapsto {#5}}
+
+\aaa{Change of basis and commutative diagram}
+From now, we have related the concept of \lt, tuple of vectors, matrices together. 
+
+\vfill
+
+Now we would start to talk about different perspective in linear algebra. For abstract vector spaces, we can only take a coordinate of an element after choosing a basis. Basis is a perspective, coordinates are phinomenon you have seen through this perspective. Different perspective will give different phinomenon. But all of them are describing the same truth. 
+\a{Commutative Diagram}
+
+In math, we use \x{commutative diagram} to discribe different phinomenon of the same truth in different perspective.
+\vfill
+\[defi]{A commutative diagram is a collection of maps, in which all map compositions starting from the same set  and ending with the same set  give the same result. 
+}
+\a\aa
+For example, when we say the following diagram commutes
+$$
+\xymatrix{
+	A\ar[rrr]^\alpha\ar[dd]_\beta\ar[rd]^\gamma&&&B\ar[dd]^\delta\ar[ld]_\epsilon\\
+	&C\ar[r]^\zeta&D&\\
+	E\ar[ru]^\iota\ar[rrr]^\theta&&&F\ar[lu]_\mu\\
+}
+$$
+we mean that we have $\epsilon\circ\alpha=\zeta\circ\gamma$, and $\epsilon= \mu\circ \delta$ and so on
+\vfill
+\exe Write more equations of map compositions from this diagram.
+
+\a\aa
+
+The definition of a commutative diagram itself does not reveal any purpose of interpreting a different phinomenon in different perspective. We need to understand it by specific examples. In this class, we are trying to understand commutative diagrams of the following shape.
+\vfill
+\x{Translation of Language}:
+$$
+\xymatrix{
+	\ar[rr]{}{}\ar[rd]{}{}&&\ar[ld]{}{}\\
+	&&
+	}
+$$
+
+\vfill
+\x{Phinomenons in different perspective}:
+$$
+\xymatrix{
+	\ar[r]{}{}\ar[d]{}{}&\ar[d]{}{}\\
+	\ar[r]{}{}&\\
+	}
+$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\a{Commutative diagram of triangular shape}
+
+
+
+
+We study the commutative diagram of triangular shape, the philosophy is listed as following
+$$
+\xymatrix{
+	A\ar[rr]^{\text{translation}}_T\ar[rd]_{\text{\color{blue}parametrization 1}}^{P_1}&&B\ar[ld]^{\text{\color{blue}parametrization 2}}_{P_2}\\
+	&C&\\
+	}
+$$
+
+As a map, this means $P_1=P_2\circ T$
+
+\vfill
+
+Typically, such type of commutative diagram represents a \x{Translation of parameters}. Here $A$, $B$ are both paramter sets, $C$ is the set of objects.
+
+\a\aa
+Intuitive examples from Language. Consider \x{commutative diagram}
+
+$$
+\xymatrix{
+	\text{Japanese words of fruit}\ar[rr]^{\text{translate}}\ar[rdd]_{\text{tell in japanese}}&&\text{English words of fruit}\ar[ldd]^{\text{tell in English}}\\\\
+	&\text{Set of Fruits}&
+	}
+$$
+For example, 
+\apple=\text{tell in Japanese}(lingo) = \text{tell in English}(apple)
+\vfill
+The lingo and apple are two different parameter for the same object \apple in two different parametrization.
+
+Then two words apple and lingo are related by translation
+$$
+\text{apple} = \text{translate} (\text{lingo}).
+$$
+\a\aa
+Another example, as we all know, grandfather is the dad of dad. We have the following diagram
+$$
+\xymatrix{
+	\text{Creatures existed}\ar[rr]^{\text{daddy}}\ar[rdd]^{\color{blue}\text{grandfather}}&&\text{Creatures existed}\ar[ldd]_{\color{blue}\text{daddy}}\\\\
+	&\text{Creatures existed}&
+	}
+$$
+\a\aa
+$$
+\xymatrix{
+	\text{Creatures existed}\ar[rr]^{\text{daddy}}\ar[rdd]^{\color{blue}\text{grandfather}}&&\text{Creatures existed}\ar[ldd]_{\color{blue}\text{daddy}}\\\\
+	&\text{Creatures existed}&
+	}
+$$
+We understand the blue maps as parametrizations.
+
+In parametrization of `{\color{blue}grandfater}`, we describe every objects by
+$$
+\text{Jonh's grandfater}\qquad \text{Amy's grandfater}\qquad \cdots
+$$
+In parametrization of `{\color{blue}daddy}`, we describe every objects by
+$$
+\text{Ricky's daddy}\qquad \text{Speedy's daddy}
+$$
+\textbf{Question:} How do we translate between those langrage?
+
+\a\aa
+To see relation between two laguages, compare if 
+$$
+\text{Ricky's daddy} = \text{Jonh's grandfater}
+$$
+What is the relation betweeen parameter `Ricky` and `John`?
+
+\a\aa
+$$
+\text{Ricky's daddy} = \text{John's grandfater}
+$$
+implies
+$$\text{Ricky} = \text{John's daddy}$$
+Therefore, $\text{daddy}$ plays the role of {\color{blue}Translation of parameters}
+$$
+\xymatrix{
+	\text{Creatures existed}\ar[rr]^{\text{daddy}}\ar[rdd]^{\color{blue}\text{grandfather}}&&\text{Creatures existed}\ar[ldd]_{\color{blue}\text{daddy}}\\\\
+	&\text{Creatures existed}&
+	}
+$$
+
+
+\a\aa
+
+
+
+Suppose we have a vector space $V$ with two bases and the change of basis matrix $P$
+
+$$\underbrace{\obasis \ee n}_{\ce} = \underbrace{\obasis\ww n}_\cw P$$
+
+From the perspective of induced transformations this means
+$$
+L_\ce = L_\cw\circ L_P
+$$
+
+We can write this equation into the follwing commutative diagram of induced transformations.
+$$
+\xymatrix{
+	\f^n\ar[rr]^{L_P}\ar[rd]_{L_\ce}&&\f^m\ar[ld]^{L_\cw}\\
+	&V
+	}
+$$
+\a\aa
+$$
+\xymatrix{
+	\f^n\ar[rr]^{L_P}\ar[rd]_{L_\ce}&&\f^m\ar[ld]^{L_\cw}\\
+	&V
+	}
+$$
+
+This commutative diagram can be interprete as that, \x{left multiplying the change of basis matrix} P on \x{coordinates in }$\ce$-basis will  give the coordinate of the vector in $\cw$-basis.
+\vfill
+Let's verify: Since $L_\ce=L_\cw\circ L_P$, we have $L_P\circ L_\ce^{-1} = L_\cw^{-1}$. Then
+\vfill
+\[equation]{\[split]{
+	\overbrace{L_P\circ \underbrace{L_\ce^{-1}(\vv)}_{\text{coordinate in }\ce-\text{basis}}}^{\text{multiplying the coordinate by }P} & = \underbrace{L_\cw^{-1}(\vv)}_{\text{coordinate in }\cw-\text{basis}}
+}}
+
+\aaa
+
+
+
+\aaa{Commutative diagram of square shape}
+A commutative diagram of square shape, is \x{describing different phenomena for the same truth in different points of view}
+
+\vfill
+\textbf{Experiment:} Face to face with your partner, put your cellphone in the middle of your views. and rotate it clockwise. Ask your partner about which direction of the rotation in her point of view.
+
+\vfill
+
+$$
+\xymatrix{
+	\text{Images you saw}\ar[dd]_{\text{translation}}\ar[rrrr]^{\text{rotation clockwise}}&&&&\text{Images you saw}\ar[dd]^{\text{translation}}\\\\
+	\text{Images she saw}\ar[rrrr]^{\text{rotation counterclockwise}}&&&&\text{Images she saw}\\
+	}
+$$
+\a\aa
+$$
+\xymatrix{
+	\text{Images you saw}\ar[dd]_{\text{flip over}}\ar[rrrr]^{\text{rotation clockwise}}&&&&\text{Images you saw}\ar[dd]^{\text{flip over}}\\\\
+	\text{Images she saw}\ar[rrrr]^{\text{rotation counterclockwise}}&&&&\text{Images she saw}\\
+	}
+$$
+\textbf{Question:} What is the translation map from what you saw to what she saw? Without changing seats, can you do some thing to your cellphone to visualize what she saw?
+
+\vfill
+\textbf{Answer:} Flip over the cell phone, what you saw is exactly what she saw before. This means the translation map is flipping over.
+\a\aa
+
+$$
+\xymatrix{
+	\text{Images you saw}\ar[dd]_{\text{flip over}}\ar[rrrr]^{\text{rotation clockwise}}&&&&\text{Images you saw}\ar[dd]^{\text{flip over}}\\\\
+	\text{Images she saw}\ar[rrrr]^{\text{rotation counterclockwise}}&&&&\text{Images she saw}\\
+	}
+$$
+
+Now let's verify it is a commutative diagram by yourself:
+
+\centerline{\textbf{Rotation clockwise by 90 degree} then \textbf{Flip Over}}
+\centerline{= \textbf{Flip Over} then \textbf{Rotation counterclockwise by 90 degree}}
+
+\a\aa
+If we have a lienar transformation $\map TVW$ and a basis $\ce=\obasis\ee n$ in $V$ and a basis $\cw=\obasis\ww m$ in $W$. The matrix representation $P$ of $T$ is described by the following equation
+$$
+T\underbrace{\obasis\ee n}_\ce = \underbrace{\obasis\ww m}_\cw P
+$$
+In the perspective of \idu\lt, this means
+$$
+L_T\circ L_\ce = L_\cw\circ L_P
+$$
+By drawing the domain and codomain for each \lt. We can draw this equation into a commutative diagram
+
+$$
+\xymatrix{
+	%\text{View from coordinate:}
+	&F^n\ar[rr]^{L_P}\ar[d]_{L_\ce}&&F^m\ar[d]^{L_\cw}\\
+	%\text{View from actual map:}
+	&V\ar[rr]_T&&W\\
+}
+$$
+
+\a\aa
+
+We can understand each row of the above diagram as a viewpoint, and vertical maps as translations( translate coordinate to actual vectors).
+\vfill
+$$
+\xymatrix{
+	\text{View from coordinate:}
+	&F^n\ar[rr]^{L_P}\ar[d]_{L_\ce}&&F^m\ar[d]^{L_\cw}\\
+	\text{View from actual map:}
+	&V\ar[rr]_T&&W\\
+}
+$$
+\vfill
+it is saying applying the linear transformation $T$, in the view of coordinates, is exactly like left multiplying the matrix $P$.
+\vfill
+Indeed, since $T\circ L_\ce = L_\cw\circ L_P$, we have $L_\cw^{-1}\circ T = L_P\circ L_\ce^{-1}$. Then
+$$
+\underbrace{L_\cw^{-1}(T(\vv))}_{\cw-\text{coordinate of }T(\vv)} = \overbrace{L_P(\underbrace{L_\ce^{-1}(\vv)}_{\ce-\text{coordinate of }\vv})}^{\text{left multiplying }P \text{ on the }\ce-\text{coordinate of }\vv}
+$$
+\aaa
+
+
+\aaa{Change of basis for matrix representation}
+
+Let $\map TVW$ be a \lt. With selected basis $\ce$ in $V$ and $\cw$ in $W$, we may write the matrix represenation of $T$
+
+$$
+T\underbrace{\obasis\ee n}_\ce = \underbrace{\obasis\ww m}_\cw P
+$$
+
+The matrix $P$ depends on the choice of bases. Suppose we change another basis $\cv$ in $V$ and $\cd$ in $W$, the matrix changes to
+
+$$
+T\underbrace{\obasis\vv n}_\cv = \underbrace{\obasis\uu m}_\cd Q
+$$
+
+What is the realtion between $P$ and $Q$?
+
+\a\aa
+
+In fact, we can write the following expression 
+$$
+T\underbrace{\obasis\ee n}_\ce = \underbrace{\obasis\ww m}_\cw P
+$$
+into a commutative diagram of induced transformations
+
+$$
+\xymatrix{
+	\text{View from coordinate:}
+	&F^n\ar[rrrr]^{L_P}\ar[rd]_{L_\ce}&&&&F^m\ar[ld]^{L_\cw}\\
+	\text{View from actual map:}
+	&&V\ar[rr]_T&&W&\\
+}
+$$
+\a\aa
+Then consider the expression of $Q$
+
+$$
+T\underbrace{\obasis\vv n}_\cv = \underbrace{\obasis\uu m}_\cd Q
+$$
+
+We may draw it into the previous commutative diagram
+$$
+\xymatrix{
+	\text{View from coordinate:}
+	&F^n\ar[rrrr]^{L_P}\ar[rd]_{L_\ce}&&&&F^m\ar[ld]^{L_\cw}\\
+	\text{View from actual map:}
+	&&V\ar[rr]_T&&W&\\
+	\text{View from coordinate:}
+	&F^n\ar[rrrr]^{L_Q}\ar[ru]^{L_\cv}&&&&F^m\ar[lu]_{L_\cd}\\
+}
+$$
+
+\a\aa
+
+Since $\ce,\cv$ are bases of $V$, they must related by a change of basis matrix.
+
+$$
+\underbrace{\obasis\vv n}_{\cv}=
+\underbrace{\obasis\ee n}_{\ce}A
+$$
+
+And $\cd,\cw$ are bases of $W$, we can find the change of basis matrix such that
+
+$$
+\underbrace{\obasis\uu m}_{\cd}=
+\underbrace{\obasis\ww m}_{\cw}B
+$$
+\a\aa
+By using $A$ and $B$, we can complete the commutative diagram.
+$$
+\xymatrix{
+	\text{View from coordinate:}
+	&F^n\ar[rrrr]^{L_P}\ar[rd]_{L_\ce}&&&&F^m\ar[ld]^{L_\cw}\\
+	\text{View from actual map:}
+	&&V\ar[rr]_T&&W&\\
+	\text{View from coordinate:}
+	&F^n\ar[uu]^{L_A}\ar[rrrr]^{L_Q}\ar[ru]^{L_\cv}&&&&F^m\ar[lu]_{L_\cd}\ar[uu]_{L_B}\\
+}
+$$
+\a\aa
+
+From here we may easily see the relation between $P,Q,A,B$
+
+$$
+Q=B^{-1}PA
+$$
+
+$$
+\xymatrix{
+	\text{View from coordinate:}
+	&F^n\ar[rrrr]^{L_P}&&&&F^m\\
+	\text{}
+	\\
+	\text{View from coordinate:}
+	&F^n\ar[uu]^{L_A}\ar[rrrr]^{L_Q}&&&&F^m\ar[uu]_{L_B}\\
+}
+$$
+\a\aa
+To summarise, Let $\map TVW$ be a \lt. Suppose $\ce,\cv$ are bases in $V$ with
+$$
+\underbrace{\obasis\vv n}_\cv = \underbrace{\obasis\ee n}_\ce A
+$$
+Suppose $\cw,\cd$ are bases in $W$ with
+$$
+\underbrace{\obasis\uu m}_\cd = \underbrace{\obasis\ww m}_\cw B
+$$
+Let $P,Q$ be matrices such that 
+$$
+T\underbrace{\obasis\ee n}_\ce  = \underbrace{\obasis\ww m}_\cw P
+$$
+
+$$
+T\underbrace{\obasis\vv n}_\cv  = \underbrace{\obasis\uu m}_\cd Q
+$$
+\a\aa
+
+\[prop]{With the settings of the previous page, we have
+$$
+Q=B^{-1}PA
+$$
+}
+\[proof]{It is clear from commutative diagram
+$$
+\xymatrix{
+	\text{View from coordinate:}
+	&F^n\ar[rrrr]^{L_P}\ar[rd]_{L_\ce}&&&&F^m\ar[ld]^{L_\cw}\\
+	\text{View from actual map:}
+	&&V\ar[rr]_T&&W&\\
+	\text{View from coordinate:}
+	&F^n\ar[uu]^{L_A}\ar[rrrr]^{L_Q}\ar[ru]^{L_\cv}&&&&F^m\ar[lu]_{L_\cd}\ar[uu]_{L_B}\\
+}
+$$
+Now let us give a direct proof.
+}
+\a\aa
+
+\textbf{Direct Proof}
+
+Use the equation
+
+$$
+T\underbrace{\obasis\vv n}_\cv  = \underbrace{\obasis\uu m}_\cd Q
+$$
+
+Now we replace it by
+$$
+\underbrace{\obasis\vv n}_\cv = \underbrace{\obasis\ee n}_\ce A 
+$$
+and
+$$
+\underbrace{\obasis\uu m}_\cd = \underbrace{\obasis\ww m}_\cw B
+$$
+We have
+$$
+T\underbrace{\obasis\ee n}_\ce A  = \underbrace{\obasis\ww m}_\cw BQ
+$$
+\a\aa
+Therefore, we have two equation
+$$
+T\underbrace{\obasis\ee n}_\ce   = \underbrace{\obasis\ww m}_\cw BQA^{-1}
+$$
+
+$$
+T\underbrace{\obasis\ee n}_\ce   = \underbrace{\obasis\ww m}_\cw P
+$$
+
+This implies 
+$$
+\underbrace{\obasis\ww m}_\cw BQA^{-1} = \underbrace{\obasis\ww m}_\cw P
+$$
+Since $\cw$ is a \bas, it is \li, so we apply \lc.
+$$
+BQA^{-1}=P 
+$$
+So $Q=B^{-1}PA$. We proved this Proposition.
+\a\aa
+
+Nevertheless, the commutative diagram is the most clear way to show relative relations among objects in linear algebra. You will finally find out it is useful.
+$$
+\xymatrix{
+	\text{View from coordinate:}
+	&F^n\ar[rrrr]^{L_P}\ar[rd]_{L_\ce}&&&&F^m\ar[ld]^{L_\cw}\\
+	\text{View from actual map:}
+	&&V\ar[rr]_T&&W&\\
+	\text{View from coordinate:}
+	&F^n\ar[uu]^{L_A}\ar[rrrr]^{L_Q}\ar[ru]^{L_\cv}&&&&F^m\ar[lu]_{L_\cd}\ar[uu]_{L_B}\\
+}
+$$
+
+\aaa
+
+
+
+

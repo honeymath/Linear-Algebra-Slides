@@ -1,0 +1,730 @@
+
+\def\1{\y1}
+\def\2{\y2}
+\def\3{\y3}
+\def\4{\y4}
+\def\5{\y5}
+\def\6{\y6}
+\def\7{\y7}
+\def\8{\y8}
+\def\9{\y9}
+\def\0{\y0}
+\def\-{\y-}
+
+\newcommand{\red}{\textcolor{red}}
+\aaa{A special request}
+A custormer requests for a special \textbf{new drink } need the following ingradients
+\vfill
+\[columns]{
+\co5 \textbf{Old Drinks ingradients:}\t{}\milk\soup\coffee\tea,\leaf0202,\lemon0101,\bean0420,\cow1100.
+\co3 \textbf{New Drink requirement: }\t{}\cola,\leaf4,\lemon2,\bean2,\cow4.
+\co2\textbf{Problem:}\t{}\cola,\milk?,\soup?,\coffee?,\tea?.
+}
+But the chef only have \milk,\soup,\coffee,\tea at the hand, can he produce \cola by those materials?
+\a\aa
+The chef thought this problem is the same as a matrix product equation, indeed, replace those questionmarks by $x,y,z$, he need the following equation to be true
+\[columns]{
+\co5 \textbf{Old Drinks ingradients:}\t{}\milk\soup\coffee\tea,\leaf0202,\lemon0101,\bean0420,\cow1100.$ \quad\times $
+\co3\textbf{Problem:}\t{}\cola,\milk x,\soup y,\coffee z,\tea w. $\quad = $
+\co2 \textbf{New Drink requirement: }\t{}\cola,\leaf4,\lemon2,\coffee2,\cow4.
+}
+\a\aa
+Mathematically, this equation is writting as 
+$$
+\m 0202,0101,0420,1100.\m x,y,z,w.=\m4,2,2,4.
+$$
+\a\aa
+By understanding by columns, solving it is the same as asking for
+
+\t4,2,2,4. =\t{0},{0},{0},{1}. \textbf{x} +\t{2},{1},{4},{1}.\textbf{y}+\t{0},{0},{2},{0}. \textbf{z} +\t{2},{1},{0},{0}. \textbf{w}
+
+This can be write as the following and we call it the \textbf{Linear equation}
+$$
+\begin{cases}
+0x+2y+0z+2w=4\\
+0x+1y+0z+1w=2\\
+0x+4y+2z+0w=2\\
+1x+1y+0z+0w=4\\
+\end{cases}
+$$
+\a{Changing materials}
+Observation: The question is only asking for the meal's demand for semi-product meals. It does not asking anything related to the raw material.
+
+\t{}\cola,\milk x,\soup y,\coffee z,\tea w.
+
+No \lemon,\leaf,\bean,\cow appeared in this question. Therefore we can change materials to \x{simplify} the problem.
+
+\a{Row reduction}
+The clever chef changes the \textbf{material} so the ingradients table is easier
+
+\[columns]{
+\co{45}\t{}\smilk\ssoup\scoffee\stea\scola,\leaf02024,\lemon01012,\bean04202,\cow11004.
+\co{55}\t{}\smilk\ssoup\scoffee\stea\scola,\cow{\alert1}1004,{\bean\bean}02{\alert1}01,{\lemon+\leaf\leaf}010{\alert1}2,\leaf00000.
+}
+\a\aa
+Let's see how he managed to do it. He doubled the material $$\bean\mapsto\bean\bean$$  The corresponding row will \alert{\textbf{multiply by $\frac12$}}. \vfill
+\[columns]{
+\co{45}\t{}\smilk\ssoup\scoffee\stea\scola,\leaf02024,\lemon01012,\bean04202,\cow11004.
+\co{55}\t{}\smilk\ssoup\scoffee\stea\scola,\leaf02024,\lemon01012,{\bean\bean}{\alert{0}}{\alert{2}}{\alert{1}}{\alert{0}}{\alert{1}},\cow11004.
+}
+This is called \alert{\textbf{row multiplying}}
+\a\aa
+He \textbf{rearrange the order}, \vfill
+\[columns]{
+	\co{5}\t{}\smilk\ssoup\scoffee\stea\scola,\leaf02024,\lemon01012,{\bean\bean}02101,\cow11004.
+\co{5}\t{}\smilk\ssoup\scoffee\stea\scola,\cow11004,{\bean\bean}02101,\lemon01012,\leaf02024.
+}\vfill
+This is called \alert{\textbf{row switching}}
+
+\a\aa
+He replace \lemon with a package of material \lemon\leaf\leaf, which means each time using a \lemon will automatically use two more leaves. This means each time the package was used, 2 leaves \leaf\leaf is no longer needed. So the demand for \leaf is reduced by 2 times the demand for \lemon after replace \lemon by \lemon\leaf\leaf\vfill
+
+\[columns]{
+\co 5 \t{}\smilk\ssoup\scoffee\stea\scola,\cow11004,{\bean\bean}02101,\lemon01012,\leaf02024.
+\co 5 \t{}\smilk\ssoup\scoffee\stea\scola,\cow11004,{\bean\bean}02101,{\lemon\leaf\leaf}01012,\leaf00000.
+}
+\vfill
+This is called \alert{\textbf{row adding}}
+\a\aa
+In one words, row operation is \textbf{updating the raw ingradient list} when we change materials by changing its order, amount, or packing them together, which corresponds to row switching, row multiplying and row adding. Our goal is to get a list where there are some column only have a single $1$, called piviot. and that the row of those piviot covers all non-zero entries.\vfill
+\t{}\milk\soup\coffee\tea\cola,\cow{\alert{\textbf1}}1004,{\bean\bean}02{\alert{\textbf1}}01,{\lemon+\leaf\leaf}010{\alert{\textbf1}}2,\leaf00000.
+\a{Pivot}
+
+If we have a matrix with a single $1$ at some column, we call it as a \textbf{pivot}. This means we can replace a material with some meals. For example, 
+\vfill
+\[columns]{
+\co{25}\t{}\coffee,\cow0,{\bean\bean}{\textbf1},{\lemon+\leaf\leaf}0,\leaf0.
+\co{05}$\implies$
+\co7 \coffee = \textbf0\cow+\textbf{\alert1}\bean\bean+\textbf0(\lemon\leaf\leaf)+\textbf0\leaf
+~\\
+~\\~\\
+which means
+\bean\bean \textbf{=} \coffee
+}
+
+\a\aa
+With this observation, we can replace \textbf{certain materials} by \textbf{certain meals}
+\[columns]{
+\co{55}
+\t{}\smilk\ssoup\scoffee\stea\scola,{\h\cow}{\alert1}1004,{\y\bean\bean}02{\alert1}01,{\e\lemon+\leaf\leaf}010{\alert1}2,\leaf00000.
+\co{45}
+\t{}\smilk\ssoup\scoffee\stea\scola,{\h\milk}{\alert1}1004,{\y\coffee}02{\alert1}01,{\e\tea}010{\alert1}2,\leaf00000.
+}
+This also means \x{\color{blue}it is possible} to make \cola only by \milk\coffee\tea.
+\a\aa
+To emphasis the importance of possibility of making, let us consider an impossible case
+$$
+\t{}\milk\soup\coffee\tea\teaa,\cow{\alert1}100{\textbf1},\bean02{\alert1}0{\textbf1},\lemon010{\alert1}{\textbf2},\leaf0000{\x1}.
+$$
+
+it is impossible to make \teaa out of \milk,\soup,\coffee,\tea. 
+\a\aa
+That is to say the equation
+$$
+\begin{cases}
+x+y&=1\\
+2y+z&=1\\
+y+w&=2\\
+0&=1
+\end{cases}
+$$
+do not have a solution.
+
+
+\a\aa
+Let us go back to the process of making \cola. Note that the leaves \leaf is no longer needed for those packaged materials, we can delete it.
+\t{}\milk\soup\coffee\tea\cola,{\h\milk}{\alert1}1004,{\y\coffee}02{\alert1}01,{\e\tea}010{\alert1}2.
+
+\a\aa
+which tell us directly the list we want, lets compare the original question\vfill
+\[columns]{
+\co3 \textbf{Output}
+\t{}\cola,{\h\milk}4,{\y\coffee}1,{\e\tea}2.
+\co 4\textbf{Original Question}
+\t{}\cola,{\milk}x,\soup y,{\coffee}z,{\tea}w.
+}\vfill
+This tell us directly $x=4,y=0,z=1,w=2$.(Note that \soup have not been used.)
+
+\a\aa
+\[defi]{(Only in our slides)A \x{pivot} in a matrix is an entry valued 1 such that it is the only non-zero entries in its column.
+	}
+We summarize the chef's method of solving $A\vec x=\vec b$
+
+\[enumerate]{
+\item Combine $A$ and $\vec b$ to get the augmented matrix.
+\item Change materials(row reductions), reduce until \x{each non-zero row has a pivot}. Delete zero rows.
+\item Use pivot to change the material into meals, this form will tell us the solution $\vec x$.
+	}
+
+{\small\color{gray} Note: Traditional textbook reduces the matrix into reduced row echelon form. \x{Echelon is unecessary} for solving equations. Traditional book uses Echelon to garantee uniqueness of so called simplest form.}
+
+\a\aa
+\[defi]{We say a matrix is in \x{reduced form} if we can select a pivot in each non-zero row.}
+\a\aa
+
+Raw materials can be replaced by meals only when its row have a pivot. 
+%\t{}\answer\coffee\milk\soup\bento\cola\tea\money,\leaf{\y{\textbf{1}}}{\y4}{\y2}{\y{0}}{\y2}{\y{0}}{\y0}{\y1},\bean{\y{0}}{\y1}{\y1}{\y{0}}{\y3}{\y{{\textbf1}}}{\y1}{\y1},\cow{0}00{0}0{0}00,\orange{\y{0}}{\y0}{\y2}{\y{{\textbf1}}}{\y0}{\y{0}}{\y0}{\y0},\apple{0}00{0}0{0}00.
+\t{}\smilk\ssoup\scoffee\stea\scola,{\cow}{\y{\textbf1}}{\y1}{\y0}{\y0}{\y4},{\bean\bean}{\y0}{\y2}{\y\textbf1}{\y0}{\y1},{\lemon+\leaf\leaf}{\y0}{\y1}{\y0}{\y\textbf1}{\y2},\leaf00000.
+
+\a\aa
+In step (2), the requirement of pivot occupies all non-zero rows is necessary to garateen all raw materials being replaced by meals after deleting all zero rows. 
+
+\t{}\milk\soup\coffee\tea\cola,{\milk}{\y{\textbf1}}{\y1}{\y0}{\y0}{\y4},{\coffee}{\y0}{\y2}{\y\textbf1}{\y0}{\y1},{\tea}{\y0}{\y1}{\y0}{\y\textbf1}{\y2}.
+
+\a\aa
+Since all raw materials would be finally replaced by products, we do not need to follow the change of raw materials in row reduction. i.e. we only follows how numbers changed but do not need to know how \leaf,\lemon changes. The following table omit the row head. With \x{pivot} selected, it knows the row head automatically.
+\vfill
+\t\milk\soup\coffee\tea\cola,{\y{\textbf1}}{\y1}{\y0}{\y0}{\y4},{\y0}{\y2}{\y\textbf1}{\y0}{\y1},{\y0}{\y1}{\y0}{\y\textbf1}{\y2}.
+
+\a{Quick ways of solving linear equation}
+In step (3), we have to complete, replace, compare, and finally write the answer. now we \x{omit the header} and provide a quick way to do this. Take the following augmentation matrix as an example, where the pivot is highlighted and the constant part (new product) is bold.
+
+$$
+\t\milk\soup\coffee\tea\cola,{\alert1}100{\textbf4},02{\alert1}0{\textbf1},010{\alert1}{\textbf2}.
+$$
+\a\aa
+We delete the table line, for each number of the augmented part, perform the following operations
+
+\[enumerate]{
+\item For each number in the constants, move it horizontally until hit a pivot.
+\item Then move it to bottom and record it.
+\item read information form it.
+	}
+\a\aa
+We perform those steps to our example, it looks like the following
+$$
+\xymatrix{
+&\milk&\soup&\coffee&\tea&\cola\\
+&\textbf{1}\ar[dddd]&1&0&0&\red4\ar[llll]\\
+&0&2&\textbf{1}\ar[ddd]&0&\red1\ar[ll]\\
+&0&1&0&\textbf{1}\ar[dd]&\red2\ar[l]\\\\
+&+\red4\milk&+0\soup&+\red1\coffee&+\red2\tea&=\cola\\
+}
+$$
+From the table, the way of making \cola from \x{pivot compunds } \milk,\coffee and \tea is \x{\color{red}unique.}
+
+\a\aa
+Note that this process is in fact solving the equation
+$$
+\xymatrix{
+&\milk&\soup&\coffee&\tea&\cola\\
+&\textbf{1}\ar[dddd]&1&0&0&\red4\ar[llll]\\
+&0&2&\textbf{1}\ar[ddd]&0&\red1\ar[ll]\\
+&0&1&0&\textbf{1}\ar[dd]&\red2\ar[l]\\\\
+&+\red x\milk&+y\soup&+\red z\coffee&+\red w\tea&=\cola\\
+&x=4&y=0&z=1&w=2
+}
+$$
+\a\aa
+Mathematically, we are in fact solving the following matrix equation
+
+$$
+\m1100,0210,0101.\m x,y,z,w. = \m 4,1,2.
+$$
+
+So we can write the process to be
+
+$$
+\xymatrix{
+&\textbf{1}\ar[dddd]&1&0&0&\red4\ar[llll]\\
+&0&2&\textbf{1}\ar[ddd]&0&\red1\ar[ll]\\
+&0&1&0&\textbf{1}\ar[dd]&\red2\ar[l]\\\\
+&x=4&y=0&z=1&w=2
+}
+$$
+
+
+
+\a\aa
+Let us show another example of find the particular solution when pivot occupies all non-zero rows.
+$$
+\m {\textbf{1}}20,02{\textbf{1}},000.\m x,y,z.=\m 2,9,0.
+$$
+
+\xymatrix{
+\textbf{1}\ar[ddd]&2&0&&\alert{2}\ar[llll]\\
+0&2&\textbf{1}\ar[dd]&&\alert{9}\ar[ll]\\
+0&0&0&&\alert{0}\\
+x=\alert{2}&y=0&z=\alert{9}\\
+}
+\a{Pivot meals and column space}
+Not only the coke, but whenever we look at the coefficient matrix itself(which have nothing to do with \cola).Since pivot are intended for replacing row headers,
+$$
+\t{}\milk\soup\coffee\tea,\milk{\x{\color{red}1}}{\y\x{\color{red}1}}00,\coffee0{\y\x{\color{blue}2}}{\x{\color{blue}1}}0,\tea0{\y\x1}0{\x1}.
+$$
+it appears that all meals (\milk,\soup,\coffee,\tea) {\color{blue}can be cooked} from \x{pivot meals} and the coefficient of pivot-meal combination is {\color{red}unique}. 
+
+\a\aa
+Recall that the column space of a matrix is a subspace in the material space, that consisting of all possible combination of ingradients used for cooking compunds \milk\soup\coffee\tea.
+\vfill
+ However, there are already pivot compunds  \milk\coffee\tea. We may obtain other compunds by only cooking pivot compunds, and remember that the way to decompose any combination of compunds into pivot compunds is {\color{red}unique}.
+
+\t{}\milk\soup\coffee\tea,\leaf0202,\lemon0101,\bean0420,\cow1100.
+\a\aa
+This means all columns of this matrix {\color{blue}is a linear combination} of \x{pivot columns} $c_1,c_3,c_4$, and that the coefficient for decomposing any column into \x{pivot columns} is {\color{red}unique}.
+\t{}\milk\soup\coffee\tea,\leaf0202,\lemon0101,\bean0420,\cow1100.
+\a\aa
+
+\[defi]{A list of vectors $(\vec e_1,...,\vec e_m) $is called a \bas of a vector space $V$ if any vector $\vec v\in V$ {\color{blue}can be written as a linear combination 
+$$
+\vec v = a_1\vec e_1+...+a_m\vec e_m
+$$
+of the listed vectors}, and the coefficient $a_1,...,a_m$ used has to be {\color{red}unique}.}
+
+\[prop]{[Pivot column is a basis for column space]For any matrix $A$, the choice of pivot results a choice of pivot column, which is a \bas of the column space of $A$.
+}
+
+\a{General Solution for linear equation}
+A linear equation may have multiple sollution, for example. 
+
+$$
+\t\milk\soup\coffee\tea\cola,{\alert1}100{\textbf4},02{\alert1}0{\textbf1},010{\alert1}{\textbf2}.
+$$
+
+The cola \cola can be made by $\cola = 4\milk + 1\coffee + 2\tea.$
+
+
+\a\aa
+But it can also be made by $$= 3\milk + (-1)\coffee + 1\tea + 1\soup. $$
+
+Why different combination of old meal produce the same new meal\cola?
+
+\a\aa
+
+Our previous method to produce the \cola only considers the pivot meals. Indeed, we have already showed that the way of \x{producing it by pivot meals is unique}.
+
+\t\milk\soup\coffee\tea\cola,{\y{\textbf1}}{\y1}{\y0}{\y0}{\y4},{\y0}{\y2}{\y\textbf1}{\y0}{\y1},{\y0}{\y1}{\y0}{\y\textbf1}{\y2}.
+
+$$\cola = 4\milk + 1\coffee + 2\tea.$$
+
+Therefore, other solutions comes out when attempting to make the \cola with other non-pivot meals.
+
+\a\aa
+
+All the non-pivot meals can be made of pivot meals as well, for example, 
+$$\soup=1\milk+2\coffee+1\tea.$$
+ If anyone \x{dares} to make \cola with \x{non-pivot meals \soup}, we would like to \x{replace} it to our comfort recipe that make everything by pivot meals. 
+
+$$
+\overbrace{\t{}\cola,\milk3,\soup1,\coffee{(-1)},\tea1.}^{\text{other strange bills}} + 
+\overbrace{\t{}\cola,\milk1,\soup{(-1)},\coffee2,\tea1.}^{\text{replace the non-pivot meals.}}
+=
+\overbrace{\t{}\cola,\milk{?},\soup{\x{\color{red}0}},\coffee{?},\tea{?}.}^{\substack{\text{comfortable bill.}\\\text{pivot-only bill.}}}
+$$
+\a\aa
+You may find a ${\color{red}-1}$ appears in the non-pivot meal, this means we will throw away it, and then replace it by other pivot meals.
+$$
+\overbrace{\t{}\cola,\milk3,\soup1,\coffee{(-1)},\tea1.}^{\text{other strange bills}} + 
+\overbrace{\t{}\cola,\milk1,\soup{\x{\color{red}(-1)}},\coffee2,\tea1.}^{\text{replace the non-pivot meals.}}
+=
+\overbrace{\t{}\cola,\milk{\x4},\soup{0},\coffee{\x1},\tea{\x2}.}^{\substack{\text{comfortable bill.}\\\text{pivot-only bill.}}}
+$$
+\a\aa
+
+In general case, suppose we have arbitrary ways of making a \cola. Then 
+\begin{itemize}
+\item There is a {\color{red}unique} way to replace \x{all non-pivot} meals to get a bill only consisting of pivot meals;
+\end{itemize}
+$$
+\overbrace{\t{}\cola,\milk x,\soup y,\coffee{z},\tea w.}^{\text{other bills}} +
+\overbrace{ \t{}\cola,\milk1,\soup{(-1)},\coffee2,\tea1.\times y}^{\text{replace all y \soup.}}
+$$
+In the above example, we must choose $y$ as coefficient to set off non-pivot meals.
+
+\a\aa
+After replace all non-pivot meals, 
+
+$$
+\overbrace{\t{}\cola,\milk x,\soup y,\coffee{z},\tea w.}^{\text{other bills}} +
+\overbrace{ \t{}\cola,\milk1,\soup{(-1)},\coffee2,\tea1.\times y}^{\text{replace all y \soup.}}
+=\overbrace{\t{}\cola,\milk ?,\soup 0,\coffee{?},\tea ?.}^{\text{The way of making by pivot meals}}
+$$
+\a\aa
+\begin{itemize}
+\item The way of making \cola by pivot meals is {\color{red}unique}. 
+\end{itemize}
+$$
+\overbrace{\t{}\cola,\milk x,\soup y,\coffee{z},\tea w.}^{\text{other bills}} +
+\overbrace{ \t{}\cola,\milk1,\soup{(-1)},\coffee2,\tea1.\times y}^{\text{replace all y \soup.}}
+=\overbrace{\t{}\cola,\milk {\x4},\soup 0,\coffee{\x1},\tea {\x2}.}^{\text{The unique way of making by pivot meals}}
+$$
+\a\aa
+This means all solution would have the following property
+$$
+\m x,y,z,w. + \m1,{-1},2,1.y = \m 4,0,1,2.
+$$
+This tells that all solution {\color{blue}would have} the {\color{red} unique} form.
+$$
+\m x,y,z,w. = \underbrace{\m 4,0,1,2.}_{\text{unique combination out of pivot meals}}+ \underbrace{\m1,{-1},2,1.(-y)}_{\text{unique replacement for non-pivot meals}}
+$$
+
+\a\aa
+
+\exe Solving the following linear equation
+
+$$
+\m0101,1100.\m x,y,z,w.=\m 1,2.
+$$
+
+First step, choose two pivot as follows, then find a particular solution.
+
+\xymatrix{
+	0&1&0&\textbf{1}\ar[ddd]&\x1\ar[l]\\
+\textbf{1}\ar[dd]&-1&0&0&\x2\ar[llll]\\\\
+x=2&y=0&z=0&w=1\\
+}
+
+\a\aa
+
+Second step, find the two replacement method for two non-pivot columns.
+
+
+\[columns]{\co5
+\xymatrix{
+0&\x{1}\ar[rr]&0&1\ar[dd]\\
+1\ar[d]&\x{1}\ar@{--}[d]\ar[l]&0&0\\
+x=1&y=-1&z=0&w=1\\
+}
+\co 5
+\xymatrix{
+0&1&\x{0}\ar[r]&1\ar[dd]\\
+1\ar[d]&-1&\x{0}\ar[ll]\ar@{--}[d]&0\\
+x=0&y=0&z=-1&w=0\\
+}
+}
+
+This implies the general solution
+$$
+\m x,y,z,w. =\m 2,0,0,1. +\m {1},{-1},0,1.(-y)+\m0,0,{-1},0.(-z).
+$$
+
+
+\a\aa
+
+\[defi]{The variable corresponding to non-pivot is called \x{free variable}. The variable corresponding to pivot is called \x{pivot variable}.
+}
+We say so since one can assign arbitrary value to it.
+$$
+\m x,y,z,w. =\m 2,0,0,1. +\m {1},{-1},0,1.(-\x{y})+\m0,0,{-1},0.(-\x{z}).
+$$
+In this example, $\x{y,z}$ are free variables. The variables $x,w$ are pivot variables.
+
+\begin{itemize}
+\item The choice of pivot depends on people, so the concept of free variables is not a natural assignment for linear equation.
+\end{itemize}
+\a\aa
+In the following choice of pivot, which variables are free variables and pivot variables?
+$$
+\m0101,1100.\m x,y,z,w.=\m 1,2.
+$$
+
+
+\xymatrix{
+	0&1&0&\textbf{1}&1\\
+\textbf{1}&-1&0&0&2\\\\
+x=&y=&z=&w=\\
+}
+
+\aaa
+
+
+
+
+
+\aaa{Free variables and null spaces}
+The linear combination of non-pivot meal corresponding to all possible ways of changing bills.
+
+To make our problem more complicated, I added a column 
+$$
+\underbrace{\t\milk\soup\coffee\tea\teaa,{{\textbf1}}{1}{0}{0}2,{0}{2}{\textbf1}{0}5,{0}{1}{0}{\textbf1}1.}_A
+$$
+The null space is defined as the equation $Ax=0$. Knowing that the solution by pivot meals gives $x=0$. 
+\a\aa
+Therefore, any non-zero solution is a replacement bill. For example, the following bill is a solution
+$$
+\t{}{0},
+\milk5,\soup{\x{-2}},\coffee{12},\tea3,\teaa{\x{-1}}. 
+$$
+\a\aa
+We may set off the non-pivot meals by  
+$$\t{}{0},
+\milk5,\soup{\x{-2}},\coffee{12},\tea3,\teaa{\x{-1}}. - \t{}{0},
+\milk1,\soup0,\coffee2,\tea1,\teaa{\x{-1}}.(1)
+-
+\t{}{0},
+\milk2,\soup{\x{-1}},\coffee5,\tea1,\teaa{0}.(2)
+=
+\t{}{0},
+\milk*,\soup{\x{0}},\coffee*,\tea*,\teaa{\x0}.
+$$
+\a\aa
+Now the other meals \milk\coffee\tea are pivot meals. The only way to produce $0$ by pivot meals is $0$.
+$$\t{}{0},
+\milk5,\soup{\x{-2}},\coffee{12},\tea3,\teaa{\x{-1}}. - \t{}{0},
+\milk1,\soup0,\coffee2,\tea1,\teaa{\x{-1}}.(1)
+-
+\t{}{0},
+\milk2,\soup{\x{-1}},\coffee5,\tea1,\teaa{0}.(2)
+=
+\t{}{0},
+\milk0,\soup{\x{0}},\coffee0,\tea0,\teaa{\x0}.
+$$
+\a\aa
+Therefore, any solution of $Ax=0$ can be uniquely written as a linear combination of solutions corresponding to free variables.
+$$
+\t{}{0},
+\milk5,\soup{\x{-2}},\coffee{12},\tea3,\teaa{\x{-1}}. = \t{}{0},
+\milk1,\soup0,\coffee2,\tea1,\teaa{\x{-1}}.(1)
++
+\t{}{0},
+\milk2,\soup{\x{-1}},\coffee5,\tea1,\teaa{0}.(2)
+$$
+
+The coefficient of decomposition  is based on its number located on non-pivot meals. The {\color{blue}decomposition is always possible} and {\color{red} the coefficient is uniquely determined.}
+\a\aa
+\[defi]{In the linear equation $Ax=0$, the choice of pivots corresponds to free variables. Each free variable corresponds to a solution, these solutions is a \bas of null space of $A$.}
+\aaa
+
+
+
+
+
+
+
+
+\aaa{Superposition principal}
+
+There were three new customers in Shinchan's store, and they each asked Shinchan to make custom drinks for them. Shinchan currently has ingredients for the old food
+$$
+A=\t{}\milk\soup\coffee\tea,\leaf0202,\lemon0101,\bean0420,\cow1100.
+$$
+\a\aa
+Customized new food ingredients recipe table for three new guests is as follows
+
+
+$$
+C_1=\t{}\cola,\leaf4,\lemon2,\bean2,\cow4.\qquad
+C_2=\t{}\bow,\leaf0,\lemon0,\bean2,\cow2.\qquad
+C_3=\t{}{\cola+\bow},\leaf4,\lemon2,\bean4,\cow6.\qquad
+$$
+$$
+C_3=C_1+C_2
+$$
+\a\aa
+Shinchan found a way to make the first two new foods from old foods using the previous method
+$$
+X_1=\t{}\cola,\milk4,\soup0,\coffee1,\tea2.\qquad
+X_2=\t{}\bow,\milk2,\soup0,\coffee1,\tea0.\qquad
+$$
+\a\aa
+Just when he was going to figure out how to make $\cola+\bow$ with old food, he realize, in fact, he can just add the already calculated two column numbers to the row superposition.
+
+$$
+X_3=X_1+X_2=\t{}{\cola+\bow},\milk{\textbf6=4+2},\soup0,\coffee{\textbf2=1+1},\tea{\textbf2=2+0}.$$
+%\a\aa
+%In the matrix equation $AX=C$, $A$is receipe table for old materials, $C$ is receipe table for new materials. $X$ is the receipe table for new material from the old one, the above principal is to say, if $X=X_1$ and $X=X_2$ are solutions for $AX=C_1$ and $AX=C_2$, then $X=X_1+X_2$ is also a solution for $AX=C_1+C_2$. Generally, we have the following superposition principal.
+\a\aa
+\[prop]{[superposition principal]Suppose $X=X_1$ is a solution for matrix equation $AX=C_1$, $X=X_2$ is a solution for $AX=C_2$. Then for any scalars $\lambda_1,\lambda_2$,
+$$
+X=\lambda_1X_1+\lambda_2X_2
+$$
+is a solution for $AX=\lambda_1C_1+\lambda_2C_2$.
+	}
+\a\aa
+\exe
+	Find a solution for $$\m 102,000,010.\m x,y,z. = \m 1,0,0. ␣ \impliedby ␣  \m x,y,z.=\m\square,\square,\square.$$
+	Find a solution for $$\m 102,000,010.\m x,y,z. = \m 0,0,1.␣ \impliedby ␣ \m x,y,z.=\m\square,\square,\square.$$
+	Find a solution for $$\m 102,000,010.\m x,y,z. = \m {\x2},0,{\x3}.␣ \impliedby ␣ \m x,y,z.=\m\square,\square,\square.$$
+
+\aaa
+
+
+
+\aaa{Less equations}
+Since the existence of free-variable would make the uniqueness impossible, we have
+\[prop]{\NI
+If the number of rows is less than the number of columns of $A$, then the solution of $Ax=b$ can not be unique.
+}
+$$
+\m
+0**1*0,
+0**0*1,
+1**0*0.
+$$
+The number of pivot is at most equal to the number of rows, the lefting columns are free variables preventing the solution to be unique.
+\aaa
+
+
+
+\aaa{Some example of solving linear equation}
+\exe Solve the linear equation
+$$
+\m1201,2523,3725.\m x,y,z,w. = \m1,4,8.
+$$
+\a\aa
+Let us do cross-filling on scratch paper and tell the exam paper we are doing row operations.
+$$
+\m1201|1,2523|4,3725|8.
+$$
+$$
+=
+\m
+\1\2\0\1|\1,
+\2402|2,
+\3603|3.
++
+\m
+0\000|0,
+\0\1\2\1|\2,
+0\121|2.
++
+\m
+000\0|0,
+000\0|0,
+\0\0\0\1|\3.
+$$
+$$
+=\m100,210,311.\m\1201|1,0\121|2,000\1|3.
+$$
+\a\aa
+This means after row operations we obtain the matrix
+$$
+\m\1201|1,0\121|2,000\1|3.
+$$
+we may do cross filling again following the backward order of the corss-center we choosed previously
+$$
+=\m 
+000\1|3,
+000\1|3,
+\0\0\0\1|\3.
++\m
+0\240|{-2},
+\0\1\2\0|{\-1},
+0\000|{0}
+.
++\m
+\1\0{\-4}\0|\0,
+\0000|0,
+\0000|0.
+$$
+\a\aa
+This means after row operations we obtain the matrix
+$$
+\m
+10{-4}0|0,
+0120|{-1},
+0001|3.
+$$
+This give us general solutions
+$$
+\m x,y,z,w. = \m0,{-1},0,3.+\m{-4},2,{-1},0.(-z).
+$$
+
+\aaa
+
+\aaa{Existence and Uniqueness criterion for linear equation}
+System of linear equation have several understandings
+
+as system of equation
+$$
+\begin{cases}
+0x+2y+0z+2w=4\\
+0x+1y+0z+1w=2\\
+0x+4y+2z+0w=2\\
+1x+1y+0z+0w=4\\
+\end{cases}
+$$
+as matrix equation.
+$$
+\m 0202,0101,0420,1100.\m x,y,z,w.=\m4,2,2,4.
+$$
+
+\a\aa
+as finding coefficients for linear combination
+
+$$\m4,2,2,4. =\m{0},{0},{0},{1}. \textbf{x} +\m{2},{1},{4},{1}.\textbf{y}+\m{0},{0},{2},{0}. \textbf{z} +\m{2},{1},{0},{0}. \textbf{w}$$
+\a{Existence of solution}
+%For a matrix 
+$$
+A=\m{\vec v_1}{\vec v_2}\cdots{\vec v_n}.
+$$
+
+$$
+\underbrace{\m{\vec v_1}{\vec v_2}\cdots{\vec v_n}.}_A\m{x_1},{x_2},\vdots,{x_n}. = \vec b.
+$$
+
+
+
+The existence of solution
+$$
+\vec b ∈ “Col“(A)
+$$
+\a\aa
+
+Augmented matrix  $\m A{\vec b}.$
+
+$$
+\vec b ∈ “Col“(A) ⟺  “Col“(A,b) = “Col“(A)
+$$
+
+$$
+\vec b ∉  “Col“(A) ⟺  “Col“(A,b) ≠ “Col“(A) 
+$$
+
+But always $“Col“(A,b) ⊇  “Col“(A)$
+
+\a\aa
+
+Suppose $V ⊇ W$, then $V = W$ if and only if $“dim“(V) = “dim“(W)$
+
+\begin{thm}
+The linear equation $Ax = b$ have a solution if and only if
+$$
+“rank“(A) = “rank“(A,b)
+$$
+\end{thm}
+
+\begin{rem}
+If rank of A not equal to the rank of $(A,b)$, then we exactly have
+$$
+“rank“(A,b) = “rank“(A)+1
+$$
+\end{rem}
+
+
+\a{Uniqueness of solution}
+For any two solution of $Ax=b$
+
+$$
+Ax_1=b ␣ 
+Ax_2 = b
+$$
+
+then
+
+$$
+A(x_1-x_2) = 0
+$$
+
+$$
+x_1-x_2 ≠ 0 ⟹   “ columns of “A “ not linearly independent “
+$$
+
+$$
+⟹   “rank“(A) < “ number of columns of “A.
+$$
+\a\aa
+\[thm]{If $Ax=b$ have solution, the solution is unique if and only if 
+$$
+“rank“(A) = “number of columns of “A.
+$$
+}
+
+\a\aa
+\exe Determine the constants $a,b$ so that the following equation have a solution, is the solution unique?
+$$
+\m 1111,2222,333a,444b.= \m 1,2,3,0.
+$$
+%
+%
+\aaa

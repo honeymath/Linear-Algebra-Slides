@@ -1,0 +1,114 @@
+
+\aaa{Length and Orthogonality}
+Formula for length of vector
+
+$$
+\vec v:=\coro xn
+$$
+length
+$$
+||\vec v||=\sqrt{x_1^2+x_2^2+...+x_n^2}.
+$$
+
+\a\aa
+
+How to verify two segment orthogonal to each other?
+
+$$
+OA \perp OB ⟺   ||AB||² = ||OA||^2+||OB||^2
+$$
+
+\[zzz]{
+\org
+\grid{-4}{-4}44
+\draw[thick] (0,0) node[right]{} -- (3,0) node[right]{A} -- (0,4)node[right]{B} -- (0,0);
+}
+\a\aa
+
+$$\vec{OA}= \coro xn, \qquad \vec{OB}=\coro yn$$
+$$
+||OA||^2 = x_1^2+...+x_n^2 ␣ 
+||OB||^2 = y_1^2+...+y_n^2 ␣ 
+$$
+
+$$
+||AB||^2 = (x_1-y_1)²+...+(x_n-y_n)^2
+$$
+
+$$
+||OA||^2+||OB||^2 - ||AB||^2 = (x_1^2+y_1^2-(x_1-y_1)^2) + ... +
+(x_n^2+y_n^2-(x_n-y_n)^2)
+$$
+
+$$
+=2(x_1y_1+x_2y_2+...+x_ny_n)
+$$
+\a\aa
+$$
+\vec v = \coro xn, ␣ \vec w = \coro yn
+$$
+$$
+\vec v^T \vec w = \obasis xn\coro yn = x_1y_1+x_2y_2+...+x_ny_n
+$$
+$$
+\vec v\perp \vec w ⟺   \vec v^T \vec w = 0.
+$$
+
+\a\aa
+
+\[defi]{Say two vector perpendicular if 
+$$
+\vec v^T \vec w = 0.
+$$}
+\[rem]{Zero vector perpendicular to all vectors}
+\a\aa
+\[defi]{Let $V,W ⊆  ℝ^n$ be two subspaces, we say they are perpendicular $V \perp W$ if
+$$
+\vec v^T\vec w=0
+$$
+for any $\vec v ∈ V$ and $\vec w ∈ W$. 
+}
+\[defi]{For $V\perp W$, we say furthermore $V$ an \x{orthogonal complement } if moreover
+$$
+“dim“(V)+“dim“(W)=n.
+$$}
+\aaa
+
+
+
+
+
+
+
+\aaa{Orthogonality of null and row space}
+\[thm]{For any matrix $A$, the null space $“null“(A)$ and the row space $“col“(A^T)$ are \x{orthogonal complement} to each other.}
+Suppose $A$ is $m × n$ matrix, we have
+$$
+“null“(A) ⊆ ℝ^n ␣  “col“(A^T) ⊆ ℝ^n
+$$
+Dimension Check:
+$$
+“dim“(“null“(A)) + “dim“(“col“(A^T)) = 
+“dim“(“null“(A)) + “dim“(“col“(A)) = 
+“dim“(ℝ^n)
+$$
+Perpendicular: For any $\vec v ∈ “null“(A)$, and for any $\vec w ∈ ℝ^m$, write $\vec u = A^T\vec w ∈ “col“(A)$
+
+$$
+\vec u^T\vec v = \vec w^TA\vec v = \vec w^T \vec 0 = 0.
+$$
+\a\aa
+By definition of solution, the null space automatically perpendicular with row space, because the reason of matrix multiplication.
+\vfill
+$$\m
+{-}{r_1}-,
+{-}{r_2}-,
+\cdots\cdots\cdots,
+{-}{r_n}-.
+\m|,
+s,
+|.
+=\m
+0,0,\vdots,0.
+$$
+\aaa
