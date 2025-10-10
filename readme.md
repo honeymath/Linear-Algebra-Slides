@@ -2,13 +2,22 @@
 
 [](main.tex)
 [](.gitignore)
-[](package.tex)
 [](packaga.tex)
 [](matrix.tex)
 [](rowoperation.tex)
 [](LICENSE)
+[](compile_all_tex.py)
 
 These slides have been used for my Linear Algebra courses since 2018, when I began teaching at the University of Toronto and POSTECH since 2023.
+
+All slides can be previewed in the `preview` folder. File names indicate the corresponding topics.
+
+To edit a slide, modify the `.tex` file with the same name and recompile `main.tex` using `pdflatex`.
+
+Ensure that the relevant slide is included in `main.tex` via `\input{file_name}` (uncommented).
+
+Important: `main.tex` must include `\input{packaga}` at the beginning, which loads all required packages.
+The spelling of "packaga" is intentional.
 
 The repository was uploaded in 2025 to support others studying or teaching the subject.
 
