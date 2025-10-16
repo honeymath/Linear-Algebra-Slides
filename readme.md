@@ -1,5 +1,7 @@
 # Linear Algebra Slides 
 
+This repository is accessible at https://github.com/honeymath/Linear-Algebra-Slides 
+
 [](main.tex)
 [](.gitignore)
 [](packaga.tex)
