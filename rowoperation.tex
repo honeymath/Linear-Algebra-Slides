@@ -115,20 +115,15 @@ $$A = \begin{array}{c|ccc}
 \text{\lemon~Lemon} & 0 & 0 & 1 \\
 \text{\bean~Bean} & 0 & 2 & 0 \\
 \text{\cow~Cow} & 1 & 0 & 0
-\end{array} = \begin{pmatrix}
-0 & 0 & 2 \\
-0 & 0 & 1 \\
-0 & 2 & 0 \\
-1 & 0 & 0
-\end{pmatrix}$$
+\end{array}$$
 
 \vspace{0.3cm}
 \small
 \textbf{Interpretation:}
 \begin{itemize}
-\item To make 1 cup of \milk~Milk: need 1 \cow~Cow
-\item To make 1 cup of \coffee~Coffee: need 2 \bean~Beans
-\item To make 1 cup of \tea~Tea: need 2 \leaf~Leaves + 1 \lemon~Lemon
+\item To make \milk: need 1 \cow
+\item To make \coffee: need 2 \bean
+\item To make \tea: need 2 \leaf~+ 1 \lemon
 \end{itemize}
 \end{frame}
 
@@ -141,38 +136,18 @@ $$B = \begin{array}{c|cc}
 \text{\milk~Milk} & 2 & 1 \\
 \text{\coffee~Coffee} & 0 & 2 \\
 \text{\tea~Tea} & 1 & 1
-\end{array} = \begin{pmatrix}
-2 & 1 \\
-0 & 2 \\
-1 & 1
-\end{pmatrix}$$
+\end{array}$$
 
 \vspace{0.3cm}
 \textbf{Interpretation:}
 \begin{itemize}
-\item \bento~Set 1: 2 \milk~Milks + 0 \coffee~Coffees + 1 \tea~Tea
-\item \ramen~Set 2: 1 \milk~Milk + 2 \coffee~Coffees + 1 \tea~Tea
+\item \bento: 2\milk~+ 0\coffee~+ 1\tea
+\item \ramen: 1\milk~+ 2\coffee~+ 1\tea
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Review: Coffee Shop Example (result)}
 \textbf{Matrix $C = AB$} (Final products $\leftarrow$ Raw materials):
-
-$$C = AB = \begin{pmatrix}
-0 & 0 & 2 \\
-0 & 0 & 1 \\
-0 & 2 & 0 \\
-1 & 0 & 0
-\end{pmatrix} \begin{pmatrix}
-2 & 1 \\
-0 & 2 \\
-1 & 1
-\end{pmatrix} = \begin{pmatrix}
-2 & 2 \\
-1 & 1 \\
-0 & 4 \\
-2 & 1
-\end{pmatrix}$$
 
 $$C = \begin{array}{c|cc}
  & \text{\bento~Set 1} & \text{\ramen~Set 2} \\
@@ -184,7 +159,11 @@ $$C = \begin{array}{c|cc}
 \end{array}$$
 
 \small
-\textbf{Interpretation:} \bento~Set 1 needs 2 \leaf, 1 \lemon, 0 \bean, 2 \cow
+\textbf{Interpretation:}
+\begin{itemize}
+\item \bento: needs 2\leaf~+ 1\lemon~+ 0\bean~+ 2\cow
+\item \ramen: needs 2\leaf~+ 1\lemon~+ 4\bean~+ 1\cow
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Where Each Concept Appears}
@@ -237,44 +216,45 @@ The key equation:
 $$\text{demand} \times \text{material} = \text{constant}$$
 
 \vspace{0.3cm}
-\textbf{Example:} $4 \cdot x_2 = 2 \cdot (2x_2)$
-
-\vspace{0.3cm}
+\textbf{Example with} \bean:
 \begin{itemize}
-\item If material doubles: $x_2 \to 2x_2$
-\item Then demand must halve: $4 \to 2$
-\item Because: $2 \cdot (2x_2) = 4 \cdot x_2$ (same total)
+\item Original: need 4 \bean~for \ramen
+\item If we redefine: \bean~→ \bean\bean~(double bean, one unit = two old beans)
+\item Then we need: 2 \bean\bean~= 4 old \bean~(same total!)
 \end{itemize}
 
-\vspace{0.5cm}
+\vspace{0.3cm}
 \begin{block}{Contravariant = Inverse Direction}
 \begin{itemize}
-\item Material $\times k$ $\Rightarrow$ Demand $\times \frac{1}{k}$
-\item Material increases $\Rightarrow$ Demand decreases
+\item Material becomes \x{larger} $\Rightarrow$ Need \x{fewer} units
+\item Material becomes \x{smaller} $\Rightarrow$ Need \x{more} units
 \end{itemize}
 \end{block}
 \end{frame}
 
 \begin{frame}{Type 1: Row Multiplication}
 \begin{defi}[Row Multiplication]
-Replace row $i$ with $k \cdot$ row $i$ (where $k \neq 0$).
+Multiply a row by a nonzero number $k$.
 
-\textbf{Notation:} $r_i \to kr_i$
+\textbf{Notation:} row $\times k$
 \end{defi}
 
 \vspace{0.3cm}
-\textbf{Interpretation:} Redefine material $x_i \to \frac{1}{k} x_i$ (change unit size)
+\textbf{What it means:} Change the unit size of a material.
+
+\textbf{Example:} \bean~→ \bean\bean~(double bean)
 
 \vspace{0.3cm}
 \begin{alertblock}{Contravariant Logic}
 \begin{itemize}
-\item Material $\times \frac{1}{k}$ $\Rightarrow$ Row $\times k$
-\item New unit is smaller $\Rightarrow$ Need more units
+\item Material unit becomes \x{larger} ($\times 2$)
+\item Demand numbers become \x{smaller} ($\times \frac{1}{2}$)
+\item Row operation: multiply by $\frac{1}{2}$
 \end{itemize}
 \end{alertblock}
 \end{frame}
 
-\begin{frame}{Example 1.1: Bean → Double Bean}
+\begin{frame}{Example 1.1: \bean~→ \bean\bean~(Double Bean)}
 \textbf{Original table:}
 $$\begin{array}{c|cc}
  & \text{\bento~Set 1} & \text{\ramen~Set 2} \\
@@ -285,24 +265,30 @@ $$\begin{array}{c|cc}
 \text{\cow~Cow} & 2 & 1
 \end{array}$$
 
-\textbf{Material redefinition:} $x_3 \to 2x_3$ (one "double bean" = two old beans)
-
 \vspace{0.3cm}
-The new unit is \x{larger}, so we need \x{fewer} of them.
+\textbf{What we're doing:} Redefine \bean~→ \bean\bean
+
+One \bean\bean~= two old \bean. The new unit is \x{larger}!
 \end{frame}
 
-\begin{frame}{Example 1.1: Calculation}
-\textbf{Original equation for \ramen~Set 2:}
-$$2 \cdot \text{\leaf} + 1 \cdot \text{\lemon} + 4 \cdot \text{\bean} + 1 \cdot \text{\cow}$$
+\begin{frame}{Example 1.1: How Many Do We Need?}
+\textbf{For} \ramen~\textbf{Set 2, originally:}
+$$2\text{\leaf} + 1\text{\lemon} + 4\text{\bean} + 1\text{\cow}$$
 
-\textbf{With new material} where $(2\text{\bean})$ is the new unit:
-$$2 \cdot \text{\leaf} + 1 \cdot \text{\lemon} + r_3 \cdot (2\text{\bean}) + 1 \cdot \text{\cow}$$
+\textbf{After redefining} \bean~→ \bean\bean:
 
-\textbf{For this to equal the original total:}
-$$r_3 \cdot (2\text{\bean}) = 4 \cdot \text{\bean}$$
-$$r_3 = 2$$
+\vspace{0.2cm}
+\begin{itemize}
+\item Still need: 2\leaf, 1\lemon, 1\cow~(unchanged)
+\item For beans: originally 4\bean
+\item How many \bean\bean? Since 1\bean\bean~= 2\bean
+\item Need: $\frac{4\bean}{2} = 2$\bean\bean
+\end{itemize}
 
-So we need 2 units of "double bean" (= 4 old beans). The demand coefficient decreased from 4 to 2.
+\vspace{0.2cm}
+New recipe: $2\text{\leaf} + 1\text{\lemon} + 2\text{\bean\bean} + 1\text{\cow}$
+
+\x{Number changed from 4 → 2!}
 \end{frame}
 
 \begin{frame}{Example 1.1: Result}
@@ -364,25 +350,27 @@ $$\begin{pmatrix}
 
 \begin{frame}{Type 3: Row Addition}
 \begin{defi}[Row Addition]
-Replace row $i$ with row $i + k \times$ row $j$.
+Add a multiple of one row to another row.
 
-\textbf{Notation:} $r_i \to r_i + kr_j$
+\textbf{Notation:} row $i$ + $k \times$ row $j$
 \end{defi}
 
 \vspace{0.3cm}
-\textbf{Interpretation:} Redefine material $x_j \to x_j - kx_i$ (bundle material $j$ with material $i$)
+\textbf{What it means:} Bundle materials together.
+
+\textbf{Example:} \lemon~→ \lemon~+ 2\leaf~(lemon bundled with 2 leaves)
 
 \vspace{0.3cm}
-\begin{alertblock}{Contravariant Logic}
+\begin{alertblock}{Contravariant Logic - The Tricky Part!}
 \begin{itemize}
-\item Material $x_j \to x_j - kx_i$ (includes $kx_i$ in each unit)
-\item Row $r_i \to r_i + kr_j$ (need $k$ more units of $i$)
-\item \x{Opposite signs!}
+\item New \lemon~\x{includes} 2\leaf~(material change: +2\leaf)
+\item So we need \x{fewer} separate \leaf~(row change: -2\lemon)
+\item \x{Opposite signs!} Material +, Row -
 \end{itemize}
 \end{alertblock}
 \end{frame}
 
-\begin{frame}{Example 1.3: Lemon → Lemon + 2 Leaf}
+\begin{frame}{Example 1.3: \lemon~→ \lemon~+ 2\leaf}
 \textbf{Original table:}
 $$\begin{array}{c|cc}
  & \text{\bento~Set 1} & \text{\ramen~Set 2} \\
@@ -393,23 +381,31 @@ $$\begin{array}{c|cc}
 \text{\cow~Cow} & 2 & 1
 \end{array}$$
 
-\textbf{Material redefinition:} $x_2 \to x_2 + 2x_1$
+\vspace{0.3cm}
+\textbf{What we're doing:} Bundle \lemon~with 2\leaf
 
-(each lemon now comes bundled with 2 free tea leaves)
+Now each \lemon~comes with 2\leaf~included (like a combo pack!)
 \end{frame}
 
-\begin{frame}{Example 1.3: Calculation}
-\textbf{Original equation for \bento~Set 1:}
-$$2 \cdot \text{\leaf} + 1 \cdot \text{\lemon} + 0 \cdot \text{\bean} + 2 \cdot \text{\cow}$$
+\begin{frame}{Example 1.3: How Many Do We Need?}
+\textbf{For} \bento~\textbf{Set 1, originally:}
+$$2\text{\leaf} + 1\text{\lemon} + 0\text{\bean} + 2\text{\cow}$$
 
-\textbf{With new bundled material} $(\text{\lemon} + 2\text{\leaf})$:
-\begin{align*}
-&r_1 \cdot \text{\leaf} + 1 \cdot (\text{\lemon} + 2\text{\leaf}) + 0 \cdot \text{\bean} + 2 \cdot \text{\cow} \\
-&= r_1 \cdot \text{\leaf} + 1 \cdot \text{\lemon} + 2 \cdot \text{\leaf} + 0 \cdot \text{\bean} + 2 \cdot \text{\cow} \\
-&= (r_1 + 2) \cdot \text{\leaf} + 1 \cdot \text{\lemon} + 0 \cdot \text{\bean} + 2 \cdot \text{\cow}
-\end{align*}
+\textbf{After bundling} \lemon~→ \lemon~+ 2\leaf:
 
-\textbf{For this to equal the original:} $r_1 + 2 = 2$, so $r_1 = 0$.
+\vspace{0.2cm}
+\begin{itemize}
+\item Still need: 1\lemon~(bundled), 0\bean, 2\cow
+\item The 1 bundled \lemon~\x{includes} 2\leaf
+\item Originally needed: 2\leaf~total
+\item \x{Already have} 2\leaf~from the bundled \lemon!
+\item Need \x{0 extra} \leaf
+\end{itemize}
+
+\vspace{0.2cm}
+New recipe: $0\text{\leaf} + 1(\text{\lemon}+2\text{\leaf}) + 0\text{\bean} + 2\text{\cow}$
+
+\x{Leaf number changed from 2 → 0!}
 \end{frame}
 
 \begin{frame}{Example 1.3: Result}
@@ -442,21 +438,14 @@ Lemon becomes $(\text{\lemon} + 2\text{\leaf})$ → Leaf demand \x{subtracts} $2
 \end{frame}
 
 \begin{frame}{Summary: Contravariant Logic for Rows}
-\begin{block}{Why contravariant?}
-Because: $r_i x_i + r_j x_j = \text{constant}$
-
-If one side changes, the other must change in opposite direction.
-\end{block}
-
-\vspace{0.5cm}
 \begin{center}
-\begin{tabular}{|c|c|}
+\begin{tabular}{|l|c|}
 \hline
-\textbf{Material Change} & \textbf{Row Operation} \\
+\textbf{Material Change} & \textbf{Row Change} \\
 \hline
-$x_i \to kx_i$ & $r_i \to \frac{1}{k}r_i$ (reciprocal) \\
+\bean~→ \bean\bean~(larger) & row $\times \frac{1}{2}$ (smaller) \\
 \hline
-$x_i \to x_i + kx_j$ & $r_j \to r_j - kr_i$ (\x{opposite sign!}) \\
+\lemon~→ \lemon+2\leaf~(includes \leaf) & \leaf~row - 2×\lemon~row \\
 \hline
 \end{tabular}
 \end{center}
@@ -497,44 +486,46 @@ The key equation:
 $$\text{product} = \text{recipe}$$
 
 \vspace{0.3cm}
-\textbf{Example:} $y_1 = c_1$ implies $2y_1 = 2c_1$
-
-\vspace{0.3cm}
+\textbf{Example with} \bento:
 \begin{itemize}
-\item If product doubles: $y_1 \to 2y_1$
-\item Then recipe must double: $c_1 \to 2c_1$
-\item Because: $2y_1 = 2c_1$ (same relationship)
+\item Original \bento: needs 2\leaf~+ 1\lemon~+ 2\cow
+\item If we make: 2×\bento~(double portion)
+\item Then need: $2 \times (2\text{\leaf} + 1\text{\lemon} + 2\text{\cow})$
+\item = 4\leaf~+ 2\lemon~+ 4\cow~(\x{everything doubles!})
 \end{itemize}
 
-\vspace{0.5cm}
+\vspace{0.3cm}
 \begin{block}{Covariant = Same Direction}
 \begin{itemize}
-\item Product $\times k$ $\Rightarrow$ Recipe $\times k$
-\item Product increases $\Rightarrow$ Recipe increases
+\item Product becomes \x{larger} $\Rightarrow$ Recipe becomes \x{larger}
+\item Product becomes \x{smaller} $\Rightarrow$ Recipe becomes \x{smaller}
 \end{itemize}
 \end{block}
 \end{frame}
 
 \begin{frame}{Type 1: Column Multiplication}
 \begin{defi}[Column Multiplication]
-Replace column $j$ with $k \cdot$ column $j$ (where $k \neq 0$).
+Multiply a column by a nonzero number $k$.
 
-\textbf{Notation:} $c_j \to kc_j$
+\textbf{Notation:} column $\times k$
 \end{defi}
 
 \vspace{0.3cm}
-\textbf{Interpretation:} Redefine product $y_j \to ky_j$ (make $k$ times the portion)
+\textbf{What it means:} Make a bigger or smaller portion.
+
+\textbf{Example:} \bento~→ 2×\bento~(double portion)
 
 \vspace{0.3cm}
 \begin{alertblock}{Covariant Logic}
 \begin{itemize}
-\item Product $\times k$ $\Rightarrow$ Column $\times k$
-\item Make more product $\Rightarrow$ Need more ingredients
+\item Product becomes \x{larger} ($\times 2$)
+\item Recipe numbers become \x{larger} ($\times 2$)
+\item Column operation: multiply by $2$
 \end{itemize}
 \end{alertblock}
 \end{frame}
 
-\begin{frame}{Example 1.4: Set 1 → Double Set 1}
+\begin{frame}{Example 1.4: \bento~→ 2×\bento}
 \textbf{Original table:}
 $$\begin{array}{c|cc}
  & \text{\bento~Set 1} & \text{\ramen~Set 2} \\
@@ -545,13 +536,14 @@ $$\begin{array}{c|cc}
 \text{\cow~Cow} & 2 & 1
 \end{array}$$
 
-\textbf{Product redefinition:} $y_1 \to 2y_1$ (make double portion of Set 1)
+\vspace{0.3cm}
+\textbf{What we're doing:} Make 2×\bento~(double portion)
 
-\textbf{What happens to recipe?} Original equation:
-$$y_1 = 2 \cdot \text{\leaf} + 1 \cdot \text{\lemon} + 0 \cdot \text{\bean} + 2 \cdot \text{\cow}$$
-
-With new product $2y_1$:
-$$2y_1 = 2 \times (2 \cdot \text{\leaf} + 1 \cdot \text{\lemon} + 0 \cdot \text{\bean} + 2 \cdot \text{\cow})$$
+\textbf{What happens?}
+\begin{itemize}
+\item Original \bento: 2\leaf~+ 1\lemon~+ 0\bean~+ 2\cow
+\item Double \bento: $2 \times$ everything = 4\leaf~+ 2\lemon~+ 0\bean~+ 4\cow
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Example 1.4: Result}
@@ -610,25 +602,27 @@ $$\begin{pmatrix}
 
 \begin{frame}{Type 3: Column Addition}
 \begin{defi}[Column Addition]
-Replace column $j$ with column $j + k \times$ column $i$.
+Add a multiple of one column to another column.
 
-\textbf{Notation:} $c_j \to c_j + kc_i$
+\textbf{Notation:} column $j$ + $k \times$ column $i$
 \end{defi}
 
 \vspace{0.3cm}
-\textbf{Interpretation:} Redefine product $y_j \to y_j + ky_i$ (bundle product $j$ with product $i$)
+\textbf{What it means:} Bundle products together.
+
+\textbf{Example:} \ramen~→ \ramen~+ \bento~(combo meal!)
 
 \vspace{0.3cm}
-\begin{alertblock}{Covariant Logic}
+\begin{alertblock}{Covariant Logic - Straightforward!}
 \begin{itemize}
-\item Product $y_j \to y_j + ky_i$ (includes $k$ units of product $i$)
-\item Column $c_j \to c_j + kc_i$ (add $k$ times recipe of $i$)
-\item \x{Same signs!}
+\item New \ramen~\x{includes} \bento~(product change: +\bento)
+\item Recipe needs ingredients for \x{both} (recipe change: +\bento~recipe)
+\item \x{Same signs!} Product +, Recipe +
 \end{itemize}
 \end{alertblock}
 \end{frame}
 
-\begin{frame}{Example 1.6: Set 2 → Set 2 + Set 1}
+\begin{frame}{Example 1.6: \ramen~→ \ramen~+ \bento}
 \textbf{Original table:}
 $$\begin{array}{c|cc}
  & \text{\bento~Set 1} & \text{\ramen~Set 2} \\
@@ -639,26 +633,36 @@ $$\begin{array}{c|cc}
 \text{\cow~Cow} & 2 & 1
 \end{array}$$
 
-\textbf{Product redefinition:} $y_2 \to y_2 + y_1$ (bundle Set 2 with Set 1)
+\vspace{0.3cm}
+\textbf{What we're doing:} Bundle \ramen~+ \bento~(combo!)
 
-\textbf{Original equations:}
-$$y_1 = 2\text{\leaf} + 1\text{\lemon} + 0\text{\bean} + 2\text{\cow}$$
-$$y_2 = 2\text{\leaf} + 1\text{\lemon} + 4\text{\bean} + 1\text{\cow}$$
+\textbf{Original recipes:}
+\begin{itemize}
+\item \bento: 2\leaf~+ 1\lemon~+ 0\bean~+ 2\cow
+\item \ramen: 2\leaf~+ 1\lemon~+ 4\bean~+ 1\cow
+\end{itemize}
 \end{frame}
 
-\begin{frame}{Example 1.6: Calculation}
-\textbf{With new bundled product} $(y_2 + y_1)$:
-\begin{align*}
-(y_2 + y_1) &= \text{(recipe for } y_2\text{)} + \text{(recipe for } y_1\text{)} \\
-&= (2 + 2)\text{\leaf} + (1 + 1)\text{\lemon} \\
-&\quad + (4 + 0)\text{\bean} + (1 + 2)\text{\cow} \\
-&= 4\text{\leaf} + 2\text{\lemon} + 4\text{\bean} + 3\text{\cow}
-\end{align*}
+\begin{frame}{Example 1.6: How Much Do We Need?}
+\textbf{For the combo} \ramen~+ \bento:
 
-\vspace{0.3cm}
-\begin{alertblock}{Covariant Logic}
-Making the bundle requires ingredients for \x{both} products added together!
-\end{alertblock}
+\vspace{0.2cm}
+\begin{itemize}
+\item \ramen~needs: 2\leaf~+ 1\lemon~+ 4\bean~+ 1\cow
+\item \bento~needs: 2\leaf~+ 1\lemon~+ 0\bean~+ 2\cow
+\item \x{Add them together:}
+  \begin{itemize}
+  \item Leaf: $2 + 2 = 4$\leaf
+  \item Lemon: $1 + 1 = 2$\lemon
+  \item Bean: $4 + 0 = 4$\bean
+  \item Cow: $1 + 2 = 3$\cow
+  \end{itemize}
+\end{itemize}
+
+\vspace{0.2cm}
+New recipe: 4\leaf~+ 2\lemon~+ 4\bean~+ 3\cow
+
+\x{All numbers increased!} (covariant)
 \end{frame}
 
 \begin{frame}{Example 1.6: Result}
@@ -691,21 +695,14 @@ Product becomes $(\text{\ramen} + \text{\bento})$ → Recipe \x{adds} the two re
 \end{frame}
 
 \begin{frame}{Summary: Covariant Logic for Columns}
-\begin{block}{Why covariant?}
-Because: $y_j = c_j$ (product equals its recipe)
-
-If one side changes, the other must change in the same direction.
-\end{block}
-
-\vspace{0.5cm}
 \begin{center}
-\begin{tabular}{|c|c|}
+\begin{tabular}{|l|c|}
 \hline
-\textbf{Product Change} & \textbf{Column Operation} \\
+\textbf{Product Change} & \textbf{Column Change} \\
 \hline
-$y_j \to ky_j$ & $c_j \to kc_j$ (same scaling) \\
+\bento~→ 2×\bento~(larger) & column $\times 2$ (larger) \\
 \hline
-$y_j \to y_j + ky_i$ & $c_j \to c_j + kc_i$ (\x{same sign!}) \\
+\ramen~→ \ramen+\bento~(includes \bento) & \ramen~col + \bento~col \\
 \hline
 \end{tabular}
 \end{center}
@@ -718,22 +715,17 @@ Columns work \x{forwards} with the product change!
 
 \begin{frame}{THE KEY DISTINCTION}
 \begin{center}
-\Large
-\begin{tabular}{|c|c|c|}
+\begin{tabular}{|l|c|c|}
 \hline
  & \textbf{Rows} & \textbf{Columns} \\
- & \textbf{(Materials)} & \textbf{(Products)} \\
 \hline
-\textbf{Relationship} & demand $\times$ material & product $=$ recipe \\
-\hline
-\textbf{Logic} & \x{Contravariant} & \x{Covariant} \\
+\textbf{Logic} & Contravariant & Covariant \\
  & (inverse) & (direct) \\
 \hline
-\textbf{Scaling} & material $\times k$ & product $\times k$ \\
- & $\Rightarrow$ row $\times \frac{1}{k}$ & $\Rightarrow$ column $\times k$ \\
+\textbf{Example} & \bean~→ \bean\bean & \bento~→ 2×\bento \\
 \hline
-\textbf{Addition} & $x_i \to x_i + kx_j$ & $y_j \to y_j + ky_i$ \\
- & $\Rightarrow$ $r_j \to r_j - kr_i$ & $\Rightarrow$ $c_j \to c_j + kc_i$ \\
+\textbf{Change} & material $\times 2$ & product $\times 2$ \\
+ & row $\times \frac{1}{2}$ & column $\times 2$ \\
 \hline
 \end{tabular}
 \end{center}
