@@ -72,13 +72,13 @@ For $C = AB$, we have three interpretations:
 
 \begin{enumerate}
 \item \textbf{Column view}: Each column of $C$ is a linear combination of columns of $A$
-$$c_j = A b_j$$
+$$|c_j| = A |b_j|$$
 
 \item \textbf{Row view}: Each row of $C$ is a linear combination of rows of $B$
-$$c_i^T = a_i^T B$$
+$$-c_i- = -a_i- B$$
 
 \item \textbf{Sum-of-rank-one}:
-$$C = AB = \sum_{k=1}^{n} a_k b_k^T$$
+$$C = AB = \sum_{k=1}^{n} |a_k| \cdot -b_k-$$
 \end{enumerate}
 \end{frame}
 
@@ -409,7 +409,7 @@ New recipe: $0\text{\leaf} + 1(\text{\lemon}+2\text{\leaf}) + 0\text{\bean} + 2\
 \end{frame}
 
 \begin{frame}{Example 1.3: Result}
-\textbf{Updated table} (leaf row $r_1 \to r_1 - 2r_2$, \x{subtract not add}):
+\textbf{Updated table} (row operation: $r_1 \to r_1 - 2r_2$):
 $$\begin{array}{c|cc}
  & \text{\bento~Set 1} & \text{\ramen~Set 2} \\
 \hline
@@ -419,21 +419,9 @@ $$\begin{array}{c|cc}
 \text{\cow~Cow} & 2 & 1
 \end{array}$$
 
-\textbf{Matrix notation:} Perform $r_1 \to r_1 - 2r_2$:
-$$\begin{pmatrix}
-2 & 2 \\
-1 & 1 \\
-0 & 4 \\
-2 & 1
-\end{pmatrix} \xrightarrow{r_1 \to r_1 - 2r_2} \begin{pmatrix}
-0 & 0 \\
-1 & 1 \\
-0 & 4 \\
-2 & 1
-\end{pmatrix}$$
-
-\begin{alertblock}{Key}
-Lemon becomes $(\text{\lemon} + 2\text{\leaf})$ → Leaf demand \x{subtracts} $2 \times$ lemon demand!
+\vspace{0.3cm}
+\begin{alertblock}{Key - Contravariant!}
+\lemon~includes 2\leaf~→ need \x{fewer} separate \leaf~(subtract!)
 \end{alertblock}
 \end{frame}
 
@@ -908,49 +896,15 @@ $$B = BI = B(AC) = (BA)C = IC = C$$
 Therefore $B = C$. \qed
 \end{frame}
 
-\begin{frame}{Proposition 1.4: Left Inverse = Right Inverse}
-\begin{prop}[One-sided Inverse Suffices]
-For a square matrix $A$, if $AB = I$, then $B = A^{-1}$ (and automatically $BA = I$).
-\end{prop}
-
-\vspace{0.3cm}
-\textbf{Proof:} Suppose $AB = I$. We need to show $BA = I$.
-
-Since $A$ is square and $AB = I$, we know $A$ has a left inverse. Let $CA = I$ for some matrix $C$.
-
-Then:
-$$B = IB = (CA)B = C(AB) = CI = C$$
-
-Therefore $BA = CA = I$. So $AB = BA = I$, which means $B = A^{-1}$. \qed
-\end{frame}
-
-\begin{frame}{Practical Implication of Proposition 1.4}
-\begin{alertblock}{Important!}
-To verify that $B$ is the inverse of square matrix $A$, you only need to check \x{one direction}!
-
-If $AB = I$, then automatically $BA = I$.
-\end{alertblock}
-
-\vspace{0.5cm}
-This saves computation time when verifying inverses.
-
-\vspace{0.5cm}
-\textbf{Example:} To check if $\begin{pmatrix} 2 & -1 \\ -3 & 2 \end{pmatrix}$ is the inverse of $\begin{pmatrix} 2 & 1 \\ 3 & 2 \end{pmatrix}$:
-
-Just compute one product (either $AB$ or $BA$). If it equals $I$, done!
-\end{frame}
-
-\begin{frame}{Proposition 1.5: Product of Invertible Matrices}
+\begin{frame}{Proposition 1.4: Product of Invertible Matrices}
 \begin{prop}[Inverse of Product]
 If $A$ and $B$ are invertible, then $AB$ is invertible and
 $$(AB)^{-1} = B^{-1}A^{-1}$$
 \end{prop}
 
 \vspace{0.3cm}
-\textbf{Proof:}
+\textbf{Verification:}
 $$(AB)(B^{-1}A^{-1}) = A(BB^{-1})A^{-1} = AIA^{-1} = AA^{-1} = I$$
-
-By Proposition 1.4, this proves $(AB)^{-1} = B^{-1}A^{-1}$. \qed
 
 \vspace{0.5cm}
 \begin{alertblock}{Order Reversal}
@@ -1269,22 +1223,13 @@ Unique inverse $A^{-1}$ & No inverse \\
 \section{Exercises}
 
 \begin{frame}{Exercise 1.1}
-Verify Proposition 1.4 for:
-$$A = \begin{pmatrix} 3 & 1 \\ 5 & 2 \end{pmatrix}, \quad B = \begin{pmatrix} 2 & -1 \\ -5 & 3 \end{pmatrix}$$
-
-(a) Check that $AB = I$
-
-(b) Verify that $BA = I$ also holds
-\end{frame}
-
-\begin{frame}{Exercise 1.2}
 Consider the equation $AB = C$ where
 $$A = \begin{pmatrix} 1 & 2 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 1 \end{pmatrix}, \quad C = \begin{pmatrix} 4 & 7 \\ 3 & 5 \\ 2 & 3 \end{pmatrix}$$
 
 Solve for $B$ using row operations on $B = A^{-1}C$.
 \end{frame}
 
-\begin{frame}{Exercise 1.3}
+\begin{frame}{Exercise 1.2}
 Find the inverses using row operations:
 
 (a) $A = \begin{pmatrix} 1 & 3 \\ 2 & 5 \end{pmatrix}$
@@ -1293,19 +1238,19 @@ Find the inverses using row operations:
 (b) $A = \begin{pmatrix} 1 & 0 & 1 \\ 0 & 1 & 1 \\ 1 & 1 & 0 \end{pmatrix}$
 \end{frame}
 
-\begin{frame}{Exercise 1.4}
+\begin{frame}{Exercise 1.3}
 Find the inverse of $A = \begin{pmatrix} 3 & 1 \\ 5 & 2 \end{pmatrix}$ using \x{column operations}.
 
 Verify it matches the result from row operations.
 \end{frame}
 
-\begin{frame}{Exercise 1.5}
+\begin{frame}{Exercise 1.4}
 Try to find the inverse of $A = \begin{pmatrix} 1 & 2 \\ 2 & 4 \end{pmatrix}$.
 
 What happens? Explain why this matrix is not invertible.
 \end{frame}
 
-\begin{frame}{Exercise 1.6}
+\begin{frame}{Exercise 1.5}
 Show that if $A$ and $B$ are invertible, then:
 
 (a) $(A^{-1})^{-1} = A$
@@ -1314,7 +1259,7 @@ Show that if $A$ and $B$ are invertible, then:
 (b) $(A^T)^{-1} = (A^{-1})^T$
 \end{frame}
 
-\begin{frame}{Exercise 1.7}
+\begin{frame}{Exercise 1.6}
 Consider the coffee shop example with matrix
 $$C = \begin{pmatrix} 2 & 2 \\ 1 & 1 \\ 0 & 4 \\ 2 & 1 \end{pmatrix}$$
 
