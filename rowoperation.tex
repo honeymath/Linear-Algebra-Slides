@@ -72,13 +72,30 @@ For $C = AB$, we have three interpretations:
 
 \begin{enumerate}
 \item \textbf{Column view}: Each column of $C$ is a linear combination of columns of $A$
-$$|c_j| = A |b_j|$$
 
 \item \textbf{Row view}: Each row of $C$ is a linear combination of rows of $B$
-$$-c_i- = -a_i- B$$
 
 \item \textbf{Sum-of-rank-one}:
-$$C = AB = \sum_{k=1}^{n} |a_k| \cdot -b_k-$$
+$$C = 
+\begin{pmatrix}
+| & | & & | \\
+a_1 & a_2 & \cdots & a_n \\
+| & | & & |
+\end{pmatrix}
+\begin{pmatrix}
+- & b_1^T & - \\
+- & b_2^T & - \\
+\vdots & \vdots & \vdots \\
+- & b_n^T & -
+\end{pmatrix}
+ = \sum_{k=1}^{n} 
+\begin{pmatrix}|\\
+a_k \\
+|
+\end{pmatrix}
+\begin{pmatrix}
+- & b_k^T & -\end{pmatrix}
+$$
 \end{enumerate}
 \end{frame}
 
@@ -314,10 +331,7 @@ $$\begin{pmatrix}
 0 & 2 \\
 2 & 1
 \end{pmatrix}$$
-
-\begin{alertblock}{Key}
-Material $\times 2$ → Row $\times \frac{1}{2}$ (contravariant!)
-\end{alertblock}
+Key: Material $\times 2$ → Row $\times \frac{1}{2}$ (contravariant!)
 \end{frame}
 
 \begin{frame}{Type 2: Row Switching}
@@ -677,9 +691,7 @@ $$\begin{pmatrix}
 2 & 3
 \end{pmatrix}$$
 
-\begin{alertblock}{Key}
-Product becomes $(\text{\ramen} + \text{\bento})$ → Recipe \x{adds} the two recipes!
-\end{alertblock}
+Key: Product becomes $(\text{\ramen} + \text{\bento})$ → Recipe \x{adds} the two recipes!
 \end{frame}
 
 \begin{frame}{Summary: Covariant Logic for Columns}
@@ -744,7 +756,6 @@ Updating semi-finished products would require:
 \vspace{0.3cm}
 This is significantly more complex than row-only or column-only operations.
 
-\vspace{0.3cm}
 \textbf{Solution:} We avoid this complication and focus on raw materials (rows) and final products (columns).
 \end{frame}
 
