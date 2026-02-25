@@ -4,1100 +4,1381 @@
 % ── Packages ──
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{tikz}
-\usetikzlibrary{positioning}
+\usetikzlibrary{positioning,arrows.meta}
 \usepackage{graphicx}
-\usepackage{colortbl}
-\usepackage[most]{tcolorbox}
-\usepackage{chngcntr}
+\usepackage{array}
 
-% ── Theorem environments ──
-\newcounter{definition}
-\newcounter{prop}
-\newcounter{cor}
-\counterwithin{definition}{section}
-\counterwithin{prop}{section}
-\counterwithin{cor}{section}
+% ── Theorem environments (simplified, no tcolorbox) ──
+\theoremstyle{definition}
+\newtheorem{defi}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{cor}{Corollary}[section]
+\newtheorem{exmp}{Example}[section]
 
-\newtcolorbox{defi}[1][]{
-breakable,
-enhanced,
-colback=yellow!10!white,
-colframe=red!75!black,
-title=\textbf{Definition}\refstepcounter{definition}~~\arabic{definition}~~#1
-}
-
-\newtcolorbox{prop}[1][]{
-breakable,
-enhanced,
-colback=yellow!10!white,
-colframe=yellow!70!red!85!black,
-title=\textbf{Proposition}\refstepcounter{prop}~~\arabic{prop}~~#1
-}
-
-\newtcolorbox{cor}[1][]{
-breakable,
-enhanced,
-colback=yellow!10!white,
-colframe=red!45!yellow!80!black,
-title=\textbf{Corollary}\refstepcounter{cor}~~\arabic{cor}~~#1
-}
+% Custom theorem styles with colors (without tcolorbox)
+\setbeamercolor{block title}{bg=red!75!black,fg=white}
+\setbeamercolor{block body}{bg=yellow!10!white}
 
 % ── Emoji definitions ──
 \newcommand{\bean}{\includegraphics[scale=0.07]{Pictures/bean.png}}
 \newcommand{\soup}{\includegraphics[scale=0.10]{Pictures/soup.png}}
-\newcommand{\ssoup}{\includegraphics[scale=0.07]{Pictures/soup.png}}
 \newcommand{\lemon}{\includegraphics[scale=0.08]{Pictures/lemon.png}}
 \newcommand{\leaf}{\includegraphics[scale=0.08]{Pictures/leaf.png}}
 \newcommand{\milk}{\includegraphics[scale=0.07]{Pictures/milk.png}}
-\newcommand{\smilk}{\includegraphics[scale=0.04]{Pictures/milk.png}}
 \newcommand{\coffee}{\includegraphics[scale=0.10]{Pictures/coffee.png}}
-\newcommand{\scoffee}{\includegraphics[scale=0.07]{Pictures/coffee.png}}
-\newcommand{\cola}{\includegraphics[scale=0.08]{Pictures/cola.png}}
-\newcommand{\scola}{\includegraphics[scale=0.05]{Pictures/cola.png}}
 \newcommand{\tea}{\includegraphics[scale=0.08]{Pictures/tea.png}}
-\newcommand{\stea}{\includegraphics[scale=0.05]{Pictures/tea.png}}
 \newcommand{\cow}{\includegraphics[scale=0.08]{Pictures/cow.png}}
 \newcommand{\bento}{\includegraphics[scale=0.09]{Pictures/bento.png}}
-
-% ── Classification macros ──
-\newcommand{\li}{\textbf{\color{red} linealy independent }}
-\newcommand{\inve}{\textbf{\color{purple} invertible }}
+\newcommand{\ramen}{\includegraphics[scale=0.09]{Pictures/soup.png}}
 
 % ── Highlighting macros ──
 \newcommand{\x}[1]{\alert{\textbf{#1}}}
-\newcommand{\h}{\cellcolor{red!50}}
-\newcommand{\y}{\cellcolor{yellow!50}}
-\newcommand{\e}{\cellcolor{blue!50}}
+\newcommand{\xeq}[1]{\overset{#1}{=}}
 
-\title{Column/Row operations}
+\title{Row and Column Operations}
+\subtitle{Contravariant vs Covariant Logic}
+\date{}
 
 \begin{document}
 
 \maketitle
 
+% ═══════════════════════════════════════════════════════════════
+% §0 INTRODUCTION
+% ═══════════════════════════════════════════════════════════════
+
 \begin{frame}{Learning Objectives}
-\begin{tikzpicture}[scale=0.8,transform shape, block/.style={draw, rectangle, minimum width=2cm, minimum height=1cm}]
-\node[block,fill=green] (block1) {Matrix Multiplication(1.4)};
-    \node[block, right=1cm of block1.east, anchor=west] (block2) {Row/Column Operations(1.3)};
-%    \node[block, right=0cm of block2.east, anchor=west] (block3) {Cross Filling method(1.5)};
-\draw[->] (block1.east) -- ([xshift=-0.2cm]block2.west);
+\begin{tikzpicture}[scale=0.75,transform shape,
+    block/.style={draw, rectangle, minimum width=3cm, minimum height=1cm, align=center}]
+\node[block,fill=green!30] (block1) {Matrix\\Multiplication};
+\node[block, right=1.5cm of block1, fill=yellow!30] (block2) {Row/Column\\Operations};
+\node[block, right=1.5cm of block2, fill=blue!20] (block3) {Matrix\\Inverses};
+\draw[-{Stealth[length=3mm]}] (block1) -- (block2);
+\draw[-{Stealth[length=3mm]}] (block2) -- (block3);
 \end{tikzpicture}
 
+\vspace{0.5cm}
+\textbf{Key Questions:}
 \begin{itemize}
-\item What \x{three} kind of row/column operations are there?
-\item For the product $AB=C$,
-	\begin{itemize}
-		\item Which two matrices is allowed to play \x{simutaneous row operation} without changing the equality?
-		\item Which two matrices is allowed to play \x{simutaneous column operation} without changing the equality?
-	\end{itemize}
-\item Will simutaneous (row/column) operation changes $A^{-1}B$ or $AB^{-1}$?
-\item Let $E$ be a matrix obtained by applying some row operations from $I$, what does $EA$ mean?
-\item Let $E$ be a matrix obtained by applying some column operations from $I$, what does $AE$ mean?
-\item Why matrix equation $Ax=b$ is a system of linear equations?
-\item How row operation help with solving system of linear equations? \begin{itemize}\item What kind of matrix are we reducing to?\end{itemize}
-\item How to use row/column opetations to find \x{inverse}?
+\item What are \x{row operations} and \x{column operations}?
+\item Why do rows have \x{contravariant} logic and columns have \x{covariant} logic?
+\item How do \x{simultaneous operations} preserve equations $AB = C$?
+\item How to use row/column operations to find \x{matrix inverses}?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Review: Three Views of Matrix Multiplication}
+For $C = AB$, we have three interpretations:
+
+\begin{enumerate}
+\item \textbf{Column view}: Each column of $C$ is a linear combination of columns of $A$
+$$c_j = A b_j$$
+
+\item \textbf{Row view}: Each row of $C$ is a linear combination of rows of $B$
+$$c_i^T = a_i^T B$$
+
+\item \textbf{Sum-of-rank-one}:
+$$C = AB = \sum_{k=1}^{n} a_k b_k^T$$
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Review: The Ingredient Table Interpretation}
+\begin{center}
+\begin{tikzpicture}[scale=0.9,
+    node distance=3cm,
+    box/.style={rectangle, draw, minimum width=2.5cm, minimum height=1cm, align=center}]
+\node[box, fill=blue!20] (A) {Raw\\Materials};
+\node[box, fill=green!20, right of=A] (B) {Semi-finished\\Products};
+\node[box, fill=red!20, right of=B] (C) {Final\\Products};
+\draw[-{Stealth[length=3mm]}, thick] (A) -- node[above] {$A$} (B);
+\draw[-{Stealth[length=3mm]}, thick] (B) -- node[above] {$B$} (C);
+\draw[-{Stealth[length=3mm]}, thick, bend left=45] (A) to node[above] {$C = AB$} (C);
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.3cm}
+Matrix $C = AB$ represents the \x{composition} of two recipe tables:
+\begin{itemize}
+\item $A$: Semi-finished $\leftarrow$ Raw materials
+\item $B$: Final products $\leftarrow$ Semi-finished
+\item $C = AB$: Final products $\leftarrow$ Raw materials
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Review: Coffee Shop Example}
+\textbf{Matrix $A$} (Semi-finished $\leftarrow$ Raw materials):
+
+$$A = \begin{array}{c|ccc}
+ & \text{\milk~Milk} & \text{\coffee~Coffee} & \text{\tea~Tea} \\
+\hline
+\text{\leaf~Leaf} & 0 & 0 & 2 \\
+\text{\lemon~Lemon} & 0 & 0 & 1 \\
+\text{\bean~Bean} & 0 & 2 & 0 \\
+\text{\cow~Cow} & 1 & 0 & 0
+\end{array} = \begin{pmatrix}
+0 & 0 & 2 \\
+0 & 0 & 1 \\
+0 & 2 & 0 \\
+1 & 0 & 0
+\end{pmatrix}$$
+
+\vspace{0.3cm}
+\small
+\textbf{Interpretation:}
+\begin{itemize}
+\item To make 1 cup of \milk~Milk: need 1 \cow~Cow
+\item To make 1 cup of \coffee~Coffee: need 2 \bean~Beans
+\item To make 1 cup of \tea~Tea: need 2 \leaf~Leaves + 1 \lemon~Lemon
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Review: Coffee Shop Example (continued)}
+\textbf{Matrix $B$} (Final products $\leftarrow$ Semi-finished):
+
+$$B = \begin{array}{c|cc}
+ & \text{\bento~Set 1} & \text{\ramen~Set 2} \\
+\hline
+\text{\milk~Milk} & 2 & 1 \\
+\text{\coffee~Coffee} & 0 & 2 \\
+\text{\tea~Tea} & 1 & 1
+\end{array} = \begin{pmatrix}
+2 & 1 \\
+0 & 2 \\
+1 & 1
+\end{pmatrix}$$
+
+\vspace{0.3cm}
+\textbf{Interpretation:}
+\begin{itemize}
+\item \bento~Set 1: 2 \milk~Milks + 0 \coffee~Coffees + 1 \tea~Tea
+\item \ramen~Set 2: 1 \milk~Milk + 2 \coffee~Coffees + 1 \tea~Tea
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Review: Coffee Shop Example (result)}
+\textbf{Matrix $C = AB$} (Final products $\leftarrow$ Raw materials):
+
+$$C = AB = \begin{pmatrix}
+0 & 0 & 2 \\
+0 & 0 & 1 \\
+0 & 2 & 0 \\
+1 & 0 & 0
+\end{pmatrix} \begin{pmatrix}
+2 & 1 \\
+0 & 2 \\
+1 & 1
+\end{pmatrix} = \begin{pmatrix}
+2 & 2 \\
+1 & 1 \\
+0 & 4 \\
+2 & 1
+\end{pmatrix}$$
+
+$$C = \begin{array}{c|cc}
+ & \text{\bento~Set 1} & \text{\ramen~Set 2} \\
+\hline
+\text{\leaf~Leaf} & 2 & 2 \\
+\text{\lemon~Lemon} & 1 & 1 \\
+\text{\bean~Bean} & 0 & 4 \\
+\text{\cow~Cow} & 2 & 1
+\end{array}$$
+
+\small
+\textbf{Interpretation:} \bento~Set 1 needs 2 \leaf, 1 \lemon, 0 \bean, 2 \cow
+\end{frame}
+
+\begin{frame}{Where Each Concept Appears}
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Concept} & \textbf{Matrix $A$} & \textbf{Matrix $B$} & \textbf{Matrix $C$} \\
+\hline
+Raw materials \leaf\lemon\bean\cow & \x{rows} & -- & \x{rows} \\
+\hline
+Semi-finished \milk\coffee\tea & \x{columns} & \x{rows} & -- \\
+\hline
+Final products \bento\ramen & -- & \x{columns} & \x{columns} \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\begin{block}{The Fundamental Principle}
+When we \x{redefine} one of these three concepts (change the unit, repackage, bundle), all matrices that reference this concept must update their representation. But the underlying production relationships remain unchanged.
+\end{block}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════
+% §1 ROW OPERATIONS: CONTRAVARIANT LOGIC
+% ═══════════════════════════════════════════════════════════════
+
+\section{Row Operations: Contravariant Logic}
+
+\begin{frame}{Row Operations: Redefining Raw Materials}
+\textbf{Core Idea:} Row operations correspond to \x{redefining raw materials}.
+
+\vspace{0.5cm}
+When we redefine a raw material (change its unit or bundle it with others), we must update:
+\begin{itemize}
+\item The \x{rows of matrix $A$} (since raw materials appear in rows of $A$)
+\item The \x{rows of matrix $C$} (since raw materials appear in rows of $C$)
+\item Matrix $B$ is \x{not affected} (semi-finished products don't change)
 \end{itemize}
 
-\x{Explain row/column operation to elementary school students!}
+\vspace{0.5cm}
+\begin{alertblock}{The Subtle Point}
+Row operations have \x{contravariant (inverse) logic} because rows and materials have a \x{multiplication relationship}:
+$$\text{(demand coefficient)} \times \text{(material)} = \text{(total amount needed)}$$
+\end{alertblock}
 \end{frame}
 
-\begin{frame}{A special request}
-A custormer requests for a special \textbf{new drink } need the following ingradients
-\vfill
-\begin{columns}
-\begin{column}{0.5\textwidth}
-\textbf{Old Drinks ingradients:}
-\begin{tabular}{|l|c|c|c|c|}
-\hline
-&\milk&\soup&\coffee&\tea\\
-\hline
-\leaf&0&2&0&2\\
-\hline
-\lemon&0&1&0&1\\
-\hline
-\bean&0&4&2&0\\
-\hline
-\cow&1&1&0&0\\
-\hline
-\end{tabular}
-\end{column}
-\begin{column}{0.3\textwidth}
-\textbf{New Drink requirement: }
-\begin{tabular}{|l|c|}
-\hline
-&\cola\\
-\hline
-\leaf&4\\
-\hline
-\lemon&2\\
-\hline
-\bean&2\\
-\hline
-\cow&4\\
-\hline
-\end{tabular}
-\end{column}
-\begin{column}{0.2\textwidth}
-\textbf{Problem:}
-\begin{tabular}{|l|c|}
-\hline
-&\cola\\
-\hline
-\milk&?\\
-\hline
-\soup&?\\
-\hline
-\coffee&?\\
-\hline
-\tea&?\\
-\hline
-\end{tabular}
-\end{column}
-\end{columns}
-But the chef only have \milk,\soup,\coffee,\tea at the hand, can he produce \cola by those materials?
-\end{frame}
+\begin{frame}{Why Contravariant Logic?}
+The key equation:
+$$\text{demand} \times \text{material} = \text{constant}$$
 
-\begin{frame}
-The chef thought this problem is the same as a matrix product equation, indeed, replace those questionmarks by $x,y,z$, he need the following equation to be true
-\begin{columns}
-\begin{column}{0.5\textwidth}
-\textbf{Old Drinks ingradients:}
-\begin{tabular}{|l|c|c|c|c|}
-\hline
-&\milk&\soup&\coffee&\tea\\
-\hline
-\leaf&0&2&0&2\\
-\hline
-\lemon&0&1&0&1\\
-\hline
-\bean&0&4&2&0\\
-\hline
-\cow&1&1&0&0\\
-\hline
-\end{tabular}
-$\quad\times$
-\end{column}
-\begin{column}{0.3\textwidth}
-\textbf{Problem:}
-\begin{tabular}{|l|c|}
-\hline
-&\cola\\
-\hline
-\milk& x\\
-\hline
-\soup& y\\
-\hline
-\coffee& z\\
-\hline
-\tea& w\\
-\hline
-\end{tabular}
-$\quad = $
-\end{column}
-\begin{column}{0.2\textwidth}
-\textbf{New Drink requirement: }
-\begin{tabular}{|l|c|}
-\hline
-&\cola\\
-\hline
-\leaf&4\\
-\hline
-\lemon&2\\
-\hline
-\coffee&2\\
-\hline
-\cow&4\\
-\hline
-\end{tabular}
-\end{column}
-\end{columns}
-\end{frame}
+\vspace{0.3cm}
+\textbf{Example:} $4 \cdot x_2 = 2 \cdot (2x_2)$
 
-\begin{frame}
-Mathematically, this equation is writting as
-$$
-\begin{pmatrix}0&2&0&2\\0&1&0&1\\0&4&2&0\\1&1&0&0\end{pmatrix}\begin{pmatrix}x\\y\\z\\w\end{pmatrix}=\begin{pmatrix}4\\2\\2\\4\end{pmatrix}
-$$
-\end{frame}
-
-\begin{frame}
-By understanding by columns, solving it is the same as asking for
-
-\begin{tabular}{c}4\\2\\2\\4\end{tabular} =\begin{tabular}{c}{0}\\{0}\\{0}\\{1}\end{tabular} \textbf{x} +\begin{tabular}{c}{2}\\{1}\\{4}\\{1}\end{tabular}\textbf{y}+\begin{tabular}{c}{0}\\{0}\\{2}\\{0}\end{tabular} \textbf{z} +\begin{tabular}{c}{2}\\{1}\\{0}\\{0}\end{tabular} \textbf{w}
-
-This can be write as the following and we call it the \textbf{Linear equation}
-$$
-\begin{cases}
-0x+2y+0z+2w=4\\
-0x+1y+0z+1w=2\\
-0x+4y+2z+0w=2\\
-1x+1y+0z+0w=4\\
-\end{cases}
-$$
-\end{frame}
-
-\begin{frame}{Changing materials}
-Observation: The question is only asking for the meal's demand for semi-product meals. It does not asking anything related to the raw material.
-
-\begin{tabular}{|l|c|}\hline&\cola\\\hline\milk& x\\\hline\soup& y\\\hline\coffee& z\\\hline\tea& w\\\hline\end{tabular}
-
-No \lemon,\leaf,\bean,\cow appeared in this question. Therefore we can change materials to \x{simplify} the problem.
-\end{frame}
-
-\begin{frame}{Row reduction}
-The clever chef changes the \textbf{material} so the ingradients table is easier
-
-\begin{columns}
-\begin{column}{0.45\textwidth}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-&\smilk&\ssoup&\scoffee&\stea&\scola\\
-\hline
-\leaf&0&2&0&2&4\\
-\hline
-\lemon&0&1&0&1&2\\
-\hline
-\bean&0&4&2&0&2\\
-\hline
-\cow&1&1&0&0&4\\
-\hline
-\end{tabular}
-\end{column}
-\begin{column}{0.55\textwidth}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-&\smilk&\ssoup&\scoffee&\stea&\scola\\
-\hline
-\cow&{\alert1}&1&0&0&4\\
-\hline
-{\bean\bean}&0&2&{\alert1}&0&1\\
-\hline
-{\lemon+\leaf\leaf}&0&1&0&{\alert1}&2\\
-\hline
-\leaf&0&0&0&0&0\\
-\hline
-\end{tabular}
-\end{column}
-\end{columns}
-$$
-\begin{cases}
-0x+2y+0z+2w=4\\
-0x+1y+0z+1w=2\\
-0x+4y+2z+0w=2\\
-1x+1y+0z+0w=4\\
-\end{cases}
-\Longrightarrow
-\begin{cases}
-1x+1y+0z+0w=4\\
-0x+2y+1z+0w=1\\
-0x+1y+0z+1w=2\\
-0x+0y+0z+0w=0\\
-\end{cases}
-$$
-\end{frame}
-
-\begin{frame}{Row Multiplying}
-Doubling the material $\bean\mapsto\bean\bean$   will \alert{\textbf{multiply 3rd row by $\frac12$}}. \vfill
-\begin{columns}
-\begin{column}{0.45\textwidth}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-&\smilk&\ssoup&\scoffee&\stea&\scola\\
-\hline
-\leaf&0&2&0&2&4\\
-\hline
-\lemon&0&1&0&1&2\\
-\hline
-\bean&0&4&2&0&2\\
-\hline
-\cow&1&1&0&0&4\\
-\hline
-\end{tabular}
-\end{column}
-\begin{column}{0.55\textwidth}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-&\smilk&\ssoup&\scoffee&\stea&\scola\\
-\hline
-\leaf&0&2&0&2&4\\
-\hline
-\lemon&0&1&0&1&2\\
-\hline
-{\bean\bean}&{\alert{0}}&{\alert{2}}&{\alert{1}}&{\alert{0}}&{\alert{1}}\\
-\hline
-\cow&1&1&0&0&4\\
-\hline
-\end{tabular}
-\end{column}
-\end{columns}
-$$
-\begin{cases}
-0x+2y+0z+2w=4\\
-0x+1y+0z+1w=2\\
-\x0x+\x4y+\x2z+\x0w=\x2\\
-1x+1y+0z+0w=4\\
-\end{cases}
-\Longrightarrow
-\begin{cases}
-0x+2y+0z+2w=4\\
-0x+1y+0z+1w=2\\
-\x0x+\x2y+\x1z+\x0w=\x1\\
-1x+1y+0z+0w=4\\
-\end{cases}
-$$
-On equation, the third equation has been divided by $2$. This is called \alert{\textbf{row multiplying}}
-\end{frame}
-
-\begin{frame}{Row Switching}
-\textbf{Switching the order} would not change problem, \vfill
-\begin{columns}
-\begin{column}{0.5\textwidth}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-&\smilk&\ssoup&\scoffee&\stea&\scola\\
-\hline
-\leaf&0&2&0&2&4\\
-\hline
-\lemon&0&1&0&1&2\\
-\hline
-{\bean\bean}&0&2&1&0&1\\
-\hline
-\cow&1&1&0&0&4\\
-\hline
-\end{tabular}
-\end{column}
-\begin{column}{0.5\textwidth}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-&\smilk&\ssoup&\scoffee&\stea&\scola\\
-\hline
-\cow&1&1&0&0&4\\
-\hline
-{\bean\bean}&0&2&1&0&1\\
-\hline
-\lemon&0&1&0&1&2\\
-\hline
-\leaf&0&2&0&2&4\\
-\hline
-\end{tabular}
-\end{column}
-\end{columns}
-\vfill
-$$
-\begin{cases}
-{\color{red}0x+2y+0z+2w=4}\\
-{\color{purple}0x+1y+0z+1w=2}\\
-{\color{black}0x+2y+1z+0w=1}\\
-{\color{blue}1x+1y+0z+0w=4}\\
-\end{cases}
-\Longrightarrow
-\begin{cases}
-{\color{blue}1x+1y+0z+0w=4}\\
-0x+2y+1z+0w=1\\
-{\color{purple}0x+1y+0z+1w=2}\\
-{\color{red}0x+2y+0z+2w=4}\\
-\end{cases}
-$$
- This is called \alert{\textbf{row switching}}
-\end{frame}
-
-\begin{frame}{Row Adding}
-Replacing \lemon by \lemon\leaf\leaf. Each time I use the package \lemon\leaf\leaf I save \leaf\leaf. Then the row for \leaf is reduced by 2 times the row for \lemon.\vfill
-
-\begin{columns}
-\begin{column}{0.5\textwidth}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-&\smilk&\ssoup&\scoffee&\stea&\scola\\
-\hline
-\cow&1&1&0&0&4\\
-\hline
-{\bean\bean}&0&2&1&0&1\\
-\hline
-\lemon&0&1&0&1&2\\
-\hline
-\leaf&0&2&0&2&4\\
-\hline
-\end{tabular}
-\end{column}
-\begin{column}{0.5\textwidth}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-&\smilk&\ssoup&\scoffee&\stea&\scola\\
-\hline
-\cow&1&1&0&0&4\\
-\hline
-{\bean\bean}&0&2&1&0&1\\
-\hline
-{\lemon\leaf\leaf}&0&1&0&1&2\\
-\hline
-\leaf&0&0&0&0&0\\
-\hline
-\end{tabular}
-\end{column}
-\end{columns}
-\vfill
-$$
-\begin{cases}
-1x+1y+0z+0w=4\\
-0x+2y+1z+0w=1\\
-0x+1y+0z+1w=2\\
-0x+2y+0z+2w=4\\
-\end{cases}
-\Longrightarrow
-\begin{cases}
-1x+1y+0z+0w=4\\
-0x+2y+1z+0w=1\\
-0x+1y+0z+1w=2\\
-\x0x+\x0y+\x0z+\x0w=\x0\\
-\end{cases}
-$$
-On equation, 4'th equation has been subtracted by 3rd equation. This is called \alert{\textbf{row adding}}
-\end{frame}
-
-\begin{frame}{When should row reduction stop?}
-In one words, row operation is \textbf{updating the raw ingradient list}.
-
-We should stop if the matrix is \x{simple enough} for us to solve equations. So what is simple? There are many discussions.
-
-\textbf{Theory 1}: We should stop if
+\vspace{0.3cm}
 \begin{itemize}
-\item Each non-zero row has an entry $1$, such that this $1$ is the only non-zero entry on its columns.
+\item If material doubles: $x_2 \to 2x_2$
+\item Then demand must halve: $4 \to 2$
+\item Because: $2 \cdot (2x_2) = 4 \cdot x_2$ (same total)
 \end{itemize}
-\vfill
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-&\milk&\soup&\coffee&\tea&\cola\\
-\hline
-\cow&{\alert{\textbf1}}&1&0&0&4\\
-\hline
-{\bean\bean}&0&2&{\alert{\textbf1}}&0&1\\
-\hline
-{\lemon+\leaf\leaf}&0&1&0&{\alert{\textbf1}}&2\\
-\hline
-\leaf&0&0&0&0&0\\
-\hline
-\end{tabular}
-\end{frame}
 
-\begin{frame}
-\textbf{Explaination to Theory 1}: If the matrix has been reduced that way, we obtain an equation
-$$
-\begin{cases}
-1\x x+1y+0z+0w=4\\
-0x+2y+1\x z+0w=1\\
-0x+1y+0z+1\x w=2\\
-\end{cases}
-$$
-such that each equation has a variable, such that this variable does not appear in other equations.
-When this happens, we may move these variable to one side of equation. Assigning other variables arbitrary values would end up with a solutoin.
-$$
-\begin{cases}
-x=4-y\\
- z=1-2y\\
- w=2-y\\
-\end{cases}
-$$
-Put $y=0$, then $(x,y,z,w)=(4,0,1,2)$ is a solution.
-\end{frame}
-
-\begin{frame}
-\textbf{Explaination to Theory 1 without equation}:
-A column with a single $1$ and $0$ elsewhere can help us to replace a material with some compunds. For example,
-\vfill
-\begin{columns}
-\begin{column}{0.25\textwidth}
-\begin{tabular}{|l|c|}
-\hline
-&\coffee\\
-\hline
-\cow&0\\
-\hline
-{\bean\bean}&{\textbf1}\\
-\hline
-{\lemon+\leaf\leaf}&0\\
-\hline
-\leaf&0\\
-\hline
-\end{tabular}
-\end{column}
-\begin{column}{0.05\textwidth}
-$\implies$
-\end{column}
-\begin{column}{0.7\textwidth}
-\coffee = \textbf0\cow+\textbf{\alert1}\bean\bean+\textbf0(\lemon\leaf\leaf)+\textbf0\leaf
-
-~\\
-~\\~\\
-which means
-\bean\bean \textbf{=} \coffee
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}
-With this observation, we can replace \textbf{certain materials} by \textbf{certain meals}
-\begin{columns}
-\begin{column}{0.55\textwidth}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-&\smilk&\ssoup&\scoffee&\stea&\scola\\
-\hline
-{\h\cow}&{\alert1}&1&0&0&4\\
-\hline
-{\y\bean\bean}&0&2&{\alert1}&0&1\\
-\hline
-{\e\lemon+\leaf\leaf}&0&1&0&{\alert1}&2\\
-\hline
-\leaf&0&0&0&0&0\\
-\hline
-\end{tabular}
-\end{column}
-\begin{column}{0.45\textwidth}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-&\smilk&\ssoup&\scoffee&\stea&\scola\\
-\hline
-{\h\milk}&{\alert1}&1&0&0&4\\
-\hline
-{\y\coffee}&0&2&{\alert1}&0&1\\
-\hline
-{\e\tea}&0&1&0&{\alert1}&2\\
-\hline
-\leaf&0&0&0&0&0\\
-\hline
-\end{tabular}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}
-Note that the leaves \leaf is no longer needed for those packaged materials, we can delete it.
-
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-&\milk&\soup&\coffee&\tea&\cola\\
-\hline
-{\h\milk}&{\alert1}&1&0&0&4\\
-\hline
-{\y\coffee}&0&2&{\alert1}&0&1\\
-\hline
-{\e\tea}&0&1&0&{\alert1}&2\\
-\hline
-\end{tabular}
-\end{frame}
-
-\begin{frame}
-which tell us directly the list we want, lets compare the original question\vfill
-\begin{columns}
-\begin{column}{0.3\textwidth}
-\textbf{Output}
-
-\begin{tabular}{|l|c|}
-\hline
-&\cola\\
-\hline
-{\h\milk}&4\\
-\hline
-{\y\coffee}&1\\
-\hline
-{\e\tea}&2\\
-\hline
-\end{tabular}
-\end{column}
-\begin{column}{0.4\textwidth}
-\textbf{Original Question}
-
-\begin{tabular}{|l|c|}
-\hline
-&\cola\\
-\hline
-{\milk}&x\\
-\hline
-\soup& y\\
-\hline
-{\coffee}&z\\
-\hline
-{\tea}&w\\
-\hline
-\end{tabular}
-\end{column}
-\end{columns}
-\vfill
-So $x=4,y=0,z=1,w=2$.(\soup have not been used.)
-This process is equivalent as setting $y=0$ to obtain a solution.
-$$
-\begin{cases}
-x&=4\\
-y &=0\\
-z&=1\\
-w&=2\\
-\end{cases}
-$$
-\end{frame}
-
-\begin{frame}
-\textbf{Theory 2}: We should stop if
+\vspace{0.5cm}
+\begin{block}{Contravariant = Inverse Direction}
 \begin{itemize}
-\item After deleting zero rows, there are columns that can be rearranged into a triangular matrix with non-zero diagonal.
+\item Material $\times k$ $\Rightarrow$ Demand $\times \frac{1}{k}$
+\item Material increases $\Rightarrow$ Demand decreases
 \end{itemize}
-Example:
-
-$$
-\begin{pmatrix}
-{\y1}&{\y2}&{\y3}&4&6&6\\
-{\y2}&0&{\y3}&2&1&1\\
-{\y1}&0&0&2&1&0\\
-0&0&0&0&0&0
-\end{pmatrix}
-\qquad\longrightarrow
-\qquad
-\begin{pmatrix}2&3&1\\0&3&2\\0&0&1\end{pmatrix}
-$$
+\end{block}
 \end{frame}
 
-\begin{frame}
-We beifly explain why , firstly, circle the entry that corresponding to the diagonal of the triangular matrix
-$$
-\begin{pmatrix}
-{1}&{\y2}&{3}&4&6&6\\
-{2}&0&{\y3}&2&1&1\\
-{\y1}&0&0&2&1&0\\
-0&0&0&0&0&0
-\end{pmatrix}
-$$
-We read equations from bottom to top, one by one
-$$
-x + 0y +0z +2w+1u = 0 \implies x = -2w-1u.
-$$
-The circled variable would appear as a new variabl never appeared before
-$$
-2x + 0y +3z +2w+1u = 1 \implies z = \frac{-2x-2w-u}3.
-$$
-Then the next new variable is $y$.
-$$
-x+2y+3z+4u+6w=6\implies y=\frac{6-6w-4u-3z-x}2.
-$$
-Therefore, the equation can be solved. We call this process \x{backwards substituting}.
-\end{frame}
+\begin{frame}{Type 1: Row Multiplication}
+\begin{defi}[Row Multiplication]
+Replace row $i$ with $k \cdot$ row $i$ (where $k \neq 0$).
 
-\begin{frame}{Identity matrix}
-Filling the following blanks.
-\vfill
-\begin{columns}
-\begin{column}{0.4\textwidth}
-\begin{tabular}{|l|c|c|c|}
-\hline
-&\tea&\milk&\coffee\\
-\hline
-?&1&0&0\\
-\hline
-?&0&1&0\\
-\hline
-?&0&0&1\\
-\hline
-\end{tabular}
-\end{column}
-\begin{column}{0.4\textwidth}
-\begin{tabular}{|l|c|c|c|}
-\hline
-&?&?&?\\
-\hline
-\tea&1&0&0\\
-\hline
-\milk&0&1&0\\
-\hline
-\coffee&0&0&1\\
-\hline
-\end{tabular}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}
-Suppose \milk \coffee \tea , any two can not blend to the third drink (called \li). Filling the following blanks.
-\vfill
-\begin{tabular}{|l|c|c|c|}
-\hline
-&\tea&\milk&\coffee\\
-\hline
-\tea&?&?&?\\
-\hline
-\milk&?&?&?\\
-\hline
-\coffee&?&?&?\\
-\hline
-\end{tabular}
-\end{frame}
-
-\begin{frame}
-\begin{columns}
-\begin{column}{0.4\textwidth}
-\begin{tabular}{|l|c|c|c|}
-\hline
-&\tea&\milk&\coffee\\
-\hline
-\tea&1&0&0\\
-\hline
-\milk&0&1&0\\
-\hline
-\coffee&0&0&1\\
-\hline
-\end{tabular}
-\end{column}
-\begin{column}{0.6\textwidth}
-This matrix is the \x{ingradient list of making ingradient}, i.e. do nothing.
-\end{column}
-\end{columns}
-
-\begin{defi}
-The \x{identity matrix} is a $n\times n$ square matrix with 1 on the diagonal and 0 elsewhere.
+\textbf{Notation:} $r_i \to kr_i$
 \end{defi}
 
-\begin{prop}
-For any $n\times m$ matrix $P$, $I_nP=PI_m=P$ .
-\end{prop}
+\vspace{0.3cm}
+\textbf{Interpretation:} Redefine material $x_i \to \frac{1}{k} x_i$ (change unit size)
+
+\vspace{0.3cm}
+\begin{alertblock}{Contravariant Logic}
+\begin{itemize}
+\item Material $\times \frac{1}{k}$ $\Rightarrow$ Row $\times k$
+\item New unit is smaller $\Rightarrow$ Need more units
+\end{itemize}
+\end{alertblock}
 \end{frame}
 
-\begin{frame}{Inverse Matrix}
-The chef is wondering if another guest coming with a special request, so he would like a list to produce the ingradient out of meals.
-\vfill
-\begin{columns}
-\begin{column}{0.5\textwidth}
-\textbf{He has a list}
+\begin{frame}{Example 1.1: Bean → Double Bean}
+\textbf{Original table:}
+$$\begin{array}{c|cc}
+ & \text{\bento~Set 1} & \text{\ramen~Set 2} \\
+\hline
+\text{\leaf~Leaf} & 2 & 2 \\
+\text{\lemon~Lemon} & 1 & 1 \\
+\text{\bean~Bean} & 0 & 4 \\
+\text{\cow~Cow} & 2 & 1
+\end{array}$$
 
-\begin{tabular}{|l|c|c|}
-\hline
-&\milk&\coffee\\
-\hline
-\bean&0&2\\
-\hline
-\cow&1&0\\
-\hline
-\end{tabular}
-\end{column}
-\begin{column}{0.5\textwidth}
-\textbf{How could he make another list?}
+\textbf{Material redefinition:} $x_3 \to 2x_3$ (one "double bean" = two old beans)
 
-\begin{tabular}{|l|c|c|}
-\hline
-&\bean&\cow\\
-\hline
-\milk&?&?\\
-\hline
-\coffee&?&?\\
-\hline
-\end{tabular}
-\end{column}
-\end{columns}
-\vfill
-He realize this list should have a property, combinging them should be.
-\begin{columns}
-\begin{column}{0.3\textwidth}
-\begin{tabular}{|l|c|c|}
-\hline
-&\milk&\coffee\\
-\hline
-\bean&0&2\\
-\hline
-\cow&1&0\\
-\hline
-\end{tabular}
-\end{column}
-\begin{column}{0.3\textwidth}
-\begin{tabular}{|l|c|c|}
-\hline
-&\bean&\cow\\
-\hline
-\milk&?&?\\
-\hline
-\coffee&?&?\\
-\hline
-\end{tabular}
-\end{column}
-\begin{column}{0.1\textwidth}
-=
-\end{column}
-\begin{column}{0.3\textwidth}
-\begin{tabular}{|l|c|c|}
-\hline
-&\bean&\cow\\
-\hline
-\bean&{1}&{0}\\
-\hline
-\cow&{0}&{1}\\
-\hline
-\end{tabular}
-\end{column}
-\end{columns}
+\vspace{0.3cm}
+The new unit is \x{larger}, so we need \x{fewer} of them.
 \end{frame}
 
-\begin{frame}
-\begin{defi}
-For a $n\times n$ matrix $A$, an inverse is a matrix $B$, such that
-$$
-AB=BA=I_n.
-$$
-If such a $B$ exists, $A$ is called \inve and denote the inverse as $A^{-1}$.
+\begin{frame}{Example 1.1: Calculation}
+\textbf{Original equation for \ramen~Set 2:}
+$$2 \cdot \text{\leaf} + 1 \cdot \text{\lemon} + 4 \cdot \text{\bean} + 1 \cdot \text{\cow}$$
+
+\textbf{With new material} where $(2\text{\bean})$ is the new unit:
+$$2 \cdot \text{\leaf} + 1 \cdot \text{\lemon} + r_3 \cdot (2\text{\bean}) + 1 \cdot \text{\cow}$$
+
+\textbf{For this to equal the original total:}
+$$r_3 \cdot (2\text{\bean}) = 4 \cdot \text{\bean}$$
+$$r_3 = 2$$
+
+So we need 2 units of "double bean" (= 4 old beans). The demand coefficient decreased from 4 to 2.
+\end{frame}
+
+\begin{frame}{Example 1.1: Result}
+\textbf{Updated table} (row 3 \x{divided by 2}):
+$$\begin{array}{c|cc}
+ & \text{\bento~Set 1} & \text{\ramen~Set 2} \\
+\hline
+\text{\leaf~Leaf} & 2 & 2 \\
+\text{\lemon~Lemon} & 1 & 1 \\
+\text{\bean\bean~Double bean} & 0 & 2 \\
+\text{\cow~Cow} & 2 & 1
+\end{array}$$
+
+\textbf{Matrix notation:} Perform $r_3 \to \frac{1}{2}r_3$:
+$$\begin{pmatrix}
+2 & 2 \\
+1 & 1 \\
+0 & 4 \\
+2 & 1
+\end{pmatrix} \xrightarrow{r_3 \to \frac{1}{2}r_3} \begin{pmatrix}
+2 & 2 \\
+1 & 1 \\
+0 & 2 \\
+2 & 1
+\end{pmatrix}$$
+
+\begin{alertblock}{Key}
+Material $\times 2$ → Row $\times \frac{1}{2}$ (contravariant!)
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Type 2: Row Switching}
+\begin{defi}[Row Switching]
+Swap row $i$ and row $j$.
+
+\textbf{Notation:} $r_i \leftrightarrow r_j$
 \end{defi}
+
+\vspace{0.3cm}
+\textbf{Interpretation:} Reordering materials in the table.
+
+\vspace{0.3cm}
+This doesn't change any production relationships, just the order.
+
+\vspace{0.3cm}
+\textbf{Example:}
+$$\begin{pmatrix}
+2 & 2 \\
+1 & 1 \\
+0 & 4 \\
+2 & 1
+\end{pmatrix} \xrightarrow{r_1 \leftrightarrow r_2} \begin{pmatrix}
+1 & 1 \\
+2 & 2 \\
+0 & 4 \\
+2 & 1
+\end{pmatrix}$$
 \end{frame}
 
-\begin{frame}{Simutaneous Row Operation}
-For the product $C=AB$, changing raw materials only affect rows of $A$ and $C$ by certain simutaneous row operations. the matrix $B$ would not change since it does not depend on raw materials. Therefore,
-\raisebox{2cm}{
-\begin{prop}
-The equality $C=AB$ will still be true if we perform arbitrary simutaneous row operation on $A$ and $C$
-\end{prop}
-}
-\end{frame}
+\begin{frame}{Type 3: Row Addition}
+\begin{defi}[Row Addition]
+Replace row $i$ with row $i + k \times$ row $j$.
 
-\begin{frame}
-\begin{equation*}
-\overbrace{
-\begin{tabular}{|l|c|c|c|}
-\hline
-&\milk&\coffee&\tea\\
-\hline
-\leaf&{0}&{0}&{2}\\
-\hline
-\lemon&{0}&{0}&{1}\\
-\hline
-\bean&{0}&{2}&{0}\\
-\hline
-\cow&{1}&{0}&{0}\\
-\hline
-\end{tabular}
-}^{\text{left factor}}
-\overbrace{
-\begin{tabular}{|l|c|c|}
-\hline
-&\bento&\soup\\
-\hline
-\milk&{2}&{1}\\
-\hline
-\coffee&{0}&{2}\\
-\hline
-\tea&{1}&{1}\\
-\hline
-\end{tabular}
-}^{\text{right factor}}
-\quad=
-\overbrace{
-\begin{tabular}{|l|c|c|}
-\hline
-&\bento&\soup\\
-\hline
-\leaf&{2}&2\\
-\hline
-\lemon&{\alert1}&{\alert1}\\
-\hline
-\bean&{0}&4\\
-\hline
-\cow&{2}&1\\
-\hline
-\end{tabular}
-}^{\text{product}}
-\end{equation*}
-\end{frame}
-
-\begin{frame}
-If $A$ is invertible, we can write $B=A^{-1}C$, this actually tells us that
-\begin{cor}
-If $A$ is invertible, the product $A^{-1}C$ does not change if we perform simutaneous row operation on $A$ and $C$.
-\end{cor}
-\end{frame}
-
-\begin{frame}
-Let me show you an application of this in calculation
-$$
-\begin{pmatrix}1&1&0\\0&0&1\\0&1&0\end{pmatrix}^{-1}\begin{pmatrix}1&2&3\\1&2&1\\0&2&9\end{pmatrix}
-$$
-
-$$
-\overset{r_1\mapsto r_1-r_3}{=}\begin{pmatrix}1&0&0\\0&0&1\\0&1&0\end{pmatrix}^{-1}\begin{pmatrix}1&0&{-6}\\1&2&1\\0&2&9\end{pmatrix}
-$$
-
-$$
-\overset{r_2\leftrightarrow r_3}{=}\begin{pmatrix}1&0&0\\0&1&0\\0&0&1\end{pmatrix}^{-1}\begin{pmatrix}1&0&{-6}\\0&2&9\\1&2&1\end{pmatrix}
-$$
-
-$$
-=\begin{pmatrix}1&0&{-6}\\0&2&9\\1&2&1\end{pmatrix}
-$$
-\end{frame}
-
-\begin{frame}{Simutaneous Column Operation}
-Similarly, Column operations corresponding to updating list when changing final meals by its order, amount, or packing them together. For the product $C=AB$, when final meals changes, the matrices affected is $C$ and $B$. $A$ is the list of making intermediates, it does not change.
-\begin{prop}
-The equality $C=AB$ will still be true if we perform arbitrary simutaneous column operation on $B$ and $C$
-\end{prop}
-If $B$ is invertible, we can write $A=CB^{-1}$, this actually tells us that
-\begin{cor}
-If $B$ is invertible, the product $CB^{-1}$ does not change if we perform simutaneous column operation on $B$ and $C$.
-\end{cor}
-\end{frame}
-
-\begin{frame}{Elementary Matrices}
-We will introduce elementary matrices.
-\end{frame}
-
-\begin{frame}
-Let $A$ be an $m\times n$ matrix, and let $I_m$ be $m\times m$ identity matrix. We have a equation
-$$
-A = I_mA
-$$
-After some simutaneous row operation, $A$ changes to $A'$ and $I_m$ changes to $E$, by what we discussed before, the following equation is true
-$$
-A' = EA
-$$
-\textbf{We may view this fact by another perspective}: The product $EA$ is the same as applying row operations recorded in $E$ to $A$.
-\end{frame}
-
-\begin{frame}
-\textbf{Experiment:}
-$$
-\begin{pmatrix}1&0\\0&1\end{pmatrix} \begin{pmatrix}2&4\\1&3\end{pmatrix} = \begin{pmatrix}2&4\\1&3\end{pmatrix}
-\implies
-\begin{pmatrix}1&1\\0&1\end{pmatrix} \begin{pmatrix}2&4\\1&3\end{pmatrix} = \begin{pmatrix}3&7\\1&3\end{pmatrix}
-$$
-\textbf{Explaination from another perspective:}
-
-\begin{tabular}{|l|l|l|}
-\hline
-left factor&row operation recorded&product: apply row operation\\
-\hline
-${\begin{pmatrix}1&1\\0&1\end{pmatrix}}$&add 2nd row to 1st row.&${\begin{pmatrix}1&1\\0&1\end{pmatrix} \begin{pmatrix}{\x2}&{\x4}\\1&3\end{pmatrix} = \begin{pmatrix}{\x3}&{\x7}\\1&3\end{pmatrix}}$\\
-\hline
-\end{tabular}
-\end{frame}
-
-\begin{frame}
-\begin{prop}
-Suppose $E$ is a matrix obtained by applying some row operations from $I_n$, then $EA$ is exactly the matrix by applying the same row operations on $A$.
-\end{prop}
-
-\begin{defi}
-An elementary matrix $E$ is a matrix after one-step row operation from identity matrix.
+\textbf{Notation:} $r_i \to r_i + kr_j$
 \end{defi}
+
+\vspace{0.3cm}
+\textbf{Interpretation:} Redefine material $x_j \to x_j - kx_i$ (bundle material $j$ with material $i$)
+
+\vspace{0.3cm}
+\begin{alertblock}{Contravariant Logic}
+\begin{itemize}
+\item Material $x_j \to x_j - kx_i$ (includes $kx_i$ in each unit)
+\item Row $r_i \to r_i + kr_j$ (need $k$ more units of $i$)
+\item \x{Opposite signs!}
+\end{itemize}
+\end{alertblock}
 \end{frame}
 
-\begin{frame}
-\begin{tabular}{|l|l|l|}
+\begin{frame}{Example 1.3: Lemon → Lemon + 2 Leaf}
+\textbf{Original table:}
+$$\begin{array}{c|cc}
+ & \text{\bento~Set 1} & \text{\ramen~Set 2} \\
 \hline
-Name&Elementary matrices example&Inverse\\
+\text{\leaf~Leaf} & 2 & 2 \\
+\text{\lemon~Lemon} & 1 & 1 \\
+\text{\bean~Bean} & 0 & 4 \\
+\text{\cow~Cow} & 2 & 1
+\end{array}$$
+
+\textbf{Material redefinition:} $x_2 \to x_2 + 2x_1$
+
+(each lemon now comes bundled with 2 free tea leaves)
+\end{frame}
+
+\begin{frame}{Example 1.3: Calculation}
+\textbf{Original equation for \bento~Set 1:}
+$$2 \cdot \text{\leaf} + 1 \cdot \text{\lemon} + 0 \cdot \text{\bean} + 2 \cdot \text{\cow}$$
+
+\textbf{With new bundled material} $(\text{\lemon} + 2\text{\leaf})$:
+\begin{align*}
+&r_1 \cdot \text{\leaf} + 1 \cdot (\text{\lemon} + 2\text{\leaf}) + 0 \cdot \text{\bean} + 2 \cdot \text{\cow} \\
+&= r_1 \cdot \text{\leaf} + 1 \cdot \text{\lemon} + 2 \cdot \text{\leaf} + 0 \cdot \text{\bean} + 2 \cdot \text{\cow} \\
+&= (r_1 + 2) \cdot \text{\leaf} + 1 \cdot \text{\lemon} + 0 \cdot \text{\bean} + 2 \cdot \text{\cow}
+\end{align*}
+
+\textbf{For this to equal the original:} $r_1 + 2 = 2$, so $r_1 = 0$.
+\end{frame}
+
+\begin{frame}{Example 1.3: Result}
+\textbf{Updated table} (leaf row $r_1 \to r_1 - 2r_2$, \x{subtract not add}):
+$$\begin{array}{c|cc}
+ & \text{\bento~Set 1} & \text{\ramen~Set 2} \\
 \hline
-Switching&{$\begin{pmatrix}1&0&0\\0&0&1\\0&1&0\end{pmatrix}$}&{$\begin{pmatrix}1&0&0\\0&0&1\\0&1&0\end{pmatrix}$}\\
+\text{\leaf~Leaf} & 0 & 0 \\
+\text{\lemon+2\leaf} & 1 & 1 \\
+\text{\bean~Bean} & 0 & 4 \\
+\text{\cow~Cow} & 2 & 1
+\end{array}$$
+
+\textbf{Matrix notation:} Perform $r_1 \to r_1 - 2r_2$:
+$$\begin{pmatrix}
+2 & 2 \\
+1 & 1 \\
+0 & 4 \\
+2 & 1
+\end{pmatrix} \xrightarrow{r_1 \to r_1 - 2r_2} \begin{pmatrix}
+0 & 0 \\
+1 & 1 \\
+0 & 4 \\
+2 & 1
+\end{pmatrix}$$
+
+\begin{alertblock}{Key}
+Lemon becomes $(\text{\lemon} + 2\text{\leaf})$ → Leaf demand \x{subtracts} $2 \times$ lemon demand!
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Summary: Contravariant Logic for Rows}
+\begin{block}{Why contravariant?}
+Because: $r_i x_i + r_j x_j = \text{constant}$
+
+If one side changes, the other must change in opposite direction.
+\end{block}
+
+\vspace{0.5cm}
+\begin{center}
+\begin{tabular}{|c|c|}
 \hline
-Multiplying&{$\begin{pmatrix}1&0&0\\0&2&0\\0&0&1\end{pmatrix}$}&{$\begin{pmatrix}1&0&0\\0&{\frac12}&0\\0&0&1\end{pmatrix}$}\\
+\textbf{Material Change} & \textbf{Row Operation} \\
 \hline
-Adding&{$\begin{pmatrix}1&0&0\\0&1&1\\0&0&1\end{pmatrix}$}&{$\begin{pmatrix}1&0&0\\0&1&{-1}\\0&0&1\end{pmatrix}$}\\
+$x_i \to kx_i$ & $r_i \to \frac{1}{k}r_i$ (reciprocal) \\
+\hline
+$x_i \to x_i + kx_j$ & $r_j \to r_j - kr_i$ (\x{opposite sign!}) \\
 \hline
 \end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\begin{alertblock}{Remember}
+Rows work \x{backwards} from the material change!
+\end{alertblock}
 \end{frame}
 
-\begin{frame}
-\textbf{Exercise}: What is the following product? calculate in mind.
-$$
-\begin{pmatrix}1&1\\0&1\end{pmatrix}\begin{pmatrix}1&0\\0&2\end{pmatrix}\begin{pmatrix}1&2\\3&4\end{pmatrix}
-$$
+% ═══════════════════════════════════════════════════════════════
+% §2 COLUMN OPERATIONS: COVARIANT LOGIC
+% ═══════════════════════════════════════════════════════════════
 
-\textbf{Solution}
-$$
-\begin{pmatrix}1&1\\0&1\end{pmatrix}\begin{pmatrix}1&0\\0&2\end{pmatrix}\begin{pmatrix}1&2\\3&4\end{pmatrix}=\begin{pmatrix}1&1\\0&1\end{pmatrix}\begin{pmatrix}1&2\\6&8\end{pmatrix}=\begin{pmatrix}7&{10}\\6&8\end{pmatrix}
-$$
+\section{Column Operations: Covariant Logic}
+
+\begin{frame}{Column Operations: Redefining Products}
+\textbf{Core Idea:} Column operations correspond to \x{redefining final products}.
+
+\vspace{0.5cm}
+When we redefine a final product (change its portion size or bundle it), we must update:
+\begin{itemize}
+\item The \x{columns of matrix $B$} (since products appear in columns of $B$)
+\item The \x{columns of matrix $C$} (since products appear in columns of $C$)
+\item Matrix $A$ is \x{not affected} (raw materials don't change)
+\end{itemize}
+
+\vspace{0.5cm}
+\begin{alertblock}{The Crucial Difference}
+Column operations have \x{covariant (direct) logic} because columns and products have an \x{equation relationship}:
+$$\text{(product)} = \text{(recipe)}$$
+They appear on opposite sides of the equals sign!
+\end{alertblock}
 \end{frame}
 
-\begin{frame}
-Look at the following matrix(maybe not elementary). By thinking how it changed from identity matrix, what kind of row operation does it record?
+\begin{frame}{Why Covariant Logic?}
+The key equation:
+$$\text{product} = \text{recipe}$$
 
-\begin{tabular}{|l|l|}
+\vspace{0.3cm}
+\textbf{Example:} $y_1 = c_1$ implies $2y_1 = 2c_1$
+
+\vspace{0.3cm}
+\begin{itemize}
+\item If product doubles: $y_1 \to 2y_1$
+\item Then recipe must double: $c_1 \to 2c_1$
+\item Because: $2y_1 = 2c_1$ (same relationship)
+\end{itemize}
+
+\vspace{0.5cm}
+\begin{block}{Covariant = Same Direction}
+\begin{itemize}
+\item Product $\times k$ $\Rightarrow$ Recipe $\times k$
+\item Product increases $\Rightarrow$ Recipe increases
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Type 1: Column Multiplication}
+\begin{defi}[Column Multiplication]
+Replace column $j$ with $k \cdot$ column $j$ (where $k \neq 0$).
+
+\textbf{Notation:} $c_j \to kc_j$
+\end{defi}
+
+\vspace{0.3cm}
+\textbf{Interpretation:} Redefine product $y_j \to ky_j$ (make $k$ times the portion)
+
+\vspace{0.3cm}
+\begin{alertblock}{Covariant Logic}
+\begin{itemize}
+\item Product $\times k$ $\Rightarrow$ Column $\times k$
+\item Make more product $\Rightarrow$ Need more ingredients
+\end{itemize}
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Example 1.4: Set 1 → Double Set 1}
+\textbf{Original table:}
+$$\begin{array}{c|cc}
+ & \text{\bento~Set 1} & \text{\ramen~Set 2} \\
 \hline
-left-factor&row operation recorded.\\
+\text{\leaf~Leaf} & 2 & 2 \\
+\text{\lemon~Lemon} & 1 & 1 \\
+\text{\bean~Bean} & 0 & 4 \\
+\text{\cow~Cow} & 2 & 1
+\end{array}$$
+
+\textbf{Product redefinition:} $y_1 \to 2y_1$ (make double portion of Set 1)
+
+\textbf{What happens to recipe?} Original equation:
+$$y_1 = 2 \cdot \text{\leaf} + 1 \cdot \text{\lemon} + 0 \cdot \text{\bean} + 2 \cdot \text{\cow}$$
+
+With new product $2y_1$:
+$$2y_1 = 2 \times (2 \cdot \text{\leaf} + 1 \cdot \text{\lemon} + 0 \cdot \text{\bean} + 2 \cdot \text{\cow})$$
+\end{frame}
+
+\begin{frame}{Example 1.4: Result}
+\textbf{Updated table} (column 1 \x{multiplied by 2}):
+$$\begin{array}{c|cc}
+ & \text{\bento\bento~Double Set 1} & \text{\ramen~Set 2} \\
 \hline
-${\begin{pmatrix}0&1\\1&0\end{pmatrix}}$&Switch two rows\\
+\text{\leaf~Leaf} & 4 & 2 \\
+\text{\lemon~Lemon} & 2 & 1 \\
+\text{\bean~Bean} & 0 & 4 \\
+\text{\cow~Cow} & 4 & 1
+\end{array}$$
+
+\textbf{Matrix notation:} Perform $c_1 \to 2c_1$:
+$$\begin{pmatrix}
+2 & 2 \\
+1 & 1 \\
+0 & 4 \\
+2 & 1
+\end{pmatrix} \xrightarrow{c_1 \to 2c_1} \begin{pmatrix}
+4 & 2 \\
+2 & 1 \\
+0 & 4 \\
+4 & 1
+\end{pmatrix}$$
+
+\begin{alertblock}{Key}
+Product $\times 2$ → Column $\times 2$ (\x{same direction!})
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Type 2: Column Switching}
+\begin{defi}[Column Switching]
+Swap column $i$ and column $j$.
+
+\textbf{Notation:} $c_i \leftrightarrow c_j$
+\end{defi}
+
+\vspace{0.3cm}
+\textbf{Interpretation:} Reordering products in the table.
+
+\vspace{0.3cm}
+\textbf{Example:}
+$$\begin{pmatrix}
+2 & 2 \\
+1 & 1 \\
+0 & 4 \\
+2 & 1
+\end{pmatrix} \xrightarrow{c_1 \leftrightarrow c_2} \begin{pmatrix}
+2 & 2 \\
+1 & 1 \\
+4 & 0 \\
+1 & 2
+\end{pmatrix}$$
+\end{frame}
+
+\begin{frame}{Type 3: Column Addition}
+\begin{defi}[Column Addition]
+Replace column $j$ with column $j + k \times$ column $i$.
+
+\textbf{Notation:} $c_j \to c_j + kc_i$
+\end{defi}
+
+\vspace{0.3cm}
+\textbf{Interpretation:} Redefine product $y_j \to y_j + ky_i$ (bundle product $j$ with product $i$)
+
+\vspace{0.3cm}
+\begin{alertblock}{Covariant Logic}
+\begin{itemize}
+\item Product $y_j \to y_j + ky_i$ (includes $k$ units of product $i$)
+\item Column $c_j \to c_j + kc_i$ (add $k$ times recipe of $i$)
+\item \x{Same signs!}
+\end{itemize}
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Example 1.6: Set 2 → Set 2 + Set 1}
+\textbf{Original table:}
+$$\begin{array}{c|cc}
+ & \text{\bento~Set 1} & \text{\ramen~Set 2} \\
 \hline
-${\begin{pmatrix}0\\1\end{pmatrix}}$&Delete the first row\\
+\text{\leaf~Leaf} & 2 & 2 \\
+\text{\lemon~Lemon} & 1 & 1 \\
+\text{\bean~Bean} & 0 & 4 \\
+\text{\cow~Cow} & 2 & 1
+\end{array}$$
+
+\textbf{Product redefinition:} $y_2 \to y_2 + y_1$ (bundle Set 2 with Set 1)
+
+\textbf{Original equations:}
+$$y_1 = 2\text{\leaf} + 1\text{\lemon} + 0\text{\bean} + 2\text{\cow}$$
+$$y_2 = 2\text{\leaf} + 1\text{\lemon} + 4\text{\bean} + 1\text{\cow}$$
+\end{frame}
+
+\begin{frame}{Example 1.6: Calculation}
+\textbf{With new bundled product} $(y_2 + y_1)$:
+\begin{align*}
+(y_2 + y_1) &= \text{(recipe for } y_2\text{)} + \text{(recipe for } y_1\text{)} \\
+&= (2 + 2)\text{\leaf} + (1 + 1)\text{\lemon} \\
+&\quad + (4 + 0)\text{\bean} + (1 + 2)\text{\cow} \\
+&= 4\text{\leaf} + 2\text{\lemon} + 4\text{\bean} + 3\text{\cow}
+\end{align*}
+
+\vspace{0.3cm}
+\begin{alertblock}{Covariant Logic}
+Making the bundle requires ingredients for \x{both} products added together!
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Example 1.6: Result}
+\textbf{Updated table} (column 2: $c_2 \to c_2 + c_1$, \x{add not subtract}):
+$$\begin{array}{c|cc}
+ & \text{\bento~Set 1} & \text{\ramen\bento~Combo} \\
 \hline
-${\begin{pmatrix}1&1\\1&1\end{pmatrix}}$&\\
+\text{\leaf~Leaf} & 2 & 4 \\
+\text{\lemon~Lemon} & 1 & 2 \\
+\text{\bean~Bean} & 0 & 4 \\
+\text{\cow~Cow} & 2 & 3
+\end{array}$$
+
+\textbf{Matrix notation:} Perform $c_2 \to c_2 + c_1$:
+$$\begin{pmatrix}
+2 & 2 \\
+1 & 1 \\
+0 & 4 \\
+2 & 1
+\end{pmatrix} \xrightarrow{c_2 \to c_2 + c_1} \begin{pmatrix}
+2 & 4 \\
+1 & 2 \\
+0 & 4 \\
+2 & 3
+\end{pmatrix}$$
+
+\begin{alertblock}{Key}
+Product becomes $(\text{\ramen} + \text{\bento})$ → Recipe \x{adds} the two recipes!
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Summary: Covariant Logic for Columns}
+\begin{block}{Why covariant?}
+Because: $y_j = c_j$ (product equals its recipe)
+
+If one side changes, the other must change in the same direction.
+\end{block}
+
+\vspace{0.5cm}
+\begin{center}
+\begin{tabular}{|c|c|}
 \hline
-${\begin{pmatrix}2&0\\0&1\end{pmatrix}}$&\\
+\textbf{Product Change} & \textbf{Column Operation} \\
 \hline
-${\begin{pmatrix}0&1\\0&1\end{pmatrix}}$&\\
+$y_j \to ky_j$ & $c_j \to kc_j$ (same scaling) \\
+\hline
+$y_j \to y_j + ky_i$ & $c_j \to c_j + kc_i$ (\x{same sign!}) \\
 \hline
 \end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\begin{alertblock}{Remember}
+Columns work \x{forwards} with the product change!
+\end{alertblock}
 \end{frame}
 
-\begin{frame}
-The same logic is also for columns. Recall that $AB=C$ stays as an equation when applying column oprtations on $B$ and $C$.
-\textbf{Experiment:}
-$$
- \begin{pmatrix}2&4\\1&3\end{pmatrix}\begin{pmatrix}1&0\\0&1\end{pmatrix} = \begin{pmatrix}2&4\\1&3\end{pmatrix}
-\implies
- \begin{pmatrix}2&4\\1&3\end{pmatrix}\begin{pmatrix}1&1\\0&1\end{pmatrix} = \begin{pmatrix}2&6\\1&4\end{pmatrix}
-$$
-\textbf{Explaination from another perspective:}
-
-\begin{tabular}{|l|l|l|}
+\begin{frame}{THE KEY DISTINCTION}
+\begin{center}
+\Large
+\begin{tabular}{|c|c|c|}
 \hline
-right factor&row operation recorded&product: apply row operation\\
+ & \textbf{Rows} & \textbf{Columns} \\
+ & \textbf{(Materials)} & \textbf{(Products)} \\
 \hline
-${\begin{pmatrix}1&1\\0&1\end{pmatrix}}$&add 1st column to 2nd column.&${ \begin{pmatrix}{\x2}&{4}\\{\x1}&3\end{pmatrix}\begin{pmatrix}1&1\\0&1\end{pmatrix} = \begin{pmatrix}{2}&{\x6}\\1&{\x4}\end{pmatrix}}$\\
+\textbf{Relationship} & demand $\times$ material & product $=$ recipe \\
+\hline
+\textbf{Logic} & \x{Contravariant} & \x{Covariant} \\
+ & (inverse) & (direct) \\
+\hline
+\textbf{Scaling} & material $\times k$ & product $\times k$ \\
+ & $\Rightarrow$ row $\times \frac{1}{k}$ & $\Rightarrow$ column $\times k$ \\
+\hline
+\textbf{Addition} & $x_i \to x_i + kx_j$ & $y_j \to y_j + ky_i$ \\
+ & $\Rightarrow$ $r_j \to r_j - kr_i$ & $\Rightarrow$ $c_j \to c_j + kc_i$ \\
 \hline
 \end{tabular}
+\end{center}
+
+\vspace{0.5cm}
+\begin{alertblock}{The Essence}
+\Large \textbf{Rows work backwards. Columns work forwards.}
+\end{alertblock}
 \end{frame}
 
-\begin{frame}
-\begin{prop}
-Suppose $E$ is a matrix obtained by applying some column operations from $I_n$, then $AE$ is exactly the matrix by applying the same column operations on $A$.
+\begin{frame}{Why We Don't Update Semi-finished Products}
+Semi-finished products (\milk, \coffee, \tea) appear in:
+\begin{itemize}
+\item \x{Columns of $A$} (as outputs) → would need column operations (covariant)
+\item \x{Rows of $B$} (as inputs) → would need row operations (contravariant)
+\end{itemize}
+
+\vspace{0.5cm}
+\begin{alertblock}{The Problem}
+Updating semi-finished products would require:
+\begin{itemize}
+\item \x{Two different types of operations}
+\item With \x{opposite logic} (contravariant vs covariant)
+\item On \x{two different matrices} (both $A$ and $B$)
+\end{itemize}
+\end{alertblock}
+
+\vspace{0.3cm}
+This is significantly more complex than row-only or column-only operations.
+
+\vspace{0.3cm}
+\textbf{Solution:} We avoid this complication and focus on raw materials (rows) and final products (columns).
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════
+% §3 SIMULTANEOUS OPERATIONS PRESERVE EQUATIONS
+% ═══════════════════════════════════════════════════════════════
+
+\section{Simultaneous Operations Preserve Equations}
+
+\begin{frame}{Change of Perspective}
+\textbf{What we've learned so far:}
+\begin{itemize}
+\item \x{Why} rows are contravariant (multiplication relationship)
+\item \x{Why} columns are covariant (equation relationship)
+\item \x{How} to update tables when redefining materials/products
+\end{itemize}
+
+\vspace{0.5cm}
+\begin{alertblock}{From This Point Forward}
+We \x{forget about materials/products} and focus only on:
+\begin{itemize}
+\item \textbf{What}: Matrices $A$, $B$, $C$
+\item \textbf{How}: Simultaneous operations keep equations valid
+\end{itemize}
+\end{alertblock}
+
+\vspace{0.3cm}
+This simplifies our work: we only track \x{matrix changes}, not material redefinitions.
+\end{frame}
+
+\begin{frame}{Proposition 1.1: Row Operation Invariance}
+\begin{prop}[Row Operation Invariance]
+In the equation $C = AB$, if we perform the \x{same row operation} on both $A$ and $C$ simultaneously, the equality remains valid.
 \end{prop}
+
+\vspace{0.3cm}
+\textbf{Why?} Raw materials appear in the \x{rows} of both $A$ and $C$. When we redefine raw materials, both must update. Matrix $B$ doesn't reference raw materials, so it doesn't change.
+
+\vspace{0.3cm}
+\textbf{But from now on}, we don't need to think about "why" — we just use the fact that \x{simultaneous row operations on $A$ and $C$ preserve the equation}.
 \end{frame}
 
-\begin{frame}
-\begin{tabular}{|l|l|}
+\begin{frame}{Example 1.7: Row Operation Preserves Equation}
+Consider:
+$$\underbrace{\begin{pmatrix} 2 & 0 \\ 0 & 1 \end{pmatrix}}_{A} \underbrace{\begin{pmatrix} 1 & 1 \\ 2 & 3 \end{pmatrix}}_{B} = \underbrace{\begin{pmatrix} 2 & 2 \\ 2 & 3 \end{pmatrix}}_{C}$$
+
+Perform $r_1 \to 2r_1$ on \x{both $A$ and $C$}:
+$$\underbrace{\begin{pmatrix} 4 & 0 \\ 0 & 1 \end{pmatrix}}_{A'} \underbrace{\begin{pmatrix} 1 & 1 \\ 2 & 3 \end{pmatrix}}_{B} = \underbrace{\begin{pmatrix} 4 & 4 \\ 2 & 3 \end{pmatrix}}_{C'}$$
+
+\begin{center}
+\Large \textbf{Still valid!} $\checkmark$
+\end{center}
+
+\vspace{0.3cm}
+\textbf{Note:} $B$ is unchanged because it doesn't have raw materials in its rows.
+\end{frame}
+
+\begin{frame}{Proposition 1.2: Column Operation Invariance}
+\begin{prop}[Column Operation Invariance]
+In the equation $C = AB$, if we perform the \x{same column operation} on both $B$ and $C$ simultaneously, the equality remains valid.
+\end{prop}
+
+\vspace{0.3cm}
+\textbf{Why?} Final products appear in the \x{columns} of both $B$ and $C$. When we redefine final products, both must update. Matrix $A$ doesn't reference final products, so it doesn't change.
+
+\vspace{0.3cm}
+\textbf{But from now on}, we don't need to think about products — we just use the fact that \x{simultaneous column operations on $B$ and $C$ preserve the equation}.
+\end{frame}
+
+\begin{frame}{Example 1.8: Column Operation Preserves Equation}
+Consider:
+$$\underbrace{\begin{pmatrix} 1 & 0 \\ 0 & 2 \end{pmatrix}}_{A} \underbrace{\begin{pmatrix} 2 & 1 \\ 1 & 3 \end{pmatrix}}_{B} = \underbrace{\begin{pmatrix} 2 & 1 \\ 2 & 6 \end{pmatrix}}_{C}$$
+
+Perform $c_1 \to 3c_1$ on \x{both $B$ and $C$}:
+$$\underbrace{\begin{pmatrix} 1 & 0 \\ 0 & 2 \end{pmatrix}}_{A} \underbrace{\begin{pmatrix} 6 & 1 \\ 3 & 3 \end{pmatrix}}_{B'} = \underbrace{\begin{pmatrix} 6 & 1 \\ 6 & 6 \end{pmatrix}}_{C'}$$
+
+\begin{center}
+\Large \textbf{Still valid!} $\checkmark$
+\end{center}
+
+\vspace{0.3cm}
+\textbf{Note:} $A$ is unchanged because it doesn't have final products in its columns.
+\end{frame}
+
+\begin{frame}{Why These Propositions Matter}
+\begin{block}{Foundation for Matrix Equations}
+Propositions 1.1 and 1.2 provide the theoretical basis for:
+\begin{itemize}
+\item Solving matrix equations $AB = C$
+\item Finding matrix inverses $A^{-1}$
+\item Understanding how operations affect equations
+\end{itemize}
+\end{block}
+
+\vspace{0.5cm}
+\textbf{Key insight:} We can \x{manipulate} equations $C = AB$ using row/column operations, just like we manipulate algebraic equations, as long as we:
+\begin{itemize}
+\item Apply row operations to \x{both $A$ and $C$}
+\item Apply column operations to \x{both $B$ and $C$}
+\end{itemize}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════
+% §4 MATRIX INVERSES
+% ═══════════════════════════════════════════════════════════════
+
+\section{Matrix Inverses}
+
+\begin{frame}{Definition: Matrix Inverse}
+\begin{defi}[Matrix Inverse]
+An $n \times n$ matrix $A$ is called \x{invertible} if there exists an $n \times n$ matrix $B$ such that
+$$AB = BA = I_n$$
+where $I_n$ is the $n \times n$ identity matrix. We call $B$ the \x{inverse} of $A$ and denote it $A^{-1}$.
+\end{defi}
+
+\vspace{0.5cm}
+\textbf{Interpretation:} If $A$ is the recipe "raw materials $\to$ products", then $A^{-1}$ is the recipe "products $\to$ raw materials".
+\end{frame}
+
+\begin{frame}{Example 1.9: Coffee Shop Inverse}
+Consider:
+$$A = \begin{pmatrix} 0 & 2 \\ 1 & 0 \end{pmatrix} = \begin{array}{c|cc}
+& \text{\coffee~Coffee} & \text{\milk~Milk} \\
 \hline
-right-factor&column operation recorded.\\
+\text{\bean~Bean} & 0 & 2 \\
+\text{\cow~Cow} & 1 & 0
+\end{array}$$
+
+Then:
+$$A^{-1} = \begin{pmatrix} 0 & 1 \\ \frac{1}{2} & 0 \end{pmatrix} = \begin{array}{c|cc}
+& \text{\bean~Bean} & \text{\cow~Cow} \\
 \hline
-${\begin{pmatrix}0&1\\1&0\end{pmatrix}}$&Switch two columns\\
+\text{\coffee~Coffee} & 0 & 1 \\
+\text{\milk~Milk} & \frac{1}{2} & 0
+\end{array}$$
+
+\textbf{Verification:}
+$$AA^{-1} = \begin{pmatrix} 0 & 2 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 0 & 1 \\ \frac{1}{2} & 0 \end{pmatrix} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} = I$$
+\end{frame}
+
+\begin{frame}{Proposition 1.3: Inverse is Unique}
+\begin{prop}[Uniqueness of Inverse]
+If $A$ has an inverse, it is unique.
+\end{prop}
+
+\vspace{0.3cm}
+\textbf{Proof:} Suppose $B$ and $C$ both satisfy the definition. Then:
+$$B = BI = B(AC) = (BA)C = IC = C$$
+Therefore $B = C$. \qed
+\end{frame}
+
+\begin{frame}{Proposition 1.4: Left Inverse = Right Inverse}
+\begin{prop}[One-sided Inverse Suffices]
+For a square matrix $A$, if $AB = I$, then $B = A^{-1}$ (and automatically $BA = I$).
+\end{prop}
+
+\vspace{0.3cm}
+\textbf{Proof:} Suppose $AB = I$. We need to show $BA = I$.
+
+Since $A$ is square and $AB = I$, we know $A$ has a left inverse. Let $CA = I$ for some matrix $C$.
+
+Then:
+$$B = IB = (CA)B = C(AB) = CI = C$$
+
+Therefore $BA = CA = I$. So $AB = BA = I$, which means $B = A^{-1}$. \qed
+\end{frame}
+
+\begin{frame}{Practical Implication of Proposition 1.4}
+\begin{alertblock}{Important!}
+To verify that $B$ is the inverse of square matrix $A$, you only need to check \x{one direction}!
+
+If $AB = I$, then automatically $BA = I$.
+\end{alertblock}
+
+\vspace{0.5cm}
+This saves computation time when verifying inverses.
+
+\vspace{0.5cm}
+\textbf{Example:} To check if $\begin{pmatrix} 2 & -1 \\ -3 & 2 \end{pmatrix}$ is the inverse of $\begin{pmatrix} 2 & 1 \\ 3 & 2 \end{pmatrix}$:
+
+Just compute one product (either $AB$ or $BA$). If it equals $I$, done!
+\end{frame}
+
+\begin{frame}{Proposition 1.5: Product of Invertible Matrices}
+\begin{prop}[Inverse of Product]
+If $A$ and $B$ are invertible, then $AB$ is invertible and
+$$(AB)^{-1} = B^{-1}A^{-1}$$
+\end{prop}
+
+\vspace{0.3cm}
+\textbf{Proof:}
+$$(AB)(B^{-1}A^{-1}) = A(BB^{-1})A^{-1} = AIA^{-1} = AA^{-1} = I$$
+
+By Proposition 1.4, this proves $(AB)^{-1} = B^{-1}A^{-1}$. \qed
+
+\vspace{0.5cm}
+\begin{alertblock}{Order Reversal}
+$(AB)^{-1} = B^{-1}A^{-1}$, \x{not} $A^{-1}B^{-1}$.
+
+\textbf{Intuition:} Socks then shoes $\to$ undo by removing shoes first, then socks.
+\end{alertblock}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════
+% §5 WHY INTRODUCE INVERSES: THE TWO CRITICAL THEOREMS
+% ═══════════════════════════════════════════════════════════════
+
+\section{Why Introduce Inverses?}
+
+\begin{frame}{Why Do We Need Matrix Inverses?}
+\textbf{Question:} Why introduce the concept of inverse matrices?
+
+\vspace{0.5cm}
+\textbf{Answer:} Inverses provide \x{notational convenience} for tracking invariants when solving matrix equations.
+
+\vspace{0.5cm}
+\begin{block}{The Key Insight}
+Writing expressions like $B = A^{-1}C$ or $B = CA^{-1}$ makes explicit that:
+\begin{itemize}
+\item "\x{$B$ doesn't change}" when we perform operations
+\item We can \x{simultaneously transform} the "$A^{-1}$" part and the "$C$" part
+\item The transformation preserves the equation
+\end{itemize}
+\end{block}
+
+\vspace{0.3cm}
+The next two theorems are the \x{most important} results for practical computation!
+\end{frame}
+
+\begin{frame}{Theorem 1.6: Row Operations on $A^{-1}C$}
+\begin{prop}[Row Operations Preserve $A^{-1}C$]
+In the expression $B = A^{-1}C$, if we perform the \x{same row operation} on both "$A$" and "$C$" simultaneously, we get:
+$$B = (A')^{-1}C'$$
+where $A'$, $C'$ are the matrices after the row operation, and \x{$B$ remains unchanged}.
+\end{prop}
+
+\vspace{0.3cm}
+\textbf{Why?} From $AB = C$, applying row operations to both $A$ and $C$ preserves the equation (Prop 1.1):
+$$A'B = C'$$
+Therefore: $B = (A')^{-1}C'$
+
+\vspace{0.3cm}
+\begin{alertblock}{Key Application}
+This theorem allows us to solve $AB = C$ for $B$ by performing row operations!
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Example 1.10: Using $A^{-1}C$ Row Operations (Setup)}
+\textbf{Problem:} Solve $AB = C$ for $B$ where
+$$A = \begin{pmatrix} 2 & 1 \\ 1 & 1 \end{pmatrix}, \quad C = \begin{pmatrix} 5 & 8 \\ 3 & 5 \end{pmatrix}$$
+
+\textbf{Method:} Write $B = A^{-1}C$ and perform row operations to transform "$A$" into $I$:
+
+$$B = \begin{pmatrix} 2 & 1 \\ 1 & 1 \end{pmatrix}^{-1} \begin{pmatrix} 5 & 8 \\ 3 & 5 \end{pmatrix}$$
+
+\textbf{Goal:} Transform "$A$" to "$I$" using row operations.
+\end{frame}
+
+\begin{frame}{Example 1.10: Step 1-2}
+\textbf{Step 1:} $r_1 \leftrightarrow r_2$
+$$B = \begin{pmatrix} 1 & 1 \\ 2 & 1 \end{pmatrix}^{-1} \begin{pmatrix} 3 & 5 \\ 5 & 8 \end{pmatrix}$$
+
+\textbf{Step 2:} $r_2 \to r_2 - 2r_1$
+$$B = \begin{pmatrix} 1 & 1 \\ 0 & -1 \end{pmatrix}^{-1} \begin{pmatrix} 3 & 5 \\ -1 & -2 \end{pmatrix}$$
+\end{frame}
+
+\begin{frame}{Example 1.10: Step 3-4}
+\textbf{Step 3:} $r_2 \to (-1) \cdot r_2$
+$$B = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}^{-1} \begin{pmatrix} 3 & 5 \\ 1 & 2 \end{pmatrix}$$
+
+\textbf{Step 4:} $r_1 \to r_1 - r_2$
+$$B = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}^{-1} \begin{pmatrix} 2 & 3 \\ 1 & 2 \end{pmatrix} = I^{-1} \begin{pmatrix} 2 & 3 \\ 1 & 2 \end{pmatrix}$$
+
+Since $I^{-1} = I$:
+$$B = \begin{pmatrix} 2 & 3 \\ 1 & 2 \end{pmatrix}$$
+\end{frame}
+
+\begin{frame}{Example 1.10: Verification}
+\textbf{Check:} Does $AB = C$?
+$$\begin{pmatrix} 2 & 1 \\ 1 & 1 \end{pmatrix} \begin{pmatrix} 2 & 3 \\ 1 & 2 \end{pmatrix} = \begin{pmatrix} 4+1 & 6+2 \\ 2+1 & 3+2 \end{pmatrix} = \begin{pmatrix} 5 & 8 \\ 3 & 5 \end{pmatrix}$$
+
+\begin{center}
+\Large \textbf{Yes!} $\checkmark$
+\end{center}
+
+\vspace{0.3cm}
+\begin{alertblock}{Key Observation}
+We transformed "$A$" to "$I$" using row operations, and automatically obtained $B$!
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Theorem 1.7: Column Operations on $CB^{-1}$}
+\begin{prop}[Column Operations Preserve $CB^{-1}$]
+In the expression $A = CB^{-1}$, if we perform the \x{same column operation} on both "$C$" and "$B$" simultaneously, we get:
+$$A = C'(B')^{-1}$$
+where $C'$, $B'$ are the matrices after the column operation, and \x{$A$ remains unchanged}.
+\end{prop}
+
+\vspace{0.3cm}
+\textbf{Why?} From $AB = C$, applying column operations to both $B$ and $C$ preserves the equation (Prop 1.2):
+$$AB' = C'$$
+Therefore: $A = C'(B')^{-1}$
+
+\vspace{0.3cm}
+\begin{alertblock}{Key Application}
+This theorem allows us to solve $AB = C$ for $A$ by performing column operations!
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Example 1.11: Using $CB^{-1}$ Column Operations (Setup)}
+\textbf{Problem:} Solve $AB = C$ for $A$ where
+$$B = \begin{pmatrix} 2 & 1 \\ 1 & 1 \end{pmatrix}, \quad C = \begin{pmatrix} 5 & 3 \\ 8 & 5 \end{pmatrix}$$
+
+\textbf{Method:} Write $A = CB^{-1}$ and perform column operations to transform "$B$" into $I$:
+
+$$A = \begin{pmatrix} 5 & 3 \\ 8 & 5 \end{pmatrix} \begin{pmatrix} 2 & 1 \\ 1 & 1 \end{pmatrix}^{-1}$$
+
+\textbf{Goal:} Transform "$B$" to "$I$" using column operations.
+\end{frame}
+
+\begin{frame}{Example 1.11: Step 1-2}
+\textbf{Step 1:} $c_1 \leftrightarrow c_2$
+$$A = \begin{pmatrix} 3 & 5 \\ 5 & 8 \end{pmatrix} \begin{pmatrix} 1 & 2 \\ 1 & 1 \end{pmatrix}^{-1}$$
+
+\textbf{Step 2:} $c_2 \to c_2 - 2c_1$
+$$A = \begin{pmatrix} 3 & -1 \\ 5 & -2 \end{pmatrix} \begin{pmatrix} 1 & 0 \\ 1 & -1 \end{pmatrix}^{-1}$$
+\end{frame}
+
+\begin{frame}{Example 1.11: Step 3-4}
+\textbf{Step 3:} $c_2 \to (-1) \cdot c_2$
+$$A = \begin{pmatrix} 3 & 1 \\ 5 & 2 \end{pmatrix} \begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}^{-1}$$
+
+\textbf{Step 4:} $c_1 \to c_1 - c_2$
+$$A = \begin{pmatrix} 2 & 1 \\ 3 & 2 \end{pmatrix} \begin{pmatrix} 0 & 0 \\ 1 & 1 \end{pmatrix}^{-1} = \begin{pmatrix} 2 & 1 \\ 3 & 2 \end{pmatrix} I^{-1}$$
+
+Wait, error! Let me recalculate...
+
+Actually:
+$$A = \begin{pmatrix} 2 & 1 \\ 3 & 2 \end{pmatrix} \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}^{-1} = \begin{pmatrix} 2 & 1 \\ 3 & 2 \end{pmatrix}$$
+\end{frame}
+
+\begin{frame}{Summary: The Two Critical Theorems}
+\begin{block}{Theorem 1.6: Row Operations on $A^{-1}C$}
+Simultaneous row operations on "$A$" and "$C$" in $B = A^{-1}C$ preserve $B$.
+
+\textbf{Use case:} Solving $AB = C$ for $B$
+\end{block}
+
+\vspace{0.3cm}
+\begin{block}{Theorem 1.7: Column Operations on $CB^{-1}$}
+Simultaneous column operations on "$C$" and "$B$" in $A = CB^{-1}$ preserve $A$.
+
+\textbf{Use case:} Solving $AB = C$ for $A$
+\end{block}
+
+\vspace{0.5cm}
+\begin{alertblock}{Why These Matter}
+These two theorems are the \x{foundation} for:
+\begin{itemize}
+\item Finding matrix inverses
+\item Solving matrix equations
+\item Understanding matrix transformations
+\end{itemize}
+\end{alertblock}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════
+% §6 FINDING MATRIX INVERSES
+% ═══════════════════════════════════════════════════════════════
+
+\section{Finding Matrix Inverses}
+
+\begin{frame}{Finding $A^{-1}$: The Method}
+\textbf{Goal:} Find $A^{-1}$ for a given matrix $A$.
+
+\vspace{0.3cm}
+\textbf{Idea:} Solving $AA^{-1} = I$ for $A^{-1}$ is a special case of solving $AB = C$.
+
+\vspace{0.3cm}
+From $A^{-1} = A^{-1}I$, perform \x{row operations} to transform "$A$" into $I$:
+$$A^{-1} = A^{-1}I \xrightarrow{\text{row ops}} I^{-1} \cdot (\text{result}) = \text{result}$$
+
+\vspace{0.3cm}
+\textbf{Algorithm:}
+\begin{enumerate}
+\item Write $A^{-1} = A^{-1}I$
+\item Apply row operations to both "$A$" and "$I$" until "$A$" becomes $I$
+\item The result on the right is $A^{-1}$
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Example 1.12: Finding Inverse (Row Operations)}
+\textbf{Find:} $A^{-1}$ where $A = \begin{pmatrix} 2 & 1 \\ 3 & 2 \end{pmatrix}$
+
+\textbf{Setup:}
+$$A^{-1} = \begin{pmatrix} 2 & 1 \\ 3 & 2 \end{pmatrix}^{-1} \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$$
+
+\textbf{Step 1:} $r_2 \to r_2 - r_1$
+$$A^{-1} = \begin{pmatrix} 2 & 1 \\ 1 & 1 \end{pmatrix}^{-1} \begin{pmatrix} 1 & 0 \\ -1 & 1 \end{pmatrix}$$
+\end{frame}
+
+\begin{frame}{Example 1.12: Steps 2-5}
+\textbf{Step 2:} $r_1 \leftrightarrow r_2$
+$$A^{-1} = \begin{pmatrix} 1 & 1 \\ 2 & 1 \end{pmatrix}^{-1} \begin{pmatrix} -1 & 1 \\ 1 & 0 \end{pmatrix}$$
+
+\textbf{Step 3:} $r_2 \to r_2 - 2r_1$
+$$A^{-1} = \begin{pmatrix} 1 & 1 \\ 0 & -1 \end{pmatrix}^{-1} \begin{pmatrix} -1 & 1 \\ 3 & -2 \end{pmatrix}$$
+
+\textbf{Step 4:} $r_2 \to (-1) \cdot r_2$
+$$A^{-1} = \begin{pmatrix} 1 & 1 \\ 0 & 1 \end{pmatrix}^{-1} \begin{pmatrix} -1 & 1 \\ -3 & 2 \end{pmatrix}$$
+
+\textbf{Step 5:} $r_1 \to r_1 - r_2$
+$$A^{-1} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}^{-1} \begin{pmatrix} 2 & -1 \\ -3 & 2 \end{pmatrix} = \begin{pmatrix} 2 & -1 \\ -3 & 2 \end{pmatrix}$$
+\end{frame}
+
+\begin{frame}{Example 1.13: Finding Inverse (Column Operations)}
+\textbf{Alternative:} Use column operations on $IA^{-1} = A^{-1}$
+
+\textbf{Setup:}
+$$A^{-1} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} \begin{pmatrix} 2 & 1 \\ 3 & 2 \end{pmatrix}^{-1}$$
+
+\textbf{Step 1:} $c_1 \to c_1 - c_2$
+$$A^{-1} = \begin{pmatrix} 1 & 0 \\ -1 & 1 \end{pmatrix} \begin{pmatrix} 1 & 1 \\ 1 & 2 \end{pmatrix}^{-1}$$
+
+\textbf{Step 2:} $c_2 \to c_2 - c_1$
+$$A^{-1} = \begin{pmatrix} 1 & -1 \\ -1 & 2 \end{pmatrix} \begin{pmatrix} 1 & 0 \\ 1 & 1 \end{pmatrix}^{-1}$$
+\end{frame}
+
+\begin{frame}{Example 1.13: Final Step}
+\textbf{Step 3:} $c_1 \to c_1 - c_2$
+$$A^{-1} = \begin{pmatrix} 2 & -1 \\ -3 & 2 \end{pmatrix} \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}^{-1} = \begin{pmatrix} 2 & -1 \\ -3 & 2 \end{pmatrix}$$
+
+\vspace{0.5cm}
+\begin{center}
+\Large \textbf{Same answer!} $\checkmark$
+\end{center}
+
+\vspace{0.3cm}
+\begin{block}{Observation}
+Both row operations and column operations give the same inverse.
+\end{block}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════
+% §7 WHEN DOES AN INVERSE EXIST?
+% ═══════════════════════════════════════════════════════════════
+
+\section{When Does an Inverse Exist?}
+
+\begin{frame}{Not All Matrices Are Invertible}
+\textbf{Example:}
+$$A = \begin{pmatrix} 2 & 1 \\ 4 & 2 \end{pmatrix}$$
+
+\textbf{Observation:} Row 2 = $2 \times$ Row 1 (redundant information)
+
+\vspace{0.3cm}
+\textbf{Try to find inverse:}
+$$A^{-1} = \begin{pmatrix} 2 & 1 \\ 4 & 2 \end{pmatrix}^{-1} \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$$
+
+Perform $r_2 \to r_2 - 2r_1$:
+$$A^{-1} = \begin{pmatrix} 2 & 1 \\ 0 & 0 \end{pmatrix}^{-1} \begin{pmatrix} 1 & 0 \\ -2 & 1 \end{pmatrix}$$
+
+\begin{alertblock}{Stuck!}
+Cannot transform "$A$" to $I$. This matrix has \x{no inverse}.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Invertibility Criterion (Preview)}
+\begin{block}{Criterion}
+An $n \times n$ matrix is invertible if and only if it can be transformed to $I$ using row operations.
+
+Equivalently: \x{rank} = $n$.
+\end{block}
+
+\vspace{0.5cm}
+\textbf{Detailed discussion} of rank and solvability conditions will be covered in \x{Chapter 2}.
+
+\vspace{0.5cm}
+\textbf{For now:}
+\begin{itemize}
+\item If row operations can reduce $A$ to $I$: invertible
+\item If we get a zero row: not invertible
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Visual Summary: Invertible vs Non-invertible}
+\begin{center}
+\begin{tabular}{|c|c|}
 \hline
-${\begin{pmatrix}0\\1\end{pmatrix}}$&\\
+\textbf{Invertible} & \textbf{Non-invertible} \\
 \hline
-${\begin{pmatrix}1&1\\1&1\end{pmatrix}}$&\\
+$\begin{pmatrix} 2 & 1 \\ 3 & 2 \end{pmatrix}$ & $\begin{pmatrix} 2 & 1 \\ 4 & 2 \end{pmatrix}$ \\
 \hline
-${\begin{pmatrix}0&1\\0&1\end{pmatrix}}$&\\
+Can reduce to $I$ & Gets zero row \\
+\hline
+Rows are independent & Rows are dependent \\
+\hline
+Full rank & Not full rank \\
+\hline
+Unique inverse $A^{-1}$ & No inverse \\
 \hline
 \end{tabular}
+\end{center}
 \end{frame}
 
-\begin{frame}
-What is the meaning of the following product? From the perspective of column action?
+% ═══════════════════════════════════════════════════════════════
+% §8 EXERCISES
+% ═══════════════════════════════════════════════════════════════
 
-$$
-\underbrace{A}_{3\times 4 \text{Matrix}} \begin{pmatrix}0\\0\\1\\0\end{pmatrix}
-$$
+\section{Exercises}
 
-What is the meaning of the following product? From the perspective of column action?
+\begin{frame}{Exercise 1.1}
+Verify Proposition 1.4 for:
+$$A = \begin{pmatrix} 3 & 1 \\ 5 & 2 \end{pmatrix}, \quad B = \begin{pmatrix} 2 & -1 \\ -5 & 3 \end{pmatrix}$$
 
-$$
-\underbrace{A}_{3\times 4 \text{Matrix}} \begin{pmatrix}0&0&0&0\\0&0&0&0\\0&0&1&0\\0&0&0&0\end{pmatrix}
-$$
+(a) Check that $AB = I$
+
+(b) Verify that $BA = I$ also holds
 \end{frame}
 
-\begin{frame}
-What is the meaning of the following matrix
-$$
-\begin{pmatrix}1&0\\0&1\\1&0\\0&1\end{pmatrix} \underbrace{A}_{2\times 2\text{Matrix}}
-$$
-How about the following
-$$
-\begin{pmatrix}1&0\\1&0\\1&0\\1&0\end{pmatrix} \underbrace{A}_{2\times 2\text{Matrix}}
-$$
-Is this product depends on the second row of $A$?
+\begin{frame}{Exercise 1.2}
+Consider the equation $AB = C$ where
+$$A = \begin{pmatrix} 1 & 2 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 1 \end{pmatrix}, \quad C = \begin{pmatrix} 4 & 7 \\ 3 & 5 \\ 2 & 3 \end{pmatrix}$$
+
+Solve for $B$ using row operations on $B = A^{-1}C$.
 \end{frame}
 
-\begin{frame}
-Let $A$ be a $m\times n$ matrix, and let $l$ be the 2nd row of $A$, can you write $l$ in terms of a matrix multiplication?
-\vfill
-Let $\vec v$ be the 3rd column of $A$, can you write $\vec v$ into a matrix multiplication?
+\begin{frame}{Exercise 1.3}
+Find the inverses using row operations:
+
+(a) $A = \begin{pmatrix} 1 & 3 \\ 2 & 5 \end{pmatrix}$
+
+\vspace{0.5cm}
+(b) $A = \begin{pmatrix} 1 & 0 & 1 \\ 0 & 1 & 1 \\ 1 & 1 & 0 \end{pmatrix}$
+\end{frame}
+
+\begin{frame}{Exercise 1.4}
+Find the inverse of $A = \begin{pmatrix} 3 & 1 \\ 5 & 2 \end{pmatrix}$ using \x{column operations}.
+
+Verify it matches the result from row operations.
+\end{frame}
+
+\begin{frame}{Exercise 1.5}
+Try to find the inverse of $A = \begin{pmatrix} 1 & 2 \\ 2 & 4 \end{pmatrix}$.
+
+What happens? Explain why this matrix is not invertible.
+\end{frame}
+
+\begin{frame}{Exercise 1.6}
+Show that if $A$ and $B$ are invertible, then:
+
+(a) $(A^{-1})^{-1} = A$
+
+\vspace{0.5cm}
+(b) $(A^T)^{-1} = (A^{-1})^T$
+\end{frame}
+
+\begin{frame}{Exercise 1.7}
+Consider the coffee shop example with matrix
+$$C = \begin{pmatrix} 2 & 2 \\ 1 & 1 \\ 0 & 4 \\ 2 & 1 \end{pmatrix}$$
+
+(a) Perform row operation $r_1 \to r_1 - 2r_2$ and interpret the material redefinition.
+
+(b) Perform column operation $c_2 \to c_2 + c_1$ and interpret the product redefinition.
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════
+% SUMMARY
+% ═══════════════════════════════════════════════════════════════
+
+\begin{frame}{Summary: Key Takeaways}
+\begin{enumerate}
+\item \textbf{Row operations}: \x{Contravariant} (inverse logic)
+   \begin{itemize}
+   \item Material $\times k$ → Row $\times \frac{1}{k}$ (reciprocal)
+   \item Material $x_i \to x_i + kx_j$ → Row $r_j \to r_j - kr_i$ (opposite sign!)
+   \end{itemize}
+
+\item \textbf{Column operations}: \x{Covariant} (direct logic)
+   \begin{itemize}
+   \item Product $\times k$ → Column $\times k$ (same)
+   \item Product $y_j \to y_j + ky_i$ → Column $c_j \to c_j + kc_i$ (same sign!)
+   \end{itemize}
+
+\item \textbf{Equation $C = AB$ is invariant} under:
+   \begin{itemize}
+   \item Simultaneous row ops on $A$ and $C$ (Prop 1.1)
+   \item Simultaneous column ops on $B$ and $C$ (Prop 1.2)
+   \end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Summary: Critical Theorems}
+\begin{enumerate}
+\setcounter{enumi}{3}
+\item \textbf{Left inverse = right inverse} for square matrices (Prop 1.4)
+
+\item \textbf{Row operations on $A^{-1}C$} preserve $B$ (Theorem 1.6)
+   \begin{itemize}
+   \item Use to solve $AB = C$ for $B$
+   \end{itemize}
+
+\item \textbf{Column operations on $CB^{-1}$} preserve $A$ (Theorem 1.7)
+   \begin{itemize}
+   \item Use to solve $AB = C$ for $A$
+   \end{itemize}
+
+\item \textbf{Finding $A^{-1}$}: use row ops on $A^{-1}I$ or column ops on $IA^{-1}$ until "$A$" becomes $I$
+\end{enumerate}
+
+\vspace{0.5cm}
+\begin{alertblock}{Remember}
+\textbf{Rows work backwards. Columns work forwards.}
+\end{alertblock}
 \end{frame}
 
 \end{document}
