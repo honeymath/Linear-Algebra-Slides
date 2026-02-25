@@ -1,6 +1,81 @@
+\documentclass[10pt]{beamer}
+\usetheme{metropolis}
 
-\subtitle{Column/Row operations}\maketitle
-\aaa{Learning Objectives}
+% ── Packages ──
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{graphicx}
+\usepackage{colortbl}
+\usepackage[most]{tcolorbox}
+\usepackage{chngcntr}
+
+% ── Theorem environments ──
+\newcounter{definition}
+\newcounter{prop}
+\newcounter{cor}
+\counterwithin{definition}{section}
+\counterwithin{prop}{section}
+\counterwithin{cor}{section}
+
+\newtcolorbox{defi}[1][]{
+breakable,
+enhanced,
+colback=yellow!10!white,
+colframe=red!75!black,
+title=\textbf{Definition}\refstepcounter{definition}~~\arabic{definition}~~#1
+}
+
+\newtcolorbox{prop}[1][]{
+breakable,
+enhanced,
+colback=yellow!10!white,
+colframe=yellow!70!red!85!black,
+title=\textbf{Proposition}\refstepcounter{prop}~~\arabic{prop}~~#1
+}
+
+\newtcolorbox{cor}[1][]{
+breakable,
+enhanced,
+colback=yellow!10!white,
+colframe=red!45!yellow!80!black,
+title=\textbf{Corollary}\refstepcounter{cor}~~\arabic{cor}~~#1
+}
+
+% ── Emoji definitions ──
+\newcommand{\bean}{\includegraphics[scale=0.07,natwidth=10,natheight=10]{Pictures/bean.png}}
+\newcommand{\soup}{\includegraphics[scale=0.10,natwidth=10,natheight=10]{Pictures/soup.png}}
+\newcommand{\ssoup}{\includegraphics[scale=0.07,natwidth=10,natheight=10]{Pictures/soup.png}}
+\newcommand{\lemon}{\includegraphics[scale=0.08,natwidth=10,natheight=10]{Pictures/lemon.png}}
+\newcommand{\leaf}{\includegraphics[scale=0.08,natwidth=10,natheight=10]{Pictures/leaf.png}}
+\newcommand{\milk}{\includegraphics[scale=0.07,natwidth=10,natheight=10]{Pictures/milk.png}}
+\newcommand{\smilk}{\includegraphics[scale=0.04,natwidth=10,natheight=10]{Pictures/milk.png}}
+\newcommand{\coffee}{\includegraphics[scale=0.10,natwidth=10,natheight=10]{Pictures/coffee.png}}
+\newcommand{\scoffee}{\includegraphics[scale=0.07,natwidth=10,natheight=10]{Pictures/coffee.png}}
+\newcommand{\cola}{\includegraphics[scale=0.08,natwidth=10,natheight=10]{Pictures/cola.png}}
+\newcommand{\scola}{\includegraphics[scale=0.05,natwidth=10,natheight=10]{Pictures/cola.png}}
+\newcommand{\tea}{\includegraphics[scale=0.08,natwidth=10,natheight=10]{Pictures/tea.png}}
+\newcommand{\stea}{\includegraphics[scale=0.05,natwidth=10,natheight=10]{Pictures/tea.png}}
+\newcommand{\cow}{\includegraphics[scale=0.08,natwidth=10,natheight=10]{Pictures/cow.png}}
+\newcommand{\bento}{\includegraphics[scale=0.09,natwidth=10,natheight=10]{Pictures/bento.png}}
+
+% ── Classification macros ──
+\newcommand{\li}{\textbf{\color{red} linealy independent }}
+\newcommand{\inve}{\textbf{\color{purple} invertible }}
+
+% ── Highlighting macros ──
+\newcommand{\x}[1]{\alert{\textbf{#1}}}
+\newcommand{\h}{\cellcolor{red!50}}
+\newcommand{\y}{\cellcolor{yellow!50}}
+\newcommand{\e}{\cellcolor{blue!50}}
+
+\title{Column/Row operations}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Learning Objectives}
 \begin{tikzpicture}[scale=0.8,transform shape, block/.style={draw, rectangle, minimum width=2cm, minimum height=1cm}]
 \node[block,fill=green] (block1) {Matrix Multiplication(1.4)};
     \node[block, right=1cm of block1.east, anchor=west] (block2) {Row/Column Operations(1.3)};
@@ -10,7 +85,7 @@
 
 \begin{itemize}
 \item What \x{three} kind of row/column operations are there?
-\item For the product $AB=C$, 
+\item For the product $AB=C$,
 	\begin{itemize}
 		\item Which two matrices is allowed to play \x{simutaneous row operation} without changing the equality?
 		\item Which two matrices is allowed to play \x{simutaneous column operation} without changing the equality?
@@ -24,31 +99,131 @@
 \end{itemize}
 
 \x{Explain row/column operation to elementary school students!}
-\a{A special request}
+\end{frame}
+
+\begin{frame}{A special request}
 A custormer requests for a special \textbf{new drink } need the following ingradients
 \vfill
-\[columns]{
-\co5 \textbf{Old Drinks ingradients:}\t{}\milk\soup\coffee\tea,\leaf0202,\lemon0101,\bean0420,\cow1100.
-\co3 \textbf{New Drink requirement: }\t{}\cola,\leaf4,\lemon2,\bean2,\cow4.
-\co2\textbf{Problem:}\t{}\cola,\milk?,\soup?,\coffee?,\tea?.
-}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Old Drinks ingradients:}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+&\milk&\soup&\coffee&\tea\\
+\hline
+\leaf&0&2&0&2\\
+\hline
+\lemon&0&1&0&1\\
+\hline
+\bean&0&4&2&0\\
+\hline
+\cow&1&1&0&0\\
+\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.3\textwidth}
+\textbf{New Drink requirement: }
+\begin{tabular}{|l|c|}
+\hline
+&\cola\\
+\hline
+\leaf&4\\
+\hline
+\lemon&2\\
+\hline
+\bean&2\\
+\hline
+\cow&4\\
+\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.2\textwidth}
+\textbf{Problem:}
+\begin{tabular}{|l|c|}
+\hline
+&\cola\\
+\hline
+\milk&?\\
+\hline
+\soup&?\\
+\hline
+\coffee&?\\
+\hline
+\tea&?\\
+\hline
+\end{tabular}
+\end{column}
+\end{columns}
 But the chef only have \milk,\soup,\coffee,\tea at the hand, can he produce \cola by those materials?
-\a\aa
+\end{frame}
+
+\begin{frame}
 The chef thought this problem is the same as a matrix product equation, indeed, replace those questionmarks by $x,y,z$, he need the following equation to be true
-\[columns]{
-\co5 \textbf{Old Drinks ingradients:}\t{}\milk\soup\coffee\tea,\leaf0202,\lemon0101,\bean0420,\cow1100.$ \quad\times $
-\co3\textbf{Problem:}\t{}\cola,\milk x,\soup y,\coffee z,\tea w. $\quad = $
-\co2 \textbf{New Drink requirement: }\t{}\cola,\leaf4,\lemon2,\coffee2,\cow4.
-}
-\a\aa
-Mathematically, this equation is writting as 
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Old Drinks ingradients:}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+&\milk&\soup&\coffee&\tea\\
+\hline
+\leaf&0&2&0&2\\
+\hline
+\lemon&0&1&0&1\\
+\hline
+\bean&0&4&2&0\\
+\hline
+\cow&1&1&0&0\\
+\hline
+\end{tabular}
+$\quad\times$
+\end{column}
+\begin{column}{0.3\textwidth}
+\textbf{Problem:}
+\begin{tabular}{|l|c|}
+\hline
+&\cola\\
+\hline
+\milk& x\\
+\hline
+\soup& y\\
+\hline
+\coffee& z\\
+\hline
+\tea& w\\
+\hline
+\end{tabular}
+$\quad = $
+\end{column}
+\begin{column}{0.2\textwidth}
+\textbf{New Drink requirement: }
+\begin{tabular}{|l|c|}
+\hline
+&\cola\\
+\hline
+\leaf&4\\
+\hline
+\lemon&2\\
+\hline
+\coffee&2\\
+\hline
+\cow&4\\
+\hline
+\end{tabular}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+Mathematically, this equation is writting as
 $$
-\m 0202,0101,0420,1100.\m x,y,z,w.=\m4,2,2,4.
+\begin{pmatrix}0&2&0&2\\0&1&0&1\\0&4&2&0\\1&1&0&0\end{pmatrix}\begin{pmatrix}x\\y\\z\\w\end{pmatrix}=\begin{pmatrix}4\\2\\2\\4\end{pmatrix}
 $$
-\a\aa
+\end{frame}
+
+\begin{frame}
 By understanding by columns, solving it is the same as asking for
 
-\t4,2,2,4. =\t{0},{0},{0},{1}. \textbf{x} +\t{2},{1},{4},{1}.\textbf{y}+\t{0},{0},{2},{0}. \textbf{z} +\t{2},{1},{0},{0}. \textbf{w}
+\begin{tabular}{c}4\\2\\2\\4\end{tabular} =\begin{tabular}{c}{0}\\{0}\\{0}\\{1}\end{tabular} \textbf{x} +\begin{tabular}{c}{2}\\{1}\\{4}\\{1}\end{tabular}\textbf{y}+\begin{tabular}{c}{0}\\{0}\\{2}\\{0}\end{tabular} \textbf{z} +\begin{tabular}{c}{2}\\{1}\\{0}\\{0}\end{tabular} \textbf{w}
 
 This can be write as the following and we call it the \textbf{Linear equation}
 $$
@@ -59,20 +234,51 @@ $$
 1x+1y+0z+0w=4\\
 \end{cases}
 $$
-\a{Changing materials}
+\end{frame}
+
+\begin{frame}{Changing materials}
 Observation: The question is only asking for the meal's demand for semi-product meals. It does not asking anything related to the raw material.
 
-\t{}\cola,\milk x,\soup y,\coffee z,\tea w.
+\begin{tabular}{|l|c|}\hline&\cola\\\hline\milk& x\\\hline\soup& y\\\hline\coffee& z\\\hline\tea& w\\\hline\end{tabular}
 
 No \lemon,\leaf,\bean,\cow appeared in this question. Therefore we can change materials to \x{simplify} the problem.
+\end{frame}
 
-\a{Row reduction}
+\begin{frame}{Row reduction}
 The clever chef changes the \textbf{material} so the ingradients table is easier
 
-\[columns]{
-\co{45}\t{}\smilk\ssoup\scoffee\stea\scola,\leaf02024,\lemon01012,\bean04202,\cow11004.
-\co{55}\t{}\smilk\ssoup\scoffee\stea\scola,\cow{\alert1}1004,{\bean\bean}02{\alert1}01,{\lemon+\leaf\leaf}010{\alert1}2,\leaf00000.
-}
+\begin{columns}
+\begin{column}{0.45\textwidth}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+&\smilk&\ssoup&\scoffee&\stea&\scola\\
+\hline
+\leaf&0&2&0&2&4\\
+\hline
+\lemon&0&1&0&1&2\\
+\hline
+\bean&0&4&2&0&2\\
+\hline
+\cow&1&1&0&0&4\\
+\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.55\textwidth}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+&\smilk&\ssoup&\scoffee&\stea&\scola\\
+\hline
+\cow&{\alert1}&1&0&0&4\\
+\hline
+{\bean\bean}&0&2&{\alert1}&0&1\\
+\hline
+{\lemon+\leaf\leaf}&0&1&0&{\alert1}&2\\
+\hline
+\leaf&0&0&0&0&0\\
+\hline
+\end{tabular}
+\end{column}
+\end{columns}
 $$
 \begin{cases}
 0x+2y+0z+2w=4\\
@@ -88,12 +294,42 @@ $$
 0x+0y+0z+0w=0\\
 \end{cases}
 $$
-\a{Row Multiplying}
+\end{frame}
+
+\begin{frame}{Row Multiplying}
 Doubling the material $\bean\mapsto\bean\bean$   will \alert{\textbf{multiply 3rd row by $\frac12$}}. \vfill
-\[columns]{
-\co{45}\t{}\smilk\ssoup\scoffee\stea\scola,\leaf02024,\lemon01012,\bean04202,\cow11004.
-\co{55}\t{}\smilk\ssoup\scoffee\stea\scola,\leaf02024,\lemon01012,{\bean\bean}{\alert{0}}{\alert{2}}{\alert{1}}{\alert{0}}{\alert{1}},\cow11004.
-}
+\begin{columns}
+\begin{column}{0.45\textwidth}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+&\smilk&\ssoup&\scoffee&\stea&\scola\\
+\hline
+\leaf&0&2&0&2&4\\
+\hline
+\lemon&0&1&0&1&2\\
+\hline
+\bean&0&4&2&0&2\\
+\hline
+\cow&1&1&0&0&4\\
+\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.55\textwidth}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+&\smilk&\ssoup&\scoffee&\stea&\scola\\
+\hline
+\leaf&0&2&0&2&4\\
+\hline
+\lemon&0&1&0&1&2\\
+\hline
+{\bean\bean}&{\alert{0}}&{\alert{2}}&{\alert{1}}&{\alert{0}}&{\alert{1}}\\
+\hline
+\cow&1&1&0&0&4\\
+\hline
+\end{tabular}
+\end{column}
+\end{columns}
 $$
 \begin{cases}
 0x+2y+0z+2w=4\\
@@ -110,12 +346,43 @@ $$
 \end{cases}
 $$
 On equation, the third equation has been divided by $2$. This is called \alert{\textbf{row multiplying}}
-\a{Row Switching}
+\end{frame}
+
+\begin{frame}{Row Switching}
 \textbf{Switching the order} would not change problem, \vfill
-\[columns]{
-	\co{5}\t{}\smilk\ssoup\scoffee\stea\scola,\leaf02024,\lemon01012,{\bean\bean}02101,\cow11004.
-\co{5}\t{}\smilk\ssoup\scoffee\stea\scola,\cow11004,{\bean\bean}02101,\lemon01012,\leaf02024.
-}\vfill
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+&\smilk&\ssoup&\scoffee&\stea&\scola\\
+\hline
+\leaf&0&2&0&2&4\\
+\hline
+\lemon&0&1&0&1&2\\
+\hline
+{\bean\bean}&0&2&1&0&1\\
+\hline
+\cow&1&1&0&0&4\\
+\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+&\smilk&\ssoup&\scoffee&\stea&\scola\\
+\hline
+\cow&1&1&0&0&4\\
+\hline
+{\bean\bean}&0&2&1&0&1\\
+\hline
+\lemon&0&1&0&1&2\\
+\hline
+\leaf&0&2&0&2&4\\
+\hline
+\end{tabular}
+\end{column}
+\end{columns}
+\vfill
 $$
 \begin{cases}
 {\color{red}0x+2y+0z+2w=4}\\
@@ -132,14 +399,43 @@ $$
 \end{cases}
 $$
  This is called \alert{\textbf{row switching}}
+\end{frame}
 
-\a{Row Adding}
+\begin{frame}{Row Adding}
 Replacing \lemon by \lemon\leaf\leaf. Each time I use the package \lemon\leaf\leaf I save \leaf\leaf. Then the row for \leaf is reduced by 2 times the row for \lemon.\vfill
 
-\[columns]{
-\co 5 \t{}\smilk\ssoup\scoffee\stea\scola,\cow11004,{\bean\bean}02101,\lemon01012,\leaf02024.
-\co 5 \t{}\smilk\ssoup\scoffee\stea\scola,\cow11004,{\bean\bean}02101,{\lemon\leaf\leaf}01012,\leaf00000.
-}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+&\smilk&\ssoup&\scoffee&\stea&\scola\\
+\hline
+\cow&1&1&0&0&4\\
+\hline
+{\bean\bean}&0&2&1&0&1\\
+\hline
+\lemon&0&1&0&1&2\\
+\hline
+\leaf&0&2&0&2&4\\
+\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+&\smilk&\ssoup&\scoffee&\stea&\scola\\
+\hline
+\cow&1&1&0&0&4\\
+\hline
+{\bean\bean}&0&2&1&0&1\\
+\hline
+{\lemon\leaf\leaf}&0&1&0&1&2\\
+\hline
+\leaf&0&0&0&0&0\\
+\hline
+\end{tabular}
+\end{column}
+\end{columns}
 \vfill
 $$
 \begin{cases}
@@ -157,18 +453,34 @@ $$
 \end{cases}
 $$
 On equation, 4'th equation has been subtracted by 3rd equation. This is called \alert{\textbf{row adding}}
-\a{When should row reduction stop?}
-In one words, row operation is \textbf{updating the raw ingradient list}. 
+\end{frame}
+
+\begin{frame}{When should row reduction stop?}
+In one words, row operation is \textbf{updating the raw ingradient list}.
 
 We should stop if the matrix is \x{simple enough} for us to solve equations. So what is simple? There are many discussions.
 
-\textbf{Theory 1}: We should stop if 
+\textbf{Theory 1}: We should stop if
 \begin{itemize}
 \item Each non-zero row has an entry $1$, such that this $1$ is the only non-zero entry on its columns.
 \end{itemize}
 \vfill
-\t{}\milk\soup\coffee\tea\cola,\cow{\alert{\textbf1}}1004,{\bean\bean}02{\alert{\textbf1}}01,{\lemon+\leaf\leaf}010{\alert{\textbf1}}2,\leaf00000.
-\a\aa
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+&\milk&\soup&\coffee&\tea&\cola\\
+\hline
+\cow&{\alert{\textbf1}}&1&0&0&4\\
+\hline
+{\bean\bean}&0&2&{\alert{\textbf1}}&0&1\\
+\hline
+{\lemon+\leaf\leaf}&0&1&0&{\alert{\textbf1}}&2\\
+\hline
+\leaf&0&0&0&0&0\\
+\hline
+\end{tabular}
+\end{frame}
+
+\begin{frame}
 \textbf{Explaination to Theory 1}: If the matrix has been reduced that way, we obtain an equation
 $$
 \begin{cases}
@@ -187,40 +499,131 @@ x=4-y\\
 \end{cases}
 $$
 Put $y=0$, then $(x,y,z,w)=(4,0,1,2)$ is a solution.
-\a\aa
+\end{frame}
+
+\begin{frame}
 \textbf{Explaination to Theory 1 without equation}:
-A column with a single $1$ and $0$ elsewhere can help us to replace a material with some compunds. For example, 
+A column with a single $1$ and $0$ elsewhere can help us to replace a material with some compunds. For example,
 \vfill
-\[columns]{
-\co{25}\t{}\coffee,\cow0,{\bean\bean}{\textbf1},{\lemon+\leaf\leaf}0,\leaf0.
-\co{05}$\implies$
-\co7 \coffee = \textbf0\cow+\textbf{\alert1}\bean\bean+\textbf0(\lemon\leaf\leaf)+\textbf0\leaf
+\begin{columns}
+\begin{column}{0.25\textwidth}
+\begin{tabular}{|l|c|}
+\hline
+&\coffee\\
+\hline
+\cow&0\\
+\hline
+{\bean\bean}&{\textbf1}\\
+\hline
+{\lemon+\leaf\leaf}&0\\
+\hline
+\leaf&0\\
+\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.05\textwidth}
+$\implies$
+\end{column}
+\begin{column}{0.7\textwidth}
+\coffee = \textbf0\cow+\textbf{\alert1}\bean\bean+\textbf0(\lemon\leaf\leaf)+\textbf0\leaf
+
 ~\\
 ~\\~\\
 which means
 \bean\bean \textbf{=} \coffee
-}
+\end{column}
+\end{columns}
+\end{frame}
 
-\a\aa
+\begin{frame}
 With this observation, we can replace \textbf{certain materials} by \textbf{certain meals}
-\[columns]{
-\co{55}
-\t{}\smilk\ssoup\scoffee\stea\scola,{\h\cow}{\alert1}1004,{\y\bean\bean}02{\alert1}01,{\e\lemon+\leaf\leaf}010{\alert1}2,\leaf00000.
-\co{45}
-\t{}\smilk\ssoup\scoffee\stea\scola,{\h\milk}{\alert1}1004,{\y\coffee}02{\alert1}01,{\e\tea}010{\alert1}2,\leaf00000.
-}
-\a\aa
-Note that the leaves \leaf is no longer needed for those packaged materials, we can delete it.
-\t{}\milk\soup\coffee\tea\cola,{\h\milk}{\alert1}1004,{\y\coffee}02{\alert1}01,{\e\tea}010{\alert1}2.
+\begin{columns}
+\begin{column}{0.55\textwidth}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+&\smilk&\ssoup&\scoffee&\stea&\scola\\
+\hline
+{\h\cow}&{\alert1}&1&0&0&4\\
+\hline
+{\y\bean\bean}&0&2&{\alert1}&0&1\\
+\hline
+{\e\lemon+\leaf\leaf}&0&1&0&{\alert1}&2\\
+\hline
+\leaf&0&0&0&0&0\\
+\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.45\textwidth}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+&\smilk&\ssoup&\scoffee&\stea&\scola\\
+\hline
+{\h\milk}&{\alert1}&1&0&0&4\\
+\hline
+{\y\coffee}&0&2&{\alert1}&0&1\\
+\hline
+{\e\tea}&0&1&0&{\alert1}&2\\
+\hline
+\leaf&0&0&0&0&0\\
+\hline
+\end{tabular}
+\end{column}
+\end{columns}
+\end{frame}
 
-\a\aa
+\begin{frame}
+Note that the leaves \leaf is no longer needed for those packaged materials, we can delete it.
+
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+&\milk&\soup&\coffee&\tea&\cola\\
+\hline
+{\h\milk}&{\alert1}&1&0&0&4\\
+\hline
+{\y\coffee}&0&2&{\alert1}&0&1\\
+\hline
+{\e\tea}&0&1&0&{\alert1}&2\\
+\hline
+\end{tabular}
+\end{frame}
+
+\begin{frame}
 which tell us directly the list we want, lets compare the original question\vfill
-\[columns]{
-\co3 \textbf{Output}
-\t{}\cola,{\h\milk}4,{\y\coffee}1,{\e\tea}2.
-\co 4\textbf{Original Question}
-\t{}\cola,{\milk}x,\soup y,{\coffee}z,{\tea}w.
-}\vfill
+\begin{columns}
+\begin{column}{0.3\textwidth}
+\textbf{Output}
+
+\begin{tabular}{|l|c|}
+\hline
+&\cola\\
+\hline
+{\h\milk}&4\\
+\hline
+{\y\coffee}&1\\
+\hline
+{\e\tea}&2\\
+\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.4\textwidth}
+\textbf{Original Question}
+
+\begin{tabular}{|l|c|}
+\hline
+&\cola\\
+\hline
+{\milk}&x\\
+\hline
+\soup& y\\
+\hline
+{\coffee}&z\\
+\hline
+{\tea}&w\\
+\hline
+\end{tabular}
+\end{column}
+\end{columns}
+\vfill
 So $x=4,y=0,z=1,w=2$.(\soup have not been used.)
 This process is equivalent as setting $y=0$ to obtain a solution.
 $$
@@ -231,8 +634,9 @@ z&=1\\
 w&=2\\
 \end{cases}
 $$
- 
-\a\aa
+\end{frame}
+
+\begin{frame}
 \textbf{Theory 2}: We should stop if
 \begin{itemize}
 \item After deleting zero rows, there are columns that can be rearranged into a triangular matrix with non-zero diagonal.
@@ -240,21 +644,27 @@ $$
 Example:
 
 $$
-\m {\y1}{\y2}{\y3}466,
-   {\y2}0{\y3}211,
-   {\y1}00210,
-   000000.
+\begin{pmatrix}
+{\y1}&{\y2}&{\y3}&4&6&6\\
+{\y2}&0&{\y3}&2&1&1\\
+{\y1}&0&0&2&1&0\\
+0&0&0&0&0&0
+\end{pmatrix}
 \qquad\longrightarrow
 \qquad
-\m 231,032,001.
+\begin{pmatrix}2&3&1\\0&3&2\\0&0&1\end{pmatrix}
 $$
-\a\aa
+\end{frame}
+
+\begin{frame}
 We beifly explain why , firstly, circle the entry that corresponding to the diagonal of the triangular matrix
 $$
-\m {1}{\y2}{3}466,
-   {2}0{\y3}211,
-   {\y1}00210,
-   000000.
+\begin{pmatrix}
+{1}&{\y2}&{3}&4&6&6\\
+{2}&0&{\y3}&2&1&1\\
+{\y1}&0&0&2&1&0\\
+0&0&0&0&0&0
+\end{pmatrix}
 $$
 We read equations from bottom to top, one by one
 $$
@@ -267,109 +677,271 @@ $$
 Then the next new variable is $y$.
 $$
 x+2y+3z+4u+6w=6\implies y=\frac{6-6w-4u-3z-x}2.
-$$ 
+$$
 Therefore, the equation can be solved. We call this process \x{backwards substituting}.
+\end{frame}
 
-
-
-%
-\a{Identity matrix}
+\begin{frame}{Identity matrix}
 Filling the following blanks.
 \vfill
-\[columns]{
-\co4
-\t{}\tea\milk\coffee,?100,?010,?001.
-\co4
-\t{}???,\tea100,\milk010,\coffee001.
-%\co4
-%\t{}\tea\milk\coffee,\tea???,\milk???,\coffee???.
-}
-\a\aa
+\begin{columns}
+\begin{column}{0.4\textwidth}
+\begin{tabular}{|l|c|c|c|}
+\hline
+&\tea&\milk&\coffee\\
+\hline
+?&1&0&0\\
+\hline
+?&0&1&0\\
+\hline
+?&0&0&1\\
+\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.4\textwidth}
+\begin{tabular}{|l|c|c|c|}
+\hline
+&?&?&?\\
+\hline
+\tea&1&0&0\\
+\hline
+\milk&0&1&0\\
+\hline
+\coffee&0&0&1\\
+\hline
+\end{tabular}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
 Suppose \milk \coffee \tea , any two can not blend to the third drink (called \li). Filling the following blanks.
 \vfill
-\t{}\tea\milk\coffee,\tea???,\milk???,\coffee???.
-\a\aa
-\[columns]{\co4\t{}\tea\milk\coffee,\tea100,\milk010,\coffee001.
-\co6 This matrix is the \x{ingradient list of making ingradient}, i.e. do nothing.}
-\[defi]{
+\begin{tabular}{|l|c|c|c|}
+\hline
+&\tea&\milk&\coffee\\
+\hline
+\tea&?&?&?\\
+\hline
+\milk&?&?&?\\
+\hline
+\coffee&?&?&?\\
+\hline
+\end{tabular}
+\end{frame}
+
+\begin{frame}
+\begin{columns}
+\begin{column}{0.4\textwidth}
+\begin{tabular}{|l|c|c|c|}
+\hline
+&\tea&\milk&\coffee\\
+\hline
+\tea&1&0&0\\
+\hline
+\milk&0&1&0\\
+\hline
+\coffee&0&0&1\\
+\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.6\textwidth}
+This matrix is the \x{ingradient list of making ingradient}, i.e. do nothing.
+\end{column}
+\end{columns}
+
+\begin{defi}
 The \x{identity matrix} is a $n\times n$ square matrix with 1 on the diagonal and 0 elsewhere.
-}
-\[prop]{For any $n\times m$ matrix $P$, $I_nP=PI_m=P$ .
-}
-\a{Inverse Matrix}
-The chef is wondering if another guest coming with a special request, so he would like a list to produce the ingradient out of meals. 
+\end{defi}
+
+\begin{prop}
+For any $n\times m$ matrix $P$, $I_nP=PI_m=P$ .
+\end{prop}
+\end{frame}
+
+\begin{frame}{Inverse Matrix}
+The chef is wondering if another guest coming with a special request, so he would like a list to produce the ingradient out of meals.
 \vfill
-\[columns]{\co 5\textbf{He has a list}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{He has a list}
 
-\t{}\milk\coffee,\bean02,\cow10.
+\begin{tabular}{|l|c|c|}
+\hline
+&\milk&\coffee\\
+\hline
+\bean&0&2\\
+\hline
+\cow&1&0\\
+\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.5\textwidth}
+\textbf{How could he make another list?}
 
-\co 5 \textbf{How could he make another list?}
-\t{}\bean\cow,\milk??,\coffee??.
-}
+\begin{tabular}{|l|c|c|}
+\hline
+&\bean&\cow\\
+\hline
+\milk&?&?\\
+\hline
+\coffee&?&?\\
+\hline
+\end{tabular}
+\end{column}
+\end{columns}
 \vfill
 He realize this list should have a property, combinging them should be.
-\[columns]{
-\co3
-\t{}\milk\coffee,\bean02,\cow10.
-\co3 \t{}\bean\cow,\milk??,\coffee??.
-\co 1=\co3\t{}\bean\cow,\bean{1}{0},\cow{0}{1}.
-}
-\a\aa
-\[defi]{For a $n\times n$ matrix $A$, an inverse is a matrix $B$, such that 
+\begin{columns}
+\begin{column}{0.3\textwidth}
+\begin{tabular}{|l|c|c|}
+\hline
+&\milk&\coffee\\
+\hline
+\bean&0&2\\
+\hline
+\cow&1&0\\
+\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.3\textwidth}
+\begin{tabular}{|l|c|c|}
+\hline
+&\bean&\cow\\
+\hline
+\milk&?&?\\
+\hline
+\coffee&?&?\\
+\hline
+\end{tabular}
+\end{column}
+\begin{column}{0.1\textwidth}
+=
+\end{column}
+\begin{column}{0.3\textwidth}
+\begin{tabular}{|l|c|c|}
+\hline
+&\bean&\cow\\
+\hline
+\bean&{1}&{0}\\
+\hline
+\cow&{0}&{1}\\
+\hline
+\end{tabular}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\begin{defi}
+For a $n\times n$ matrix $A$, an inverse is a matrix $B$, such that
 $$
 AB=BA=I_n.
 $$
 If such a $B$ exists, $A$ is called \inve and denote the inverse as $A^{-1}$.
-}
- 
+\end{defi}
+\end{frame}
 
-\a{Simutaneous Row Operation}
+\begin{frame}{Simutaneous Row Operation}
 For the product $C=AB$, changing raw materials only affect rows of $A$ and $C$ by certain simutaneous row operations. the matrix $B$ would not change since it does not depend on raw materials. Therefore,
 \raisebox{2cm}{
-\[prop]{The equality $C=AB$ will still be true if we perform arbitrary simutaneous row operation on $A$ and $C$
+\begin{prop}
+The equality $C=AB$ will still be true if we perform arbitrary simutaneous row operation on $A$ and $C$
+\end{prop}
 }
+\end{frame}
 
-}
+\begin{frame}
+\begin{equation*}
+\overbrace{
+\begin{tabular}{|l|c|c|c|}
+\hline
+&\milk&\coffee&\tea\\
+\hline
+\leaf&{0}&{0}&{2}\\
+\hline
+\lemon&{0}&{0}&{1}\\
+\hline
+\bean&{0}&{2}&{0}\\
+\hline
+\cow&{1}&{0}&{0}\\
+\hline
+\end{tabular}
+}^{\text{left factor}}
+\overbrace{
+\begin{tabular}{|l|c|c|}
+\hline
+&\bento&\soup\\
+\hline
+\milk&{2}&{1}\\
+\hline
+\coffee&{0}&{2}\\
+\hline
+\tea&{1}&{1}\\
+\hline
+\end{tabular}
+}^{\text{right factor}}
+\quad=
+\overbrace{
+\begin{tabular}{|l|c|c|}
+\hline
+&\bento&\soup\\
+\hline
+\leaf&{2}&2\\
+\hline
+\lemon&{\alert1}&{\alert1}\\
+\hline
+\bean&{0}&4\\
+\hline
+\cow&{2}&1\\
+\hline
+\end{tabular}
+}^{\text{product}}
+\end{equation*}
+\end{frame}
 
-\a\aa
-\[equation*]{\overbrace{\t{}\milk\coffee\tea,\leaf{0}{0}{2},\lemon{0}{0}{1},\bean{0}{2}{0},\cow{1}{0}{0}.}^{\text{left factor}}\overbrace{\t{}\bento\soup,
-\milk{2}{1},
-\coffee{0}{2},
-\tea{1}{1}.}^{\text{right factor}}\quad=
-\overbrace{\t{}\bento\soup,\leaf{2}2,\lemon{\alert1}{\alert1},\bean{0}4,\cow{2}1.}^{\text{product}}}
-\a\aa
+\begin{frame}
 If $A$ is invertible, we can write $B=A^{-1}C$, this actually tells us that
-\[cor]{If $A$ is invertible, the product $A^{-1}C$ does not change if we perform simutaneous row operation on $A$ and $C$. 
-}
-\a\aa
+\begin{cor}
+If $A$ is invertible, the product $A^{-1}C$ does not change if we perform simutaneous row operation on $A$ and $C$.
+\end{cor}
+\end{frame}
+
+\begin{frame}
 Let me show you an application of this in calculation
 $$
-\m 110,001,010.^{-1}\m123,121,029.
+\begin{pmatrix}1&1&0\\0&0&1\\0&1&0\end{pmatrix}^{-1}\begin{pmatrix}1&2&3\\1&2&1\\0&2&9\end{pmatrix}
 $$
 
 $$
-\xequal{r_1\mapsto r_1-r_3}\m 100,001,010.^{-1}\m10{-6},121,029.
+\overset{r_1\mapsto r_1-r_3}{=}\begin{pmatrix}1&0&0\\0&0&1\\0&1&0\end{pmatrix}^{-1}\begin{pmatrix}1&0&{-6}\\1&2&1\\0&2&9\end{pmatrix}
 $$
 
 $$
-\xequal{r_2\leftrightarrow r_3}\m 100,010,001.^{-1}\m10{-6},029,121.
+\overset{r_2\leftrightarrow r_3}{=}\begin{pmatrix}1&0&0\\0&1&0\\0&0&1\end{pmatrix}^{-1}\begin{pmatrix}1&0&{-6}\\0&2&9\\1&2&1\end{pmatrix}
 $$
 
 $$
-=\m10{-6},029,121.
+=\begin{pmatrix}1&0&{-6}\\0&2&9\\1&2&1\end{pmatrix}
 $$
+\end{frame}
 
-\a{Simutaneous Column Operation}
+\begin{frame}{Simutaneous Column Operation}
 Similarly, Column operations corresponding to updating list when changing final meals by its order, amount, or packing them together. For the product $C=AB$, when final meals changes, the matrices affected is $C$ and $B$. $A$ is the list of making intermediates, it does not change.
-\[prop]{The equality $C=AB$ will still be true if we perform arbitrary simutaneous column operation on $B$ and $C$
-}
+\begin{prop}
+The equality $C=AB$ will still be true if we perform arbitrary simutaneous column operation on $B$ and $C$
+\end{prop}
 If $B$ is invertible, we can write $A=CB^{-1}$, this actually tells us that
-\[cor]{If $B$ is invertible, the product $CB^{-1}$ does not change if we perform simutaneous column operation on $B$ and $C$. 
-}
-\a{Elementary Matrices}
-We will introduce elementary matrices.
+\begin{cor}
+If $B$ is invertible, the product $CB^{-1}$ does not change if we perform simutaneous column operation on $B$ and $C$.
+\end{cor}
+\end{frame}
 
-\a\aa
+\begin{frame}{Elementary Matrices}
+We will introduce elementary matrices.
+\end{frame}
+
+\begin{frame}
 Let $A$ be an $m\times n$ matrix, and let $I_m$ be $m\times m$ identity matrix. We have a equation
 $$
 A = I_mA
@@ -379,22 +951,27 @@ $$
 A' = EA
 $$
 \textbf{We may view this fact by another perspective}: The product $EA$ is the same as applying row operations recorded in $E$ to $A$.
-\a\aa
-\textbf{Experiment:} 
+\end{frame}
+
+\begin{frame}
+\textbf{Experiment:}
 $$
-\m 10,01. \m 24,13. = \m 24,13. 
+\begin{pmatrix}1&0\\0&1\end{pmatrix} \begin{pmatrix}2&4\\1&3\end{pmatrix} = \begin{pmatrix}2&4\\1&3\end{pmatrix}
 \implies
-\m 11,01. \m 24,13. = \m 37,13.
+\begin{pmatrix}1&1\\0&1\end{pmatrix} \begin{pmatrix}2&4\\1&3\end{pmatrix} = \begin{pmatrix}3&7\\1&3\end{pmatrix}
 $$
 \textbf{Explaination from another perspective:}
-\t{left factor}{row operation recorded}{product: apply row operation},
-{${\m11,01.}$}{add 2nd row to 1st row.}{${\m 11,01. \m {\x2}{\x4},13. = \m {\x3}{\x7},13.}$}.
 
+\begin{tabular}{|l|l|l|}
+\hline
+left factor&row operation recorded&product: apply row operation\\
+\hline
+${\begin{pmatrix}1&1\\0&1\end{pmatrix}}$&add 2nd row to 1st row.&${\begin{pmatrix}1&1\\0&1\end{pmatrix} \begin{pmatrix}{\x2}&{\x4}\\1&3\end{pmatrix} = \begin{pmatrix}{\x3}&{\x7}\\1&3\end{pmatrix}}$\\
+\hline
+\end{tabular}
+\end{frame}
 
-
-
-\a\aa
-
+\begin{frame}
 \begin{prop}
 Suppose $E$ is a matrix obtained by applying some row operations from $I_n$, then $EA$ is exactly the matrix by applying the same row operations on $A$.
 \end{prop}
@@ -402,93 +979,125 @@ Suppose $E$ is a matrix obtained by applying some row operations from $I_n$, the
 \begin{defi}
 An elementary matrix $E$ is a matrix after one-step row operation from identity matrix.
 \end{defi}
+\end{frame}
 
-\a\aa
+\begin{frame}
+\begin{tabular}{|l|l|l|}
+\hline
+Name&Elementary matrices example&Inverse\\
+\hline
+Switching&{$\begin{pmatrix}1&0&0\\0&0&1\\0&1&0\end{pmatrix}$}&{$\begin{pmatrix}1&0&0\\0&0&1\\0&1&0\end{pmatrix}$}\\
+\hline
+Multiplying&{$\begin{pmatrix}1&0&0\\0&2&0\\0&0&1\end{pmatrix}$}&{$\begin{pmatrix}1&0&0\\0&{\frac12}&0\\0&0&1\end{pmatrix}$}\\
+\hline
+Adding&{$\begin{pmatrix}1&0&0\\0&1&1\\0&0&1\end{pmatrix}$}&{$\begin{pmatrix}1&0&0\\0&1&{-1}\\0&0&1\end{pmatrix}$}\\
+\hline
+\end{tabular}
+\end{frame}
 
-\t{Name}{Elementary matrices example}{Inverse},
-{Switching}{{$\m100,001,010.$}}{{$\m100,001,010.$}},
-{Multiplying}{{$\m100,020,001.$}}{{$\m100,0{\frac12}0,001.$}},
-{Adding}{{$\m100,011,001.$}}{{$\m100,01{-1},001.$}}.
-
-\a\aa
+\begin{frame}
 \textbf{Exercise}: What is the following product? calculate in mind.
 $$
-\m11,01.\m10,02.\m 12,34.
+\begin{pmatrix}1&1\\0&1\end{pmatrix}\begin{pmatrix}1&0\\0&2\end{pmatrix}\begin{pmatrix}1&2\\3&4\end{pmatrix}
 $$
 
 \textbf{Solution}
 $$
-\m11,01.\m10,02.\m 12,34.=\m11,01.\m 12,68.=\m7{10},68.
+\begin{pmatrix}1&1\\0&1\end{pmatrix}\begin{pmatrix}1&0\\0&2\end{pmatrix}\begin{pmatrix}1&2\\3&4\end{pmatrix}=\begin{pmatrix}1&1\\0&1\end{pmatrix}\begin{pmatrix}1&2\\6&8\end{pmatrix}=\begin{pmatrix}7&{10}\\6&8\end{pmatrix}
 $$
+\end{frame}
 
-\a\aa
-
+\begin{frame}
 Look at the following matrix(maybe not elementary). By thinking how it changed from identity matrix, what kind of row operation does it record?
 
+\begin{tabular}{|l|l|}
+\hline
+left-factor&row operation recorded.\\
+\hline
+${\begin{pmatrix}0&1\\1&0\end{pmatrix}}$&Switch two rows\\
+\hline
+${\begin{pmatrix}0\\1\end{pmatrix}}$&Delete the first row\\
+\hline
+${\begin{pmatrix}1&1\\1&1\end{pmatrix}}$&\\
+\hline
+${\begin{pmatrix}2&0\\0&1\end{pmatrix}}$&\\
+\hline
+${\begin{pmatrix}0&1\\0&1\end{pmatrix}}$&\\
+\hline
+\end{tabular}
+\end{frame}
 
-\t{left-factor}{row operation recorded.},
-{${\m01,10.}$}{Switch two rows},
-{${\m01.}$}{Delete the first row},
-{${\m11,11.}$}{},
-{${\m20,01.}$}{},
-{${\m01,01.}$}{}.
-
-
-\a\aa
+\begin{frame}
 The same logic is also for columns. Recall that $AB=C$ stays as an equation when applying column oprtations on $B$ and $C$.
-\textbf{Experiment:} 
+\textbf{Experiment:}
 $$
- \m 24,13.\m 10,01. = \m 24,13. 
+ \begin{pmatrix}2&4\\1&3\end{pmatrix}\begin{pmatrix}1&0\\0&1\end{pmatrix} = \begin{pmatrix}2&4\\1&3\end{pmatrix}
 \implies
- \m 24,13.\m 11,01. = \m 26,14.
+ \begin{pmatrix}2&4\\1&3\end{pmatrix}\begin{pmatrix}1&1\\0&1\end{pmatrix} = \begin{pmatrix}2&6\\1&4\end{pmatrix}
 $$
 \textbf{Explaination from another perspective:}
-\t{right factor}{row operation recorded}{product: apply row operation},
-{${\m11,01.}$}{add 1st column to 2nd column.}{${ \m {\x2}{4},{\x1}3.\m 11,01. = \m {2}{\x6},1{\x4}.}$}.
 
+\begin{tabular}{|l|l|l|}
+\hline
+right factor&row operation recorded&product: apply row operation\\
+\hline
+${\begin{pmatrix}1&1\\0&1\end{pmatrix}}$&add 1st column to 2nd column.&${ \begin{pmatrix}{\x2}&{4}\\{\x1}&3\end{pmatrix}\begin{pmatrix}1&1\\0&1\end{pmatrix} = \begin{pmatrix}{2}&{\x6}\\1&{\x4}\end{pmatrix}}$\\
+\hline
+\end{tabular}
+\end{frame}
 
-\a\aa
-
+\begin{frame}
 \begin{prop}
 Suppose $E$ is a matrix obtained by applying some column operations from $I_n$, then $AE$ is exactly the matrix by applying the same column operations on $A$.
 \end{prop}
+\end{frame}
 
-\a\aa
-\t{right-factor}{column operation recorded.},
-{${\m01,10.}$}{Switch two columns},
-{${\m0,1.}$}{},
-{${\m11,11.}$}{},
-{${\m01,01.}$}{}.
+\begin{frame}
+\begin{tabular}{|l|l|}
+\hline
+right-factor&column operation recorded.\\
+\hline
+${\begin{pmatrix}0&1\\1&0\end{pmatrix}}$&Switch two columns\\
+\hline
+${\begin{pmatrix}0\\1\end{pmatrix}}$&\\
+\hline
+${\begin{pmatrix}1&1\\1&1\end{pmatrix}}$&\\
+\hline
+${\begin{pmatrix}0&1\\0&1\end{pmatrix}}$&\\
+\hline
+\end{tabular}
+\end{frame}
 
+\begin{frame}
+What is the meaning of the following product? From the perspective of column action?
 
-\a\aa
+$$
+\underbrace{A}_{3\times 4 \text{Matrix}} \begin{pmatrix}0\\0\\1\\0\end{pmatrix}
+$$
 
 What is the meaning of the following product? From the perspective of column action?
 
 $$
-\underbrace{A}_{3\times 4 \text{Matrix}} \m 0,0,1,0.
+\underbrace{A}_{3\times 4 \text{Matrix}} \begin{pmatrix}0&0&0&0\\0&0&0&0\\0&0&1&0\\0&0&0&0\end{pmatrix}
 $$
+\end{frame}
 
-What is the meaning of the following product? From the perspective of column action?
-
-$$
-\underbrace{A}_{3\times 4 \text{Matrix}} \m0000,0000,0010,0000.
-$$
-
-\a\aa
+\begin{frame}
 What is the meaning of the following matrix
 $$
-\m 10,01,10,01. \underbrace{A}_{2\times 2\text{Matrix}}
+\begin{pmatrix}1&0\\0&1\\1&0\\0&1\end{pmatrix} \underbrace{A}_{2\times 2\text{Matrix}}
 $$
 How about the following
 $$
-\m 10,10,10,10. \underbrace{A}_{2\times 2\text{Matrix}}
+\begin{pmatrix}1&0\\1&0\\1&0\\1&0\end{pmatrix} \underbrace{A}_{2\times 2\text{Matrix}}
 $$
 Is this product depends on the second row of $A$?
-\a\aa
+\end{frame}
 
+\begin{frame}
 Let $A$ be a $m\times n$ matrix, and let $l$ be the 2nd row of $A$, can you write $l$ in terms of a matrix multiplication?
 \vfill
 Let $\vec v$ be the 3rd column of $A$, can you write $\vec v$ into a matrix multiplication?
+\end{frame}
 
-\aaa
+\end{document}
