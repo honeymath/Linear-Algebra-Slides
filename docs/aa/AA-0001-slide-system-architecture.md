@@ -1,9 +1,10 @@
 # AA-0001: Linear Algebra Slides — System Architecture Analysis
 
-**Status:** Reconstructed
+**Status:** Confirmed (author-interviewed)
 **Date:** 2026-02-24
 **Analyst:** architect
 **Scope:** Full repository structure, design philosophy, pedagogical architecture, and technical infrastructure
+**Validation:** Author interview conducted 2026-02-24; key design decisions confirmed and corrected
 
 ---
 
@@ -39,6 +40,8 @@ main.tex                      ← Entry point
 ```
 
 **Evidence** (`main.tex:1-126`): The file lists all 43 content modules. Only `matrix.tex` is currently uncommented (line 18). All others are commented out with `%\input{...}`. This reveals a **toggle-based composition** pattern — the instructor uncomments whichever topics are needed for a given lecture or compilation run.
+
+**Author-confirmed context:** `main.tex` serves a dual role beyond compilation. The author's vim setup compiles directly from this file and uses keybindings to jump from any `\input{...}` line into the corresponding file. The commented-out `\input` lines therefore function simultaneously as: (1) a **curriculum table of contents**, (2) a **compilation toggle** for selecting which topics to build, and (3) a **navigation index** for the author's vim workflow. This triple function explains why all 43 entries are retained even when commented out.
 
 **Observed consequence:** This is a flat, non-hierarchical inclusion model. There are no subdirectories, no chapter groupings, no intermediate aggregation files. Every content file lives at the repository root alongside infrastructure files.
 
@@ -123,7 +126,7 @@ The emoji infrastructure (`\milk`, `\bean`, `\coffee`, `\tea`, `\cola`, `\bento`
            the scalar multiplication properly!
 ```
 
-**Reconstructed rationale:** The author deliberately chose a **constructivist pedagogy** — students build mathematical understanding from familiar operations (combining ingredients, assigning orders) before encountering formal definitions. The emoji characters and dialogue format lower the perceived abstraction barrier and create a distinctive, memorable learning experience.
+**Author-confirmed rationale:** The coffee shop metaphor is motivated by the author's conviction that **linear algebra is fundamentally about learning linear combinations**. The narrative deliberately weakens the "linear transformation" framing at the introductory stage — students should first understand combining ingredients (linear combination) before encountering the abstraction of maps between spaces. The emoji characters and dialogue format lower the perceived abstraction barrier and create a distinctive, memorable learning experience. The character dialogues (e.g., `\no`, `\buxie`, `\sinister` arguing about what counts as a vector) are considered important pedagogical content and must be preserved in any reconstruction.
 
 ### 3.2 Decision: Color-Coded Classification Duality System
 
@@ -150,13 +153,23 @@ The classification tags (e.g., `\LI` renders as a red boxed $L_I$) are used as *
 \item[C.] \excp: He never order food with us?
 ```
 
-**Reconstructed rationale:** This is a **grand unifying pedagogical framework** that treats the injective/surjective duality as the central organizing principle of linear algebra. Every concept is tagged by which side of this duality it belongs to:
+**Author-confirmed rationale:** This system is grounded in a deep philosophical observation the author describes as **"万物都是映射" (everything is a map)**. The key insight: if a space contains $n$ vectors $v_1, \ldots, v_n$, this is really a map $\mathbb{R}^n \to V$. Under this lens:
 
-- Red concepts relate to **uniqueness, independence, injectivity, left-side properties**
-- Blue concepts relate to **existence, spanning, surjectivity, right-side properties**
-- Purple concepts arise when both are satisfied simultaneously (bijectivity, invertibility, basis)
+- **Linear independence** is exactly **injectivity** of this map
+- **Span** is exactly the **image** of this map
+- **Basis** is exactly **bijectivity** (isomorphism)
 
-This classification system extends beyond maps to encompass: numerical properties of matrices, cancellation laws, factorization, null spaces vs. column spaces, and more. It appears to be the author's **original pedagogical contribution** — a consistent visual language that makes the deep structural parallels in linear algebra immediately visible to students.
+The classification system makes this unity visible:
+
+- **Red** (`LI` = "Language of Injective"): uniqueness, independence, injectivity, kernel, left-side properties
+- **Blue** (`LS` = "Language of Surjective"): existence, spanning, surjectivity, image, right-side properties
+- **Purple**: isomorphism, invertibility, basis — where both hold simultaneously
+
+The author states: "线性代数本质是把一套相同的东西在不同的语境去说" (linear algebra is essentially saying the same thing in different contexts). The classification system exists precisely because the author **resents** this phenomenon in standard textbooks — the same structural fact appears under different names in different chapters, and students never see the unity. The `LI`/`LS` tags annotate every definition and theorem to constantly remind students that many propositions share a single source.
+
+This classification system is further developed and systematized in the companion textbook at `../Linear-Algebra-Notes/oldtextbook`.
+
+**This is the non-negotiable pedagogical core of the slides and must be preserved exactly in any reconstruction.**
 
 ### 3.3 Decision: Custom DSL Over Standard Beamer
 
@@ -172,9 +185,22 @@ Rather than using standard Beamer frame syntax, the author built multiple layers
 
 4. **Layout DSL**: `\co5` instead of `\column{0.5\textwidth}`. `\[columns]{...}`, `\[equation]{...}`, `\[itemize]{...}`.
 
-**Reconstructed rationale:** The author prioritized **source readability** and **authoring speed**. The `.tex` files read almost like pseudocode or lecture notes rather than LaTeX markup. This likely reflects years of iterative refinement for a system that one person writes and maintains extensively.
+**Author-confirmed rationale:** The DSL was built purely for **authoring speed in the pre-AI era**. The author states: "我当时写这些东西的时候没有AI...我不可能打很多 `\begin{frame}\end{frame}`" (When I wrote these there was no AI... I can't possibly type many `\begin{frame}\end{frame}`). Every shorthand exists to reduce keystrokes for a single human author working in vim.
 
-**Observed consequence:** The DSL is powerful but deeply idiosyncratic. It creates a high barrier for external contributors who must learn the custom macro language before they can contribute. The `\aaa`/`\a` frame system, in particular, uses obscure TeX primitives (`\expandafter`, `\@gobble`, `\catcode`) that would be difficult for most LaTeX users to debug.
+The Unicode infrastructure (`unicodechar.tex`) was similarly motivated by the author's vim workflow — custom keybindings allowed typing `ℝ` in two keystrokes, and using standard LaTeX escapes made it impossible to visually parse the source while writing. The design was "为了对我自己友好" (to be friendly to myself).
+
+**Author-confirmed reconstruction decision:** The entire DSL layer is now **approved for migration to standard LaTeX**. The author explicitly confirms:
+
+| Component | Reconstruction Decision |
+|-----------|----------------------|
+| `\aaa`/`\a` frame system | **Migrate** to standard `\begin{frame}...\end{frame}` |
+| `\m`/`\t` matrix/table DSL | **Migrate** to standard `\begin{pmatrix}`, `\begin{tabular}`, etc. |
+| `unicodechar.tex` | **Remove**; convert all Unicode math to standard LaTeX notation |
+| `\co` layout shorthand | **Migrate** to standard `\column{...}` |
+
+The rationale: "现在是AI时代了，一切都变了" (Now it's the AI era, everything has changed). The maintainer is no longer a single human — it is the author plus AI tools. Standard LaTeX is what AI models understand natively, and the custom DSL **obstructs error location tracking** during compilation.
+
+**Observed consequence:** The DSL is powerful but deeply idiosyncratic. It creates a high barrier for AI-assisted maintenance. The `\aaa`/`\a` frame system, in particular, uses obscure TeX primitives (`\expandafter`, `\@gobble`, `\catcode`) that make compilation errors extremely difficult to trace back to their source location.
 
 ### 3.4 Decision: Flat File Organization
 
@@ -195,7 +221,11 @@ The ordering in `main.tex` reveals the **intended curriculum sequence**:
 | **Advanced Spectral** | `LagurangeInterpolationPolynomialForRepeatedRoots`, `SpecutralDecompositionForRepeatedRoots`, `normalOperators`, `positiveDefiniteMatrix`, `sigularValueDecomposition` | Repeated roots, special operators, SVD |
 | **Meta/Review** | `computationalStrategies`, `proofStrategies` | Exam preparation and synthesis |
 
-**Reconstructed rationale:** The flat structure likely reflects the organic growth of the system — the author added files as topics were taught, rather than reorganizing retroactively. The ordering in `main.tex` serves as the implicit curriculum map.
+**Author-confirmed rationale:** The matrix-first ordering is a **deliberate methodological stance**, not an accident of organic growth. The author states: "我想说所有计算必须通过matrix的等式得到，禁止那种飘忽不定的语言叙述" (I want to say all computation must be obtained through matrix equations — prohibit that vague, drifting verbal narration). Matrix computation is placed first to establish the **discipline of precise symbolic expression** before any abstraction is introduced.
+
+The author further states: "我恨普通教材，我教了10年线性代数，就是从对普通教材的恨开始的" (I hate standard textbooks. I've taught linear algebra for 10 years, and it started from hating standard textbooks). The curriculum ordering represents a conscious rejection of the standard textbook approach (abstract definitions first, computation later).
+
+The `computationalStrategies` and `proofStrategies` meta-modules at the end exist because "普通教材没有" (standard textbooks don't have these) — they are the author's **meta-justification** to students for why the tools taught in this course are effective and superior to the standard approach.
 
 ### 3.5 Decision: Independent Compilation via Preview System
 
@@ -220,41 +250,56 @@ This produces 41 standalone PDF previews, one per topic module.
 
 ### 4.1 Authoring Timeline
 
-The evidence suggests the following evolution:
+Based on author interview and codebase evidence:
 
-1. **2018**: Initial creation for University of Toronto courses. The Shinchan narrative and emoji system were likely present from early on, given how deeply embedded they are in foundational topics (`matrix.tex`, `vectorspace.tex`).
+1. **~2016–2018**: Earlier versions of slides existed before the current repository. The classification duality system and pedagogical philosophy were developed over years of teaching experience. The author also wrote a companion textbook (`../Linear-Algebra-Notes/oldtextbook`) which systematized the slide content; many slides were migrated into the book rather than the reverse.
 
-2. **2018–2023**: Iterative expansion. The flat file structure grew organically as new topics were added. The `packaga.tex` infrastructure accumulated macros — the commented-out blocks (lines 866–916 vs. 1519–1580 for emoji definitions) show at least one major refactoring of the shared infrastructure.
+2. **2018**: Current slide system established for University of Toronto courses. The Shinchan narrative, emoji system, and custom DSL were present from early on.
 
-3. **2023**: Adoption at POSTECH. The bilingual comments (Chinese characters in `compile_all_tex.py`, commented Chinese macro alternatives like `%\newcommand{\sur}{\textbf{\color{blue} 满射 }}`) suggest the slides were originally used in a Chinese-speaking context and later adapted for English-language instruction.
+3. **2018–2023**: Iterative expansion. The `packaga.tex` infrastructure accumulated macros — the commented-out blocks (lines 866–916 vs. 1519–1580 for emoji definitions) show at least one major refactoring of the shared infrastructure. The author confirms the duplicated emoji block can be cleaned up; the historical reason has been forgotten.
 
-4. **2025**: Public release on GitHub with CC BY-NC-SA 4.0 license, QR code support (`\usepackage{qrcode}`), and ORCID identification.
+4. **2023**: Adoption at POSTECH. The bilingual comments (Chinese characters in `compile_all_tex.py`, commented Chinese macro alternatives like `%\newcommand{\sur}{\textbf{\color{blue} 满射 }}`) reflect the slides' use across language contexts.
 
-### 4.2 Pedagogical Motivation
+5. **2025**: Public release on GitHub with CC BY-NC-SA 4.0 license, QR code support (`\usepackage{qrcode}`), and ORCID identification.
 
-The slides embody a distinctive pedagogical philosophy that can be reconstructed from the evidence:
+6. **2026**: `2026-reconstruction` branch initiated. Goal: migrate from personal DSL to standard LaTeX for AI-assisted maintenance, while preserving all pedagogical content.
 
-1. **"Explain matrix multiplication to elementary school students"** (`matrix.tex:29`) — this literal directive in the slides reveals the target: make abstract algebra accessible through concrete, everyday metaphor.
+### 4.2 Pedagogical Motivation (Author-Confirmed)
 
-2. **Computation-first, then abstraction** — topics like `proofStrategies.tex` and `computationalStrategies.tex` come *last* in the curriculum, as synthesis. The opening topics (`matrix`, `rowoperation`) start with pure computation before any formal definition appears.
+The slides embody a distinctive pedagogical philosophy, confirmed and elaborated by the author:
+
+1. **"Explain matrix multiplication to elementary school students"** (`matrix.tex:29`) — this literal directive in the slides reveals the target: make abstract algebra accessible through concrete, everyday metaphor. Linear algebra is fundamentally about **linear combinations**, and this should be graspable before any abstract framework is introduced.
+
+2. **Matrix-first as methodological discipline** — "所有计算必须通过matrix的等式得到，禁止那种飘忽不定的语言叙述" (all computation must be obtained through matrix equations — prohibit vague verbal narration). This is a conscious rejection of standard textbooks that the author describes with the word "恨" (hate), developed over 10 years of teaching.
 
 3. **Visual-geometric grounding** — TikZ diagrams pervade the slides. The `lineartransformation.tex` module explicitly asks students to perform matrix multiplication "purely geometrically" before introducing algebraic formulations.
 
-4. **The classification duality as structural backbone** — the entire course arc moves from introducing red/blue concepts separately, to showing how they interact, to culminating in purple (invertibility/isomorphism) as the resolution. This mirrors the mathematical structure itself.
+4. **"万物都是映射" (Everything is a map)** — the philosophical foundation of the entire classification system. The course arc moves from introducing red/blue concepts separately, to showing how they interact, to culminating in purple (invertibility/isomorphism) as the resolution. This mirrors the mathematical structure itself, and the author's goal is to make students **see** this unity rather than memorize disconnected facts.
 
 5. **Speed and fluency as goals** — `eigenvalues.tex:56`: "When eigenvalues are given, finding eigenvectors is extremely easy, you should able to be compute within 10 seconds in mind." The slides emphasize computational fluency as a prerequisite for theoretical understanding.
 
-### 4.3 Design Principles (Inferred)
+6. **Meta-justification modules** — `computationalStrategies` and `proofStrategies` exist not as review but as **advocacy**: the author argues explicitly to students why the tools taught in this course are effective, filling a gap that "普通教材没有" (standard textbooks don't have).
 
-| Principle | Evidence |
-|-----------|----------|
-| **Concrete before abstract** | Shinchan's coffee shop precedes formal definitions in every foundational module |
-| **Visual before symbolic** | TikZ diagrams precede algebraic formulations; `\org`, `\grid` helpers optimized for quick diagram authoring |
-| **Duality as organizing structure** | Red/blue/purple classification system; existence vs. uniqueness framing of every concept |
-| **Source should read like mathematics** | Unicode math input, comma-delimited matrix DSL, minimal LaTeX boilerplate in content files |
-| **Each lecture is self-contained** | No cross-file references; independent compilation; modular inclusion via `main.tex` |
-| **Informal language lowers barriers** | Character dialogue, emoji, casual phrasing ("Can you help Shinchan?") mixed with rigorous definitions |
-| **Exam preparation is architecture** | Dedicated `computationalStrategies.tex` and `proofStrategies.tex` as meta-modules |
+### 4.3 Design Principles (Author-Confirmed)
+
+| Principle | Evidence | Author Statement |
+|-----------|----------|-----------------|
+| **Concrete before abstract** | Shinchan's coffee shop precedes formal definitions in every foundational module | "线性代数其实是在学习线性组合" — weaken transformation framing at entry |
+| **Matrix equations as discipline** | `matrix` is first topic; all computation channeled through matrix notation | "禁止那种飘忽不定的语言叙述" — prohibit vague narration |
+| **Visual before symbolic** | TikZ diagrams precede algebraic formulations; `\org`, `\grid` helpers optimized for quick diagram authoring | — |
+| **万物都是映射 (Everything is a map)** | Red/blue/purple classification system; existence vs. uniqueness framing of every concept | "线性代数本质是把一套相同的东西在不同的语境去说" |
+| **Each lecture is self-contained** | No cross-file references; independent compilation; modular inclusion via `main.tex` | — |
+| **Informal language lowers barriers** | Character dialogue, emoji, casual phrasing ("Can you help Shinchan?") mixed with rigorous definitions | Content and characters are important to students; must be preserved |
+| **Meta-justification of method** | Dedicated `computationalStrategies.tex` and `proofStrategies.tex` as final modules | "普通教材没有" — standard textbooks lack this |
+
+### 4.4 Relationship to Companion Textbook
+
+The author maintains a companion textbook at `../Linear-Algebra-Notes/oldtextbook`. The relationship is:
+
+- The **slides came first**; the textbook systematized and expanded the slide content
+- The classification duality system (`LI`/`LS`) is more fully developed in the textbook
+- The slides and book now **evolve independently** — the current reconstruction focuses on slides only
+- The textbook is not planned for reconstruction at this time
 
 ---
 
@@ -270,17 +315,17 @@ The slides embody a distinctive pedagogical philosophy that can be reconstructed
 | **Source readability** | Content files are remarkably readable for LaTeX — closer to lecture notes than markup |
 | **Battle-tested** | 8+ years of classroom use across two major universities |
 
-### 5.2 Weaknesses
+### 5.2 Weaknesses (Confirmed Migration Targets)
 
-| Weakness | Detail |
-|----------|--------|
-| **Monolithic infrastructure** | `packaga.tex` at ~1700 lines bundles all concerns; any change risks breaking all 43 modules |
-| **Contributor barrier** | The custom DSL (`\aaa`, `\a`, `\m`, `\t`, `\BiajiBiaji`) requires significant learning investment |
-| **No cross-references** | Cannot reference a theorem from one module in another; no unified numbering |
-| **Naming inconsistencies** | `CalayHamiltonTheorem` (misspelled Cayley), `LanguarangeInterpolationPolynomial` (misspelled Lagrange), `SpecutralDecompositionForRepeatedRoots` (misspelled Spectral), `sigularValueDecomposition` (misspelled Singular) |
-| **Flat file structure** | 43 `.tex` files at root mixed with infrastructure files; no directory organization |
-| **Duplicated macro blocks** | Emoji commands defined twice in `packaga.tex` (once commented at lines 866–916, once active at lines 1519–1580) |
-| **Missing documentation** | No documentation of the DSL syntax, macro API, or the classification system's semantics |
+| Weakness | Detail | Reconstruction Status |
+|----------|--------|----------------------|
+| **Custom DSL blocks AI maintenance** | `\aaa`, `\a`, `\m`, `\t` — AI cannot generate or debug these; error tracing is broken | **Approved for migration** to standard LaTeX |
+| **Unicode source blocks AI generation** | `unicodechar.tex` tokenizer means source uses non-standard character input | **Approved for removal** |
+| **Monolithic infrastructure** | `packaga.tex` at ~1700 lines bundles all concerns; any change risks breaking all 43 modules | Future ADR to decide modularization |
+| **Naming inconsistencies** | `CalayHamiltonTheorem` (Cayley), `LanguarangeInterpolationPolynomial` (Lagrange), `SpecutralDecompositionForRepeatedRoots` (Spectral), `sigularValueDecomposition` (Singular) | **Approved for correction** |
+| **Duplicated macro blocks** | Emoji commands defined twice in `packaga.tex` (commented + active) | **Approved for cleanup** |
+| **No cross-references** | Cannot reference a theorem from one module in another; no unified numbering | By design (module independence); no change planned |
+| **Flat file structure** | 43 `.tex` files at root mixed with infrastructure files | No change planned at this time |
 
 ---
 
@@ -310,32 +355,53 @@ The red/blue duality (injective/surjective, unique/exists, independent/spanning)
 
 ---
 
-## 7. Recommendations
+## 7. Reconstruction Plan (Author-Approved)
 
-### 7.1 Preserve As-Is
+### 7.1 Immutable: Pedagogical Content Layer
 
-- **The pedagogical architecture** (narrative metaphor, classification duality, concrete-before-abstract arc) is the core intellectual contribution and should not be altered
-- **The DSL** (`\aaa`, `\m`, `\t`) is deeply embedded and battle-tested; replacing it would require rewriting all 43 content files
-- **Module independence** is a valuable property that should be maintained in any restructuring
+The following must be **preserved exactly** during reconstruction — these are the intellectual core:
 
-### 7.2 Candidates for Evolution
+- **All slide content**: mathematical exposition, examples, exercises, proofs
+- **Red/blue/purple classification system**: `\LI`, `\LS`, `\inj`, `\sur`, `\iso` and all related macros
+- **Narrative elements**: Shinchan's coffee shop, emoji characters, character dialogues
+- **Curriculum ordering**: the sequence in `main.tex` reflects deliberate pedagogical decisions
+- **Module independence**: each topic must remain independently compilable
+- **`tcolorbox` theorem environments**: `defi`, `prop`, `thm`, `lem`, `cor`, `exa`, `rem`, `summ`
 
-| Area | Recommendation | Rationale |
-|------|---------------|-----------|
-| **`packaga.tex` modularization** | Consider splitting into `theme.tex`, `math-macros.tex`, `classification.tex`, `emoji.tex`, `tikz-helpers.tex` | Reduces blast radius of changes; enables selective loading |
-| **Directory organization** | Group content files into phase directories (`01-foundations/`, `02-transformations/`, etc.) | Improves navigability; makes curriculum structure visible in filesystem |
-| **Filename corrections** | Fix misspellings in filenames (Cayley, Lagrange, Spectral, Singular) | Reduces confusion for external contributors |
-| **DSL documentation** | Create a `docs/dsl-reference.md` documenting the macro API | Critical for onboarding contributors during reconstruction |
-| **Remove duplicated macros** | Clean up the commented-out emoji block (lines 866–916) in `packaga.tex` | Reduces confusion about which definitions are active |
+### 7.2 Migrate: DSL to Standard LaTeX
 
-### 7.3 Relationship to Current Reconstruction Branch
+The following custom syntax should be **replaced with standard LaTeX equivalents**, preserving identical PDF output:
 
-The `2026-reconstruction` branch provides an opportunity to address the structural issues (7.2) while preserving the pedagogical architecture (7.1). Any refactoring should be validated by ensuring all 41 preview PDFs compile identically before and after changes.
+| Component | Current | Target | Priority |
+|-----------|---------|--------|----------|
+| Frame system | `\aaa{Title}...\a\aa...\aaa` | `\begin{frame}{Title}...\end{frame}` | High — blocks error tracing |
+| Matrix DSL | `\m 12,34.` | `\begin{pmatrix}1&2\\3&4\end{pmatrix}` | High — AI cannot generate custom syntax |
+| Table DSL | `\t{}\milk\coffee,...` | `\begin{tabular}...\end{tabular}` | High |
+| Unicode math | `ℝ`, `ℂ`, `×`, `∈` in source | `\mathbb{R}`, `\mathbb{C}`, `\times`, `\in` | Medium — bulk find-replace |
+| Layout shorthand | `\co5` | `\column{0.5\textwidth}` | Low |
+| `unicodechar.tex` | Custom tokenizer + active char redefs | **Remove entirely** | Medium — after Unicode conversion |
+
+### 7.3 Clean Up: Infrastructure Hygiene
+
+| Area | Action | Author Approval |
+|------|--------|----------------|
+| **Filename misspellings** | Rename: `CalayHamiltonTheorem` → `CayleyHamiltonTheorem`, `LanguarangeInterpolationPolynomial` → `LagrangeInterpolationPolynomial`, `SpecutralDecompositionForRepeatedRoots` → `SpectralDecompositionForRepeatedRoots`, `sigularValueDecomposition` → `SingularValueDecomposition` | Approved — no external link concerns |
+| **Duplicated emoji macros** | Remove commented-out block (lines 866–916 of `packaga.tex`) | Approved — historical reason forgotten |
+| **`packaga.tex` modularization** | Consider splitting into focused files | To be decided in future ADR |
+
+### 7.4 Reconstruction Process
+
+The author's stated approach:
+1. Write a **reconstruction ADR** defining the migration strategy and standards
+2. Migrate content **incrementally**, one module at a time
+3. Validate each migration by comparing PDF output before and after
+4. Engineering work to be delegated to AI-assisted agents after ADR is established
 
 ---
 
 ## Cross-References
 
 - Inspired by: Initial codebase survey for `2026-reconstruction` branch
-- May inspire: ADR for `packaga.tex` modularization, ADR for directory restructuring
-- Related: Future DA (Design Analysis) of the `\aaa`/`\a` frame macro system internals
+- Next action: ADR for reconstruction strategy (DSL → standard LaTeX migration)
+- Related: `../Linear-Algebra-Notes/oldtextbook` — companion textbook with systematized classification theory
+- Future: DA (Design Analysis) of individual module migration patterns
