@@ -125,30 +125,14 @@ $$\begin{array}{c|cc}
 \end{array}$$
 
 \vfill
-\textbf{Notice}: Both products use \x{the same ratio}!
+\textbf{Notice}: Both products use \x{the same amount}!
 \begin{itemize}
 \item \bento: 2\leaf~+ 1\lemon
 \item \ramen: 2\leaf~+ 1\lemon
 \end{itemize}
 
 \vfill
-They're using the same base ingredient mix, just different amounts!
-\end{frame}
-
-\begin{frame}{Finding the Hidden Product}
-If both use the same ratio, there must be a hidden intermediate product:
-
-$$\text{Let's call it \tea~(tea) = 2\leaf~+ 1\lemon}$$
-
-\vfill
-Then:
-\begin{itemize}
-\item \bento~needs: 1\tea~+ (other stuff)
-\item \ramen~needs: 1\tea~+ (other stuff)
-\end{itemize}
-
-\vfill
-\x{This is a "rank-one pattern"} — one base ingredient mix used in different quantities.
+Can we extract this \x{common base} and see what's different?
 \end{frame}
 
 \begin{frame}{Setup: The Full Direct Table}
@@ -230,26 +214,26 @@ $$R_1 = \begin{array}{c|cc}
 \end{array}$$
 
 \vfill
-\textbf{Interpretation}: This is the \x{\tea~pattern}!
+\textbf{Interpretation}: This is the \x{common base recipe}!
 \begin{itemize}
-\item Make \tea: 2\leaf~+ 1\lemon~+ 0\bean~+ 2\cow
-\item \bento~uses: 1\tea
-\item \ramen~uses: 1\tea
+\item Base recipe: 2\leaf~+ 1\lemon~+ 0\bean~+ 2\cow
+\item \bento~uses: 1× base
+\item \ramen~uses: 1× base (+ adjustments)
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Insight: What is This Pattern?}
-The pattern $R_1$ represents a \x{hidden intermediate product}:
+The pattern $R_1$ is a \x{rank-one matrix}:
 
-$$\text{\tea} = \begin{pmatrix} 2 \\ 1 \\ 0 \\ 2 \end{pmatrix}
+$$R_1 = \begin{pmatrix} 2 \\ 1 \\ 0 \\ 2 \end{pmatrix}
 \begin{pmatrix} 1 & 1 \end{pmatrix}$$
 
 \vspace{0.3cm}
-- \x{Column} $(2,1,0,2)$: recipe to make \tea~from raw materials
-- \x{Row} $(1,1)$: how much \tea~each final product needs
+- \x{Column} $(2,1,0,2)$: the base recipe
+- \x{Row} $(1,1)$: both products use 1× this base
 
 \vspace{0.3cm}
-Key: \x{One pattern, repeated!} This is a "rank-one" table.
+Key: \x{One pattern, repeated!} Both columns are the same.
 \end{frame}
 
 \begin{frame}{Setup: What's Left After $R_1$?}
@@ -276,9 +260,9 @@ $$C_2 = C - R_1 = \begin{array}{c|cc}
 \end{array}$$
 
 \vfill
-Key: The \x{entire cross is now zero}!
-- All of \leaf~row: \rem{zero}
-- All of \bento~column: \rem{zero}
+\textbf{What's left?}
+- \bento~column: all zeros (base recipe exactly matches!)
+- \ramen~column: adjustments needed (+4\bean, -1\cow)
 \end{frame}
 
 \begin{frame}{Insight: Why "Cross-Filling"?}
@@ -348,21 +332,17 @@ $$C_2 = \begin{array}{c|cc}
 \end{array}$$
 
 \vfill
-Pick pivot: \bean~row, \ramen~column. Entry = 4.
+This is the \x{adjustment} for \ramen: +4\bean, -1\cow
 
-$$C_2 = \begin{array}{c|cc}
- & \text{\bento} & \text{\ramen} \\
-\hline
-\text{\bean} & \rem{0} & \pvt{4} \\
-\text{\cow} & \rem{0} & -1
-\end{array}$$
+\vfill
+Pick pivot: \bean~row, \ramen~column. Entry = 4.
 \end{frame}
 
 \begin{frame}{Calculation: Fill Second Cross}
-Cross: column $(0,0,0,0)^T$ and row $(0,4)$
+Pivot at (3,2) = 4. Cross: column $(0,0,4,-1)^T$, row $(0,4)$
 
 $$R_2 = \frac{1}{\pvt{4}}
-\begin{pmatrix} 0 \\ 0 \\ 0 \\ 0 \end{pmatrix}
+\begin{pmatrix} 0 \\ 0 \\ 4 \\ -1 \end{pmatrix}
 \begin{pmatrix} 0 & 4 \end{pmatrix}
 = \begin{array}{c|cc}
  & \text{\bento} & \text{\ramen} \\
@@ -370,47 +350,28 @@ $$R_2 = \frac{1}{\pvt{4}}
 \text{\leaf} & 0 & 0 \\
 \text{\lemon} & 0 & 0 \\
 \text{\bean} & 0 & \pvt{4} \\
+\text{\cow} & 0 & -1
+\end{array}$$
+
+\vfill
+\textbf{Interpretation}: The \x{adjustment term} — only affects \ramen.
+\end{frame}
+
+\begin{frame}{Result: Complete Decomposition}
+$$C_2 - R_2 = \begin{array}{c|cc}
+ & \text{\bento} & \text{\ramen} \\
+\hline
+\text{\bean} & 0 & 0 \\
 \text{\cow} & 0 & 0
 \end{array}$$
 
 \vfill
-\textbf{Interpretation}: This is pure \coffee~(made from 4\bean) used only in \ramen.
-\end{frame}
-
-\begin{frame}{Result: What's Left?}
-$$C_3 = C_2 - R_2 = \begin{array}{c|cc}
- & \text{\bento} & \text{\ramen} \\
-\hline
-\text{\leaf} & 0 & 0 \\
-\text{\lemon} & 0 & 0 \\
-\text{\bean} & 0 & 0 \\
-\text{\cow} & 0 & -1
-\end{array}$$
-
-\vfill
-One more pattern to go!
-\end{frame}
-
-\begin{frame}{Insight: Third Pattern}
-$$R_3 = \begin{array}{c|cc}
- & \text{\bento} & \text{\ramen} \\
-\hline
-\text{\leaf} & 0 & 0 \\
-\text{\lemon} & 0 & 0 \\
-\text{\bean} & 0 & 0 \\
-\text{\cow} & 0 & -1
-\end{array}$$
-
-\vfill
-\textbf{Interpretation}: Adjustment pattern — \ramen~needs 1 \x{less} \cow~than what \tea~provides.
-
-\vfill
-Final remainder: $C_3 - R_3 = $ zero table. \x{Done!}
+\x{Done!} Remainder is zero.
 \end{frame}
 
 \begin{frame}{The Full Decomposition}
 \textbf{We discovered:}
-$$C = R_1 + R_2 + R_3$$
+$$C = R_1 + R_2$$
 
 $$\begin{array}{c|cc}
 \text{\leaf} & 2 & 2 \\
@@ -430,41 +391,29 @@ $$\begin{array}{c|cc}
 \text{\leaf} & 0 & 0 \\
 \text{\lemon} & 0 & 0 \\
 \text{\bean} & 0 & 4 \\
-\text{\cow} & 0 & 0
-\end{array}
-+
-\begin{array}{c|cc}
-\text{\leaf} & 0 & 0 \\
-\text{\lemon} & 0 & 0 \\
-\text{\bean} & 0 & 0 \\
 \text{\cow} & 0 & -1
 \end{array}$$
 
 \vfill
-Three \x{simple patterns} (rank-one) = One \x{complex table}!
+Two \x{rank-one patterns}: base recipe + adjustment!
 \end{frame}
 
-\begin{frame}{Insight: The Hidden Production Chain}
+\begin{frame}{Insight: Base + Adjustment Decomposition}
 \textbf{What we found:}
 
-$$\text{Raw materials} \xrightarrow{A}
-\begin{cases}
-\text{\tea} \\
-\text{\coffee} \\
-\text{adjustment}
-\end{cases}
-\xrightarrow{B} \text{Final products}$$
+$$\text{\ramen} = 1 \times (\text{base recipe}) + \text{adjustment}$$
 
 \vfill
-Instead of direct recipes ($C$), we found:
+Key insight:
 \begin{itemize}
-\item $A$: How to make \tea, \coffee~from raw materials
-\item $B$: How much \tea, \coffee~each final product needs
-\item $C = AB$: The composition
+\item $R_1$: Common base shared by both products
+\item $R_2$: Adjustment term (only for \ramen)
+\item \bento~= exactly the base recipe
+\item \ramen~= base + extra 4\bean~- 1\cow
 \end{itemize}
 
 \vfill
-Key: \x{Cross-filling discovered the hidden intermediate products!}
+This is \x{expressing complex recipes in terms of simpler patterns}!
 \end{frame}
 
 % ═══════════════════════════════════════
