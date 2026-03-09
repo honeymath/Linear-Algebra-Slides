@@ -7,6 +7,7 @@
 \usetikzlibrary{positioning,arrows.meta,fit,calc,matrix,shapes.geometric}
 \usepackage{graphicx}
 \usepackage{array}
+\usepackage{etoolbox}
 
 % ── Theorem environments ──
 \theoremstyle{definition}
@@ -18,6 +19,15 @@
 % Custom theorem styles with colors
 \setbeamercolor{block title}{bg=red!75!black,fg=white}
 \setbeamercolor{block body}{bg=yellow!10!white}
+
+% Proposition uses yellow title (屎黄色)
+\AtBeginEnvironment{prop}{%
+  \setbeamercolor{block title}{bg=yellow!75!black,fg=black}%
+  \setbeamercolor{block body}{bg=yellow!10!white}%
+}
+\AtEndEnvironment{prop}{%
+  \setbeamercolor{block title}{bg=red!75!black,fg=white}%
+}
 
 % ── Emoji definitions ──
 \newcommand{\bean}{\includegraphics[scale=0.07]{Pictures/bean.png}}
