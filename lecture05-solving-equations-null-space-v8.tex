@@ -210,12 +210,16 @@ $$\text{Remainder} = \begin{pmatrix}
 
 \x{Each row represents an equation}:
 \begin{align*}
-\text{Row 1}: &\quad 0 = 0 \quad \text{(trivial)} \\
-\text{Row 2}: &\quad -x_3 = 1 \quad \text{(this is \x{eq2 - 2·eq1})} \\
-\text{Row 3}: &\quad -x_3 = 1 \quad \text{(this is \x{eq3 - 3·eq1})}
+\text{Row 1}: &\quad 0 = 0 \quad \text{(\alert{actively} zero: pivot row)} \\
+\text{Row 2}: &\quad -x_3 = 1 \quad \text{(\alert{passively} zero in col 1: eq2 - 2·eq1)} \\
+\text{Row 3}: &\quad -x_3 = 1 \quad \text{(\alert{passively} zero in col 1: eq3 - 3·eq1)}
 \end{align*}
 
-\x{Key}: Rows 2 and 3 = same equation ($x_3 = -1$). Only \x{one independent equation}!
+\x{Key distinction}:
+\begin{itemize}
+\item Row 1: \alert{actively} became zero (we chose it as pivot row)
+\item Rows 2, 3: \alert{passively} became zero in column 1 (cross-filling eliminated it)
+\end{itemize}
 
 \end{frame}
 
@@ -308,12 +312,33 @@ $$(R_2 \mid \mathbf{b}_2) = \begin{pmatrix}
 
 \x{Each row represents an equation}:
 \begin{align*}
-\text{Row 1}: &\quad 0 = 0 \quad \text{(trivial)} \\
-\text{Row 2}: &\quad x_3 = -1 \quad \text{(\x{eq2 - 2·eq1})} \\
-\text{Row 3}: &\quad x_3 = -1 \quad \text{(\x{eq3 - 3·eq1})}
+\text{Row 1}: &\quad 0 = 0 \quad \text{(inherited zero from Remainder)} \\
+\text{Row 2}: &\quad x_3 = -1 \quad \text{(\alert{actively} extracted: pivot row)} \\
+\text{Row 3}: &\quad x_3 = -1 \quad \text{(\alert{passively} copied: non-pivot row)}
 \end{align*}
 
-\x{Key}: All rows = same equation ($x_3 = -1$). Only \x{one independent equation}!
+\x{Note}: Row 2 was chosen as pivot row; row 3 passively gets the same equation.
+
+\end{frame}
+
+\begin{frame}{Step 10 (continued): Final Remainder Analysis}
+
+After extracting $(R_2 \mid \mathbf{b}_2)$, the final Remainder is all zeros:
+
+$$\text{Final Remainder} = \begin{pmatrix}
+0 & 0 & 0 & | & 0 \\
+0 & 0 & 0 & | & 0 \\
+0 & 0 & 0 & | & 0
+\end{pmatrix}$$
+
+\x{How did each row become zero?}
+\begin{itemize}
+\item Row 1: was already 0 (inherited)
+\item Row 2: \alert{actively} became 0 (we chose it as pivot row)
+\item Row 3: \alert{passively} became 0 (row 3 - row 2, column 3 eliminated)
+\end{itemize}
+
+\x{Cross-filling complete!}
 
 \end{frame}
 

@@ -1,7 +1,7 @@
 \beamer@sectionintoc {1}{Motivation}{2}{0}{1}
 \beamer@sectionintoc {2}{Complete Example: Solving $A\mathbf {x} = \mathbf {b}$}{4}{0}{2}
-\beamer@sectionintoc {3}{Why Variables Decrease}{25}{0}{3}
-\beamer@sectionintoc {4}{Existence and Uniqueness}{29}{0}{4}
-\beamer@sectionintoc {5}{Finding Null Space Basis}{34}{0}{5}
-\beamer@sectionintoc {6}{Rank-Nullity Theorem}{39}{0}{6}
-\beamer@sectionintoc {7}{Summary}{43}{0}{7}
+\beamer@sectionintoc {3}{Why Variables Decrease}{26}{0}{3}
+\beamer@sectionintoc {4}{Existence and Uniqueness}{30}{0}{4}
+\beamer@sectionintoc {5}{Finding Null Space Basis}{35}{0}{5}
+\beamer@sectionintoc {6}{Rank-Nullity Theorem}{40}{0}{6}
+\beamer@sectionintoc {7}{Summary}{44}{0}{7}
