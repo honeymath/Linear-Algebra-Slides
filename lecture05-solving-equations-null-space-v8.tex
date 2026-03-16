@@ -324,22 +324,24 @@ From the cross-filling decomposition, we extracted:
 \vspace{1em}
 
 \begin{center}
-\begin{tabular}{c|c}
+\begin{tabular}{c|l}
 \textbf{From piece} & \textbf{Equation} \\
 \hline
-$(R_1 \mid \mathbf{b}_1)$ & $x_1 + 2x_2 + x_3 = 4$ \\
+$(R_1 \mid \mathbf{b}_1)$ & $\x{x_1} + 2x_2 + \x{x_3} = 4$ \\
+& (pivot: $\x{x_1}$, free: $x_2$, $\x{x_3}$ not yet determined) \\
 \hline
-$(R_2 \mid \mathbf{b}_2)$ & $x_3 = -1$ \\
+$(R_2 \mid \mathbf{b}_2)$ & $\x{x_3} = -1$ \\
+& (pivot: $\x{x_3}$) \\
 \end{tabular}
 \end{center}
 
 \vspace{1em}
 
-\x{This is our simplified system!} Two equations, three unknowns.
-
-\vspace{1em}
-
-Original: 3 equations $\to$ Simplified: 2 independent equations.
+\x{Variable classification} (from cross-filling):
+\begin{itemize}
+\item \x{Pivot variables}: $x_1, x_3$ (columns 1 and 3 where we chose pivots)
+\item \x{Free variable}: $x_2$ (column 2, non-pivot column)
+\end{itemize}
 
 \end{frame}
 
