@@ -431,13 +431,16 @@ These are \x{two perspectives on the same phenomenon}!
 \node at (3, 2.8) {\textbf{$\mathbb{R}^n$}};
 \node[purple!60!black, font=\tiny] at (3, -2.8) {Codomain of $B$ = Domain of $A$};
 
-% Col(B) in the middle space
-\draw[thick, green!60, fill=green!15] (1.8, 0) ellipse (0.9cm and 1.3cm);
-\node[green!50!black, font=\small] at (1.8, 0) {Col$(B)$};
+% Col(B) in the middle space (with transparency for intersection)
+\draw[thick, green!60, fill=green!30, opacity=0.6] (2.3, 0) ellipse (1.1cm and 1.4cm);
+\node[green!50!black, font=\small] at (1.5, 0) {Col$(B)$};
 
-% Null(A) in the middle space
-\draw[thick, red!60, fill=red!15] (4.2, 0) ellipse (0.8cm and 1.2cm);
-\node[red!50!black, font=\small] at (4.2, 0) {Null$(A)$};
+% Null(A) in the middle space (with transparency for intersection)
+\draw[thick, red!60, fill=red!30, opacity=0.6] (3.7, 0) ellipse (1.1cm and 1.4cm);
+\node[red!50!black, font=\small] at (4.5, 0) {Null$(A)$};
+
+% Mark the intersection region
+\node[brown!60!black, font=\scriptsize] at (3, 0.8) {Intersection};
 
 % Right: Codomain of A (R^m)
 \draw[thick, blue!30, fill=blue!5] (6.2,-2.5) rectangle (8.5,2.5);
