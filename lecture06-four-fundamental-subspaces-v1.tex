@@ -413,45 +413,62 @@ These are \x{two perspectives on the same phenomenon}!
 \begin{frame}[fragile]{Visual: The Equivalence}
 
 \begin{center}
-\begin{tikzpicture}[scale=0.8]
+\begin{tikzpicture}[scale=0.85]
 % Left: Domain of B (R^q)
-\draw[thick, blue!30, fill=blue!5] (-4,-2) rectangle (0,2);
-\node at (-2, 2.4) {\small Domain of $B$ ($\mathbb{R}^q$)};
-\node at (-2, -2.4) {\small Contains Null$(B)$, Null$(AB)$};
+\draw[thick, blue!30, fill=blue!5] (-2.5,-2.5) rectangle (-0.2,2.5);
+\node at (-1.35, 2.8) {\footnotesize $\mathbb{R}^q$};
+
+% Null(B) in left space
+\draw[thick, orange!60, fill=orange!15] (-1.8, 0.8) ellipse (0.5cm and 0.6cm);
+\node[orange!50!black, font=\tiny] at (-1.8, 0.8) {Null$(B)$};
+
+% Null(AB) in left space
+\draw[thick, orange!60, fill=orange!20] (-0.9, -0.8) ellipse (0.6cm and 0.7cm);
+\node[orange!50!black, font=\tiny] at (-0.9, -0.8) {Null$(AB)$};
 
 % Middle: Codomain of B = Domain of A (R^n)
-\draw[thick, purple!40, fill=purple!5] (1.5,-2.5) rectangle (6.5,2.5);
-\node at (4, 3) {\textbf{Codomain of $B$ = Domain of $A$}};
-\node at (4, 2.6) {($\mathbb{R}^n$)};
+\draw[thick, purple!40, fill=purple!5] (0.5,-2.5) rectangle (5.5,2.5);
+\node at (3, 2.8) {\textbf{$\mathbb{R}^n$}};
+\node[purple!60!black, font=\tiny] at (3, -2.8) {Codomain of $B$ = Domain of $A$};
 
 % Col(B) in the middle space
-\draw[thick, green!60, fill=green!15] (2.5, 0) ellipse (1.2cm and 1.5cm);
-\node[green!50!black] at (2.5, -1.8) {Col$(B)$};
+\draw[thick, green!60, fill=green!15] (1.8, 0) ellipse (0.9cm and 1.3cm);
+\node[green!50!black, font=\small] at (1.8, 0) {Col$(B)$};
 
 % Null(A) in the middle space
-\draw[thick, red!60, fill=red!15] (5, 0) ellipse (1cm and 1.3cm);
-\node[red!50!black] at (5, -1.6) {Null$(A)$};
+\draw[thick, red!60, fill=red!15] (4.2, 0) ellipse (0.8cm and 1.2cm);
+\node[red!50!black, font=\small] at (4.2, 0) {Null$(A)$};
 
 % Zero vector at intersection
-\fill (3.8, 0) circle (2pt);
-\node[below] at (3.8, -0.3) {\small $\mathbf{0}$};
+\fill (3, 0) circle (2pt);
+\node[below, font=\tiny] at (3, -0.25) {$\mathbf{0}$};
 
 % Right: Codomain of A (R^m)
-\draw[thick, blue!30, fill=blue!5] (8,-2) rectangle (12,2);
-\node at (10, 2.4) {\small Codomain of $A$ ($\mathbb{R}^m$)};
+\draw[thick, blue!30, fill=blue!5] (6.2,-2.5) rectangle (8.5,2.5);
+\node at (7.35, 2.8) {\footnotesize $\mathbb{R}^m$};
+
+% Col(AB) in right space
+\draw[thick, cyan!60, fill=cyan!15] (6.8, 0.7) ellipse (0.5cm and 0.6cm);
+\node[cyan!50!black, font=\tiny] at (6.8, 0.7) {Col$(AB)$};
+
+% Col(A) in right space
+\draw[thick, cyan!60, fill=cyan!20] (7.7, -0.7) ellipse (0.6cm and 0.7cm);
+\node[cyan!50!black, font=\tiny] at (7.7, -0.7) {Col$(A)$};
 
 % Arrows
-\draw[->, ultra thick] (0.5, 0) -- node[above] {$B$} (1.2, 0);
-\draw[->, ultra thick] (6.8, 0) -- node[above] {$A$} (7.7, 0);
+\draw[->, very thick] (-0.1, 0) -- node[above, font=\small] {$B$} (0.4, 0);
+\draw[->, very thick] (5.6, 0) -- node[above, font=\small] {$A$} (6.1, 0);
 
-% Question annotation
-\node[purple!70!black, align=center] at (4, -3.2) {\textbf{Question:} Do Col$(B)$ and Null$(A)$ intersect?};
+% Composition arrow
+\draw[->, thick, red!50, bend left=35] (-1.35, -2.8) to node[below, font=\small] {$AB$} (7.35, -2.8);
 \end{tikzpicture}
 \end{center}
 
-\x{Key}: Col$(B)$ and Null$(A)$ both live in the \x{same space} ($\mathbb{R}^n$)!
+\vspace{-0.3em}
 
-If they only meet at $\mathbf{0}$: $\text{Null}(AB) = \text{Null}(B)$ (no new dependencies)
+\x{Key}: Col$(B)$ and Null$(A)$ both live in $\mathbb{R}^n$. Do they intersect?
+
+If \x{only at $\mathbf{0}$}: Null$(AB) =$ Null$(B)$ (no new dependencies created)
 
 \end{frame}
 
