@@ -414,45 +414,44 @@ These are \x{two perspectives on the same phenomenon}!
 
 \begin{center}
 \begin{tikzpicture}[scale=0.8]
-% Domain
-\draw[thick, blue!50, fill=blue!10] (0,0) ellipse (3cm and 2cm);
-\node at (0, 2.5) {Domain of $B$};
+% Left: Domain of B (R^q)
+\draw[thick, blue!30, fill=blue!5] (-4,-2) rectangle (0,2);
+\node at (-2, 2.4) {\small Domain of $B$ ($\mathbb{R}^q$)};
+\node at (-2, -2.4) {\small Contains Null$(B)$, Null$(AB)$};
 
-% Col(B)
-\draw[thick, green!50, fill=green!10] (0.8, 0) ellipse (1.5cm and 1.2cm);
-\node[green!50!black] at (0.8, -1.5) {Col$(B)$};
+% Middle: Codomain of B = Domain of A (R^n)
+\draw[thick, purple!40, fill=purple!5] (1.5,-2.5) rectangle (6.5,2.5);
+\node at (4, 3) {\textbf{Codomain of $B$ = Domain of $A$}};
+\node at (4, 2.6) {($\mathbb{R}^n$)};
 
-% Null(A)
-\draw[thick, red!50, fill=red!10] (-1.2, 0) ellipse (1.2cm and 0.8cm);
-\node[red!50!black] at (-1.2, -1.2) {Null$(A)$};
+% Col(B) in the middle space
+\draw[thick, green!60, fill=green!15] (2.5, 0) ellipse (1.2cm and 1.5cm);
+\node[green!50!black] at (2.5, -1.8) {Col$(B)$};
 
-% Zero vector
-\fill (0,0) circle (2pt);
-\node[below] at (0,-0.3) {$\mathbf{0}$};
+% Null(A) in the middle space
+\draw[thick, red!60, fill=red!15] (5, 0) ellipse (1cm and 1.3cm);
+\node[red!50!black] at (5, -1.6) {Null$(A)$};
 
-% Arrow showing B maps
-\draw[->, very thick] (3.5, 0) -- node[above] {$B$} (5, 0);
+% Zero vector at intersection
+\fill (3.8, 0) circle (2pt);
+\node[below] at (3.8, -0.3) {\small $\mathbf{0}$};
 
-% Codomain
-\draw[thick] (6.5, 0) ellipse (2cm and 2cm);
-\node at (6.5, 2.5) {Codomain};
+% Right: Codomain of A (R^m)
+\draw[thick, blue!30, fill=blue!5] (8,-2) rectangle (12,2);
+\node at (10, 2.4) {\small Codomain of $A$ ($\mathbb{R}^m$)};
 
-% Show Col(B) image
-\draw[thick, green!50, fill=green!20] (6.5, 0.5) ellipse (1cm and 1.2cm);
-\node[green!50!black] at (6.5, -1.2) {Image};
+% Arrows
+\draw[->, ultra thick] (0.5, 0) -- node[above] {$B$} (1.2, 0);
+\draw[->, ultra thick] (6.8, 0) -- node[above] {$A$} (7.7, 0);
 
-% Null(A) region
-\draw[thick, red!50, fill=red!20] (6.5, -0.8) ellipse (0.8cm and 0.5cm);
-\node[red!50!black] at (8.5, -0.8) {$\leftarrow$ Null$(A)$?};
-
+% Question annotation
+\node[purple!70!black, align=center] at (4, -3.2) {\textbf{Question:} Do Col$(B)$ and Null$(A)$ intersect?};
 \end{tikzpicture}
 \end{center}
 
-\vspace{0.5em}
+\x{Key}: Col$(B)$ and Null$(A)$ both live in the \x{same space} ($\mathbb{R}^n$)!
 
-\x{Question}: Does any nonzero vector from Col$(B)$ land in Null$(A)$?
-
-If \x{NO}: $\text{Null}(AB) = \text{Null}(B)$ (no new dependencies created)
+If they only meet at $\mathbf{0}$: $\text{Null}(AB) = \text{Null}(B)$ (no new dependencies)
 
 \end{frame}
 
