@@ -1,0 +1,20 @@
+\frametitle{Step 9: Second Decomposition Result}
+
+$$\underbrace{\begin{pmatrix}
+0 & 0 & 0 & | & 0 \\
+0 & 0 & -1 & | & 1 \\
+0 & 0 & -1 & | & 1
+\end{pmatrix}}_{\text{First Remainder}} = \underbrace{\begin{pmatrix}
+0 & 0 & 0 & | & 0 \\
+0 & 0 & 1 & | & -1 \\
+0 & 0 & 1 & | & -1
+\end{pmatrix}}_{(R_2 \mid \mathbf{b}_2) \text{ rank-one}} + \underbrace{\begin{pmatrix}
+0 & 0 & 0 & | & 0 \\
+0 & 0 & 0 & | & 0 \\
+0 & 0 & 0 & | & 0
+\end{pmatrix}}_{\text{All zeros!}}$$
+
+\vspace{1em}
+
+\x{Cross-filling complete}: $(A \mid \mathbf{b}) = (R_1 \mid \mathbf{b}_1) + (R_2 \mid \mathbf{b}_2)$
+
