@@ -442,6 +442,10 @@ These are \x{two perspectives on the same phenomenon}!
 % Mark the intersection region
 \node[brown!60!black, font=\scriptsize] at (3, 0.8) {Intersection};
 
+% Zero vector in the intersection
+\fill (3, 0) circle (2.5pt);
+\node[below, font=\small] at (3, -0.3) {$\mathbf{0}$};
+
 % Right: Codomain of A (R^m)
 \draw[thick, blue!30, fill=blue!5] (6.2,-2.5) rectangle (8.5,2.5);
 \node at (7.35, 2.8) {\footnotesize $\mathbb{R}^m$};
