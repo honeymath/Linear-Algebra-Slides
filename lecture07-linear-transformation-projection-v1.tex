@@ -114,13 +114,13 @@ $$\mathbf{v} \xrightarrow{\quad A \quad} A\mathbf{v}$$
 
 \begin{defi}[Linear Transformation]
 A function $T: V \to W$ between vector spaces is a \x{linear transformation} if
-$$T(\lambda \mathbf{v} + \mathbf{w}) = \lambda\, T(\mathbf{v}) + T(\mathbf{w})$$
-for all $\mathbf{v}, \mathbf{w} \in V$ and all scalars $\lambda$.
+$$T(\lambda \mathbf{v} + \mu \mathbf{w}) = \lambda\, T(\mathbf{v}) + \mu\, T(\mathbf{w})$$
+for all $\mathbf{v}, \mathbf{w} \in V$ and all scalars $\lambda, \mu$.
 \end{defi}
 
 \vspace{1em}
 
-Equivalently, two properties:
+Equivalently, two separate properties:
 \begin{enumerate}
 \item \x{Additivity}: $T(\mathbf{v} + \mathbf{w}) = T(\mathbf{v}) + T(\mathbf{w})$
 \item \x{Homogeneity}: $T(\lambda \mathbf{v}) = \lambda\, T(\mathbf{v})$
@@ -128,9 +128,29 @@ Equivalently, two properties:
 
 \end{frame}
 
+\begin{frame}{Linearity Extends to Any Linear Combination}
+
+\begin{prop}[General Linearity]
+If $T$ is a linear transformation, then for any vectors $\mathbf{v}_1, \ldots, \mathbf{v}_k$ and scalars $\lambda_1, \ldots, \lambda_k$:
+$$T(\lambda_1 \mathbf{v}_1 + \cdots + \lambda_k \mathbf{v}_k) = \lambda_1 T(\mathbf{v}_1) + \cdots + \lambda_k T(\mathbf{v}_k)$$
+\end{prop}
+
+\textbf{Proof} (induction on $k$): Base case $k = 2$ is the definition.
+
+\vspace{0.3em}
+
+Inductive step: let $\mathbf{u} = \lambda_1 \mathbf{v}_1 + \cdots + \lambda_{k-1} \mathbf{v}_{k-1}$. Then:
+\begin{align*}
+T(\mathbf{u} + \lambda_k \mathbf{v}_k)
+&= T(\mathbf{u}) + \lambda_k T(\mathbf{v}_k) & &\text{(definition)}\\
+&= \lambda_1 T(\mathbf{v}_1) + \cdots + \lambda_k T(\mathbf{v}_k) & &\text{(induction hypothesis)} \quad\qed
+\end{align*}
+
+\end{frame}
+
 \begin{frame}{Geometric Meaning}
 
-Linear transformations \x{preserve linear structure}:
+Linear transformations \x{preserve linear structure}. Geometrically, a linear transformation preserves all parallel lines --- it keeps the \x{shape} of a grid, but not necessarily size or angles:
 
 \vspace{1em}
 
@@ -203,18 +223,29 @@ $T\begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} -y \\ x \end{pmatrix}$
 $T\begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} x \\ -y \end{pmatrix}$
 \quad $A = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}$
 
-\vspace{0.5em}
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Common Examples in $\mathbb{R}^2$ (continued)}
+
+\begin{enumerate}
+\setcounter{enumi}{2}
 
 \item \x{Scaling by 2}:
 $T\begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} 2x \\ 2y \end{pmatrix}$
 \quad $A = \begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix}$
 
-\vspace{0.5em}
+\vspace{1em}
 
 \item \x{Projection onto $x$-axis}:
 $T\begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} x \\ 0 \end{pmatrix}$
 \quad $A = \begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}$
 \end{enumerate}
+
+\vspace{1em}
+
+In each case: the matrix $A$ \x{is} the linear transformation.
 
 \end{frame}
 
@@ -441,7 +472,7 @@ The shadow $\mathbf{w}$ must satisfy:
 \begin{frame}{The Proof}
 
 \begin{prop}[Projection gives the shadow]
-If $P^2 = P$ and $\mathbf{w}$ is the geometric shadow (i.e.\ $\mathbf{w} \in \operatorname{Col}(P)$ and $\mathbf{v} - \mathbf{w} \in \operatorname{Null}(P)$), then $\mathbf{w} = P\mathbf{v}$.
+If $P^2 = P$ and $\mathbf{w}$ is the geometric shadow of $\mathbf v$ (i.e.\ $\mathbf{w} \in \operatorname{Col}(P)$ and $\mathbf{v} - \mathbf{w} \in \operatorname{Null}(P)$), then $\mathbf{w} = P\mathbf{v}$.
 \end{prop}
 
 \textbf{Proof}:
@@ -503,9 +534,30 @@ $$P\mathbf{y} = P(P\mathbf{x}) = P^2\mathbf{x} = P\mathbf{x} = \mathbf{y} \quad\
 
 ($\Leftarrow$): If $P\mathbf{y} = \mathbf{y}$, then $\mathbf{y} \in \operatorname{Col}(P)$ by definition. $\quad\checkmark$
 
-\vspace{1em}
+\end{frame}
+
+\begin{frame}{Geometric Meaning: On the Floor $\iff$ Own Shadow}
 
 \x{Geometric meaning}: A vector is on the floor $\iff$ it equals its own shadow.
+
+\vspace{0.5em}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.55]
+\draw[ultra thick](-6,0)--(6,0) node[right]{floor};
+\draw[ultra thick,->,blue](0,0.1)--(3,0.1) node[above]{$\mathbf{y}$};
+\foreach\x in {-3,...,7}{
+	\draw [red,->](\x,4)--(-4+\x,0.1);
+}
+\draw[fill=red] (0,0) circle[radius=0.1] node[below]{$O$};
+\node at (0,-1.2) {$P\mathbf{y} = \mathbf{y}$: the shadow of $\mathbf{y}$ is $\mathbf{y}$ itself};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.5em}
+
+A vector $\mathbf{y}$ lies on the floor means its shadow coincides with itself:
+$$\mathbf{y} \in \operatorname{Col}(P) \quad\iff\quad P\mathbf{y} = \mathbf{y}$$
 
 \end{frame}
 
@@ -563,11 +615,9 @@ $$\operatorname{Col}(I - P) = \operatorname{Null}(P)$$
 
 ($\subseteq$): $\mathbf{v} \in \operatorname{Col}(P) \implies P\mathbf{v} = \mathbf{v} \implies (I-P)\mathbf{v} = \mathbf{0} \implies \mathbf{v} \in \operatorname{Null}(I-P)$
 
-\vspace{0.3em}
-
 ($\supseteq$): $\mathbf{v} \in \operatorname{Null}(I-P) \implies (I-P)\mathbf{v} = \mathbf{0} \implies \mathbf{v} = P\mathbf{v} \implies \mathbf{v} \in \operatorname{Col}(P)$
 
-\vspace{1em}
+\vspace{0.5em}
 
 \begin{center}
 \begin{tabular}{c|c}
@@ -579,6 +629,76 @@ $\operatorname{Null}(P)$ & $= \operatorname{Col}(I - P)$ \\
 \end{center}
 
 \x{Beautiful!} $P$ and $I - P$ \x{interchange} their column spaces and null spaces.
+
+\end{frame}
+
+\begin{frame}{Visualizing the Interchange}
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\x{Projection $P$}:
+
+\begin{center}
+\begin{tikzpicture}[scale=0.4]
+\draw[ultra thick,blue](-5,0)--(5,0) node[right]{\small $\operatorname{Col}(P)$};
+\draw[ultra thick,red](-3,-3)--(3,3) node[right]{\small $\operatorname{Null}(P)$};
+\draw[ultra thick,->,black](0,0)--(1,3) node[right]{\small $\mathbf{v}$};
+\draw[ultra thick,->,cyan](0,0.05)--(-2,0.05) node[below]{\small $P\mathbf{v}$};
+\draw[dashed,thick](1,3)--(-2,0);
+\foreach\x in {-2,...,6}{
+	\draw [red,->](\x,3.5)--(\x-3.5,0);
+}
+\end{tikzpicture}
+\end{center}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\x{Projection $I - P$}:
+
+\begin{center}
+\begin{tikzpicture}[scale=0.4]
+% Swap: Col(I-P) = Null(P) = y=x, Null(I-P) = Col(P) = horizontal
+\draw[ultra thick,red](-3,-3)--(3,3) node[right]{\small $\operatorname{Col}(I\!-\!P)$};
+\draw[ultra thick,blue](-5,0)--(5,0) node[right]{\small $\operatorname{Null}(I\!-\!P)$};
+\draw[ultra thick,->,black](0,0)--(1,3) node[right]{\small $\mathbf{v}$};
+\draw[ultra thick,->,orange](0,0)--(3,3) node[above left]{\small $(I\!-\!P)\mathbf{v}$};
+\draw[dashed,thick](1,3)--(3,3);
+\foreach\y in {-1,...,4}{
+	\draw [blue,->](\y+3,\y)--(\y+0.1,\y);
+}
+\end{tikzpicture}
+\end{center}
+\end{column}
+\end{columns}
+
+\vspace{0.3em}
+
+The roles of $\operatorname{Col}$ and $\operatorname{Null}$ are \x{swapped}: the floor of $P$ becomes the sunlight of $I-P$, and vice versa.
+
+\end{frame}
+
+\begin{frame}{Decomposition: $\mathbf{v} = P\mathbf{v} + (I-P)\mathbf{v}$}
+
+Every vector $\mathbf{v}$ is \x{decomposed} into two components:
+
+\begin{center}
+\begin{tikzpicture}[scale=0.45]
+\draw[ultra thick,blue](-6,0)--(6,0) node[right]{$\operatorname{Col}(P)$};
+\draw[ultra thick,red](-3.5,-3.5)--(3.5,3.5) node[right]{$\operatorname{Null}(P)$};
+\draw[ultra thick,->,black](0,0)--(1,3) node[right]{$\mathbf{v}$};
+\draw[ultra thick,->,cyan](0,0.05)--(-2,0.05) node[below]{$P\mathbf{v}$};
+\draw[ultra thick,->,orange](0,0)--(3,3) node[above left]{$(I\!-\!P)\mathbf{v}$};
+\draw[dashed,thick](-2,0)--(1,3);
+\draw[dashed,thick](3,3)--(1,3);
+\foreach\x in {-2,...,7}{
+	\draw [red,->](\x,4)--(\x-4,0);
+}
+\end{tikzpicture}
+\end{center}
+
+$$\mathbf{v} = \underbrace{P\mathbf{v}}_{\in\, \operatorname{Col}(P)} + \underbrace{(I-P)\mathbf{v}}_{\in\, \operatorname{Null}(P)}$$
+
+$P$ and $I-P$ together \x{decompose} every vector into a floor component and a sunlight component.
 
 \end{frame}
 
@@ -603,13 +723,57 @@ $\mathbf{v} \in \operatorname{Null}(P) \implies P\mathbf{v} = \mathbf{0}$
 
 Therefore $\mathbf{v} = \mathbf{0}$. \qed
 
-\vspace{1em}
+\vspace{0.5em}
 
-\x{Geometric meaning}: The floor and the sunlight direction \x{only meet at the origin}.
+\x{Geometric meaning}: The floor and the sunlight direction \x{only meet at the origin}. A non-zero vector cannot simultaneously be on the floor and point toward the sun.
+
+\end{frame}
+
+\begin{frame}{Why Disjoint? The Unique Shadow Principle}
+
+The disjoint property ensures sunlight and floor \x{intersect only at the origin}, so every vector has a \x{unique shadow}.
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\x{Good}: floor $\cap$ sunlight $= \{\mathbf{0}\}$
+
+\begin{center}
+\begin{tikzpicture}[scale=0.5]
+\draw[ultra thick,blue](-4,0)--(4,0) node[right]{\small floor};
+\draw[ultra thick,red](-2,-2)--(2,2) node[right]{\small sun};
+\draw[ultra thick,->,black](0,0)--(0.5,2) node[right]{\small $\mathbf{v}$};
+\draw[ultra thick,->,cyan](0,0.05)--(-1.5,0.05) node[below]{\small $P\mathbf{v}$};
+\draw[dashed,thick](0.5,2)--(-1.5,0);
+\foreach\x in {-2,...,5}{
+	\draw [red,->](\x,3)--(\x-3,0);
+}
+\node at (0,-1.5) {\small unique shadow};
+\end{tikzpicture}
+\end{center}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\x{Bad}: sunlight \x{parallel} to floor
+
+\begin{center}
+\begin{tikzpicture}[scale=0.5]
+\draw[ultra thick,blue](-4,0)--(4,0) node[right]{\small floor};
+\draw[ultra thick,->,black](0,0)--(0.5,2) node[right]{\small $\mathbf{v}$};
+\draw[dashed,thick,red](0.5,2)--(4.5,2);
+\draw[dashed,thick,red](0.5,2)--(-3.5,2);
+\node[red] at (0,2.5) {\small sunlight $\parallel$ floor};
+\foreach\x in {-3,...,5}{
+	\draw [red,->](\x,3.5)--(\x+2,3.5);
+}
+\node at (0,-1.5) {\small shadow never lands!};
+\end{tikzpicture}
+\end{center}
+\end{column}
+\end{columns}
 
 \vspace{0.5em}
 
-A non-zero vector cannot simultaneously be on the floor and point toward the sun.
+If sunlight is parallel to the floor, the shadow \x{never reaches the ground}. This cannot happen for a projection because the disjoint property guarantees a unique landing point.
 
 \end{frame}
 
@@ -666,12 +830,18 @@ Two projections onto the \x{same floor} $W = \operatorname{span}\left\{\begin{pm
 \vspace{0.3em}
 
 \begin{center}
-\begin{tikzpicture}[scale=0.6]
-\draw[thick,blue](-2,-2)--(2,2) node[right]{\small floor};
-\draw[thick,red!70!black](-1.5,1.5)--(1.5,-1.5) node[right]{\small sun};
-\draw[->,ultra thick](0,0)--(0.5,1.5);
-\draw[->,cyan,thick](0,0)--(1,1) node[above left]{\small $P_1\mathbf{v}$};
-\draw[dashed](0.5,1.5)--(1,1);
+\begin{tikzpicture}[scale=0.5]
+% Floor along y=x direction
+\draw[ultra thick,blue](-3.5,-3.5)--(3.5,3.5) node[right]{\small floor};
+% Sunlight perpendicular to floor: direction (1,-1)
+\draw[ultra thick,->,black](0,0)--(0.5,1.5) node[right]{\small $\mathbf{v}$};
+\draw[ultra thick,->,cyan](0,0)--(1,1) node[above left]{\small $P_1\mathbf{v}$};
+\draw[dashed,thick](0.5,1.5)--(1,1);
+% Sunlight rays: direction (1,-1), perpendicular to floor (1,1)
+\foreach\x in {-2,...,3}{
+	\draw [red,->](\x-1.5,\x+1.5)--(\x+0.5,\x-0.5);
+}
+\node[red] at (3,1.5) {\small $\perp$ sun};
 \node at (0,-2.2) {\small $P_1 = P_1^T$ \checkmark};
 \end{tikzpicture}
 \end{center}
@@ -683,13 +853,19 @@ Two projections onto the \x{same floor} $W = \operatorname{span}\left\{\begin{pm
 \vspace{0.3em}
 
 \begin{center}
-\begin{tikzpicture}[scale=0.6]
-\draw[thick,blue](-2,-2)--(2,2) node[right]{\small floor};
-\draw[thick,red!70!black](0,-2)--(0,2) node[right]{\small sun};
-\draw[->,ultra thick](0,0)--(0.5,1.5);
-\draw[->,cyan,thick](0,0)--(0.5,0.5) node[below right]{\small $P_2\mathbf{v}$};
-\draw[dashed](0.5,1.5)--(0.5,0.5);
-\node at (0,-2.2) {\small $P_2 \neq P_2^T$ \text{\texttimes}};
+\begin{tikzpicture}[scale=0.5]
+% Same floor along y=x
+\draw[ultra thick,blue](-3.5,-3.5)--(3.5,3.5) node[right]{\small floor};
+% Sunlight direction: vertical (0,1) -> Null = span{(0,1)}
+\draw[ultra thick,->,black](0,0)--(0.5,1.5) node[right]{\small $\mathbf{v}$};
+\draw[ultra thick,->,cyan](0,0)--(0.5,0.5) node[below right]{\small $P_2\mathbf{v}$};
+\draw[dashed,thick](0.5,1.5)--(0.5,0.5);
+% Sunlight rays: vertical direction
+\foreach\x in {-2,...,3}{
+	\draw [red,->](\x,\x+2.5)--(\x,\x+0.1);
+}
+\node[red] at (2.5,3.5) {\small sun};
+\node at (0,-2.2) {\small $P_2 \neq P_2^T$ \texttimes};
 \end{tikzpicture}
 \end{center}
 \end{column}
@@ -711,7 +887,7 @@ Same floor, different sunlight. Only $P_1$ has \x{perpendicular sunlight}.
 \item $P_1 = P_1^T$ \checkmark
 \end{itemize}
 
-\vspace{1em}
+\vspace{0.5em}
 
 \x{Oblique} $P_2 = \begin{pmatrix} 1 & 0 \\ 1 & 0 \end{pmatrix}$:
 
@@ -766,31 +942,45 @@ $$\mathbf{v}^T\mathbf{w} = (P\mathbf{v})^T\mathbf{w} = \mathbf{v}^T \underbrace{
 
 \begin{frame}{Proof: ($\operatorname{Col}(P) \perp \operatorname{Null}(P)$) $\Rightarrow$ ($P = P^T$)}
 
-Assume $\operatorname{Col}(P) \perp \operatorname{Null}(P)$.
+Assume $\operatorname{Col}(P) \perp \operatorname{Null}(P)$. Take \x{any} vectors $\mathbf{v}, \mathbf{w}$.
 
 \vspace{0.5em}
 
-For any $\mathbf{e}_i, \mathbf{e}_j$ (standard basis vectors):
-
 \begin{itemize}
-\item $P\mathbf{e}_i \in \operatorname{Col}(P)$
-\item $(I - P)\mathbf{e}_j \in \operatorname{Null}(P)$ \quad (by interchanging property)
+\item $P\mathbf{v} \in \operatorname{Col}(P)$ \quad (output of $P$ is always in $\operatorname{Col}(P)$)
+\item $(I - P)\mathbf{w} \in \operatorname{Null}(P)$ \quad (by interchanging property: $\operatorname{Col}(I-P) = \operatorname{Null}(P)$)
 \end{itemize}
 
 \vspace{0.5em}
 
-By orthogonality assumption:
-$$(P\mathbf{e}_i)^T(I - P)\mathbf{e}_j = 0 \quad \text{for all } i, j$$
+By orthogonality, $(P\mathbf{v})^T (I - P)\mathbf{w} = 0$ for all $\mathbf{v}, \mathbf{w}$.
+
+Now expand using the \x{transpose undressing rule} $(AB)^T = B^T A^T$:
+\begin{align*}
+0 &= (P\mathbf{v})^T (I - P)\mathbf{w} & &\text{(orthogonality)}\\
+  &= \mathbf{v}^T P^T (I - P) \mathbf{w} & &\text{(undressing: $(P\mathbf{v})^T = \mathbf{v}^T P^T$)}\\
+  &= \mathbf{v}^T (P^T - P^T P) \mathbf{w} & &\text{(distribute)}
+\end{align*}
+
+Since this holds for \x{all} $\mathbf{v}, \mathbf{w}$: $\; P^T - P^T P = 0$, so $P^T = P^T P$.
+
+\end{frame}
+
+\begin{frame}{Proof (continued): Concluding $P = P^T$}
+
+We showed: $P^T = P^T P$. Now take the \x{transpose of both sides}:
+
+\begin{align*}
+(P^T)^T &= (P^T P)^T & &\text{(transpose both sides)} \\
+P &= P^T \underbrace{(P^T)^T}_{= P} & &\text{(undressing + $(A^T)^T = A$)} \\
+P &= P^T P & &
+\end{align*}
+
+Combining: $\;P^T = P^T P = P$, therefore $P = P^T$. \qed
 
 \vspace{0.5em}
 
-This is the $(i,j)$-entry of $P^T(I - P) = 0$, so:
-$$P^T = P^T P$$
-
-\vspace{0.5em}
-
-Taking transpose:
-$$P = (P^TP)^T = P^TP = P^T \quad\qed$$
+\x{Key principle}: If $\mathbf{v}^T A \mathbf{w} = \mathbf{v}^T B \mathbf{w}$ for all $\mathbf{v}, \mathbf{w}$, then $A = B$.
 
 \end{frame}
 
@@ -819,7 +1009,7 @@ Is your answer an orthogonal projection?
 
 \begin{frame}{What We Learned Today}
 
-\x{1.\ Linear Transformation}: $T(\lambda \mathbf{v} + \mathbf{w}) = \lambda T(\mathbf{v}) + T(\mathbf{w})$
+\x{1.\ Linear Transformation}: $T(\lambda \mathbf{v} + \mu \mathbf{w}) = \lambda T(\mathbf{v}) + \mu T(\mathbf{w})$
 \begin{itemize}
 \item Represented by matrices: $T(\mathbf{v}) = A\mathbf{v}$
 \end{itemize}
