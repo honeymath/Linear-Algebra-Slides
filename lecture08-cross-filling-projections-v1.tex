@@ -1,0 +1,777 @@
+\documentclass[10pt]{beamer}
+\usetheme{metropolis}
+
+% ── Packages ──
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,matrix,backgrounds,calc,shapes.geometric}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{etoolbox}
+
+% ── Theorem environments ──
+\theoremstyle{definition}
+\newtheorem{defi}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}{Corollary}[section]
+
+% Custom theorem styles with colors
+\setbeamercolor{block title}{bg=red!75!black,fg=white}
+\setbeamercolor{block body}{bg=yellow!10!white}
+
+% Proposition uses yellow title
+\AtBeginEnvironment{prop}{%
+  \setbeamercolor{block title}{bg=yellow!75!black,fg=black}%
+  \setbeamercolor{block body}{bg=yellow!10!white}%
+}
+\AtEndEnvironment{prop}{%
+  \setbeamercolor{block title}{bg=red!75!black,fg=white}%
+}
+
+% Theorem uses yellow title
+\AtBeginEnvironment{thm}{%
+  \setbeamercolor{block title}{bg=yellow!75!black,fg=black}%
+  \setbeamercolor{block body}{bg=yellow!10!white}%
+}
+\AtEndEnvironment{thm}{%
+  \setbeamercolor{block title}{bg=red!75!black,fg=white}%
+}
+
+% Corollary uses yellow title
+\AtBeginEnvironment{cor}{%
+  \setbeamercolor{block title}{bg=yellow!75!black,fg=black}%
+  \setbeamercolor{block body}{bg=yellow!10!white}%
+}
+\AtEndEnvironment{cor}{%
+  \setbeamercolor{block title}{bg=red!75!black,fg=white}%
+}
+
+% ── Highlighting ──
+\newcommand{\x}[1]{\alert{\textbf{#1}}}
+
+\title{Lecture 8: Cross-Filling Projections}
+\subtitle{MATH203 Applied Linear Algebra}
+\date{}
+
+\begin{document}
+\maketitle
+
+% ═══════════════════════════════════════
+% §1 CROSS-FILLING A PROJECTION
+% ═══════════════════════════════════════
+\section{Cross-Filling a Projection}
+
+\begin{frame}{Where We Are}
+
+From Lecture 7, a \x{projection} $P$ satisfies $P^2 = P$:
+
+\vspace{0.3em}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.5]
+\draw[ultra thick](-5,0)--(5,0) node[right]{Floor $= \operatorname{Col}(P)$};
+\draw[ultra thick,->,blue](0,3)--(2,0.1);
+\node[blue] at (0.2,3.3) {$\mathbf{v}$};
+\draw[ultra thick,->,red](0,0.1)--(2,0.1) node[below]{$P\mathbf{v}$};
+\foreach\x in {-2,...,5}{
+	\draw [orange,->](\x,4)--(\x-2,0.1);
+}
+\draw[fill=red] (0,0) circle[radius=0.1];
+\node[orange] at (4.5,3.5) {\small sunlight};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.3em}
+
+From Lecture 3, any matrix decomposes via \x{cross-filling}:
+$$A = R_1 + R_2 + \cdots + R_r \quad\text{(rank-1 pieces)}$$
+
+\vspace{0.3em}
+
+\x{Today's question}: What do the pieces look like when we cross-fill a \x{projection}?
+
+\end{frame}
+
+\begin{frame}{The Main Theorem (Preview)}
+
+\begin{alertblock}{Cross-Filling Projections}
+When we cross-fill a projection $P = R_1 + R_2 + \cdots + R_r$:
+
+\begin{enumerate}
+\item Every rank-1 piece is \x{automatically a projection}: $R_i^2 = R_i$
+\item All pieces are \x{mutually annihilating}: $R_i R_j = 0$ for $i \neq j$
+\item \x{Rank equals trace}: $\operatorname{rank}(P) = \operatorname{trace}(P)$
+\end{enumerate}
+
+None of this happens for general matrices!
+\end{alertblock}
+
+\vspace{0.5em}
+
+Let's \x{verify} this with examples, then \x{prove} why it works.
+
+\end{frame}
+
+\begin{frame}{Verify: A Rank-1 Projection}
+
+$$P = \frac{1}{5}\begin{pmatrix} 1 & 2 \\ 2 & 4 \end{pmatrix} \quad (P^2 = P \;\checkmark)$$
+
+\vspace{0.3em}
+
+\x{Cross-fill} at pivot $(1,1)$ with value $\frac{1}{5}$:
+\begin{itemize}
+\item Pivot column: $\begin{pmatrix} 1/5 \\ 2/5 \end{pmatrix}$ \quad pattern: $\begin{pmatrix} 1 \\ 2 \end{pmatrix}$
+\item Pivot row: $\begin{pmatrix} 1/5 & 2/5 \end{pmatrix}$ \quad scaled: $\begin{pmatrix} 1 & 2 \end{pmatrix}$
+\end{itemize}
+
+$$R_1 = \begin{pmatrix} 1 \\ 2 \end{pmatrix} \cdot \frac{1}{5} \cdot \begin{pmatrix} 1 & 2 \end{pmatrix} = P \quad (\text{rank 1, done})$$
+
+\vspace{0.3em}
+
+Product form: $U = \begin{pmatrix} 1 \\ 2 \end{pmatrix}$, $V = \frac{1}{5}\begin{pmatrix} 1 & 2 \end{pmatrix}$
+
+$$VU = \frac{1}{5}\begin{pmatrix} 1 & 2 \end{pmatrix}\begin{pmatrix} 1 \\ 2 \end{pmatrix} = \frac{5}{5} = 1 = I_1 \quad\checkmark$$
+
+$\operatorname{rank}(P) = 1 = \operatorname{trace}(P) \quad\checkmark$
+
+\end{frame}
+
+\begin{frame}{Verify: A Rank-2 Projection (Step 1)}
+
+$$P = \begin{pmatrix} 0 & 0 & 0 \\ -1 & 1 & 0 \\ -1 & 0 & 1 \end{pmatrix} \quad (P^2 = P \;\checkmark)$$
+
+\x{First pivot} at $(2,2)$, value $= 1$:
+\begin{itemize}
+\item Pivot column: $\begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}$ \quad Pivot row: $\begin{pmatrix} -1 & 1 & 0 \end{pmatrix}$
+\end{itemize}
+
+$$R_1 = \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix} \cdot \frac{1}{1} \cdot \begin{pmatrix} -1 & 1 & 0 \end{pmatrix} = \begin{pmatrix} 0 & 0 & 0 \\ -1 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}$$
+
+\vspace{0.3em}
+
+Remainder: $P - R_1 = \begin{pmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ -1 & 0 & 1 \end{pmatrix}$
+
+\end{frame}
+
+\begin{frame}{Verify: A Rank-2 Projection (Step 2)}
+
+\x{Second pivot} at $(3,3)$, value $= 1$ (in the remainder):
+\begin{itemize}
+\item Pivot column: $\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$ \quad Pivot row: $\begin{pmatrix} -1 & 0 & 1 \end{pmatrix}$
+\end{itemize}
+
+$$R_2 = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} \cdot \frac{1}{1} \cdot \begin{pmatrix} -1 & 0 & 1 \end{pmatrix} = \begin{pmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ -1 & 0 & 1 \end{pmatrix}$$
+
+\vspace{0.5em}
+
+\x{Check the theorem's predictions}:
+
+$$R_1^2 = R_1 \;\checkmark \qquad R_2^2 = R_2 \;\checkmark \qquad (\text{each is a projection})$$
+
+$$R_1 R_2 = 0 \;\checkmark \qquad R_2 R_1 = 0 \;\checkmark \qquad (\text{mutually annihilating})$$
+
+$$\operatorname{trace}(P) = 0 + 1 + 1 = 2 = \operatorname{rank}(P) \;\checkmark$$
+
+\end{frame}
+
+\begin{frame}{Verify: Product Form and $VU = I$}
+
+$$P = \underbrace{\begin{pmatrix} 0 & 0 \\ 1 & 0 \\ 0 & 1 \end{pmatrix}}_{U} \underbrace{\begin{pmatrix} -1 & 1 & 0 \\ -1 & 0 & 1 \end{pmatrix}}_{V}$$
+
+\vspace{0.5em}
+
+$$VU = \begin{pmatrix} -1 & 1 & 0 \\ -1 & 0 & 1 \end{pmatrix}\begin{pmatrix} 0 & 0 \\ 1 & 0 \\ 0 & 1 \end{pmatrix} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} = I_2 \quad\checkmark$$
+
+\vspace{0.5em}
+
+Everything checks out. The theorem's predictions hold perfectly.
+
+\end{frame}
+
+\begin{frame}{For Contrast: A Non-Projection}
+
+Does this happen for \x{every} matrix? \quad \x{No!}
+
+\vspace{0.3em}
+
+$$A = \begin{pmatrix} 2 & 4 \\ 1 & 2 \end{pmatrix} \quad (\text{rank } 1, \text{ but } A^2 = \begin{pmatrix} 8 & 16 \\ 4 & 8 \end{pmatrix} \neq A)$$
+
+Cross-fill at pivot $(1,1)$, value $= 2$:
+
+$$A = \begin{pmatrix} 2 \\ 1 \end{pmatrix} \cdot \frac{1}{2} \cdot \begin{pmatrix} 2 & 4 \end{pmatrix} = UV$$
+
+$$VU = \frac{1}{2}\begin{pmatrix} 2 & 4 \end{pmatrix}\begin{pmatrix} 2 \\ 1 \end{pmatrix} = \frac{8}{2} = 4 \neq I_1$$
+
+$\operatorname{rank}(A) = 1$ but $\operatorname{trace}(A) = 4$. \quad \x{Different!}
+
+\vspace{0.3em}
+
+The theorem \x{fails} --- because $A$ is not a projection.
+
+\end{frame}
+
+% ═══════════════════════════════════════
+% §2 THE PROOF: VU = I
+% ═══════════════════════════════════════
+\section{Why It Works: $P = UV$ Implies $VU = I$}
+
+\begin{frame}{The Key Theorem}
+
+\begin{thm}[$VU = I$ Automatic]
+Let $P$ be a projection ($P^2 = P$). Suppose $P = UV$ where:
+\begin{itemize}
+\item $U$ is $n \times r$ with linearly independent columns
+\item $V$ is $r \times n$ with linearly independent rows
+\end{itemize}
+
+Then $VU = I_r$ \x{automatically}.
+\end{thm}
+
+\vspace{1em}
+
+This is the \x{proof mechanism} that explains everything we just verified.
+
+\end{frame}
+
+\begin{frame}{Proof: Three Lines}
+
+Expand $P^2 = P$ using $P = UV$:
+
+$$\underbrace{UV \cdot UV}_{P^2} = \underbrace{UV}_{P}$$
+
+\vspace{0.5em}
+
+\x{Step 1}: Left-cancel $U$ (columns of $U$ are linearly independent):
+
+$$UVUV = UV \quad\Longrightarrow\quad VUV = V$$
+
+\vspace{0.5em}
+
+\x{Step 2}: Right-cancel $V$ (rows of $V$ are linearly independent):
+
+$$VUV = V \quad\Longrightarrow\quad VU = I_r$$
+
+\vspace{1em}
+
+Done! \qed
+
+\vspace{0.5em}
+
+The proof uses \x{only} $P^2 = P$ and the cancellation properties from Lecture 4.
+
+\end{frame}
+
+\begin{frame}{Now We Can Explain Everything}
+
+Write $P = UV$ with $VU = I_r$. The rank-1 pieces are $R_i = \mathbf{u}_i \mathbf{v}_i^T$.
+
+\vspace{0.5em}
+
+The condition $VU = I_r$ means:
+$$\mathbf{v}_i^T \mathbf{u}_j = \begin{cases} 1 & \text{if } i = j \\ 0 & \text{if } i \neq j \end{cases}$$
+
+\vspace{0.5em}
+
+\x{Each $R_i$ is a projection}:
+$$R_i^2 = (\mathbf{u}_i \mathbf{v}_i^T)(\mathbf{u}_i \mathbf{v}_i^T) = \mathbf{u}_i \underbrace{(\mathbf{v}_i^T \mathbf{u}_i)}_{= 1} \mathbf{v}_i^T = \mathbf{u}_i \mathbf{v}_i^T = R_i \quad\checkmark$$
+
+\vspace{0.5em}
+
+\x{Mutually annihilating} ($i \neq j$):
+$$R_i R_j = (\mathbf{u}_i \mathbf{v}_i^T)(\mathbf{u}_j \mathbf{v}_j^T) = \mathbf{u}_i \underbrace{(\mathbf{v}_i^T \mathbf{u}_j)}_{= 0} \mathbf{v}_j^T = 0 \quad\checkmark$$
+
+\end{frame}
+
+% ═══════════════════════════════════════
+% §3 RANK = TRACE
+% ═══════════════════════════════════════
+\section{Rank Equals Trace for Projections}
+
+\begin{frame}{The Theorem}
+
+\begin{thm}[Rank = Trace for Projections]
+For any projection $P$ ($P^2 = P$):
+$$\operatorname{rank}(P) = \operatorname{trace}(P)$$
+\end{thm}
+
+\textbf{Proof}:
+
+Write $P = UV$ where $\operatorname{rank}(P) = r$. By the previous theorem, $VU = I_r$.
+
+Using the cyclic property of trace:
+
+$$\operatorname{trace}(P) = \operatorname{trace}(UV) = \operatorname{trace}(VU) = \operatorname{trace}(I_r) = r = \operatorname{rank}(P)$$
+
+Done! \qed
+
+\end{frame}
+
+\begin{frame}{Two Quick Facts}
+
+\begin{prop}[Rank 0 $\Rightarrow$ Zero Matrix]
+A rank $0$ matrix is the zero matrix.
+\end{prop}
+
+A zero-dimensional column space means every column is zero. $\quad\checkmark$
+
+\vspace{0.5em}
+
+\begin{prop}[Full-Rank Projection $= I$]
+An $n \times n$ projection $P$ with $\operatorname{trace}(P) = n$ must be $P = I_n$.
+\end{prop}
+
+\textbf{Proof}: $I_n - P$ is a projection with $\operatorname{trace}(I_n - P) = n - n = 0$.
+
+By rank $=$ trace: $\operatorname{rank}(I_n - P) = 0$, so $I_n - P = 0$. \qed
+
+\vspace{0.5em}
+
+(We will use both of these in the consequences below.)
+
+\end{frame}
+
+\begin{frame}{Why Only for Projections?}
+
+For a general matrix $A = UV$, we still have $\operatorname{trace}(A) = \operatorname{trace}(VU)$.
+
+But $VU \neq I$ in general, so $\operatorname{trace}(A) \neq \operatorname{rank}(A)$.
+
+\vspace{0.5em}
+
+\begin{center}
+\begin{tabular}{l|c|c|c}
+& $\operatorname{rank}$ & $\operatorname{trace}$ & Equal? \\
+\hline
+$\begin{pmatrix} 2 & 4 \\ 1 & 2 \end{pmatrix}$ (not projection) & 1 & 4 & \texttimes \\[0.5em]
+$\frac{1}{5}\begin{pmatrix} 1 & 2 \\ 2 & 4 \end{pmatrix}$ (projection) & 1 & 1 & \checkmark \\[0.5em]
+$\begin{pmatrix} 0 & 0 & 0 \\ -1 & 1 & 0 \\ -1 & 0 & 1 \end{pmatrix}$ (projection) & 2 & 2 & \checkmark \\
+\end{tabular}
+\end{center}
+
+\vspace{0.3em}
+
+$\operatorname{rank} = \operatorname{trace}$ is a \x{fingerprint} of projection matrices.
+
+\end{frame}
+
+\begin{frame}{Quick Application: Read the Rank from the Diagonal}
+
+\begin{exampleblock}{Exercise}
+The following matrix is a projection ($P^2 = P$). What is its rank?
+
+$$P = \begin{pmatrix} 0 & 0 & 0 & 0 & 0 \\ -1 & 1 & 0 & 0 & 0 \\ -1 & 0 & 1 & 0 & 0 \\ -1 & 0 & 0 & 1 & 0 \\ -1 & 0 & 0 & 0 & 1 \end{pmatrix}$$
+\end{exampleblock}
+
+\vspace{0.5em}
+
+\x{Answer}: $\operatorname{rank}(P) = \operatorname{trace}(P) = 0 + 1 + 1 + 1 + 1 = 4$.
+
+\vspace{0.5em}
+
+No cross-filling needed --- just read the diagonal!
+
+\end{frame}
+
+% ═══════════════════════════════════════
+% §4 DIAGONAL CROSS-FILLING
+% ═══════════════════════════════════════
+\section{Diagonal Cross-Filling: The Symmetric Case}
+
+\begin{frame}{What If $P$ Is Also Symmetric?}
+
+We proved: cross-filling \x{any} projection gives rank-1 projections.
+
+\vspace{0.5em}
+
+Now suppose $P$ is an \x{orthogonal projection}: $P^2 = P$ and $P^T = P$.
+
+\vspace{0.5em}
+
+If we choose pivots \x{on the diagonal}, something extra happens:
+
+\vspace{0.3em}
+
+\begin{itemize}
+\item The pivot row and pivot column are \x{transposes of each other} (by symmetry)
+\item So each rank-1 piece has the form $R_i = \mathbf{v}_i \mathbf{v}_i^T$ (symmetric!)
+\item Each piece is an \x{orthogonal} rank-1 projection
+\end{itemize}
+
+\vspace{0.5em}
+
+Cross-filling a symmetric matrix \x{along the diagonal} preserves symmetry.
+
+\end{frame}
+
+\begin{frame}{The Theorem}
+
+\begin{thm}[Diagonal Cross-Filling of Orthogonal Projections]
+Let $P$ be an orthogonal projection ($P^2 = P$, $P^T = P$) of rank $r$.
+
+Diagonal cross-filling decomposes $P$ into:
+$$P = \mathbf{v}_1\mathbf{v}_1^T + \mathbf{v}_2\mathbf{v}_2^T + \cdots + \mathbf{v}_r\mathbf{v}_r^T$$
+where $\mathbf{v}_1, \ldots, \mathbf{v}_r$ is an \x{orthonormal basis} of $\operatorname{Col}(P)$.
+\end{thm}
+
+\vspace{0.5em}
+
+\x{Why orthonormal?}
+
+Since $VU = I_r$, and diagonal cross-filling makes $V = U^T$:
+$$U^T U = I_r$$
+
+The columns of $U$ are the $\mathbf{v}_i$, and $U^T U = I_r$ means they are orthonormal.
+
+\end{frame}
+
+\begin{frame}[fragile]{Example: Diagonal Cross-Filling}
+
+$$P = \begin{pmatrix} 1 & 0 & 0 \\ 0 & \frac{1}{2} & \frac{1}{2} \\ 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix} \quad (P^2 = P,\; P^T = P \;\checkmark)$$
+
+\x{Pivot $(1,1)$}, value $= 1$: \; col $= \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}$, row $= \begin{pmatrix} 1 & 0 & 0 \end{pmatrix}$
+
+$$R_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}\begin{pmatrix} 1 & 0 & 0 \end{pmatrix} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix} \quad\text{(symmetric }\checkmark\text{)}$$
+
+Remainder: $\begin{pmatrix} 0 & 0 & 0 \\ 0 & \frac{1}{2} & \frac{1}{2} \\ 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix}$. \; \x{Pivot $(2,2)$}, value $= \frac{1}{2}$:
+
+$$R_2 = 2 \cdot \begin{pmatrix} 0 \\ \frac{1}{2} \\ \frac{1}{2} \end{pmatrix}\begin{pmatrix} 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix} = \begin{pmatrix} 0 & 0 & 0 \\ 0 & \frac{1}{2} & \frac{1}{2} \\ 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix} \quad\text{(symmetric }\checkmark\text{)}$$
+
+\end{frame}
+
+\begin{frame}{Example: Orthonormal Basis}
+
+Normalizing the column vectors:
+
+$$\mathbf{v}_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \qquad \mathbf{v}_2 = \frac{1}{\sqrt{2}}\begin{pmatrix} 0 \\ 1 \\ 1 \end{pmatrix}$$
+
+\vspace{0.5em}
+
+\x{Check orthonormality}:
+$$\mathbf{v}_1^T\mathbf{v}_1 = 1 \;\checkmark \qquad \mathbf{v}_2^T\mathbf{v}_2 = 1 \;\checkmark \qquad \mathbf{v}_1^T\mathbf{v}_2 = 0 \;\checkmark$$
+
+\vspace{0.5em}
+
+\x{Check decomposition}:
+$$P = \mathbf{v}_1\mathbf{v}_1^T + \mathbf{v}_2\mathbf{v}_2^T \;\checkmark$$
+
+\vspace{0.5em}
+
+Diagonal cross-filling gave us an \x{orthonormal basis} of $\operatorname{Col}(P)$ for free!
+
+\end{frame}
+
+% ═══════════════════════════════════════
+% §5 THREE CONSEQUENCES
+% ═══════════════════════════════════════
+\section{Three Consequences}
+
+\begin{frame}{Rank-1 Projections}
+
+\begin{defi}[Rank-1 Projection]
+A \x{rank-1 projection} is a matrix $P$ with $P^2 = P$ and $\operatorname{rank}(P) = 1$.
+\end{defi}
+
+\vspace{0.3em}
+
+Geometrically: the floor is a \x{line} (1-dimensional).
+
+\begin{center}
+\begin{tikzpicture}[scale=0.5]
+% Line (floor) - 1D
+\draw[ultra thick, blue](-4,0)--(4,0) node[right]{Floor (a line)};
+% A vector projected
+\draw[ultra thick,->,black](0,2.5)--(1.5,0.1);
+\node at (0.2,2.8) {$\mathbf{v}$};
+\draw[ultra thick,->,red](0,0.1)--(1.5,0.1) node[below]{$P\mathbf{v}$};
+% Sunlight
+\foreach\x in {-2,...,3}{
+	\draw [orange,->](\x,3.5)--(\x-1,0.1);
+}
+\draw[fill=red] (0,0) circle[radius=0.08];
+\node[orange] at (3,3) {\small sunlight};
+\end{tikzpicture}
+\end{center}
+
+\x{Example in $\mathbb{R}^3$}: Project onto the line through $\begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}$:
+
+$$P = \frac{1}{14}\begin{pmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \\ 3 & 6 & 9 \end{pmatrix} \quad \operatorname{rank} = 1, \; \operatorname{trace} = \frac{1+4+9}{14} = 1$$
+
+\end{frame}
+
+\begin{frame}{Consequence 1: Rank-1 Projection Characterization}
+
+\begin{cor}[Rank-1 Projection Characterization]
+For a square matrix $A$, consider three conditions:
+\begin{enumerate}
+\item $\operatorname{rank}(A) = 1$
+\item $\operatorname{trace}(A) = 1$
+\item $A^2 = A$ \quad (projection)
+\end{enumerate}
+
+\x{Any two imply the third.}
+\end{cor}
+
+\end{frame}
+
+\begin{frame}{Proof of Rank-1 Characterization}
+
+\x{(1) + (2) $\Rightarrow$ (3)}: rank $= 1$ and trace $= 1$.
+
+Write $A = \mathbf{u}\mathbf{v}^T$. Then $\operatorname{trace}(A) = \mathbf{v}^T\mathbf{u} = 1$.
+$$A^2 = \mathbf{u}\underbrace{(\mathbf{v}^T\mathbf{u})}_{=1}\mathbf{v}^T = \mathbf{u}\mathbf{v}^T = A \quad\checkmark$$
+
+\vspace{0.5em}
+
+\x{(1) + (3) $\Rightarrow$ (2)}: rank $= 1$ and $A^2 = A$.
+
+Write $A = UV$ ($1 \times 1$ middle). By $VU = I$: $VU = 1$.
+$$\operatorname{trace}(A) = \operatorname{trace}(UV) = \operatorname{trace}(VU) = 1 \quad\checkmark$$
+
+\vspace{0.5em}
+
+\x{(2) + (3) $\Rightarrow$ (1)}: trace $= 1$ and $A^2 = A$.
+
+By rank $=$ trace: $\operatorname{rank}(A) = \operatorname{trace}(A) = 1$. $\quad\checkmark$
+
+\end{frame}
+
+\begin{frame}{Why Is This Useful?}
+
+To check whether a rank-1 matrix $A = \mathbf{u}\mathbf{v}^T$ is a projection:
+
+\vspace{0.5em}
+
+\begin{center}
+Just compute $\operatorname{trace}(A) = \mathbf{v}^T\mathbf{u}$.
+
+\vspace{0.3em}
+
+If $\mathbf{v}^T\mathbf{u} = 1$, then $A^2 = A$ is \x{automatic}.
+\end{center}
+
+\vspace{1em}
+
+No need to multiply the full matrix!
+
+\end{frame}
+
+\begin{frame}{Practice: Is It a Rank-1 Projection?}
+
+Use the characterization: rank $= 1$ and trace $= 1$ $\Rightarrow$ projection.
+
+\vspace{0.5em}
+
+\x{1.} $A = \dfrac{1}{14}\begin{pmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \\ 3 & 6 & 9 \end{pmatrix}$
+
+rank $= 1$, \; trace $= \frac{1+4+9}{14} = 1$ \quad $\Rightarrow$ \x{Yes}, rank-1 projection $\checkmark$
+
+\vspace{0.5em}
+
+\x{2.} $B = \begin{pmatrix} 1 & -1 & 0 \\ -1 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}$
+
+rank $= 1$, \; trace $= 1 + 1 + 0 = 2 \neq 1$ \quad $\Rightarrow$ \x{No}, not a projection $\times$
+
+\vspace{0.5em}
+
+\x{3.} $C = \dfrac{1}{2}\begin{pmatrix} 1 & 0 & 1 \\ 0 & 0 & 0 \\ 1 & 0 & 1 \end{pmatrix}$
+
+rank $= 1$, \; trace $= \frac{1}{2} + 0 + \frac{1}{2} = 1$ \quad $\Rightarrow$ \x{Yes}, rank-1 projection $\checkmark$
+
+\end{frame}
+
+\begin{frame}{Consequence 2: $UV = I$ Forces Square}
+
+\begin{cor}[$UV = I$ Forces Square Matrices]
+Suppose $U$ is $n \times r$ and $V$ is $r \times n$ with $UV = I_n$ and $r \leq n$.
+
+Then $r = n$, and both $U, V$ are square invertible with $VU = UV = I_n$.
+\end{cor}
+
+\end{frame}
+
+\begin{frame}{Proof: $UV = I$ Forces Square}
+
+\x{Step 1}: $VU$ is a projection.
+$$(VU)(VU) = V\underbrace{(UV)}_{= I_n}U = VU \quad\checkmark$$
+
+\x{Step 2}: $I_r - VU$ is also a projection (by Lecture 7).
+
+\x{Step 3}: Compute the trace of $I_r - VU$.
+$$\operatorname{trace}(I_r - VU) = r - \operatorname{trace}(VU) = r - \operatorname{trace}(UV) = r - \operatorname{trace}(I_n) = r - n$$
+
+\x{Step 4}: Apply rank $=$ trace.
+
+Since $I_r - VU$ is a projection: $\operatorname{rank}(I_r - VU) = r - n$.
+
+Since $\operatorname{rank} \geq 0$: $r \geq n$. Combined with $r \leq n$: \x{$r = n$}.
+
+\vspace{0.3em}
+
+\x{Step 5}: $\operatorname{rank}(I_r - VU) = 0$, so $I_r - VU = 0$ (rank $0$ = zero matrix), giving $VU = I_n$. \qed
+
+\end{frame}
+
+\begin{frame}{Geometric Meaning}
+
+You \x{cannot} have a ``thin'' matrix times a ``fat'' matrix equal the identity:
+
+\vspace{0.5em}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.5]
+% U: tall thin
+\draw[fill=blue!20] (0,0) rectangle (1,3);
+\node at (0.5,1.5) {$U$};
+\node[below] at (0.5,-0.3) {\small $n \times r$};
+% V: short fat
+\draw[fill=red!20] (2,0.5) rectangle (5,1.5);
+\node at (3.5,1) {$V$};
+\node[below] at (3.5,-0.3) {\small $r \times n$};
+% =
+\node at (6,1) {$=$};
+% I
+\draw[fill=green!20] (7,0) rectangle (10,3);
+\node at (8.5,1.5) {$I_n$};
+\node[below] at (8.5,-0.3) {\small $n \times n$};
+% arrow
+\node at (5,-1.5) {\x{Impossible unless $r = n$!}};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.5em}
+
+If $UV = I$, both factors \x{must be square and invertible}.
+
+\end{frame}
+
+\begin{frame}{Important Special Case}
+
+\begin{prop}[One-Sided Inverse $\Rightarrow$ Two-Sided]
+If $F$ and $V$ are both $n \times n$ and $FV = I_n$, then $VF = I_n$.
+\end{prop}
+
+\textbf{Proof}: Apply the previous corollary with $r = n$. \qed
+
+\vspace{1em}
+
+\x{Recall Lecture 1}: We defined ``invertible'' by assuming \x{both} $AB = I$ and $BA = I$.
+
+\vspace{0.5em}
+
+Now we know: for square matrices, \x{one equation suffices}!
+
+$$FV = I_n \quad\Longrightarrow\quad VF = I_n$$
+
+\end{frame}
+
+\begin{frame}{Consequence 3: Full Rank $\iff$ Invertible}
+
+\begin{thm}[Full Rank $\iff$ Invertible]
+An $n \times n$ matrix $X$ is invertible if and only if $\operatorname{rank}(X) = n$.
+\end{thm}
+
+\vspace{0.5em}
+
+\x{($\Rightarrow$) Invertible $\Rightarrow$ full rank}:
+
+Suppose $XY = I_n$. Cross-fill $X = UV$ with $\operatorname{rank}(X) = k \leq n$.
+
+Then $U(VY) = I_n$, where $U$ is $n \times k$ and $VY$ is $k \times n$.
+
+By ``$UV = I$ forces square'': $k = n$. So $\operatorname{rank}(X) = n$. $\checkmark$
+
+\end{frame}
+
+\begin{frame}{Full Rank $\Rightarrow$ Invertible}
+
+\x{($\Leftarrow$) Full rank $\Rightarrow$ invertible}:
+
+Suppose $\operatorname{rank}(X) = n$. Cross-fill $X = UV$ (both $n \times n$).
+
+\vspace{0.5em}
+
+\x{Step 1}: Cross-fill the augmented matrix $(X \mid I_n)$ with the \x{same pivots}:
+
+$$(X \mid I_n) = U(V \mid W)$$
+
+Comparing: $X = UV$ and $I_n = UW$.
+
+\vspace{0.5em}
+
+\x{Step 2}: $UW = I_n$ (both $n \times n$), so by Proposition: $WU = I_n$.
+
+Therefore $U$ is invertible with $U^{-1} = W$.
+
+\vspace{0.5em}
+
+\x{Step 3}: Similarly, cross-fill $\begin{pmatrix} X \\ I_n \end{pmatrix}$ to get $V$ invertible.
+
+\vspace{0.5em}
+
+\x{Step 4}: $X = UV$ with both invertible, so $X^{-1} = V^{-1}U^{-1}$. \qed
+
+\end{frame}
+
+% ═══════════════════════════════════════
+% §6 SUMMARY
+% ═══════════════════════════════════════
+\section{Summary}
+
+\begin{frame}{What We Proved Today}
+
+\x{1.\ Cross-filling projections}: Each rank-1 piece is itself a projection, and they are mutually annihilating.
+
+\vspace{0.2em}
+
+\x{2.\ $VU = I$ Automatic}: If $P = UV$ with $P^2 = P$ and full-rank factors, then $VU = I$.
+
+\vspace{0.2em}
+
+\x{3.\ Rank $=$ Trace}: For any projection $P$: $\operatorname{rank}(P) = \operatorname{trace}(P)$.
+
+\vspace{0.2em}
+
+\x{4.\ Diagonal cross-filling}: For orthogonal projections, produces orthonormal basis.
+
+\vspace{0.2em}
+
+\x{5.\ Rank-1 Characterization}: Any two of $\{\text{rank}=1, \text{trace}=1, A^2=A\}$ imply the third.
+
+\vspace{0.2em}
+
+\x{6.\ $UV = I$ Forces Square}: Both factors must be $n \times n$ and invertible.
+
+\vspace{0.2em}
+
+\x{7.\ Full Rank $\iff$ Invertible}: An $n \times n$ matrix is invertible iff rank $= n$.
+
+\end{frame}
+
+\begin{frame}{Preview: Lecture 9}
+
+\x{Lecture 9}: Compatible Projections
+
+\vspace{1em}
+
+Today we proved that \x{cross-filling} a projection produces mutually annihilating rank-1 projections.
+
+\vspace{0.5em}
+
+\x{Does this generalize?}
+
+\vspace{0.5em}
+
+Suppose we write $P = R_1 + \cdots + R_k$ (not necessarily from cross-filling), with $\sum \operatorname{rank}(R_i) \leq \operatorname{rank}(P)$.
+
+\vspace{0.5em}
+
+Must each $R_i$ still be a projection? Must $R_i R_j = 0$?
+
+\vspace{1em}
+
+The answer is \x{yes} --- this is the \x{projection decomposition theorem}.
+
+\end{frame}
+
+\end{document}
