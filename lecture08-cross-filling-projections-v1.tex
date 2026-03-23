@@ -50,6 +50,10 @@
 % ── Highlighting ──
 \newcommand{\x}[1]{\alert{\textbf{#1}}}
 
+% ── Cross-filling colors ──
+\newcommand{\pvt}[1]{{\color{red}\mathbf{#1}}}       % pivot
+\newcommand{\crs}[1]{{\color{blue}#1}}                % cross arm
+
 \title{Lecture 8: Cross-Filling Projections}
 \subtitle{MATH203 Applied Linear Algebra}
 \date{}
@@ -71,13 +75,14 @@ From Lecture 7, a \x{projection} $P$ satisfies $P^2 = P$:
 \begin{center}
 \begin{tikzpicture}[scale=0.5]
 \draw[ultra thick](-5,0)--(5,0) node[right]{Floor $= \operatorname{Col}(P)$};
-\draw[ultra thick,->,blue](0,3)--(2,0.1);
-\node[blue] at (0.2,3.3) {$\mathbf{v}$};
-\draw[ultra thick,->,red](0,0.1)--(2,0.1) node[below]{$P\mathbf{v}$};
+\draw[ultra thick,->,blue](0,0)--(3,2);
+\node[blue] at (3.4,2) {$\mathbf{v}$};
+\draw[ultra thick,->,red](0,0)--(2,0) node[below]{$P\mathbf{v}$};
+\draw[dashed,gray](3,2)--(2,0);
 \foreach\x in {-2,...,5}{
-	\draw [orange,->](\x,4)--(\x-2,0.1);
+	\draw [orange,->](\x,4)--(\x-2,0);
 }
-\draw[fill=red] (0,0) circle[radius=0.1];
+\draw[fill=red] (0,0) circle[radius=0.1] node[below left]{$O$};
 \node[orange] at (4.5,3.5) {\small sunlight};
 \end{tikzpicture}
 \end{center}
@@ -113,61 +118,39 @@ Let's \x{verify} this with examples, then \x{prove} why it works.
 
 \end{frame}
 
-\begin{frame}{Verify: A Rank-1 Projection}
-
-$$P = \frac{1}{5}\begin{pmatrix} 1 & 2 \\ 2 & 4 \end{pmatrix} \quad (P^2 = P \;\checkmark)$$
-
-\vspace{0.3em}
-
-\x{Cross-fill} at pivot $(1,1)$ with value $\frac{1}{5}$:
-\begin{itemize}
-\item Pivot column: $\begin{pmatrix} 1/5 \\ 2/5 \end{pmatrix}$ \quad pattern: $\begin{pmatrix} 1 \\ 2 \end{pmatrix}$
-\item Pivot row: $\begin{pmatrix} 1/5 & 2/5 \end{pmatrix}$ \quad scaled: $\begin{pmatrix} 1 & 2 \end{pmatrix}$
-\end{itemize}
-
-$$R_1 = \begin{pmatrix} 1 \\ 2 \end{pmatrix} \cdot \frac{1}{5} \cdot \begin{pmatrix} 1 & 2 \end{pmatrix} = P \quad (\text{rank 1, done})$$
-
-\vspace{0.3em}
-
-Product form: $U = \begin{pmatrix} 1 \\ 2 \end{pmatrix}$, $V = \frac{1}{5}\begin{pmatrix} 1 & 2 \end{pmatrix}$
-
-$$VU = \frac{1}{5}\begin{pmatrix} 1 & 2 \end{pmatrix}\begin{pmatrix} 1 \\ 2 \end{pmatrix} = \frac{5}{5} = 1 = I_1 \quad\checkmark$$
-
-$\operatorname{rank}(P) = 1 = \operatorname{trace}(P) \quad\checkmark$
-
-\end{frame}
-
 \begin{frame}{Verify: A Rank-2 Projection (Step 1)}
 
 $$P = \begin{pmatrix} 0 & 0 & 0 \\ -1 & 1 & 0 \\ -1 & 0 & 1 \end{pmatrix} \quad (P^2 = P \;\checkmark)$$
 
-\x{First pivot} at $(2,2)$, value $= 1$:
-\begin{itemize}
-\item Pivot column: $\begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}$ \quad Pivot row: $\begin{pmatrix} -1 & 1 & 0 \end{pmatrix}$
-\end{itemize}
+\x{First pivot} at $(2,2)$, value $= \pvt{1}$. Highlight the cross (row 2 and column 2):
 
-$$R_1 = \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix} \cdot \frac{1}{1} \cdot \begin{pmatrix} -1 & 1 & 0 \end{pmatrix} = \begin{pmatrix} 0 & 0 & 0 \\ -1 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}$$
+$$P = \begin{pmatrix} 0 & \crs{0} & 0 \\ \crs{-1} & \pvt{1} & \crs{0} \\ 0 & \crs{0} & 1 \end{pmatrix}$$
 
-\vspace{0.3em}
-
-Remainder: $P - R_1 = \begin{pmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ -1 & 0 & 1 \end{pmatrix}$
+$$R_1 = \frac{1}{\pvt{1}}\begin{pmatrix} \crs{0} \\ \crs{1} \\ \crs{0} \end{pmatrix}\begin{pmatrix} \crs{-1} & \crs{1} & \crs{0} \end{pmatrix}
+= \begin{pmatrix} 0 & 0 & 0 \\ -1 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}$$
 
 \end{frame}
 
 \begin{frame}{Verify: A Rank-2 Projection (Step 2)}
 
-\x{Second pivot} at $(3,3)$, value $= 1$ (in the remainder):
-\begin{itemize}
-\item Pivot column: $\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$ \quad Pivot row: $\begin{pmatrix} -1 & 0 & 1 \end{pmatrix}$
-\end{itemize}
+\x{Second pivot} at $(3,3)$, value $= \pvt{1}$ (in the remainder):
 
-$$R_2 = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} \cdot \frac{1}{1} \cdot \begin{pmatrix} -1 & 0 & 1 \end{pmatrix} = \begin{pmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ -1 & 0 & 1 \end{pmatrix}$$
+$$P - R_1 = \begin{pmatrix} 0 & 0 & \crs{0} \\ 0 & 0 & \crs{0} \\ \crs{-1} & \crs{0} & \pvt{1} \end{pmatrix}$$
 
-\vspace{0.5em}
+$$R_2 = \frac{1}{\pvt{1}}\begin{pmatrix} \crs{0} \\ \crs{0} \\ \crs{1} \end{pmatrix}\begin{pmatrix} \crs{-1} & \crs{0} & \crs{1} \end{pmatrix}
+= \begin{pmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ -1 & 0 & 1 \end{pmatrix}$$
 
-\x{Check the theorem's predictions}:
+\end{frame}
 
-$$R_1^2 = R_1 \;\checkmark \qquad R_2^2 = R_2 \;\checkmark \qquad (\text{each is a projection})$$
+\begin{frame}{Verify: Check the Theorem's Predictions}
+
+\x{Cross-filling decomposition}:
+
+$$P = \underbrace{\begin{pmatrix} 0 & 0 & 0 \\ -1 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}}_{R_1} + \underbrace{\begin{pmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ -1 & 0 & 1 \end{pmatrix}}_{R_2}$$
+
+\vspace{0.3em}
+
+$$R_1^2 = R_1 \;\checkmark \qquad R_2^2 = R_2 \;\checkmark \qquad (\text{each piece is a projection})$$
 
 $$R_1 R_2 = 0 \;\checkmark \qquad R_2 R_1 = 0 \;\checkmark \qquad (\text{mutually annihilating})$$
 
@@ -240,35 +223,31 @@ Expand $P^2 = P$ using $P = UV$:
 
 $$\underbrace{UV \cdot UV}_{P^2} = \underbrace{UV}_{P}$$
 
-\vspace{0.5em}
+\vspace{0.3em}
 
 \x{Step 1}: Left-cancel $U$ (columns of $U$ are linearly independent):
 
 $$UVUV = UV \quad\Longrightarrow\quad VUV = V$$
 
-\vspace{0.5em}
+\vspace{0.3em}
 
 \x{Step 2}: Right-cancel $V$ (rows of $V$ are linearly independent):
 
 $$VUV = V \quad\Longrightarrow\quad VU = I_r$$
 
-\vspace{1em}
+\vspace{0.3em}
 
-Done! \qed
-
-\vspace{0.5em}
-
-The proof uses \x{only} $P^2 = P$ and the cancellation properties from Lecture 4.
+Done! The proof uses \x{only} $P^2 = P$ and cancellation. \qed
 
 \end{frame}
 
 \begin{frame}{Now We Can Explain Everything}
 
-Write $P = UV$ with $VU = I_r$. The rank-1 pieces are $R_i = \mathbf{u}_i \mathbf{v}_i^T$.
+Write $P = UV$ with $VU = I_r$. Define the columns and rows:
 
-\vspace{0.5em}
+$$U = \begin{pmatrix} \mathbf{u}_1 & \mathbf{u}_2 & \cdots & \mathbf{u}_r \end{pmatrix}, \qquad V = \begin{pmatrix} \mathbf{v}_1^T \\ \mathbf{v}_2^T \\ \vdots \\ \mathbf{v}_r^T \end{pmatrix}$$
 
-The condition $VU = I_r$ means:
+Then $R_i = \mathbf{u}_i \mathbf{v}_i^T$ and $VU = I_r$ means:
 $$\mathbf{v}_i^T \mathbf{u}_j = \begin{cases} 1 & \text{if } i = j \\ 0 & \text{if } i \neq j \end{cases}$$
 
 \vspace{0.5em}
@@ -276,10 +255,22 @@ $$\mathbf{v}_i^T \mathbf{u}_j = \begin{cases} 1 & \text{if } i = j \\ 0 & \text{
 \x{Each $R_i$ is a projection}:
 $$R_i^2 = (\mathbf{u}_i \mathbf{v}_i^T)(\mathbf{u}_i \mathbf{v}_i^T) = \mathbf{u}_i \underbrace{(\mathbf{v}_i^T \mathbf{u}_i)}_{= 1} \mathbf{v}_i^T = \mathbf{u}_i \mathbf{v}_i^T = R_i \quad\checkmark$$
 
-\vspace{0.5em}
+\end{frame}
+
+\begin{frame}{Mutually Annihilating Pieces}
 
 \x{Mutually annihilating} ($i \neq j$):
 $$R_i R_j = (\mathbf{u}_i \mathbf{v}_i^T)(\mathbf{u}_j \mathbf{v}_j^T) = \mathbf{u}_i \underbrace{(\mathbf{v}_i^T \mathbf{u}_j)}_{= 0} \mathbf{v}_j^T = 0 \quad\checkmark$$
+
+\vspace{1em}
+
+\x{Summary}: For a projection $P = R_1 + \cdots + R_r$ (cross-filling decomposition):
+\begin{itemize}
+\item Each $R_i$ is a rank-1 projection ($R_i^2 = R_i$)
+\item Different pieces annihilate ($R_i R_j = 0$ for $i \neq j$)
+\end{itemize}
+
+Both follow from the single identity $VU = I_r$.
 
 \end{frame}
 
@@ -333,17 +324,16 @@ By rank $=$ trace: $\operatorname{rank}(I_n - P) = 0$, so $I_n - P = 0$. \qed
 
 \begin{frame}{Why Only for Projections?}
 
-For a general matrix $A = UV$, we still have $\operatorname{trace}(A) = \operatorname{trace}(VU)$.
+The identity $\operatorname{rank} = \operatorname{trace}$ is special to projections.
 
-But $VU \neq I$ in general, so $\operatorname{trace}(A) \neq \operatorname{rank}(A)$.
-
-\vspace{0.5em}
+\vspace{0.3em}
 
 \begin{center}
 \begin{tabular}{l|c|c|c}
 & $\operatorname{rank}$ & $\operatorname{trace}$ & Equal? \\
 \hline
 $\begin{pmatrix} 2 & 4 \\ 1 & 2 \end{pmatrix}$ (not projection) & 1 & 4 & \texttimes \\[0.5em]
+$\begin{pmatrix} 3 & 0 \\ 0 & 0 \end{pmatrix}$ (not projection) & 1 & 3 & \texttimes \\[0.5em]
 $\frac{1}{5}\begin{pmatrix} 1 & 2 \\ 2 & 4 \end{pmatrix}$ (projection) & 1 & 1 & \checkmark \\[0.5em]
 $\begin{pmatrix} 0 & 0 & 0 \\ -1 & 1 & 0 \\ -1 & 0 & 1 \end{pmatrix}$ (projection) & 2 & 2 & \checkmark \\
 \end{tabular}
@@ -425,7 +415,7 @@ The columns of $U$ are the $\mathbf{v}_i$, and $U^T U = I_r$ means they are orth
 
 \end{frame}
 
-\begin{frame}[fragile]{Example: Diagonal Cross-Filling}
+\begin{frame}[fragile]{Example: Diagonal Cross-Filling (Step 1)}
 
 $$P = \begin{pmatrix} 1 & 0 & 0 \\ 0 & \frac{1}{2} & \frac{1}{2} \\ 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix} \quad (P^2 = P,\; P^T = P \;\checkmark)$$
 
@@ -433,9 +423,19 @@ $$P = \begin{pmatrix} 1 & 0 & 0 \\ 0 & \frac{1}{2} & \frac{1}{2} \\ 0 & \frac{1}
 
 $$R_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}\begin{pmatrix} 1 & 0 & 0 \end{pmatrix} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix} \quad\text{(symmetric }\checkmark\text{)}$$
 
+Note: column and row are \x{transposes} of each other (by $P^T = P$).
+
+\end{frame}
+
+\begin{frame}[fragile]{Example: Diagonal Cross-Filling (Step 2)}
+
 Remainder: $\begin{pmatrix} 0 & 0 & 0 \\ 0 & \frac{1}{2} & \frac{1}{2} \\ 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix}$. \; \x{Pivot $(2,2)$}, value $= \frac{1}{2}$:
 
 $$R_2 = 2 \cdot \begin{pmatrix} 0 \\ \frac{1}{2} \\ \frac{1}{2} \end{pmatrix}\begin{pmatrix} 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix} = \begin{pmatrix} 0 & 0 & 0 \\ 0 & \frac{1}{2} & \frac{1}{2} \\ 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix} \quad\text{(symmetric }\checkmark\text{)}$$
+
+\vspace{0.5em}
+
+$$P = \underbrace{\begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix}}_{R_1 = \mathbf{v}_1\mathbf{v}_1^T} + \underbrace{\begin{pmatrix} 0 & 0 & 0 \\ 0 & \frac{1}{2} & \frac{1}{2} \\ 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix}}_{R_2 = \mathbf{v}_2\mathbf{v}_2^T}$$
 
 \end{frame}
 
@@ -481,15 +481,16 @@ Geometrically: the floor is a \x{line} (1-dimensional).
 % Line (floor) - 1D
 \draw[ultra thick, blue](-4,0)--(4,0) node[right]{Floor (a line)};
 % A vector projected
-\draw[ultra thick,->,black](0,2.5)--(1.5,0.1);
-\node at (0.2,2.8) {$\mathbf{v}$};
-\draw[ultra thick,->,red](0,0.1)--(1.5,0.1) node[below]{$P\mathbf{v}$};
-% Sunlight
+\draw[ultra thick,->,blue](0,0)--(2,2);
+\node[blue] at (2.4,2) {$\mathbf{v}$};
+\draw[ultra thick,->,red](0,0)--(1,0) node[below]{$P\mathbf{v}$};
+\draw[dashed,gray](2,2)--(1,0);
+% Sunlight: direction (-1.5,-3) proportional to (-1,-2), same as v-Pv
 \foreach\x in {-2,...,3}{
-	\draw [orange,->](\x,3.5)--(\x-1,0.1);
+	\draw [orange,->](\x,3)--(\x-1.5,0);
 }
-\draw[fill=red] (0,0) circle[radius=0.08];
-\node[orange] at (3,3) {\small sunlight};
+\draw[fill=red] (0,0) circle[radius=0.08] node[below left]{$O$};
+\node[orange] at (3,2.5) {\small sunlight};
 \end{tikzpicture}
 \end{center}
 
