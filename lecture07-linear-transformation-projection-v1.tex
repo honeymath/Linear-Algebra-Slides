@@ -148,11 +148,11 @@ T(\mathbf{u} + \lambda_k \mathbf{v}_k)
 
 \end{frame}
 
-\begin{frame}{Geometric Meaning}
+\begin{frame}{Geometric Meaning: Rotation and Reflection}
 
-Linear transformations \x{preserve linear structure}. Geometrically, a linear transformation preserves all parallel lines --- it keeps the \x{shape} of a grid, but not necessarily size or angles:
+Linear transformations \x{preserve linear structure} --- parallel lines stay parallel.
 
-\vspace{1em}
+\vspace{0.5em}
 
 \begin{center}
 \begin{tikzpicture}[scale=0.5]
@@ -172,7 +172,7 @@ Linear transformations \x{preserve linear structure}. Geometrically, a linear tr
 \end{tikzpicture}
 \end{center}
 
-\vspace{0.3cm}
+\vspace{0.5em}
 
 \begin{center}
 \begin{tikzpicture}[scale=0.5]
@@ -192,7 +192,9 @@ Linear transformations \x{preserve linear structure}. Geometrically, a linear tr
 \end{tikzpicture}
 \end{center}
 
-\vspace{0.3cm}
+\end{frame}
+
+\begin{frame}{Geometric Meaning: Projection}
 
 \begin{center}
 \begin{tikzpicture}[scale=0.5]
@@ -207,6 +209,14 @@ Linear transformations \x{preserve linear structure}. Geometrically, a linear tr
 \node at (4.8, -1.2) {Projection};
 \end{tikzpicture}
 \end{center}
+
+\vspace{1em}
+
+Projection \x{loses a dimension}: a 2D face becomes a 1D line.
+
+\vspace{0.5em}
+
+This is the key example for the rest of this lecture.
 
 \end{frame}
 
@@ -260,6 +270,12 @@ Conversely, every matrix defines a linear transformation.
 \end{prop}
 
 \vspace{1em}
+
+In other words: \x{matrices = linear transformations}. They are the same thing!
+
+\end{frame}
+
+\begin{frame}{Linear Operators}
 
 \begin{defi}[Linear Operator]
 When the domain and codomain are the same ($T: V \to V$), we call $T$ a \x{linear operator}.
@@ -607,15 +623,8 @@ $$\underbrace{P\mathbf{v}}_{\text{shadow on floor}} + \underbrace{(I-P)\mathbf{v
 
 \begin{prop}[Column Space and Null Space Interchange]
 For any projection $P$:
-$$\operatorname{Col}(P) = \operatorname{Null}(I - P)$$
-$$\operatorname{Col}(I - P) = \operatorname{Null}(P)$$
+$$\operatorname{Col}(P) = \operatorname{Null}(I - P) \qquad\text{and}\qquad \operatorname{Col}(I - P) = \operatorname{Null}(P)$$
 \end{prop}
-
-\textbf{Proof} (first equality):
-
-($\subseteq$): $\mathbf{v} \in \operatorname{Col}(P) \implies P\mathbf{v} = \mathbf{v} \implies (I-P)\mathbf{v} = \mathbf{0} \implies \mathbf{v} \in \operatorname{Null}(I-P)$
-
-($\supseteq$): $\mathbf{v} \in \operatorname{Null}(I-P) \implies (I-P)\mathbf{v} = \mathbf{0} \implies \mathbf{v} = P\mathbf{v} \implies \mathbf{v} \in \operatorname{Col}(P)$
 
 \vspace{0.5em}
 
@@ -628,7 +637,31 @@ $\operatorname{Null}(P)$ & $= \operatorname{Col}(I - P)$ \\
 \end{tabular}
 \end{center}
 
-\x{Beautiful!} $P$ and $I - P$ \x{interchange} their column spaces and null spaces.
+\vspace{0.5em}
+
+$P$ and $I - P$ \x{interchange} their column spaces and null spaces.
+
+\end{frame}
+
+\begin{frame}{Proof of the Interchanging Property}
+
+\x{Show}: $\operatorname{Col}(P) = \operatorname{Null}(I - P)$.
+
+\vspace{0.5em}
+
+($\subseteq$): Take $\mathbf{v} \in \operatorname{Col}(P)$, so $P\mathbf{v} = \mathbf{v}$.
+
+$$\quad (I-P)\mathbf{v} = \mathbf{v} - P\mathbf{v} = \mathbf{v} - \mathbf{v} = \mathbf{0} \quad\implies\quad \mathbf{v} \in \operatorname{Null}(I-P) \;\checkmark$$
+
+\vspace{0.5em}
+
+($\supseteq$): Take $\mathbf{v} \in \operatorname{Null}(I-P)$, so $(I-P)\mathbf{v} = \mathbf{0}$.
+
+$$\quad \mathbf{v} - P\mathbf{v} = \mathbf{0} \quad\implies\quad \mathbf{v} = P\mathbf{v} \quad\implies\quad \mathbf{v} \in \operatorname{Col}(P) \;\checkmark$$
+
+\vspace{0.5em}
+
+The second equality $\operatorname{Col}(I-P) = \operatorname{Null}(P)$ follows by replacing $P$ with $I-P$.
 
 \end{frame}
 
@@ -673,7 +706,7 @@ $\operatorname{Null}(P)$ & $= \operatorname{Col}(I - P)$ \\
 
 \vspace{0.3em}
 
-The roles of $\operatorname{Col}$ and $\operatorname{Null}$ are \x{swapped}: the floor of $P$ becomes the sunlight of $I-P$, and vice versa.
+The floor of $P$ becomes the sunlight of $I-P$, and vice versa.
 
 \end{frame}
 
@@ -773,7 +806,7 @@ The disjoint property ensures sunlight and floor \x{intersect only at the origin
 
 \vspace{0.5em}
 
-If sunlight is parallel to the floor, the shadow \x{never reaches the ground}. This cannot happen for a projection because the disjoint property guarantees a unique landing point.
+If sunlight is parallel to the floor, the shadow \x{never lands}. The disjoint property prevents this.
 
 \end{frame}
 
@@ -877,25 +910,47 @@ Same floor, different sunlight. Only $P_1$ has \x{perpendicular sunlight}.
 
 \end{frame}
 
-\begin{frame}{Verification of the Example}
+\begin{frame}{Verification: Orthogonal Projection $P_1$}
 
-\x{Orthogonal} $P_1 = \frac{1}{2}\begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}$:
+$P_1 = \frac{1}{2}\begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}$:
+
+\vspace{0.3em}
 
 \begin{itemize}
 \item $\operatorname{Col}(P_1) = \operatorname{span}\left\{\begin{pmatrix} 1 \\ 1 \end{pmatrix}\right\}$, \quad $\operatorname{Null}(P_1) = \operatorname{span}\left\{\begin{pmatrix} 1 \\ -1 \end{pmatrix}\right\}$
-\item $\begin{pmatrix} 1 \\ 1 \end{pmatrix}^T \begin{pmatrix} 1 \\ -1 \end{pmatrix} = 1 - 1 = 0$ \checkmark \quad \x{Perpendicular!}
-\item $P_1 = P_1^T$ \checkmark
+
+\vspace{0.3em}
+
+\item $\begin{pmatrix} 1 \\ 1 \end{pmatrix}^T \begin{pmatrix} 1 \\ -1 \end{pmatrix} = 1 - 1 = 0$ $\checkmark$ \quad \x{Perpendicular!}
+
+\vspace{0.3em}
+
+\item $P_1 = P_1^T$ $\checkmark$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Verification: Oblique Projection $P_2$}
+
+$P_2 = \begin{pmatrix} 1 & 0 \\ 1 & 0 \end{pmatrix}$:
+
+\vspace{0.3em}
+
+\begin{itemize}
+\item $\operatorname{Col}(P_2) = \operatorname{span}\left\{\begin{pmatrix} 1 \\ 1 \end{pmatrix}\right\}$, \quad $\operatorname{Null}(P_2) = \operatorname{span}\left\{\begin{pmatrix} 0 \\ 1 \end{pmatrix}\right\}$
+
+\vspace{0.3em}
+
+\item $\begin{pmatrix} 1 \\ 1 \end{pmatrix}^T \begin{pmatrix} 0 \\ 1 \end{pmatrix} = 0 + 1 = 1 \neq 0$ $\times$ \quad \x{Not perpendicular!}
+
+\vspace{0.3em}
+
+\item $P_2 \neq P_2^T$ $\times$
 \end{itemize}
 
 \vspace{0.5em}
 
-\x{Oblique} $P_2 = \begin{pmatrix} 1 & 0 \\ 1 & 0 \end{pmatrix}$:
-
-\begin{itemize}
-\item $\operatorname{Col}(P_2) = \operatorname{span}\left\{\begin{pmatrix} 1 \\ 1 \end{pmatrix}\right\}$, \quad $\operatorname{Null}(P_2) = \operatorname{span}\left\{\begin{pmatrix} 0 \\ 1 \end{pmatrix}\right\}$
-\item $\begin{pmatrix} 1 \\ 1 \end{pmatrix}^T \begin{pmatrix} 0 \\ 1 \end{pmatrix} = 0 + 1 = 1 \neq 0$ \texttimes \quad \x{Not perpendicular!}
-\item $P_2 \neq P_2^T$ \texttimes
-\end{itemize}
+Same floor, different sunlight $\to$ different symmetry properties.
 
 \end{frame}
 
