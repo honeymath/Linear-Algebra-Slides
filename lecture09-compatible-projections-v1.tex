@@ -51,6 +51,9 @@
 % ── Cross-filling colors ──
 \newcommand{\pvt}[1]{{\color{red}\mathbf{#1}}}       % pivot
 \newcommand{\crs}[1]{{\color{blue}#1}}                % cross arm
+\newcommand{\gn}[1]{{\color{green!60!black}#1}}       % green highlight
+\newcommand{\rd}[1]{{\color{red}#1}}                  % red highlight
+\newcommand{\bl}[1]{{\color{blue}#1}}                 % blue highlight
 
 \title{Lecture 9: Compatible Projections}
 \subtitle{MATH203 Applied Linear Algebra}
@@ -218,17 +221,19 @@ The \x{floor} of $R_2$ lies in the \x{sunlight direction} of $R_1$ (and vice ver
 \begin{frame}{Property 1: Subsums Are Projections}
 
 \begin{prop}
-Let $\{P_1, \ldots, P_k\}$ be a compatible family. For any subset $I \subseteq \{1, \ldots, k\}$, the sum $Q = \sum_{i \in I} P_i$ is a projection.
+Let $\{P_1, \ldots, P_k\}$ be a compatible family. Then any subsum
+$$Q = P_1 + P_2 + \cdots + P_j$$
+is also a projection ($Q^2 = Q$).
 \end{prop}
 
 \vspace{0.3em}
 
-Proof:
-$$Q^2 = \left(\sum_{i \in I} P_i\right)\left(\sum_{j \in I} P_j\right) = \sum_{i,j \in I} P_i P_j$$
+Proof: Expand $Q^2$:
+$$Q^2 = (\x{$P_1$} + \x{$P_2$} + \cdots + P_j)(\x{$P_1$} + \x{$P_2$} + \cdots + P_j)$$
+$$= \x{$P_1^2$} + \underbrace{P_1 P_2}_{=\,0} + \cdots + \x{$P_2^2$} + \underbrace{P_2 P_1}_{=\,0} + \cdots + \x{$P_j^2$}$$
 
-Since $P_i P_j = 0$ for $i \neq j$ and $P_i^2 = P_i$:
-
-$$Q^2 = \sum_{i \in I} P_i^2 = \sum_{i \in I} P_i = Q \quad \checkmark$$
+All cross terms vanish ($P_i P_l = 0$), only diagonal terms survive:
+$$Q^2 = P_1^2 + P_2^2 + \cdots + P_j^2 = P_1 + P_2 + \cdots + P_j = Q \quad \checkmark$$
 
 \end{frame}
 
@@ -274,21 +279,23 @@ If $P_j\mathbf{v} \neq \mathbf{0}$, then $c_j = 0$. \qed
 \end{frame}
 
 
-\begin{frame}{Direct Sum Decomposition}
+\begin{frame}{Unique Decomposition}
 
-If $\{P_1, \ldots, P_k\}$ is a compatible family with $P_1 + \cdots + P_k = P$, then:
-
-$$\operatorname{Col}(P) = \operatorname{Col}(P_1) \oplus \operatorname{Col}(P_2) \oplus \cdots \oplus \operatorname{Col}(P_k)$$
-
-\vspace{0.3em}
-
-Every vector $P\mathbf{v}$ has a \x{unique} decomposition:
+If $\{P_1, \ldots, P_k\}$ is a compatible family with $P_1 + \cdots + P_k = P$, then every vector $P\mathbf{v}$ decomposes as:
 
 $$P\mathbf{v} = \underbrace{P_1\mathbf{v}}_{\in \operatorname{Col}(P_1)} + \underbrace{P_2\mathbf{v}}_{\in \operatorname{Col}(P_2)} + \cdots + \underbrace{P_k\mathbf{v}}_{\in \operatorname{Col}(P_k)}$$
 
 \vspace{0.3em}
 
-Key: $P_i P_j = 0$ ensures these subspaces are ``independent'' --- the floor of $P_i$ lies entirely in the sunlight direction of $P_j$.
+By Property 2 (linear independence), this decomposition is \x{unique}.
+
+\vspace{0.5em}
+
+{\small (In other textbooks, this is called a \textbf{direct sum decomposition}, written $\operatorname{Col}(P) = \operatorname{Col}(P_1) \oplus \cdots \oplus \operatorname{Col}(P_k)$. We will not use this notation.)}
+
+\vspace{0.5em}
+
+Key: $P_i P_j = 0$ ensures the ``floors'' are independent --- the floor of $P_i$ lies in the sunlight direction of $P_j$.
 
 \end{frame}
 
@@ -327,14 +334,14 @@ We don't assume the $R_i$ are projections. We don't assume $R_i R_j = 0$.
 \begin{thm}[Projection Decomposition --- The Climax]
 Let $P$ be a projection ($P^2 = P$). Suppose:
 $$P = R_1 + R_2 + \cdots + R_k$$
-where each $R_i$ is a matrix satisfying:
-$$\sum_{i=1}^k \operatorname{rank}(R_i) \leq \operatorname{rank}(P)$$
+where each $R_i$ is a matrix (not necessarily a projection!), and:
+$$\operatorname{rank}(R_1) + \operatorname{rank}(R_2) + \cdots + \operatorname{rank}(R_k) \leq \operatorname{rank}(P)$$
 
 Then \x{automatically}:
 \begin{enumerate}
 \item Each $R_i$ is a projection ($R_i^2 = R_i$)
 \item $R_i R_j = 0$ for all $i \neq j$ (compatible family)
-\item $\sum_{i=1}^k \operatorname{rank}(R_i) = \operatorname{rank}(P)$ (equality holds)
+\item Equality holds: $\operatorname{rank}(R_1) + \cdots + \operatorname{rank}(R_k) = \operatorname{rank}(P)$
 \end{enumerate}
 \end{thm}
 
@@ -356,7 +363,7 @@ The projection property and mutual annihilation \x{emerge automatically} from th
 \vspace{0.5em}
 
 To check compatibility, we only need:
-$$\sum \operatorname{rank}(R_i) \leq \operatorname{rank}(P)$$
+$$\operatorname{rank}(R_1) + \cdots + \operatorname{rank}(R_k) \leq \operatorname{rank}(P)$$
 
 \vspace{0.5em}
 
@@ -365,16 +372,102 @@ Key: The rank condition forces a rigid algebraic structure.
 \end{frame}
 
 
-\begin{frame}{Proof: Step 1 --- Introduce $R_0$}
+\begin{frame}{Example: Let's Try It}
 
-Let $R_0 = I_n - P$. Since $P$ is a projection, $R_0$ is also a projection:
+Take a rank-2 projection (from Lecture 8's diagonal cross-filling):
 
-$$(I_n - P)^2 = I_n - 2P + P^2 = I_n - P = R_0 \quad \checkmark$$
+$$P = \frac{1}{3}\begin{pmatrix} \rd{2} & -1 & -1 \\ -1 & \rd{2} & -1 \\ -1 & -1 & \rd{2} \end{pmatrix} \quad \text{trace} = \frac{\rd{2}+\rd{2}+\rd{2}}{3} = \rd{2} = \operatorname{rank}(P)$$
+
+\vspace{0.3em}
+
+Cross-fill at diagonal pivot $(\rd{1},\rd{1})$:
+
+$$P = \underbrace{\frac{1}{6}\begin{pmatrix} \bl{4} & \bl{-2} & \bl{-2} \\ \bl{-2} & \bl{1} & \bl{1} \\ \bl{-2} & \bl{1} & \bl{1} \end{pmatrix}}_{\bl{R_1},\; \operatorname{rank} = \bl{1}} + \underbrace{\frac{1}{2}\begin{pmatrix} \gn{0} & \gn{0} & \gn{0} \\ \gn{0} & \gn{1} & \gn{-1} \\ \gn{0} & \gn{-1} & \gn{1} \end{pmatrix}}_{\gn{R_2},\; \operatorname{rank} = \gn{1}}$$
+
+\end{frame}
+
+
+\begin{frame}{Example: Check the Rank Condition}
+
+$$\operatorname{rank}(\bl{R_1}) + \operatorname{rank}(\gn{R_2}) = \bl{1} + \gn{1} = 2 = \operatorname{rank}(P) \quad \checkmark$$
 
 \vspace{0.5em}
 
-Now:
-$$I_n = R_0 + R_1 + \cdots + R_k$$
+The theorem \x{predicts} (without any computation!):
+
+\begin{enumerate}
+\item $\bl{R_1}$ is a projection ($\bl{R_1}^2 = \bl{R_1}$)
+\item $\gn{R_2}$ is a projection ($\gn{R_2}^2 = \gn{R_2}$)
+\item $\bl{R_1}\gn{R_2} = 0$ (compatible)
+\end{enumerate}
+
+\vspace{0.5em}
+
+\x{Quick sanity check}: $\operatorname{trace}(\bl{R_1}) = \frac{\bl{4}+\bl{1}+\bl{1}}{6} = \bl{1}$, \; $\operatorname{trace}(\gn{R_2}) = \frac{\gn{0}+\gn{1}+\gn{1}}{2} = \gn{1}$
+
+\vspace{0.3em}
+
+Each piece has trace $= 1$. This is consistent with being a rank-1 projection (since $\operatorname{trace} = \operatorname{rank}$ for projections).
+
+\end{frame}
+
+
+\begin{frame}{Corollary: The Trace Test}
+
+\begin{cor}[Trace Test]
+If $P = R_1 + R_2 + \cdots + R_k$ satisfies the rank condition, then each $R_i$ is a projection, so:
+$$\operatorname{trace}(R_i) = \operatorname{rank}(R_i)$$
+\end{cor}
+
+\vspace{0.5em}
+
+In particular, if each $R_i$ has rank 1, then each must have $\operatorname{trace}(R_i) = 1$.
+
+\vspace{0.5em}
+
+\x{Contrapositive}: If you decompose $P = R_1 + R_2$ and find $\operatorname{trace}(R_1) \neq \operatorname{rank}(R_1)$, then the rank condition \x{must fail} --- no need to check ranks!
+
+\vspace{0.5em}
+
+Trace is just reading off the \rd{diagonal} --- much cheaper than computing rank.
+
+\end{frame}
+
+
+\begin{frame}{Example: Trace Test Catches a Bad Decomposition}
+
+Same $P = \frac{1}{3}\begin{pmatrix} 2 & -1 & -1 \\ -1 & 2 & -1 \\ -1 & -1 & 2 \end{pmatrix}$, but decompose differently:
+
+$$P = \underbrace{\begin{pmatrix} \rd{1} & 0 & 0 \\ 0 & \rd{1} & 0 \\ 0 & 0 & \rd{0} \end{pmatrix}}_{A, \;\operatorname{trace} = \rd{2}} + \underbrace{\begin{pmatrix} \rd{-\frac{1}{3}} & -\frac{1}{3} & -\frac{1}{3} \\ -\frac{1}{3} & \rd{-\frac{1}{3}} & -\frac{1}{3} \\ -\frac{1}{3} & -\frac{1}{3} & \rd{\frac{2}{3}} \end{pmatrix}}_{B, \;\operatorname{trace} \approx \rd{0}}$$
+
+\vspace{0.3em}
+
+$\operatorname{trace}(A) = \rd{2}$ but $\operatorname{rank}(A) = 2$. Trace $\neq$ rank? That's fine for $A$ itself.
+
+\vspace{0.3em}
+
+But $\operatorname{rank}(A) + \operatorname{rank}(B) = 2 + 2 = 4 > 2 = \operatorname{rank}(P)$.
+
+\vspace{0.3em}
+
+Rank condition \x{fails}. And indeed $B$ is \x{not} a projection ($B^2 \neq B$).
+
+\end{frame}
+
+
+\begin{frame}{Proof: Step 1 --- Introduce $R_0$}
+
+Define $R_0 = I_n - P$. Since $P$ is a projection, so is $R_0$:
+
+$$(I_n - P)^2 = I_n - 2P + P^2 = I_n - 2P + P = I_n - P = R_0 \quad \checkmark$$
+
+\vspace{0.5em}
+
+Now add $R_0$ to both sides of $P = R_1 + R_2 + \cdots + R_k$:
+
+$$\underbrace{R_0}_{I_n - P} + \underbrace{R_1 + R_2 + \cdots + R_k}_{= P} = I_n$$
+
+\vspace{0.5em}
 
 We have reduced to the case where the pieces sum to $I_n$.
 
@@ -383,95 +476,147 @@ We have reduced to the case where the pieces sum to $I_n$.
 
 \begin{frame}{Proof: Step 2 --- Count Total Rank}
 
-By rank $=$ trace for projections (Lecture 8):
+Since $R_0$ is a projection, $\operatorname{rank}(R_0) = \operatorname{trace}(R_0)$ (Lecture 8).
 
-$$\operatorname{rank}(R_0) = \operatorname{trace}(R_0) = n - \operatorname{trace}(P) = n - \operatorname{rank}(P)$$
+\vspace{0.3em}
+
+$$\operatorname{trace}(R_0) = \operatorname{trace}(I_n - P) = \underbrace{\operatorname{trace}(I_n)}_{\rd{= n}} - \operatorname{trace}(P) = n - \operatorname{rank}(P)$$
 
 \vspace{0.5em}
 
-Total rank of all pieces:
+Now count the total rank of \x{all} pieces ($R_0, R_1, \ldots, R_k$):
 
-$$\sum_{i=0}^k \operatorname{rank}(R_i) = \underbrace{(n - \operatorname{rank}(P))}_{\operatorname{rank}(R_0)} + \underbrace{\sum_{i=1}^k \operatorname{rank}(R_i)}_{\leq \operatorname{rank}(P)} \leq n$$
+\vspace{0.3em}
+
+$$\underbrace{\operatorname{rank}(R_0)}_{= n - \operatorname{rank}(P)} + \underbrace{\operatorname{rank}(R_1) + \cdots + \operatorname{rank}(R_k)}_{\leq \operatorname{rank}(P) \text{ (given)}} \leq n$$
 
 \end{frame}
 
 
-\begin{frame}{Proof: Step 3 --- Assemble into Block Matrices}
+\begin{frame}{Proof: Step 3 --- Factor Each $R_i$}
 
-For each $i = 0, 1, \ldots, k$, let $r_i = \operatorname{rank}(R_i)$ and decompose:
-$$R_i = U_i V_i \quad (U_i \text{ is } n \times r_i, \quad V_i \text{ is } r_i \times n)$$
+Write $r_i = \operatorname{rank}(R_i)$. By cross-filling (Lecture 8), each $R_i$ factors as:
+$$R_i = \underbrace{U_i}_{n \times r_i} \cdot \underbrace{V_i}_{r_i \times n}$$
 
-\vspace{0.5em}
+\vspace{0.3em}
 
-Collect all pieces:
+Let $s = r_0 + r_1 + \cdots + r_k$ $=$ \x{total number of columns across all $U_i$}.
 
-$$U = \begin{pmatrix}
+From Step 2: $s \leq n$.
+
+\end{frame}
+
+
+\begin{frame}{Proof: Step 3 (continued) --- Assemble Block Matrices}
+
+Stack all $U_i$ side by side, all $V_i$ on top of each other:
+
+$$\underbrace{\begin{pmatrix}
 | & | & & | \\
-U_0 & U_1 & \cdots & U_k \\
+\bl{U_0} & \rd{U_1} & \cdots & \gn{U_k} \\
 | & | & & |
-\end{pmatrix}, \quad
-V = \begin{pmatrix}
-- & V_0 & - \\
-- & V_1 & - \\
+\end{pmatrix}}_{U, \;\text{size } n \times s} \quad
+\underbrace{\begin{pmatrix}
+- & \bl{V_0} & - \\
+- & \rd{V_1} & - \\
 & \vdots & \\
-- & V_k & -
-\end{pmatrix}$$
+- & \gn{V_k} & -
+\end{pmatrix}}_{V, \;\text{size } s \times n}$$
 
 \vspace{0.3em}
 
 Then:
-$$UV = \sum_{i=0}^k U_i V_i = \sum_{i=0}^k R_i = I_n$$
+$$UV = \bl{U_0}\bl{V_0} + \rd{U_1}\rd{V_1} + \cdots + \gn{U_k}\gn{V_k} = R_0 + R_1 + \cdots + R_k = I_n$$
 
 \end{frame}
 
 
-\begin{frame}{Proof: Step 4 --- Forces-Square Lemma}
+\begin{frame}{Proof: Step 4 --- $UV = I_n$ Forces $s = n$}
 
-$U$ is $n \times s$ and $V$ is $s \times n$ where $s = \sum_{i=0}^k r_i \leq n$.
-
-\vspace{0.5em}
-
-We have $UV = I_n$, so $V$ is a left inverse of $U$.
+We have: $\underbrace{U}_{n \times s} \cdot \underbrace{V}_{s \times n} = I_n$ and $s \leq n$.
 
 \vspace{0.5em}
 
-From Lecture 8 (full rank square matrices): since $UV = I_n$ and $s \leq n$:
-$$s = n \quad \text{and} \quad VU = I_n$$
+Can $s < n$? No! If $s < n$:
+$$\operatorname{rank}(UV) \leq \operatorname{rank}(U) \leq s < n$$
+But $\operatorname{rank}(I_n) = n$. Contradiction!
 
 \vspace{0.5em}
 
-(If $s < n$, then $\operatorname{rank}(UV) \leq s < n$, contradicting $UV = I_n$.)
+So $s = n$, meaning $U$ and $V$ are both \x{square} ($n \times n$).
+
+\vspace{0.5em}
+
+Since $UV = I_n$ and both are square: $VU = I_n$ as well (Lecture 5).
 
 \end{frame}
 
 
-\begin{frame}{Proof: Step 5 --- Block Structure of $VU = I_n$}
+\begin{frame}{Proof: Step 5 --- What Does $VU = I_n$ Look Like?}
 
-$$VU = \begin{pmatrix}
-V_0 U_0 & V_0 U_1 & \cdots & V_0 U_k \\
-V_1 U_0 & V_1 U_1 & \cdots & V_1 U_k \\
-\vdots & \vdots & \ddots & \vdots \\
-V_k U_0 & V_k U_1 & \cdots & V_k U_k
-\end{pmatrix} = I_n$$
+Recall the block structure (from Step 3):
+
+$$\underbrace{\begin{pmatrix}
+- & \bl{V_0} & - \\
+- & \rd{V_1} & - \\
+& \vdots & \\
+- & \gn{V_k} & -
+\end{pmatrix}}_{V} \cdot \underbrace{\begin{pmatrix}
+| & | & & | \\
+\bl{U_0} & \rd{U_1} & \cdots & \gn{U_k} \\
+| & | & & |
+\end{pmatrix}}_{U} = I_n$$
 
 \vspace{0.3em}
 
-The $I_n$ on the right is block-diagonal: $I_{r_0} \oplus I_{r_1} \oplus \cdots \oplus I_{r_k}$.
+Row $i$ of $V$ times column $j$ of $U$ gives block $(i,j)$:
+
+$$VU = \begin{pmatrix}
+\bl{V_0}\bl{U_0} & \bl{V_0}\rd{U_1} & \cdots & \bl{V_0}\gn{U_k} \\
+\rd{V_1}\bl{U_0} & \rd{V_1}\rd{U_1} & \cdots & \rd{V_1}\gn{U_k} \\
+\vdots & \vdots & \ddots & \vdots \\
+\gn{V_k}\bl{U_0} & \gn{V_k}\rd{U_1} & \cdots & \gn{V_k}\gn{U_k}
+\end{pmatrix}$$
+
+\end{frame}
+
+
+\begin{frame}{Proof: Step 5 (continued) --- Reading Off the Blocks}
+
+$$\begin{pmatrix}
+\bl{V_0 U_0} & V_0 U_1 & \cdots & V_0 U_k \\
+V_1 U_0 & \rd{V_1 U_1} & \cdots & V_1 U_k \\
+\vdots & \vdots & \ddots & \vdots \\
+V_k U_0 & V_k U_1 & \cdots & \gn{V_k U_k}
+\end{pmatrix} = \begin{pmatrix}
+\bl{I_{r_0}} & 0 & \cdots & 0 \\
+0 & \rd{I_{r_1}} & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \gn{I_{r_k}}
+\end{pmatrix}$$
 
 \vspace{0.5em}
 
-Reading off the blocks:
-$$V_i U_i = I_{r_i} \quad \text{(diagonal blocks)}$$
-$$V_i U_j = 0 \quad \text{for } i \neq j \quad \text{(off-diagonal blocks)}$$
+\x{Diagonal blocks}: $V_i U_i = I_{r_i}$ \quad (same color $\to$ identity)
+
+\vspace{0.3em}
+
+\x{Off-diagonal blocks}: $V_i U_j = 0$ for $i \neq j$ \quad (different color $\to$ zero)
 
 \end{frame}
 
 
 \begin{frame}{Proof: Step 6 --- Each $R_i$ Is a Projection}
 
-Using $V_i U_i = I_{r_i}$:
+From Step 5, the \x{diagonal blocks} give us:
 
-$$R_i^2 = (U_i V_i)(U_i V_i) = U_i \underbrace{(V_i U_i)}_{= I_{r_i}} V_i = U_i V_i = R_i \quad \checkmark$$
+$$\bl{V_0}\bl{U_0} = I_{r_0}, \quad \rd{V_1}\rd{U_1} = I_{r_1}, \quad \ldots, \quad \gn{V_k}\gn{U_k} = I_{r_k}$$
+
+\vspace{0.3em}
+
+Now compute $R_i^2$. Remember $R_i = U_i V_i$:
+
+$$R_i^2 = (\rd{U_i} \rd{V_i})(\rd{U_i} \rd{V_i}) = \rd{U_i} \underbrace{(\rd{V_i} \rd{U_i})}_{= I_{r_i}} \rd{V_i} = \rd{U_i} \rd{V_i} = R_i \quad \checkmark$$
 
 \vspace{0.5em}
 
@@ -482,9 +627,13 @@ Each $R_i$ is \x{automatically} a projection!
 
 \begin{frame}{Proof: Step 7 --- Mutual Annihilation}
 
-Using $V_i U_j = 0$ for $i \neq j$:
+From Step 5, the \x{off-diagonal blocks} give us: $V_i U_j = 0$ for $i \neq j$.
 
-$$R_i R_j = (U_i V_i)(U_j V_j) = U_i \underbrace{(V_i U_j)}_{= 0} V_j = 0 \quad \checkmark$$
+\vspace{0.5em}
+
+Now compute $R_i R_j$ for $i \neq j$:
+
+$$R_i R_j = (\bl{U_i} \bl{V_i})(\rd{U_j} \rd{V_j}) = \bl{U_i} \underbrace{(\bl{V_i} \rd{U_j})}_{= 0 \text{ (off-diagonal!)}} \rd{V_j} = 0 \quad \checkmark$$
 
 \vspace{0.5em}
 
@@ -492,9 +641,9 @@ The $R_i$ are \x{automatically} mutually annihilating!
 
 \vspace{0.5em}
 
-And since $s = n$: $\sum_{i=0}^k \operatorname{rank}(R_i) = n$, which gives:
-
-$$\sum_{i=1}^k \operatorname{rank}(R_i) = n - \operatorname{rank}(R_0) = \operatorname{rank}(P) \quad \checkmark \qquad \qed$$
+Finally, since $s = n$:
+$$\operatorname{rank}(R_0) + \operatorname{rank}(R_1) + \cdots + \operatorname{rank}(R_k) = n$$
+$$\implies \operatorname{rank}(R_1) + \cdots + \operatorname{rank}(R_k) = n - \operatorname{rank}(R_0) = \operatorname{rank}(P) \quad \checkmark \qquad \qed$$
 
 \end{frame}
 
@@ -503,35 +652,35 @@ $$\sum_{i=1}^k \operatorname{rank}(R_i) = n - \operatorname{rank}(R_0) = \operat
 
 The entire proof flows from one chain:
 
-$$P = \sum R_i \;\xrightarrow{\text{add } R_0}\; I_n = \sum R_i \;\xrightarrow{\text{factor}}\; UV = I_n$$
-$$\xrightarrow{s \leq n}\; VU = I_n \;\xrightarrow{\text{blocks}}\; V_i U_j = \delta_{ij} I_{r_i}$$
+$$P = R_1 + \cdots + R_k \;\xrightarrow{\text{add } R_0}\; I_n = R_0 + R_1 + \cdots + R_k$$
+$$\xrightarrow{\text{factor}}\; UV = I_n \;\xrightarrow{s \leq n}\; s = n, \; VU = I_n$$
 
-\vspace{0.5em}
+\vspace{0.3em}
 
-From $V_i U_j = \delta_{ij} I_{r_i}$, we read off:
+From the \x{block structure} of $VU = I_n$:
 \begin{itemize}
-\item $R_i^2 = R_i$ (from diagonal blocks)
-\item $R_i R_j = 0$ (from off-diagonal blocks)
+\item \x{Diagonal blocks}: $V_i U_i = I_{r_i}$ $\implies$ $R_i^2 = R_i$ (projection!)
+\item \x{Off-diagonal blocks}: $V_i U_j = 0$ $\implies$ $R_i R_j = 0$ (compatible!)
 \end{itemize}
 
 \vspace{0.5em}
 
-Key: The rank condition $\sum \operatorname{rank}(R_i) \leq \operatorname{rank}(P)$ forces $s \leq n$, which forces $VU = I_n$, which forces everything.
+Key: The rank condition forces $s \leq n$, which forces $VU = I_n$, which forces \x{everything}.
 
 \end{frame}
 
 
 \begin{frame}{Exercise: Verify the Rank Condition}
 
-$$P = \underbrace{\begin{pmatrix} 0 & 0 & 0 \\ -1 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}}_{\operatorname{rank} = 1} + \underbrace{\begin{pmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ -1 & 0 & 1 \end{pmatrix}}_{\operatorname{rank} = 1}$$
+$$P = \underbrace{\begin{pmatrix} 0 & 0 & 0 \\ \bl{-1} & \bl{1} & 0 \\ 0 & 0 & 0 \end{pmatrix}}_{\bl{R_1},\; \operatorname{rank} = \bl{1}} + \underbrace{\begin{pmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ \rd{-1} & 0 & \rd{1} \end{pmatrix}}_{\rd{R_2},\; \operatorname{rank} = \rd{1}}$$
 
 \vspace{0.3em}
 
-$\sum \operatorname{rank}(R_i) = 1 + 1 = 2 = \operatorname{rank}(P)$ $\checkmark$
+$\operatorname{rank}(\bl{R_1}) + \operatorname{rank}(\rd{R_2}) = \bl{1} + \rd{1} = 2 = \operatorname{rank}(P)$ $\checkmark$
 
 \vspace{0.5em}
 
-By the theorem: $R_1, R_2$ are automatically projections and $R_1 R_2 = 0$.
+By the theorem: $\bl{R_1}, \rd{R_2}$ are automatically projections and $\bl{R_1}\rd{R_2} = 0$.
 
 We get this \x{for free} --- no need to multiply matrices!
 
@@ -540,19 +689,17 @@ We get this \x{for free} --- no need to multiply matrices!
 
 \begin{frame}{Exercise: When the Rank Condition Fails}
 
-Consider the same $P$ but a \x{different} decomposition:
+Same $P$, but a \x{different} decomposition:
 
-$$P = \underbrace{\begin{pmatrix} 0 & 0 & 0 \\ -1/2 & 1/2 & 0 \\ -1 & 0 & 1 \end{pmatrix}}_{\operatorname{rank} = 2} + \underbrace{\begin{pmatrix} 0 & 0 & 0 \\ -1/2 & 1/2 & 0 \\ 0 & 0 & 0 \end{pmatrix}}_{\operatorname{rank} = 1}$$
+$$P = \underbrace{\begin{pmatrix} 0 & 0 & 0 \\ \rd{-\frac{1}{2}} & \rd{\frac{1}{2}} & 0 \\ \rd{-1} & 0 & \rd{1} \end{pmatrix}}_{\rd{R_1},\; \operatorname{rank} = \rd{2}} + \underbrace{\begin{pmatrix} 0 & 0 & 0 \\ -\frac{1}{2} & \frac{1}{2} & 0 \\ 0 & 0 & 0 \end{pmatrix}}_{R_2,\; \operatorname{rank} = 1}$$
 
 \vspace{0.3em}
 
-$\sum \operatorname{rank}(R_i) = 2 + 1 = 3 > 2 = \operatorname{rank}(P)$
+$\operatorname{rank}(\rd{R_1}) + \operatorname{rank}(R_2) = \rd{2} + 1 = 3 > 2 = \operatorname{rank}(P)$
 
 \vspace{0.5em}
 
-The rank condition \x{fails}. And indeed, the first piece is \x{not} a projection.
-
-The theorem does not apply --- and the conclusion fails!
+Rank condition \x{fails}. And indeed, $\rd{R_1}$ is \x{not} a projection ($\rd{R_1}^2 \neq \rd{R_1}$).
 
 \end{frame}
 
@@ -572,7 +719,7 @@ Let $P$ be a projection. Cross-fill $P = R_1 + \cdots + R_r$ into rank-1 pieces.
 
 Proof: By construction, each $R_i$ has rank 1, and:
 
-$$\sum_{i=1}^r \operatorname{rank}(R_i) = r = \operatorname{rank}(P)$$
+$$\operatorname{rank}(R_1) + \operatorname{rank}(R_2) + \cdots + \operatorname{rank}(R_r) = \underbrace{1 + 1 + \cdots + 1}_{r} = r = \operatorname{rank}(P)$$
 
 Apply the Projection Decomposition Theorem. \qed
 
@@ -669,14 +816,13 @@ Then $P = S_1 + \cdots + S_s$ is a compatible family of projections.
 
 \begin{frame}{Inner Cross-Filling: Why It Works}
 
-Clearly $P = \sum_j S_j$ (distribute the product over the sum).
+Clearly $P = S_1 + S_2 + \cdots + S_s$ (distribute the product over the sum).
 
 \vspace{0.5em}
 
-For rank:
-$$\operatorname{rank}(S_j) \leq \operatorname{rank}(Q_j) = 1$$
+For rank: each $\operatorname{rank}(S_j) \leq \operatorname{rank}(Q_j) = 1$, so:
 
-$$\sum_j \operatorname{rank}(S_j) \leq \sum_j \operatorname{rank}(Q_j) = \operatorname{rank}(M_i) = \operatorname{rank}(P)$$
+$$\operatorname{rank}(S_1) + \cdots + \operatorname{rank}(S_s) \leq \underbrace{1 + \cdots + 1}_{s} = \operatorname{rank}(M_i) = \operatorname{rank}(P)$$
 
 \vspace{0.5em}
 
@@ -795,12 +941,12 @@ Define $R_j = UQ_jU^T$. Then:
 
 \begin{frame}{Why It Works}
 
-\x{Step 1}: $\sum R_j = \sum UQ_jU^T = U\left(\sum Q_j\right)U^T = UMU^T = P$ $\checkmark$
+\x{Step 1}: $R_1 + \cdots + R_r = UQ_1U^T + \cdots + UQ_rU^T = U(Q_1 + \cdots + Q_r)U^T = UMU^T = P$ $\checkmark$
 
 \vspace{0.5em}
 
 \x{Step 2} (rank): $\operatorname{rank}(R_j) \leq \operatorname{rank}(Q_j) = 1$, so:
-$$\sum_j \operatorname{rank}(R_j) \leq \sum_j \operatorname{rank}(Q_j) = \operatorname{rank}(M) = \operatorname{rank}(P)$$
+$$\operatorname{rank}(R_1) + \cdots + \operatorname{rank}(R_r) \leq \underbrace{1 + \cdots + 1}_{r} = \operatorname{rank}(M) = \operatorname{rank}(P)$$
 
 By PDT: each $R_j$ is a projection and $R_j R_l = 0$. $\checkmark$
 
@@ -1093,7 +1239,7 @@ This is the main idea behind \x{spectral decomposition} (Chapter 5).
 
 \vspace{0.3em}
 
-\item \x{Projection Decomposition Theorem}: If $P = \sum R_i$ with $\sum \operatorname{rank}(R_i) \leq \operatorname{rank}(P)$, then each $R_i$ is a projection and $R_iR_j = 0$ --- \x{automatically}.
+\item \x{Projection Decomposition Theorem}: If $P = R_1 + \cdots + R_k$ with $\operatorname{rank}(R_1) + \cdots + \operatorname{rank}(R_k) \leq \operatorname{rank}(P)$, then each $R_i$ is a projection and $R_iR_j = 0$ --- \x{automatically}.
 
 \vspace{0.3em}
 
