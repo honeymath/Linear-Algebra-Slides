@@ -122,13 +122,11 @@ Let's \x{verify} this with examples, then \x{prove} why it works.
 
 \begin{frame}{Verify: A Rank-2 Projection (Step 1)}
 
-$$P = \begin{pmatrix} 0 & 0 & 0 \\ -1 & 1 & 0 \\ -1 & 0 & 1 \end{pmatrix} \quad (P^2 = P \;\checkmark)$$
+$$P = \begin{pmatrix} 0 & \crs{0} & 0 \\ \crs{-1} & \pvt{1} & \crs{0} \\ -1 & \crs{0} & 1 \end{pmatrix} \quad (P^2 = P \;\checkmark)$$
 
-\x{First pivot} at $(2,2)$, value $= \pvt{1}$. Highlight the cross (row 2 and column 2):
+\x{First pivot} at $(2,2)$, value $= \pvt{1}$:
 
-$$P = \begin{pmatrix} 0 & \crs{0} & 0 \\ \crs{-1} & \pvt{1} & \crs{0} \\ -1 & \crs{0} & 1 \end{pmatrix}$$
-
-$$R_1 = \frac{1}{\pvt{1}}\begin{pmatrix} \crs{0} \\ \crs{1} \\ \crs{0} \end{pmatrix}\begin{pmatrix} \crs{-1} & \crs{1} & \crs{0} \end{pmatrix}
+$$R_1 = \underbrace{\frac{1}{\pvt{1}}\begin{pmatrix} \crs{0} \\ \crs{1} \\ \crs{0} \end{pmatrix}}_{\text{column} \div \text{pivot}} \cdot \underbrace{\begin{pmatrix} \crs{-1} & \crs{1} & \crs{0} \end{pmatrix}}_{\text{row}}
 = \begin{pmatrix} 0 & 0 & 0 \\ -1 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}$$
 
 \end{frame}
@@ -139,7 +137,7 @@ $$R_1 = \frac{1}{\pvt{1}}\begin{pmatrix} \crs{0} \\ \crs{1} \\ \crs{0} \end{pmat
 
 $$P - R_1 = \begin{pmatrix} 0 & 0 & \crs{0} \\ 0 & 0 & \crs{0} \\ \crs{-1} & \crs{0} & \pvt{1} \end{pmatrix}$$
 
-$$R_2 = \frac{1}{\pvt{1}}\begin{pmatrix} \crs{0} \\ \crs{0} \\ \crs{1} \end{pmatrix}\begin{pmatrix} \crs{-1} & \crs{0} & \crs{1} \end{pmatrix}
+$$R_2 = \underbrace{\frac{1}{\pvt{1}}\begin{pmatrix} \crs{0} \\ \crs{0} \\ \crs{1} \end{pmatrix}}_{\text{column} \div \text{pivot}} \cdot \underbrace{\begin{pmatrix} \crs{-1} & \crs{0} & \crs{1} \end{pmatrix}}_{\text{row}}
 = \begin{pmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ -1 & 0 & 1 \end{pmatrix}$$
 
 \end{frame}
@@ -179,17 +177,13 @@ Does this happen for \x{every} matrix? \quad \x{No!}
 
 \vspace{0.3em}
 
-$$A = \begin{pmatrix} 2 & 4 \\ 1 & 2 \end{pmatrix} \quad (\text{rank } 1, \text{ but } A^2 = \begin{pmatrix} 8 & 16 \\ 4 & 8 \end{pmatrix} \neq A)$$
+$$A = \begin{pmatrix} \pvt{2} & \crs{4} \\ \crs{1} & 2 \end{pmatrix} \quad (\text{rank } 1, \text{ but } A^2 \neq A)$$
 
-Cross-fill at pivot $(1,1)$, value $= 2$:
+Cross-fill at pivot $(1,1)$, value $= \pvt{2}$:
 
-$$A = \begin{pmatrix} 2 \\ 1 \end{pmatrix} \cdot \frac{1}{2} \cdot \begin{pmatrix} 2 & 4 \end{pmatrix} = UV$$
+$$A = \underbrace{\frac{1}{\pvt{2}}\begin{pmatrix} \crs{2} \\ \crs{1} \end{pmatrix}}_{\text{col} \div \text{pivot}} \cdot \underbrace{\begin{pmatrix} \crs{2} & \crs{4} \end{pmatrix}}_{\text{row}} = UV$$
 
-$$VU = \frac{1}{2}\begin{pmatrix} 2 & 4 \end{pmatrix}\begin{pmatrix} 2 \\ 1 \end{pmatrix} = \frac{8}{2} = 4 \neq I_1$$
-
-$\operatorname{rank}(A) = 1$ but $\operatorname{trace}(A) = 4$. \quad \x{Different!}
-
-\vspace{0.3em}
+$$VU = \frac{1}{2}\begin{pmatrix} 2 & 4 \end{pmatrix}\begin{pmatrix} 2 \\ 1 \end{pmatrix} = 4 \neq I_1 \qquad \operatorname{trace}(A) = 4 \neq 1 = \operatorname{rank}(A)$$
 
 The theorem \x{fails} --- because $A$ is not a projection.
 
@@ -367,7 +361,7 @@ $\operatorname{rank} = \operatorname{trace}$ is a \x{fingerprint} of projection 
 \begin{exampleblock}{Exercise}
 The following matrix is a projection ($P^2 = P$). What is its rank?
 
-$$P = \begin{pmatrix} 0 & 0 & 0 & 0 & 0 \\ -1 & 1 & 0 & 0 & 0 \\ -1 & 0 & 1 & 0 & 0 \\ -1 & 0 & 0 & 1 & 0 \\ -1 & 0 & 0 & 0 & 1 \end{pmatrix}$$
+$$P = \begin{pmatrix} \bl{0} & 0 & 0 & 0 & 0 \\ -1 & \bl{1} & 0 & 0 & 0 \\ -1 & 0 & \bl{1} & 0 & 0 \\ -1 & 0 & 0 & \bl{1} & 0 \\ -1 & 0 & 0 & 0 & \bl{1} \end{pmatrix}$$
 \end{exampleblock}
 
 \vspace{0.5em}
@@ -436,19 +430,19 @@ The columns of $U$ are the $\mathbf{v}_i$, and $U^T U = I_r$ means they are orth
 
 $$P = \begin{pmatrix} 1 & 0 & 0 \\ 0 & \frac{1}{2} & \frac{1}{2} \\ 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix} \quad (P^2 = P,\; P^T = P \;\checkmark)$$
 
-\x{Pivot $(1,1)$}, value $= 1$: \; col $= \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}$, row $= \begin{pmatrix} 1 & 0 & 0 \end{pmatrix}$
+\x{Pivot $(\pvt{1},\pvt{1})$}, value $= \pvt{1}$:
 
-$$R_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}\begin{pmatrix} 1 & 0 & 0 \end{pmatrix} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix} \quad\text{(symmetric }\checkmark\text{)}$$
+$$R_1 = \underbrace{\frac{1}{\pvt{1}}\begin{pmatrix} \crs{1} \\ \crs{0} \\ \crs{0} \end{pmatrix}}_{\text{column} \div \text{pivot}} \cdot \underbrace{\begin{pmatrix} \crs{1} & \crs{0} & \crs{0} \end{pmatrix}}_{\text{row} = \text{column}^T!} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix} \quad\text{(symmetric }\checkmark\text{)}$$
 
-Note: column and row are \x{transposes} of each other (by $P^T = P$).
+Key: column and row are \x{transposes} of each other (by $P^T = P$).
 
 \end{frame}
 
 \begin{frame}[fragile]{Example: Diagonal Cross-Filling (Step 2)}
 
-Remainder: $\begin{pmatrix} 0 & 0 & 0 \\ 0 & \frac{1}{2} & \frac{1}{2} \\ 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix}$. \; \x{Pivot $(2,2)$}, value $= \frac{1}{2}$:
+Remainder: $\begin{pmatrix} 0 & 0 & 0 \\ 0 & \frac{1}{2} & \frac{1}{2} \\ 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix}$. \; \x{Pivot $(\pvt{2},\pvt{2})$}, value $= \pvt{\frac{1}{2}}$:
 
-$$R_2 = 2 \cdot \begin{pmatrix} 0 \\ \frac{1}{2} \\ \frac{1}{2} \end{pmatrix}\begin{pmatrix} 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix} = \begin{pmatrix} 0 & 0 & 0 \\ 0 & \frac{1}{2} & \frac{1}{2} \\ 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix} \quad\text{(symmetric }\checkmark\text{)}$$
+$$R_2 = \underbrace{\frac{1}{\pvt{\frac{1}{2}}}\begin{pmatrix} \crs{0} \\ \crs{\frac{1}{2}} \\ \crs{\frac{1}{2}} \end{pmatrix}}_{\text{column} \div \text{pivot}} \cdot \underbrace{\begin{pmatrix} \crs{0} & \crs{\frac{1}{2}} & \crs{\frac{1}{2}} \end{pmatrix}}_{\text{row} = \text{column}^T!} = \begin{pmatrix} 0 & 0 & 0 \\ 0 & \frac{1}{2} & \frac{1}{2} \\ 0 & \frac{1}{2} & \frac{1}{2} \end{pmatrix} \quad\text{(symmetric }\checkmark\text{)}$$
 
 \vspace{0.5em}
 
