@@ -244,10 +244,27 @@ $$U = \begin{pmatrix} | & | & & | \\ \bl{\mathbf{u}_1} & \rd{\mathbf{u}_2} & \cd
 
 Each rank-1 piece: $R_i = \mathbf{u}_i \mathbf{v}_i^T$
 
+\end{frame}
+
+\begin{frame}{What Does $VU = I_r$ Look Like?}
+
+$$VU = \begin{pmatrix}
+\bl{\mathbf{v}_1^T}\bl{\mathbf{u}_1} & \bl{\mathbf{v}_1^T}\rd{\mathbf{u}_2} & \cdots & \bl{\mathbf{v}_1^T}\mathbf{u}_r \\
+\rd{\mathbf{v}_2^T}\bl{\mathbf{u}_1} & \rd{\mathbf{v}_2^T}\rd{\mathbf{u}_2} & \cdots & \rd{\mathbf{v}_2^T}\mathbf{u}_r \\
+\vdots & \vdots & \ddots & \vdots \\
+\mathbf{v}_r^T\bl{\mathbf{u}_1} & \mathbf{v}_r^T\rd{\mathbf{u}_2} & \cdots & \mathbf{v}_r^T\mathbf{u}_r
+\end{pmatrix} = \begin{pmatrix}
+\bl{1} & 0 & \cdots & 0 \\
+0 & \rd{1} & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & 1
+\end{pmatrix} = I_r$$
+
 \vspace{0.3em}
 
-$VU = I_r$ means \x{paired columns and rows are orthonormal}:
-$$\mathbf{v}_i^T \mathbf{u}_j = \begin{cases} 1 & \text{if } i = j \\ 0 & \text{if } i \neq j \end{cases}$$
+\x{Diagonal}: $\mathbf{v}_i^T \mathbf{u}_i = 1$ \quad (same-color pairs multiply to 1)
+
+\x{Off-diagonal}: $\mathbf{v}_i^T \mathbf{u}_j = 0$ for $i \neq j$ \quad (different-color pairs multiply to 0)
 
 \end{frame}
 
