@@ -194,37 +194,42 @@ This is not a coincidence --- we will prove that cross-filling \x{always} produc
 
 \begin{center}
 \begin{tikzpicture}[scale=0.65]
-% Floor for R_1 (Col(R_1)) - line through origin
+% ── Null space planes (background) ──
+% Null(R_1) = red transparent plane, CONTAINS green Col(R_2)
+\fill[red, opacity=0.08] (-3.6, 2.5) -- (4.4, 0.5) -- (3.6, -2.5) -- (-4.4, -0.5) -- cycle;
+\node[red!60, rotate=-14] at (3, -1.8) {\scriptsize $\operatorname{Null}(R_1)$};
+% Null(R_2) = green transparent plane, CONTAINS red Col(R_1)
+\fill[green!60!black, opacity=0.08] (-4.5, 0.1) -- (3.5, 2.7) -- (4.5, -0.1) -- (-3.5, -2.7) -- cycle;
+\node[green!40!black, rotate=18] at (-3, -1.8) {\scriptsize $\operatorname{Null}(R_2)$};
+% ── Column spaces (foreground lines) ──
+% Col(R_1) = red line (inside green plane)
 \draw[ultra thick, red] (-4,-1.3) -- (4,1.3);
 \node[red, right] at (4,1.3) {\small $\operatorname{Col}(R_1)$};
-% Floor for R_2 (Col(R_2)) - another line through origin
+% Col(R_2) = green line (inside red plane)
 \draw[ultra thick, green!60!black] (-4,1) -- (4,-1);
 \node[green!60!black, right] at (4,-1) {\small $\operatorname{Col}(R_2)$};
-% Origin
+% ── Origin ──
 \draw[fill=black] (0,0) circle[radius=0.08];
-% Vector v
+% ── Vector v and projections ──
 \draw[->,ultra thick, blue] (0,0) -- (3,3);
 \node[blue, above] at (3,3) {$\mathbf{v}$};
-% R_1(v) on Col(R_1) - projected along OBLIQUE direction (not perpendicular!)
 \draw[->,ultra thick, red] (0,0) -- (2.5,0.81);
 \node[red, below right] at (2.5,0.81) {\small $R_1\mathbf{v}$};
-% R_2(v) on Col(R_2)
 \draw[->,ultra thick, green!60!black] (0,0) -- (-1,-0.25);
 \node[green!60!black, below left] at (-1.1,-0.25) {\small $R_2\mathbf{v}$};
-% Dashed projection lines (oblique, NOT perpendicular to floor)
+% ── Dashed projection lines (oblique) ──
 \draw[dashed, red!50, thick] (3,3) -- (2.5,0.81);
-\node[red!50, right] at (2.9,1.9) {\tiny sunlight};
 \draw[dashed, green!40!black, thick] (3,3) -- (-1,-0.25);
 \end{tikzpicture}
 \end{center}
 
-Key: The projection direction (dashed) is \x{not perpendicular} to the floor --- these are \x{oblique} projections.
+\vspace{-0.3em}
 
-\vspace{0.3em}
-
-$R_1 R_2 = 0$ means: $\operatorname{Col}(R_2)$ lies inside $\operatorname{Null}(R_1)$.
-
-The floor of $R_2$ is \x{invisible} to $R_1$'s sunlight.
+\x{Containment} (the geometric meaning of $R_1 R_2 = 0$):
+\begin{itemize}
+\item $\operatorname{Col}({\color{green!60!black}R_2}) \subset \operatorname{Null}({\color{red}R_1})$: green line lies inside red plane
+\item $\operatorname{Col}({\color{red}R_1}) \subset \operatorname{Null}({\color{green!60!black}R_2})$: red line lies inside green plane
+\end{itemize}
 
 \end{frame}
 
