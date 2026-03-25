@@ -190,30 +190,41 @@ This is not a coincidence --- we will prove that cross-filling \x{always} produc
 
 \end{frame}
 
-\begin{frame}[fragile]{Geometric Picture: Two Non-Orthogonal Projections}
+\begin{frame}[fragile]{Geometric Picture: Non-Orthogonal Projections in Action}
 
 \begin{center}
-\begin{tikzpicture}[scale=0.5]
-% Floor for R_1 (Col(R_1))
-\draw[ultra thick, red] (-6,-2) -- (6,2) node[right]{$\operatorname{Col}(R_1)$};
-% Floor for R_2 (Col(R_2))
-\draw[ultra thick, green!60!black] (-6,-1) -- (6,1) node[right]{$\operatorname{Col}(R_2)$};
-% Sunlight for R_1 (Null(R_1))
-\draw[red, dashed] (-3,-4) -- (3,4);
-\node[red] at (3.5,4) {\small $\operatorname{Null}(R_1)$};
-% Sunlight for R_2 (Null(R_2))
-\draw[green!60!black, dashed] (-4,-3) -- (4,3);
-\node[green!60!black] at (4.5,3) {\small $\operatorname{Null}(R_2)$};
+\begin{tikzpicture}[scale=0.65]
+% Floor for R_1 (Col(R_1)) - line through origin
+\draw[ultra thick, red] (-4,-1.3) -- (4,1.3);
+\node[red, right] at (4,1.3) {\small $\operatorname{Col}(R_1)$};
+% Floor for R_2 (Col(R_2)) - another line through origin
+\draw[ultra thick, green!60!black] (-4,1) -- (4,-1);
+\node[green!60!black, right] at (4,-1) {\small $\operatorname{Col}(R_2)$};
 % Origin
-\draw[fill=black] (0,0) circle[radius=0.1];
+\draw[fill=black] (0,0) circle[radius=0.08];
+% Vector v
+\draw[->,ultra thick, blue] (0,0) -- (3,3);
+\node[blue, above] at (3,3) {$\mathbf{v}$};
+% R_1(v) on Col(R_1) - projected along OBLIQUE direction (not perpendicular!)
+\draw[->,ultra thick, red] (0,0) -- (2.5,0.81);
+\node[red, below right] at (2.5,0.81) {\small $R_1\mathbf{v}$};
+% R_2(v) on Col(R_2)
+\draw[->,ultra thick, green!60!black] (0,0) -- (-1,-0.25);
+\node[green!60!black, below left] at (-1.1,-0.25) {\small $R_2\mathbf{v}$};
+% Dashed projection lines (oblique, NOT perpendicular to floor)
+\draw[dashed, red!50, thick] (3,3) -- (2.5,0.81);
+\node[red!50, right] at (2.9,1.9) {\tiny sunlight};
+\draw[dashed, green!40!black, thick] (3,3) -- (-1,-0.25);
 \end{tikzpicture}
 \end{center}
 
+Key: The projection direction (dashed) is \x{not perpendicular} to the floor --- these are \x{oblique} projections.
+
 \vspace{0.3em}
 
-Key: $R_1 R_2 = 0$ means $\operatorname{Col}(R_2) \subseteq \operatorname{Null}(R_1)$.
+$R_1 R_2 = 0$ means: $\operatorname{Col}(R_2)$ lies inside $\operatorname{Null}(R_1)$.
 
-The \x{floor} of $R_2$ lies in the \x{sunlight direction} of $R_1$ (and vice versa).
+The floor of $R_2$ is \x{invisible} to $R_1$'s sunlight.
 
 \end{frame}
 
@@ -1063,28 +1074,53 @@ Inner: cross-fill a $3 \times 3$ matrix!
 \end{frame}
 
 
-\begin{frame}{Example: Diagonal Cross-Fill a Symmetric $M$}
+\begin{frame}{Example: Start from a Concrete $P$}
 
-Suppose $M = \begin{pmatrix} 1 & -1 \\ -1 & 2 \end{pmatrix}$ (symmetric, rank 2).
+The same $P$ from \S3:
+$$\underbrace{\frac{1}{3}\begin{pmatrix} 2 & -1 & -1 \\ -1 & 2 & -1 \\ -1 & -1 & 2 \end{pmatrix}}_{P} = \underbrace{\begin{pmatrix} 1 & 0 \\ 0 & 1 \\ -1 & -1 \end{pmatrix}}_{U} \cdot \underbrace{\frac{1}{3}\begin{pmatrix} 2 & -1 \\ -1 & 2 \end{pmatrix}}_{M} \cdot \underbrace{\begin{pmatrix} 1 & 0 & -1 \\ 0 & 1 & -1 \end{pmatrix}}_{U^T}$$
 
-\vspace{0.3em}
-
-\x{Diagonal pivot $(1,1)$}, value $= 1$:
-
-$$Q_1 = \frac{1}{\pvt{1}}\begin{pmatrix} \pvt{1} \\ \crs{-1} \end{pmatrix}\begin{pmatrix} \pvt{1} & \crs{-1} \end{pmatrix} = \begin{pmatrix} 1 & -1 \\ -1 & 1 \end{pmatrix}$$
+$U$ has full column rank $\checkmark$, $M$ is symmetric $\checkmark$.
 
 \vspace{0.3em}
 
-Remainder:
-$$Q_2 = M - Q_1 = \begin{pmatrix} 0 & 0 \\ 0 & 1 \end{pmatrix}$$
+\x{Goal}: Diagonally cross-fill the \x{small} $2 \times 2$ matrix $M$, then compute $R_j = UQ_jU^T$.
 
-\vspace{0.3em}
+\end{frame}
+
+
+\begin{frame}{Example: Cross-Fill the Small $M$}
+
+$$M = \frac{1}{3}\begin{pmatrix} \pvt{2} & \crs{-1} \\ \crs{-1} & 2 \end{pmatrix}$$
+
+\x{Diagonal pivot $(1,1)$}, value $= \frac{2}{3}$:
+
+$$Q_1 = \frac{1}{2/3} \cdot \frac{1}{3}\begin{pmatrix} \pvt{2} \\ \crs{-1} \end{pmatrix} \cdot \frac{1}{3}\begin{pmatrix} \pvt{2} & \crs{-1} \end{pmatrix} = \frac{1}{6}\begin{pmatrix} 4 & -2 \\ -2 & 1 \end{pmatrix}$$
+
+$$Q_2 = M - Q_1 = \frac{1}{2}\begin{pmatrix} 0 & 0 \\ 0 & 1 \end{pmatrix}$$
 
 $Q_1 = Q_1^T$ $\checkmark$, \; $Q_2 = Q_2^T$ $\checkmark$ \quad (diagonal pivots preserve symmetry!)
 
+\end{frame}
+
+
+\begin{frame}{Example: Two Orthogonal Projections Emerge!}
+
+$$\bl{R_1} = UQ_1U^T = \frac{1}{6}\begin{pmatrix} \bl{4} & \bl{-2} & \bl{-2} \\ \bl{-2} & \bl{1} & \bl{1} \\ \bl{-2} & \bl{1} & \bl{1} \end{pmatrix}$$
+$$\rd{R_2} = UQ_2U^T = \frac{1}{2}\begin{pmatrix} \rd{0} & \rd{0} & \rd{0} \\ \rd{0} & \rd{1} & \rd{-1} \\ \rd{0} & \rd{-1} & \rd{1} \end{pmatrix}$$
+
+\vspace{0.3em}
+
+$\bl{R_1} = \bl{R_1}^T$ $\checkmark$, \; $\operatorname{trace}(\bl{R_1}) = 1$ $\checkmark$ \quad $\implies$ \x{orthogonal} projection!
+
+$\rd{R_2} = \rd{R_2}^T$ $\checkmark$, \; $\operatorname{trace}(\rd{R_2}) = 1$ $\checkmark$ \quad $\implies$ \x{orthogonal} projection!
+
+\vspace{0.3em}
+
+$\bl{R_1}\rd{R_2} = 0$ $\checkmark$, \; $\bl{R_1} + \rd{R_2} = P$ $\checkmark$
+
 \vspace{0.5em}
 
-By the theorem: $R_j = UQ_jU^T$ are rank-1 \x{orthogonal} projections forming a compatible family.
+Same result as \S3's direct cross-filling --- but obtained from a $\rd{2 \times 2}$ matrix instead of $3 \times 3$!
 
 \end{frame}
 
