@@ -292,37 +292,175 @@ For the rest of this lecture, we focus on \x{linear operators} (square matrices)
 % ═══════════════════════════════════════
 % §2 PROJECTION OPERATORS
 % ═══════════════════════════════════════
+%
+% ┌─────────────────────────────────────────────────────────────────────┐
+% │ SECTION-LEVEL ADR: THE BRIDGE FROM PHYSICAL TO ALGEBRAIC          │
+% │                                                                    │
+% │ THE MACRO DESIGN: CONCRETE → ABSTRACT BRIDGE                       │
+% │                                                                    │
+% │ The entire section is a carefully staged journey from the physical  │
+% │ world (sunlight, floor, shadow) to the algebraic world (P^2 = P,  │
+% │ Col, Null). This is not decoration — the physical model is the     │
+% │ ENTRY POINT that makes the algebra accessible.                     │
+% │                                                                    │
+% │ Phase 1 — RAPPORT (slides 14–16): Sunlight-and-Floor Model        │
+% │   The physical metaphor serves a social function before a          │
+% │   cognitive one. "Imagine the sun shining onto a floor" is         │
+% │   something EVERY student can picture — no prerequisites, no       │
+% │   mathematical maturity required. This levels the playing field:   │
+% │   the strongest and weakest students in the room start from the    │
+% │   same place. The effect is intimacy and safety: "this lecturer    │
+% │   is meeting me where I am, not where the textbook is."            │
+% │   This is the same technique salespeople use — start with shared   │
+% │   experience ("you know how...?") before introducing the product.  │
+% │   The product here is P^2 = P. The shared experience is shadows.  │
+% │                                                                    │
+% │ Phase 2 — TRANSLATION (slide 17): Three Conditions                │
+% │   The physical intuition is gently re-expressed in mathematical    │
+% │   language. Each condition is stated in BOTH languages (intuition  │
+% │   first, formula second). The student is never abandoned in        │
+% │   symbol-land — they always have the physical picture as a rope    │
+% │   to hold onto. This is the bridge: one foot in the physical      │
+% │   world, one foot in the algebraic world.                          │
+% │                                                                    │
+% │ Phase 3 — ALGEBRAIC PAYOFF (slides 18–19): P^2 = P               │
+% │   Now the student is ready to leave the physical world. The        │
+% │   "surprisingly simple" cue signals: the algebra is going to be    │
+% │   EASIER than the geometry. This inverts the usual fear ("algebra  │
+% │   is harder than pictures") — the student feels pulled toward the  │
+% │   abstraction rather than pushed.                                  │
+% │                                                                    │
+% │ Phase 4 — RETURN TRIP (slides 20–25): Algebra recovers geometry   │
+% │   Having arrived in the algebraic world, we look back and show     │
+% │   that the physical picture is fully recoverable from P^2 = P.    │
+% │   This closes the loop: the student now trusts that the algebra    │
+% │   and the geometry are the SAME thing, just expressed differently. │
+% │   The physical model is no longer a crutch — it is a theorem.      │
+% │                                                                    │
+% │ WHY START PHYSICAL (not algebraic):                                │
+% │ - Algebra-first is efficient but alienating. A student who sees    │
+% │   "P^2 = P" cold has nothing to connect it to. The sunlight model │
+% │   pre-loads meaning into the symbols before they appear.           │
+% │ - The rapport phase also buys goodwill: a student who feels the   │
+% │   lecturer cares about their understanding is more willing to      │
+% │   push through the harder algebraic slides later.                  │
+% │                                                                    │
+% │ NARRATIVE ENGINE: TENSION → REVEAL → JUSTIFY                      │
+% │                                                                    │
+% │ Layered on top of the bridge is a storytelling loop — the same    │
+% │ pattern behind marketing hooks and short-video content:            │
+% │                                                                    │
+% │   1. BUILD TENSION: pose a question, make the audience *need* the  │
+% │      answer. Whitespace, dramatic phrasing, emotional cues          │
+% │      ("surprisingly simple") amplify the need.                     │
+% │                                                                    │
+% │   2. DROP THE ANSWER at peak tension: don't explain first — just   │
+% │      show the punchline (P^2 = P). The gap between "I need to     │
+% │      know" and "here it is" creates a micro-dopamine hit.          │
+% │                                                                    │
+% │   3. JUSTIFY AFTERWARDS: now that the audience holds the answer,   │
+% │      explain *why* it works. They're verifying, not deriving —     │
+% │      cognitively easier and more satisfying.                       │
+% │                                                                    │
+% │ The loop fires TWICE in this section:                              │
+% │                                                                    │
+% │   Loop 1 (slides 17→18→19):                                       │
+% │     TENSION: "Can we capture all of this with a single equation?"  │
+% │     REVEAL:  "P^2 = P." (Algebraic Definition)                    │
+% │     JUSTIFY: "Shadow of a shadow is itself." (Why P^2 = P?)       │
+% │                                                                    │
+% │   Loop 2 (slides 20→21→22+):                                      │
+% │     TENSION: "Does P^2 = P recover the geometry?"                  │
+% │     REVEAL:  "Col(P) = floor, Null(P) = sunlight." (three Q&As)   │
+% │     JUSTIFY: Each Q&A slide verifies one geometric condition.      │
+% │                                                                    │
+% │ WHY THIS NARRATIVE PATTERN:                                        │
+% │ - Textbooks do "justify → define": the reader does work without    │
+% │   knowing the destination. Feels like wandering.                   │
+% │ - We do "question → define → justify": the audience always knows   │
+% │   what question they're answering. Feels like a guided discovery.  │
+% │ - The emotional arc (curiosity → satisfaction → curiosity → ...)   │
+% │   prevents the flat affect of a monotone lecture.                  │
+% │                                                                    │
+% │ WHY NOT OTHER NARRATIVE STRUCTURES:                                │
+% │ - Pure suspense (withhold answer until the very end): works for    │
+% │   mysteries, not math. Students get lost without intermediate      │
+% │   anchors. Our loops are short (3 slides each).                   │
+% │ - Pure exposition (state facts sequentially): no emotional arc,    │
+% │   attention decays monotonically. The question-answer rhythm       │
+% │   creates peaks that reset attention.                              │
+% └─────────────────────────────────────────────────────────────────────┘
+% ADR: Open with projection as one of several geometric linear transformations.
+% WHY: Placing it alongside rotation and reflection frames it as a *species* of
+% a familiar genus. Students already have intuition for rotation/reflection;
+% listing projection next to them says "this is the same kind of thing."
+% AUDIENCE EMOTION: comfort, recognition — "I know rotation, so projection
+% can't be that alien."
+% ALT REJECTED: Opening directly with "Definition: P^2=P" (textbook style).
+% That feels cold and unmotivated — the student's first reaction would be
+% "where did this come from?" instead of "oh, shadows, I get it."
+% ALT REJECTED: Spending a full slide on each (rotation, reflection) before
+% projection. That over-invests in context the student already has; we only
+% need the *contrast* to set up projection, not a review.
 \section{Projection Operators}
 
-\begin{frame}{Definition}
+\begin{frame}{What Is a Projection?}
 
-\begin{defi}[Projection Operator (Idempotent)]
-A matrix $P$ is called a \x{projection operator} if
-$$P^2 = P$$
-\end{defi}
-
-\vspace{1em}
-
-The name ``idempotent'' comes from Latin:
-
-\begin{center}
-\textit{idem} (same) + \textit{potent} (power)
-\end{center}
+Among all linear transformations, some have a \x{geometric flavor}:
 
 \vspace{0.5em}
 
-Applying the operation multiple times gives the \x{same result} as applying it once.
+\begin{itemize}
+\item Rotation --- spins every vector around the origin
+\item Reflection --- flips vectors across a line or plane
+\item \x{Projection} --- casts \x{shadows}
+\end{itemize}
 
 \end{frame}
 
-\begin{frame}{The Sunlight-and-Floor Model}
+% ADR: Standalone transition page with large whitespace.
+% WHY: The emptiness signals a scene change — the audience mentally closes
+% "linear transformations overview" and prepares for a deep dive.
+% AUDIENCE EMOTION: anticipation, mild curiosity — "something important is coming."
+% AUDIENCE ATTENTION: a dense slide after a list would blur together; the blank
+% page is a *visual reset* that reclaims attention. The eye has nowhere to wander,
+% so it locks onto the single sentence.
+% ALT REJECTED: Putting "Now let us focus on projection" as the last line of the
+% previous slide. That buries the transition — the audience is still processing
+% the list and may not register the shift. A new page forces a cognitive break.
+\begin{frame}{}
+
+\vspace{3em}
 
 \begin{center}
-\begin{tikzpicture}[scale=0.6]
+{\Large Now let us focus on \x{projection}.}
+\end{center}
+
+\end{frame}
+
+% ADR: Introduce projection through a *physical* metaphor (sunlight + floor)
+% before any mathematics.
+% WHY: A visual, tactile image (sun, tree, shadow) anchors in long-term memory
+% far better than an equation. Students can return to this picture whenever the
+% algebra gets heavy later — it serves as a "home base" for the entire section.
+% AUDIENCE EMOTION: playfulness, ease — "this is just shadows, I can picture that."
+% AUDIENCE ATTENTION: the TikZ diagram grabs the eye immediately. The oblique
+% sunlight angle is deliberate: if the rays were vertical (perpendicular), students
+% would silently assume projection = perpendicular and be confused by oblique
+% projections later (§4). The tilted rays plant a seed now that pays off later.
+% ALT REJECTED: Starting with a formal "choose two subspaces W, U" definition.
+% That's correct but abstract — students would have nothing to visualize, and
+% attention drops when symbols arrive before meaning.
+\begin{frame}{The Sunlight-and-Floor Model}
+
+Imagine the \x{sun} shining onto a \x{floor}. Every vector $\mathbf{v}$ (standing at the origin like a tree) casts a shadow $\mathbf{w}$ on the floor.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.55]
 \draw[ultra thick](-7,0)--(7,0) node[right]{floor};
 \draw[ultra thick,->,blue](0,0)--(0,3) node[right]{$\mathbf{v}$};
 \draw[opacity=0.08,fill=cyan] (0,0)--(0,3)--(-3,0);
-\draw[ultra thick,->,cyan](0,0.05)--(-3,0.05) node[below]{$\mathbf{w}:=P\mathbf{v}$};
+\draw[ultra thick,->,cyan](0,0.05)--(-3,0.05) node[below]{$\mathbf{w}$ (shadow)};
 \foreach\x in {-3,...,8}{
 	\draw [red,->](\x,4)--(-4+\x,0.1);
 }
@@ -331,29 +469,189 @@ Applying the operation multiple times gives the \x{same result} as applying it o
 \end{tikzpicture}
 \end{center}
 
-\vspace{0.5em}
+A projection is determined by two pieces of data:
+\begin{enumerate}
+\item The \x{floor} --- where the shadow lands (a subspace)
+\item The \x{direction of sunlight} --- along which we cast the shadow (another subspace)
+\end{enumerate}
 
-\begin{itemize}
-\item A \x{vector $\mathbf{v}$} stands at the origin (like a tree)
-\item \x{Sunlight} shines from some direction
-\item The projection $P$ maps $\mathbf{v}$ to its \x{shadow} $\mathbf{w} = P\mathbf{v}$ on the floor
-\end{itemize}
+\vspace{0.3em}
 
-\vspace{0.5em}
-
-The sunlight direction \x{need not} be perpendicular to the floor!
+% ADR: Explicitly flag that sunlight need not be perpendicular.
+% WHY: Most students' default mental model of "projection" (from physics,
+% from everyday language) is dropping a perpendicular. If we don't break this
+% assumption now, it silently hardens, and the oblique vs orthogonal distinction
+% in §4 will feel like a contradiction rather than a refinement.
+% AUDIENCE EMOTION: mild surprise — "wait, it doesn't have to be perpendicular?"
+% This surprise is productive: it makes them *want* to know what orthogonal
+% projection is (later), because they now know there's a non-obvious distinction.
+% AUDIENCE ATTENTION: the exclamation mark and "need not" create a small spike —
+% a deliberate disruption after the calm enumeration above.
+Note: the sunlight direction \x{need not} be perpendicular to the floor!
 
 \end{frame}
 
-\begin{frame}{Why $P^2 = P$?}
+% ADR: Transition from physical picture to mathematical language.
+% WHY: The two-line rhythm (plain words FIRST, then "Mathematically: ...")
+% lets students verify each formula against intuition they already hold.
+% If we gave the formulas alone, students would be parsing w ∈ W cold;
+% with the intuition line first, they read w ∈ W and think "yes, shadow on floor."
+% AUDIENCE EMOTION: confidence — "I can translate between picture and symbols."
+% AUDIENCE ATTENTION: the parallel structure (three items, each intuition→formula)
+% creates a predictable rhythm. Predictability is restful after the conceptual
+% novelty of the previous slides — the audience can relax into pattern-matching.
+% ALT REJECTED: A single \begin{defi} block listing the three conditions as
+% formulas only. That's how a textbook would do it, but in a lecture the audience
+% reads it, doesn't connect to the picture, and zones out. The dual-line format
+% keeps them toggling between two representations, which is active processing.
+% ALT REJECTED: Presenting this as a formal definition. At this stage these are
+% *observations* about what shadows must do — framing them as observations keeps
+% the audience in discovery mode ("we're figuring this out together") rather than
+% note-taking mode ("I need to memorize this definition").
+\begin{frame}{Describing Projection Mathematically}
 
-We require $P^2 = P$. This means $P^2\mathbf{v} = P\mathbf{v}$ for any $\mathbf{v}$.
+Now let us \x{mathematically describe} what a projection should do.
+
+\vspace{0.5em}
+
+Replace the floor by a subspace $W$, and the sunlight direction by a subspace $U$.
+
+\vspace{0.5em}
+
+Given a vector $\mathbf{v}$, we observe that its shadow $\mathbf{w}$ must satisfy:
+
+\vspace{0.3em}
+
+\begin{enumerate}
+\item The shadow lands on the floor.
+
+Mathematically: $\mathbf{w} \in W$
+
+\vspace{0.3em}
+
+\item The line from $\mathbf{v}$ to its shadow is parallel to the sunlight.
+
+Mathematically: $\mathbf{v} - \mathbf{w} \in U$
+
+\vspace{0.3em}
+
+\item Every vector has a \x{unique} shadow.
+
+Mathematically: such $\mathbf{w}$ exists and is unique for each $\mathbf{v}$
+\end{enumerate}
+
+\vspace{0.5em}
+
+% (See ADR on "Describing Projection Mathematically" above for why no \begin{defi} here.)
+These three conditions completely determine the map $\mathbf{v} \mapsto \mathbf{w}$.
+
+\end{frame}
+
+% ADR: The big question gets its own page.
+% WHY: Two functions — the large-font question and the small-text motivation.
+% The large text is a *visual hook*: after a content-dense slide (three conditions),
+% the sudden emptiness recaptures wandering eyes. The question itself is genuine —
+% the audience should feel "yeah, three conditions is a lot, can we do better?"
+% The small text answers *why we should care*: every time we want a projection,
+% do we really need to pick two subspaces first? This frames the algebraic
+% definition (next slide) as a practical win, not an arbitrary abstraction.
+% AUDIENCE EMOTION: curiosity + anticipation. "Surprisingly simple" is a
+% deliberate tease — it promises elegance, making the audience *want* to see
+% the next slide. This is the emotional peak before the reveal.
+% AUDIENCE ATTENTION: the large/small text contrast creates a visual hierarchy —
+% the eye reads the big question first (0.5 seconds), then drifts to the small
+% text for context. Two entry points = two chances to hook attention.
+% ALT REJECTED: Merging this into the previous slide as a closing sentence.
+% That would bury the dramatic question inside dense content — no pause, no
+% buildup. The whitespace is the pause.
+% ALT REJECTED: Large text only, no small motivation. That's aesthetically clean
+% but leaves the "why should I care" unanswered — some students would think
+% "why not just use the three conditions?" The small text preempts that.
+\begin{frame}{}
+
+\vspace{2em}
+
+\begin{center}
+{\Large Can we capture all of this with a \x{single algebraic equation}?}
+\end{center}
+
+\vspace{2em}
+
+{\small
+The geometric description requires choosing two subspaces $W$ and $U$ first, then defining the shadow map. Is there a more direct way --- a condition on the matrix $P$ alone --- that automatically gives us a projection?
+
+\vspace{0.5em}
+
+The answer is \x{surprisingly simple}.
+}
+
+\end{frame}
+
+% ADR: Answer the question FIRST (P^2 = P), then ask "But why?"
+% WHY: This is the "reveal then justify" pattern. The previous slide built
+% anticipation ("surprisingly simple"); this slide delivers immediately.
+% Delaying the answer further would frustrate. Giving it now is satisfying.
+% AUDIENCE EMOTION: the moment they see P^2 = P after "surprisingly simple" —
+% a small dopamine hit: "wow, that IS simple." Then "But why?" at the bottom
+% converts satisfaction into curiosity again — they now have a claim to test.
+% AUDIENCE ATTENTION: the definition box (\begin{defi}) visually signals
+% "this is important, write it down." It's the first formal definition in the
+% section — every previous slide was observations and questions. The contrast
+% tells the audience: this is the payoff, this is what you keep.
+% ALT REJECTED: Justifying P^2=P first (shadow-of-shadow), then defining.
+% This is the textbook order and it works logically, but emotionally the
+% audience would be doing work without knowing the destination. Our order
+% (reveal → justify) lets them verify a known claim, which is easier and
+% more engaging than deriving toward an unknown target.
+% ALT REJECTED: Skipping "But why?" and going straight to verification.
+% That would leave P^2=P feeling like a decree. The question invites the
+% audience to think for a moment — even 3 seconds of "hmm, why P^2=P?"
+% makes the next slide's answer stick better (generation effect).
+\begin{frame}{Algebraic Definition}
+
+Let us call this map $P$, so $P\mathbf{v} = \mathbf{w}$ (the shadow of $\mathbf{v}$).
 
 \vspace{1em}
 
-\x{Geometrically}: \textbf{The shadow of a shadow is the shadow itself.}
+\begin{defi}[Projection Operator (Idempotent)]
+A matrix $P$ is called a \x{projection operator} if
+$$P^2 = P$$
+\end{defi}
 
 \vspace{1em}
+
+The name ``idempotent'' comes from Latin: \textit{idem} (same) + \textit{potent} (power).
+
+\vspace{1em}
+
+But \x{why} should $P^2 = P$ be the right condition?
+
+\end{frame}
+
+% ADR: The geometric justification comes AFTER the definition, not before.
+% WHY: The narrative arc is: picture → math question → algebraic answer → why?
+% → back to picture. This is a loop, not a line. The student left the sunlight
+% metaphor two slides ago; returning to it now ("already on the floor") creates
+% a satisfying closure. The metaphor hasn't been forgotten — it was waiting.
+% AUDIENCE EMOTION: "aha" — the shadow-of-shadow argument is *obvious* once
+% stated, which makes the student feel smart ("I could have thought of that").
+% This is the pedagogical sweet spot: not too easy (boring), not too hard
+% (discouraging), but just beyond reach until the hint is given.
+% AUDIENCE ATTENTION: the TikZ diagram is visually near-identical to the one
+% on the Sunlight-and-Floor slide. This visual echo is deliberate — the eye
+% recognizes the picture and the brain says "I've seen this before," which
+% reduces cognitive load and lets the student focus on the new insight (P^2=P)
+% rather than re-parsing the diagram.
+% ALT REJECTED: Deriving P^2=P first, then defining (textbook order). See ADR
+% on "Algebraic Definition" above — that order makes the definition feel unmotivated.
+% ALT REJECTED: Purely algebraic proof (if Pw = w for w ∈ Col(P), then P^2=P).
+% Correct but bloodless — it doesn't connect to the physical picture, so the
+% student memorizes rather than understands.
+\begin{frame}{Why $P^2 = P$? --- The Shadow of a Shadow}
+
+Think about what happens when you project a vector that is \x{already on the floor}.
+
+\vspace{0.3em}
 
 \begin{center}
 \begin{tikzpicture}[scale=0.55]
@@ -366,29 +664,86 @@ We require $P^2 = P$. This means $P^2\mathbf{v} = P\mathbf{v}$ for any $\mathbf{
 \end{tikzpicture}
 \end{center}
 
-\vspace{0.5em}
+\vspace{0.3em}
 
-Since $\mathbf{w} = P\mathbf{v}$ lies on the floor, the shadow of $\mathbf{w}$ is \x{itself}:
+The shadow $\mathbf{w} = P\mathbf{v}$ already lies on the floor. What is the shadow of $\mathbf{w}$?
+
+\vspace{0.3em}
+
+It is $\mathbf{w}$ itself! --- \textbf{the shadow of a shadow is the shadow itself}:
 $$P\mathbf{w} = \mathbf{w} \quad\implies\quad P(P\mathbf{v}) = P\mathbf{v} \quad\implies\quad P^2 = P$$
+
+\vspace{0.3em}
+
+% ADR: "Necessary consequence" — precise but informal phrasing.
+% WHY: This plants the logical seed: we showed geometry ⟹ P^2=P. The audience
+% should now feel "ok, P^2=P is necessary... but is it sufficient?" without us
+% using the words "necessary and sufficient" (which sounds like exam language and
+% triggers anxiety). The next slide asks the converse explicitly.
+% AUDIENCE EMOTION: partial satisfaction — "I see why P^2=P, but we're not done."
+% AUDIENCE ATTENTION: the word "consequence" is a forward pointer — it implicitly
+% promises that more is coming, keeping attention through the slide transition.
+So $P^2 = P$ is a \x{necessary consequence} of the geometric picture.
 
 \end{frame}
 
-\begin{frame}{Three Key Questions}
+% ADR: The converse question gets its own page.
+% WHY: The narrative arc of this section is a round trip:
+%   geometry → algebra → does algebra recover geometry?
+% This slide is the turning point. Everything before went forward (picture → equation);
+% everything after goes backward (equation → recover picture). Giving the pivot
+% its own page makes the structural reversal *visible* — the audience feels the
+% direction change rather than sliding past it.
+% AUDIENCE EMOTION: intellectual tension — "we have a clean equation, but did we
+% lose information?" This is a genuine mathematical concern, and framing it as a
+% question respects the audience's intelligence.
+% AUDIENCE ATTENTION: after the "aha" of shadow-of-shadow, attention naturally dips.
+% A new question — especially one that challenges what we just did — re-engages.
+% ALT REJECTED: Merging this into the previous slide's conclusion. That would
+% rush past the pivot — the audience needs a beat to register that the direction
+% has changed before diving into three verification sub-questions.
+\begin{frame}{Does $P^2 = P$ Recover the Geometry?}
 
-We defined projection only by $P^2 = P$. But intuitively a projection needs:
+We started with a rich geometric picture (floor + sunlight + shadow) and arrived at $P^2 = P$.
 
 \vspace{1em}
 
+\x{Question}: Can the single equation $P^2 = P$ really recover all of that?
+
+\end{frame}
+
+% ADR: Three questions mirror the three conditions from "Describing Projection
+% Mathematically": floor ↔ Col(P), sunlight ↔ Null(P), shadow ↔ Pv.
+% WHY: The parallel structure is the payoff of the entire section's design.
+% The audience wrote down three observations earlier; now each one gets
+% an algebraic answer. The 1-2-3 numbering makes the correspondence explicit.
+% AUDIENCE EMOTION: satisfaction of closure — "everything connects."
+% AUDIENCE ATTENTION: the numbered list is a roadmap. After several slides of
+% open-ended exploration, a clear "three things to verify" gives structure.
+% Students who drifted can re-enter here — "ok, three questions, I can follow."
+% ALT REJECTED: Answering all three on one slide. That's too dense — each
+% question deserves its own development (the subsequent slides do this).
+% This slide is the TABLE OF CONTENTS for the verification, not the content.
+\begin{frame}{From Algebra Back to Geometry}
+
+We claimed: $P^2 = P$ alone recovers the full sunlight-and-floor model.
+
+\vspace{0.5em}
+
+Three questions to verify:
+
+\vspace{0.5em}
+
 \begin{enumerate}
-\item If $P^2 = P$, how do we define \x{the floor}?
+\item Given $P^2 = P$, what is \x{the floor}?
 
-\vspace{0.5em}
+\vspace{0.3em}
 
-\item If $P^2 = P$, how do we define \x{the direction of sunlight}?
+\item Given $P^2 = P$, what is \x{the direction of sunlight}?
 
-\vspace{0.5em}
+\vspace{0.3em}
 
-\item After specifying these, why is $P\mathbf{v}$ exactly \x{the shadow} of $\mathbf{v}$?
+\item With these identified, is $P\mathbf{v}$ really \x{the shadow} of $\mathbf{v}$?
 \end{enumerate}
 
 \vspace{1em}
@@ -397,6 +752,19 @@ Let us answer them one by one.
 
 \end{frame}
 
+% ADR: Q1 and Q2 use a mini tension→reveal within a single slide.
+% The question is posed with a picture FIRST (the audience thinks for a moment),
+% then the answer appears below. This is the same hook pattern at micro-scale:
+% even within one slide, the eye hits the question and picture before scrolling
+% to the answer. In a live lecture, the instructor pauses here.
+% Q1 is deliberately placed before Q2 (sunlight before floor) because Null(P)
+% is less intuitive than Col(P). By tackling the harder one first while attention
+% is still high, we spend the audience's best focus on the trickiest mapping
+% (sunlight = Null(P), which is non-obvious). Q2 (floor = Col(P)) is more
+% natural and comes when attention is slightly lower — it can afford to be.
+% AUDIENCE EMOTION: Q1 — "no shadow?! that's cool"; Q2 — "of course, that
+% makes sense." The contrast between surprise (Q1) and confirmation (Q2)
+% creates a satisfying rhythm.
 \begin{frame}{Question 1: Vectors Pointing Toward the Sun}
 
 If a vector $\mathbf{v}$ points \x{toward the sun}, what is its shadow?
@@ -457,6 +825,17 @@ $\operatorname{Col}(P)$ describes \x{the floor}.
 
 \end{frame}
 
+% ADR: Q3 is the climax of Loop 2. It restates the *same two conditions* from
+% "Describing Projection Mathematically" (w ∈ Col(P), v-w ∈ Null(P)) — but now
+% with Col(P) and Null(P) in place of W and U. The audience sees the exact same
+% structure they met 8 slides ago, now fully algebraic. This is a *callback* —
+% the same storytelling device as a punchline that references an earlier setup.
+% The TikZ diagram even labels the axes Col(P) and Null(P) where it previously
+% said "floor" and sunlight arrows. Visual callback reinforces textual callback.
+% AUDIENCE EMOTION: recognition — "this is the same picture!" → deep satisfaction.
+% AUDIENCE ATTENTION: callbacks are inherently attention-grabbing because the brain
+% pattern-matches against memory. The student who half-remembers the earlier slide
+% gets a jolt of "wait, I've seen this before" that pulls them back in.
 \begin{frame}{Question 3: Why Is $P\mathbf{v}$ the Shadow?}
 
 Given $P^2 = P$, with the floor $\operatorname{Col}(P)$ and sunlight $\operatorname{Null}(P)$:
@@ -485,6 +864,16 @@ The shadow $\mathbf{w}$ must satisfy:
 
 \end{frame}
 
+% ADR: The proof is short (3 lines) and placed on its own slide, separate from
+% the question setup. This is deliberate: Q3 sets up "what must w satisfy?" and
+% ends WITHOUT the proof — a cliffhanger. The next slide delivers.
+% The proof's brevity is itself part of the emotional design: after the buildup
+% of the entire section ("can one equation really recover everything?"), a
+% 3-line proof feels like a mic drop. The student thinks "that's it?!" — which
+% is the best possible reaction to an elegant proof.
+% ALT REJECTED: Putting the proof on the same slide as Q3. That removes the
+% cliffhanger beat and makes the slide too dense. The proof deserves its own
+% moment of attention.
 \begin{frame}{The Proof}
 
 \begin{prop}[Projection gives the shadow]
@@ -504,6 +893,17 @@ $$P\mathbf{v} = P\mathbf{w} = \mathbf{w} \qquad \qed$$
 
 \end{frame}
 
+% ADR: The summary slide closes both loops and the entire narrative arc.
+% It uses \begin{alertblock} — the first colored box since the definition —
+% which visually signals "this is the takeaway, photograph this."
+% The three bullet points (shadow, sunlight=Null, floor=Col) mirror the
+% three conditions and three questions, giving the section a ternary symmetry:
+%   Observations (3 conditions) → Questions (3 Q&As) → Summary (3 bullets).
+% AUDIENCE EMOTION: closure, completeness — "the story is finished."
+% AUDIENCE ATTENTION: after the proof's intensity, a summary slide is a
+% cool-down. The alertblock's color draws the eye one last time before the
+% section ends. Students who missed details earlier can capture the essentials
+% from this single slide — it's designed to be self-contained as a photograph.
 \begin{frame}{Summary: The Sunlight Model}
 
 \begin{alertblock}{Projection Operator Summary}
@@ -643,27 +1043,31 @@ $P$ and $I - P$ \x{interchange} their column spaces and null spaces.
 
 \end{frame}
 
-\begin{frame}{Proof of the Interchanging Property}
-
-\x{Show}: $\operatorname{Col}(P) = \operatorname{Null}(I - P)$.
-
-\vspace{0.5em}
-
-($\subseteq$): Take $\mathbf{v} \in \operatorname{Col}(P)$, so $P\mathbf{v} = \mathbf{v}$.
-
-$$\quad (I-P)\mathbf{v} = \mathbf{v} - P\mathbf{v} = \mathbf{v} - \mathbf{v} = \mathbf{0} \quad\implies\quad \mathbf{v} \in \operatorname{Null}(I-P) \;\checkmark$$
-
-\vspace{0.5em}
-
-($\supseteq$): Take $\mathbf{v} \in \operatorname{Null}(I-P)$, so $(I-P)\mathbf{v} = \mathbf{0}$.
-
-$$\quad \mathbf{v} - P\mathbf{v} = \mathbf{0} \quad\implies\quad \mathbf{v} = P\mathbf{v} \quad\implies\quad \mathbf{v} \in \operatorname{Col}(P) \;\checkmark$$
-
-\vspace{0.5em}
-
-The second equality $\operatorname{Col}(I-P) = \operatorname{Null}(P)$ follows by replacing $P$ with $I-P$.
-
-\end{frame}
+% ADR: Figures go AFTER the theorem statement but BEFORE the proof.
+% WHY: The theorem statement is abstract ("Col(P) = Null(I-P)"). The audience
+% reads it and thinks "ok, what does that even mean?" If the proof comes next,
+% they are manipulating symbols they don't yet visualize — pure syntax-pushing.
+% By inserting the figure BETWEEN statement and proof, the audience first builds
+% a geometric picture of what the theorem SAYS (floor/sunlight swap, decomposition),
+% and THEN reads the proof with that picture in mind. The proof becomes
+% verification of something they can already see, not a mystery they're decoding.
+%
+% This is the same "reveal then justify" principle from §2: the theorem statement
+% is the reveal ("here's what's true"), the figure is the intuition ("here's what
+% it looks like"), and the proof is the justification ("here's why it's true").
+%
+% ALT REJECTED (previous version): Figures AFTER the proof. This is the textbook
+% order (state, prove, illustrate). But in a lecture, the audience has already
+% spent cognitive effort on the proof by the time the figure arrives — the figure
+% becomes a retrospective "oh, that's what it meant" instead of a prospective
+% "I can see why this should be true, now show me the algebra."
+%
+% AUDIENCE EMOTION: after the theorem statement, mild confusion ("what does this
+% mean geometrically?"). The figure resolves this immediately — relief. Then the
+% proof arrives when the audience is ready and motivated: "yes, prove what I can
+% already see."
+% AUDIENCE ATTENTION: a figure after a dense theorem statement is a visual reset
+% that recaptures attention before the proof demands sustained focus.
 
 \begin{frame}{Visualizing the Interchange}
 
@@ -690,7 +1094,6 @@ The second equality $\operatorname{Col}(I-P) = \operatorname{Null}(P)$ follows b
 
 \begin{center}
 \begin{tikzpicture}[scale=0.4]
-% Swap: Col(I-P) = Null(P) = y=x, Null(I-P) = Col(P) = horizontal
 \draw[ultra thick,red](-3,-3)--(3,3) node[right]{\small $\operatorname{Col}(I\!-\!P)$};
 \draw[ultra thick,blue](-5,0)--(5,0) node[right]{\small $\operatorname{Null}(I\!-\!P)$};
 \draw[ultra thick,->,black](0,0)--(1,3) node[right]{\small $\mathbf{v}$};
@@ -732,6 +1135,31 @@ Every vector $\mathbf{v}$ is \x{decomposed} into two components:
 $$\mathbf{v} = \underbrace{P\mathbf{v}}_{\in\, \operatorname{Col}(P)} + \underbrace{(I-P)\mathbf{v}}_{\in\, \operatorname{Null}(P)}$$
 
 $P$ and $I-P$ together \x{decompose} every vector into a floor component and a sunlight component.
+
+\end{frame}
+
+% ADR: Proof comes AFTER the two figure frames (Visualizing + Decomposition).
+% The audience has now seen geometrically what the interchange means — the proof
+% is verification of something they can already picture, not a cold symbol chase.
+\begin{frame}{Proof of the Interchanging Property}
+
+\x{Show}: $\operatorname{Col}(P) = \operatorname{Null}(I - P)$.
+
+\vspace{0.5em}
+
+($\subseteq$): Take $\mathbf{v} \in \operatorname{Col}(P)$, so $P\mathbf{v} = \mathbf{v}$.
+
+$\quad (I-P)\mathbf{v} = \mathbf{v} - P\mathbf{v} = \mathbf{v} - \mathbf{v} = \mathbf{0} \quad\implies\quad \mathbf{v} \in \operatorname{Null}(I-P) \;\checkmark$
+
+\vspace{0.5em}
+
+($\supseteq$): Take $\mathbf{v} \in \operatorname{Null}(I-P)$, so $(I-P)\mathbf{v} = \mathbf{0}$.
+
+$\quad \mathbf{v} - P\mathbf{v} = \mathbf{0} \quad\implies\quad \mathbf{v} = P\mathbf{v} \quad\implies\quad \mathbf{v} \in \operatorname{Col}(P) \;\checkmark$
+
+\vspace{0.5em}
+
+The second equality $\operatorname{Col}(I-P) = \operatorname{Null}(P)$ follows by replacing $P$ with $I-P$.
 
 \end{frame}
 
@@ -813,104 +1241,180 @@ If sunlight is parallel to the floor, the shadow \x{never lands}. The disjoint p
 % ═══════════════════════════════════════
 % §4 ORTHOGONAL PROJECTIONS
 % ═══════════════════════════════════════
+%
+% ┌─────────────────────────────────────────────────────────────────────┐
+% │ SECTION-LEVEL ADR: SAME BRIDGE, SAME ENGINE                       │
+% │                                                                    │
+% │ This section replays the §2 narrative structure at a higher level: │
+% │                                                                    │
+% │   Phase 1 — RAPPORT: "What if sunlight is perpendicular?"          │
+% │     Physical intuition first. No symbols yet.                      │
+% │                                                                    │
+% │   Phase 2 — EXAMPLES BEFORE DEFINITION: Show two projections       │
+% │     side by side. Let the audience SEE the difference (perpendicular│
+% │     vs oblique) before naming it. Build the "this one feels nicer" │
+% │     instinct.                                                      │
+% │                                                                    │
+% │   Phase 3 — TENSION: "Is there a simple test to tell them apart?"  │
+% │     The geometric check (compute Col, Null, verify ⊥) is tedious. │
+% │     Frame the algebraic definition as a practical shortcut.        │
+% │                                                                    │
+% │   Phase 4 — REVEAL: P = P^T. That's it. Mic drop.                │
+% │                                                                    │
+% │   Phase 5 — JUSTIFY: Prove Col(P) ⊥ Null(P) ⟺ P = P^T.         │
+% │     The geometric description (Col ⊥ Null) was rapport — it is     │
+% │     NOT the definition. The definition is P = P^T. The theorem     │
+% │     says they are equivalent, validating the rapport.              │
+% │                                                                    │
+% │ KEY PRINCIPLE: The geometric description (Col(P) ⊥ Null(P)) is    │
+% │ the "sunlight metaphor" of this section — it builds intuition and │
+% │ rapport, but it must NOT appear as a boxed \begin{defi}. The only │
+% │ boxed definition is the algebraic one (P = P^T). This mirrors §2  │
+% │ where the three shadow conditions were observations, not a defi.   │
+% └─────────────────────────────────────────────────────────────────────┘
 \section{Orthogonal Projections}
 
-\begin{frame}{Motivation: Perpendicular Sunlight}
+% ADR: Phase 1 — The opening of §4 is a four-step sequence:
+%   (1) "What if perpendicular?" + single perpendicular diagram
+%   (2) Transition: "What's different?" + announce the plan (two examples, matrices)
+%   (3) Two examples with matrices and algebraic computation
+%   (4) Side-by-side figures
+%
+% WHY THIS STRUCTURE:
+% The audience enters §4 fresh. "What if sunlight is perpendicular?" is
+% concrete and visual — it directly shows them the special case. A single
+% diagram lets them SEE perpendicular projection without comparison noise.
+%
+% THEN we ask: "How is this different from oblique?" This is the question the
+% audience naturally forms after seeing the diagram. We announce the plan:
+% two examples, compute matrices, look for algebraic patterns. This gives the
+% audience a MISSION — they know what to watch for. Without this setup, examples
+% feel like random computations dumped on them.
+%
+% PREVIOUS ATTEMPT (rejected): Asked "what makes one better?" first, then
+% revealed "perpendicular" as the answer on a whitespace page, then jumped
+% to side-by-side comparison.
+% WHY IT FAILED:
+% - "What's better?" is abstract — the audience hasn't seen perpendicular yet,
+%   so the question has no anchor.
+% - "Perpendicular" was revealed as an answer to a question the audience didn't
+%   care about yet. You can't reveal something as special before SHOWING it.
+% - The side-by-side examples arrived without motivation — the audience didn't
+%   know what to look for or why they were computing matrices.
+%
+% KEY PRINCIPLE: Every slide must leave the audience knowing where they are,
+% where they're going, and why. Show first → ask what's different → announce
+% the investigation plan → do the investigation.
+%
+% AUDIENCE EMOTION at each step:
+%   (1) "oh, perpendicular — that looks clean"
+%   (2) "ok, I wonder how it differs from oblique — and we're going to find out"
+%   (3) "interesting, the perpendicular one is symmetric..."
+%   (4) "I can see it geometrically too"
+\begin{frame}{What If Sunlight Is Perpendicular?}
 
-In Lecture 6, we discovered:
-$$\operatorname{Col}(A^T) \perp \operatorname{Null}(A)$$
-
-\vspace{1em}
-
-A natural question in the sunlight-floor model:
-
-\vspace{0.5em}
-
-\begin{center}
-\x{Can the sunlight shine perpendicular to the floor?}
-\end{center}
-
-\vspace{1em}
-
-That is: can we have $\operatorname{Col}(P) \perp \operatorname{Null}(P)$?
-
-\end{frame}
-
-\begin{frame}{Definition}
-
-\begin{defi}[Orthogonal Projection]
-A projection $P$ ($P^2 = P$) is called an \x{orthogonal projection} if
-$$\operatorname{Col}(P) \perp \operatorname{Null}(P)$$
-That is, $\mathbf{v}^T\mathbf{w} = 0$ for every $\mathbf{v} \in \operatorname{Col}(P)$ and $\mathbf{w} \in \operatorname{Null}(P)$.
-\end{defi}
-
-\vspace{1em}
-
-In the sunlight model: the sunlight shines \x{perpendicular} to the floor.
-
-\end{frame}
-
-\begin{frame}{Example: Orthogonal vs Oblique}
-
-Two projections onto the \x{same floor} $W = \operatorname{span}\left\{\begin{pmatrix} 1 \\ 1 \end{pmatrix}\right\}$:
-
-\vspace{0.5em}
-
-\begin{columns}[T]
-\begin{column}{0.48\textwidth}
-\x{Orthogonal}: $P_1 = \frac{1}{2}\begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}$
-
-\vspace{0.3em}
+What happens when sunlight hits the floor at a \x{right angle}?
 
 \begin{center}
 \begin{tikzpicture}[scale=0.5]
-% Floor along y=x direction
+\draw[ultra thick,blue](-4,-4)--(4,4) node[right]{floor};
+\draw[ultra thick,->,black](0,0)--(0.5,1.5) node[right]{$\mathbf{v}$};
+\draw[ultra thick,->,cyan](0,0)--(1,1) node[above left]{$P\mathbf{v}$};
+\draw[dashed,thick](0.5,1.5)--(1,1);
+\foreach\x in {-2,...,3}{
+	\draw [red,->](\x-1.5,\x+1.5)--(\x+0.5,\x-0.5);
+}
+\node[red] at (3.5,1) {$\perp$ sunlight};
+\end{tikzpicture}
+\end{center}
+
+The shadow falls \x{straight down} onto the floor --- no sideways drift.
+
+\end{frame}
+
+% ADR: Transition slide — sets up the investigation. The audience has seen
+% perpendicular projection. Now we ask: "how is it different from oblique?"
+% and crucially, we TELL them what we're about to do: compute two matrices,
+% look for algebraic differences. This gives the audience a purpose when
+% reading the examples. Without this, examples are unmotivated computation.
+% AUDIENCE EMOTION: curiosity with direction — "ok, I know what to watch for."
+% AUDIENCE ATTENTION: re-engaged by a clear plan after the visual slide.
+\begin{frame}{Perpendicular vs Oblique}
+
+How is a perpendicular projection \x{different} from an oblique one?
+
+\vspace{1em}
+
+Let us examine two projections onto the \x{same floor}:
+\begin{itemize}
+\item $P_1$: sunlight perpendicular to the floor
+\item $P_2$: sunlight tilted
+\end{itemize}
+
+\vspace{1em}
+
+We will compute their matrices and see what \x{algebraic property} distinguishes them.
+
+\end{frame}
+
+% ADR: Phase 2 — Examples. The audience now knows the mission: find the
+% algebraic difference between perpendicular and oblique. Each example shows
+% the matrix, computes Col and Null, checks orthogonality, and notes symmetry.
+% The pattern (perpendicular ↔ symmetric) should emerge naturally.
+% AUDIENCE ATTENTION: active — they are looking for a pattern, not passively
+% receiving information.
+\begin{frame}{Perpendicular vs Oblique: Same Floor, Different Sunlight}
+
+Two projections onto the \x{same floor}:
+
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\x{$P_1$: perpendicular sunlight}
+
+$P_1 = \frac{1}{2}\begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}$
+
+\begin{center}
+\begin{tikzpicture}[scale=0.4]
 \draw[ultra thick,blue](-3.5,-3.5)--(3.5,3.5) node[right]{\small floor};
-% Sunlight perpendicular to floor: direction (1,-1)
 \draw[ultra thick,->,black](0,0)--(0.5,1.5) node[right]{\small $\mathbf{v}$};
 \draw[ultra thick,->,cyan](0,0)--(1,1) node[above left]{\small $P_1\mathbf{v}$};
 \draw[dashed,thick](0.5,1.5)--(1,1);
-% Sunlight rays: direction (1,-1), perpendicular to floor (1,1)
 \foreach\x in {-2,...,3}{
 	\draw [red,->](\x-1.5,\x+1.5)--(\x+0.5,\x-0.5);
 }
 \node[red] at (3,1.5) {\small $\perp$ sun};
-\node at (0,-2.2) {\small $P_1 = P_1^T$ \checkmark};
 \end{tikzpicture}
 \end{center}
 \end{column}
 
 \begin{column}{0.48\textwidth}
-\x{Oblique}: $P_2 = \begin{pmatrix} 1 & 0 \\ 1 & 0 \end{pmatrix}$
+\x{$P_2$: tilted sunlight}
 
-\vspace{0.3em}
+$P_2 = \begin{pmatrix} 1 & 0 \\ 1 & 0 \end{pmatrix}$
 
 \begin{center}
-\begin{tikzpicture}[scale=0.5]
-% Same floor along y=x
+\begin{tikzpicture}[scale=0.4]
 \draw[ultra thick,blue](-3.5,-3.5)--(3.5,3.5) node[right]{\small floor};
-% Sunlight direction: vertical (0,1) -> Null = span{(0,1)}
 \draw[ultra thick,->,black](0,0)--(0.5,1.5) node[right]{\small $\mathbf{v}$};
 \draw[ultra thick,->,cyan](0,0)--(0.5,0.5) node[below right]{\small $P_2\mathbf{v}$};
 \draw[dashed,thick](0.5,1.5)--(0.5,0.5);
-% Sunlight rays: vertical direction
 \foreach\x in {-2,...,3}{
 	\draw [red,->](\x,\x+2.5)--(\x,\x+0.1);
 }
 \node[red] at (2.5,3.5) {\small sun};
-\node at (0,-2.2) {\small $P_2 \neq P_2^T$ \texttimes};
 \end{tikzpicture}
 \end{center}
 \end{column}
 \end{columns}
 
-\vspace{0.5em}
-
-Same floor, different sunlight. Only $P_1$ has \x{perpendicular sunlight}.
-
 \end{frame}
 
-\begin{frame}{Verification: Orthogonal Projection $P_1$}
+% ADR: Phase 2 continued — verification slides. These are deliberately separated
+% from the comparison slide: the comparison was visual/emotional, now we do the
+% algebra. Students see that "perpendicular sunlight" translates to Col ⊥ Null,
+% and notice the P=P^T coincidence on their own. This planted observation will
+% make the theorem feel like a confirmation, not a surprise.
+\begin{frame}{A Closer Look at $P_1$}
 
 $P_1 = \frac{1}{2}\begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}$:
 
@@ -925,12 +1429,12 @@ $P_1 = \frac{1}{2}\begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}$:
 
 \vspace{0.3em}
 
-\item $P_1 = P_1^T$ $\checkmark$
+\item Also notice: $P_1 = P_1^T$ \quad (the matrix is \x{symmetric})
 \end{itemize}
 
 \end{frame}
 
-\begin{frame}{Verification: Oblique Projection $P_2$}
+\begin{frame}{A Closer Look at $P_2$}
 
 $P_2 = \begin{pmatrix} 1 & 0 \\ 1 & 0 \end{pmatrix}$:
 
@@ -945,28 +1449,88 @@ $P_2 = \begin{pmatrix} 1 & 0 \\ 1 & 0 \end{pmatrix}$:
 
 \vspace{0.3em}
 
-\item $P_2 \neq P_2^T$ $\times$
+\item Also notice: $P_2 \neq P_2^T$ \quad (the matrix is \x{not symmetric})
 \end{itemize}
 
-\vspace{0.5em}
+\vspace{1em}
 
-Same floor, different sunlight $\to$ different symmetry properties.
+A pattern emerges: perpendicular sunlight $\leftrightarrow$ symmetric matrix?
 
 \end{frame}
 
-\begin{frame}{The Characterization Theorem}
+% ADR: Tension page. After seeing the pattern in two examples, the audience is
+% primed to ask "is this always true?" We articulate the question for them.
+% The small text explains why this matters practically: checking Col ⊥ Null
+% requires computing subspaces and inner products. If symmetry is equivalent,
+% you just glance at the matrix. Same "practical shortcut" framing as §2.
+% AUDIENCE EMOTION: anticipation — they already suspect the answer is yes.
+% "Surprisingly" confirms their hunch while still creating a micro-reveal.
+\begin{frame}{}
 
-\begin{thm}[Orthogonal Projection $\Leftrightarrow$ Symmetry]
+\vspace{2em}
+
+\begin{center}
+{\Large Is \x{perpendicular sunlight} the same as \x{matrix symmetry}?}
+\end{center}
+
+\vspace{2em}
+
+{\small
+Checking whether sunlight is perpendicular to the floor requires computing $\operatorname{Col}(P)$, $\operatorname{Null}(P)$, and verifying orthogonality --- a lot of work.
+
+\vspace{0.3em}
+
+Checking $P = P^T$ requires glancing at the matrix entries.
+
+\vspace{0.3em}
+
+If they are equivalent, we get an \x{instant test} for perpendicular sunlight.
+}
+
+\end{frame}
+
+% ADR: Reveal — the algebraic definition. Same pattern as §2: drop the answer
+% at peak tension. The definition is P^2 = P AND P = P^T — two algebraic
+% conditions, no geometry required. The geometric description (Col ⊥ Null) is
+% NOT in the definition box; it appears only as the theorem below that JUSTIFIES
+% the definition. This is the key design principle the user emphasized:
+% geometric intuition is rapport, not definition.
+% AUDIENCE EMOTION: satisfaction — the pattern they spotted is now a theorem.
+\begin{frame}{Algebraic Definition}
+
+\begin{defi}[Orthogonal Projection]
+A matrix $P$ is called an \x{orthogonal projection} if
+$$P^2 = P \quad\text{and}\quad P = P^T$$
+\end{defi}
+
+\vspace{1em}
+
+That's it: \x{idempotent + symmetric}.
+
+\vspace{1em}
+
+But why does matrix symmetry capture perpendicular sunlight?
+
+\end{frame}
+
+% ADR: The characterization theorem is the JUSTIFICATION, not the definition.
+% It says: the algebraic condition (P = P^T) is equivalent to the geometric
+% condition (Col ⊥ Null). This validates the rapport: the physical picture
+% was not just a metaphor — it is a theorem. The audience's gut feeling
+% ("the symmetric one looks more natural") is mathematically correct.
+\begin{frame}{Why Symmetry = Perpendicular Sunlight}
+
+\begin{thm}[Characterization of Orthogonal Projections]
 Let $P$ be a projection ($P^2 = P$). The following are equivalent:
 \begin{enumerate}
-\item \textbf{Geometric}: $\operatorname{Col}(P) \perp \operatorname{Null}(P)$
-\item \textbf{Algebraic}: $P = P^T$
+\item $P = P^T$ \quad (matrix symmetry)
+\item $\operatorname{Col}(P) \perp \operatorname{Null}(P)$ \quad (sunlight $\perp$ floor)
 \end{enumerate}
 \end{thm}
 
 \vspace{1em}
 
-\x{Why this is powerful}: To check orthogonality, just compare entries: $p_{ij} = p_{ji}$.
+\x{Why this is powerful}: to check whether sunlight is perpendicular, just compare entries: $p_{ij} = p_{ji}$.
 
 \vspace{0.5em}
 
