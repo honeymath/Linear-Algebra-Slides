@@ -65,9 +65,15 @@
 
 % ═══════════════════════════════════════
 % §1 REVIEW: WHAT CROSS-FILLING DISCOVERED
+% ADR: AUDIENCE EMOTION — students need grounding before new abstraction.
+% Start from the concrete cross-filling result they already saw, then
+% name the two properties that will become the definition in §2.
+% ALT REJECTED: jumping straight to the definition (too cold, no motivation).
 % ═══════════════════════════════════════
 \section{Review: What Cross-Filling Discovered}
 
+% ADR: WHY — anchor to a specific computation students remember.
+% Show the exact R_1, R_2 from Lecture 8 so there is zero ambiguity.
 \begin{frame}{Recall from Lecture 8}
 
 We cross-filled a projection $P = P^2$:
@@ -85,6 +91,8 @@ We discovered two \x{remarkable} properties:
 
 \end{frame}
 
+% ADR: AUDIENCE EMOTION — build tension: each property alone is boring,
+% but TOGETHER they are remarkable. This motivates the definition in §2.
 \begin{frame}{The Two Properties Together}
 
 Property 1 alone is not special --- many matrices satisfy $R^2 = R$.
@@ -113,9 +121,14 @@ But \x{together} they form a remarkable structure:
 
 % ═══════════════════════════════════════
 % §2 COMPATIBLE FAMILIES OF PROJECTIONS
+% ADR: AUDIENCE ATTENTION — Definition → trivial example (coordinate) →
+% Lecture 8 callback → geometric picture → two properties → unique decomposition.
+% Flow: familiar → non-trivial → visual → algebraic consequences.
 % ═══════════════════════════════════════
 \section{Compatible Families}
 
+% ADR: WHY — name the structure before exploring consequences.
+% Definition is minimal: just P_i^2=P_i plus P_iP_j=0.
 \begin{frame}{Definition}
 
 \begin{defi}[Compatible Family]
@@ -125,24 +138,29 @@ $$P_i P_j = 0 \quad \text{for all } i \neq j$$
 
 \end{frame}
 
+% ADR: AUDIENCE ATTENTION — coordinate projections are the simplest possible
+% compatible family. Students can verify all conditions by inspection.
+% The bonus P_1+P_2+P_3=I foreshadows the decomposition theorem.
 \begin{frame}{Example: Coordinate Projections in $\mathbb{R}^3$}
 
-$$P_1 = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix}, \quad P_2 = \begin{pmatrix} 0 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}, \quad P_3 = \begin{pmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+$$\bl{P_1} = \bl{\begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix}}, \quad \rd{P_2} = \rd{\begin{pmatrix} 0 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}}, \quad \gn{P_3} = \gn{\begin{pmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}}$$
 
 \vspace{0.5em}
 
-Check: each is a projection ($P_i^2 = P_i$ $\checkmark$)
+Check: each is a projection ($\bl{P_1}^2 = \bl{P_1}$ $\checkmark$, \; $\rd{P_2}^2 = \rd{P_2}$ $\checkmark$, \; $\gn{P_3}^2 = \gn{P_3}$ $\checkmark$)
 
 \vspace{0.5em}
 
-Check: $P_1 P_2 = 0$, $P_1 P_3 = 0$, $P_2 P_3 = 0$ $\checkmark$
+Check: $\bl{P_1}\rd{P_2} = 0$, \; $\bl{P_1}\gn{P_3} = 0$, \; $\rd{P_2}\gn{P_3} = 0$ $\checkmark$
 
 \vspace{0.5em}
 
-Bonus: $P_1 + P_2 + P_3 = I_3$
+Bonus: $\bl{P_1} + \rd{P_2} + \gn{P_3} = I_3$
 
 \end{frame}
 
+% ADR: WHY — 3D TikZ makes "each projection captures one coordinate" visceral.
+% Dashed lines show the oblique projection direction (parallel to the other axes).
 \begin{frame}[fragile]{Geometric Picture: Coordinate Projections}
 
 \begin{center}
@@ -171,6 +189,9 @@ Each projection captures one coordinate. The three ``floors'' (axes) are complet
 
 \end{frame}
 
+% ADR: WHY — callback to Lecture 8: cross-filling produced R_1,R_2 and we already
+% verified both properties. Now we NAME the structure: compatible family.
+% This is not a coincidence — §3 theorem will explain why.
 \begin{frame}{Example: From Lecture 8's Cross-Filling}
 
 Recall:
@@ -190,6 +211,11 @@ This is not a coincidence --- we will prove that cross-filling \x{always} produc
 
 \end{frame}
 
+% ADR: WHY — the geometric meaning of P_iP_j=0 is CONTAINMENT:
+% Col(R_j) ⊂ Null(R_i). This picture makes the abstract condition visual.
+% Colors: red=R_1/Col(R_1)/Null(R_1), green=R_2/Col(R_2)/Null(R_2).
+% Null space planes drawn as transparent parallelograms (see BBS tikz finding).
+% AUDIENCE EMOTION — "oh, the floor of one lies in the sunlight of the other!"
 \begin{frame}[fragile]{Geometric Picture of Compatible Families}
 
 \begin{center}
@@ -247,6 +273,8 @@ This is not a coincidence --- we will prove that cross-filling \x{always} produc
 \end{frame}
 
 
+% ADR: WHY — first algebraic consequence: subsums are projections.
+% Proof is one-liner using P_iP_j=0. Students see the power of the definition.
 \begin{frame}{Property 1: Subsums Are Projections}
 
 \begin{prop}
@@ -266,25 +294,30 @@ $$Q^2 = P_1^2 + P_2^2 + \cdots + P_j^2 = P_1 + P_2 + \cdots + P_j = Q \quad \che
 
 \end{frame}
 
+% ADR: AUDIENCE ATTENTION — verify with the concrete coordinate example.
+% Students see P_1+P_2 = xy-plane projection etc. Grounds the abstract proof.
 \begin{frame}{Verify with Coordinate Projections}
 
-$P_1 + P_2 = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}$ is a projection $\checkmark$ \quad (projects onto $xy$-plane)
+$\bl{P_1} + \rd{P_2} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}$ is a projection $\checkmark$ \quad (projects onto $xy$-plane)
 
 \vspace{0.5em}
 
-$P_2 + P_3 = \begin{pmatrix} 0 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}$ is a projection $\checkmark$ \quad (projects onto $yz$-plane)
+$\rd{P_2} + \gn{P_3} = \begin{pmatrix} 0 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}$ is a projection $\checkmark$ \quad (projects onto $yz$-plane)
 
 \vspace{0.5em}
 
-$P_1 + P_3 = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}$ is a projection $\checkmark$ \quad (projects onto $xz$-plane)
+$\bl{P_1} + \gn{P_3} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}$ is a projection $\checkmark$ \quad (projects onto $xz$-plane)
 
 \vspace{0.5em}
 
-$P_1 + P_2 + P_3 = I_3$ is a projection $\checkmark$
+$\bl{P_1} + \rd{P_2} + \gn{P_3} = I_3$ is a projection $\checkmark$
 
 \end{frame}
 
 
+% ADR: WHY — second algebraic consequence: the pieces P_iv are linearly independent.
+% Proof technique: left-multiply by P_j to kill all terms except c_j P_j v.
+% This is a beautiful use of the mutual annihilation property.
 \begin{frame}{Property 2: Independent Decompositions}
 
 \begin{prop}
@@ -308,6 +341,9 @@ If $P_j\mathbf{v} \neq \mathbf{0}$, then $c_j = 0$. \qed
 \end{frame}
 
 
+% ADR: WHY — combine Properties 1+2: Pv = ΣP_iv is unique.
+% Mention direct sum notation but explicitly say "we will not use this notation"
+% to avoid scaring students with unfamiliar symbols.
 \begin{frame}{Unique Decomposition}
 
 If $\{P_1, \ldots, P_k\}$ is a compatible family with $P_1 + \cdots + P_k = P$, then every vector $P\mathbf{v}$ decomposes as:
@@ -331,9 +367,16 @@ Key: $P_i P_j = 0$ ensures the ``floors'' are independent --- the floor of $P_i$
 
 % ═══════════════════════════════════════
 % §3 THE PROJECTION DECOMPOSITION THEOREM
+% ADR: AUDIENCE EMOTION — this is the CLIMAX of the projection theory.
+% The rank condition alone forces projections + mutual annihilation.
+% Structure: question → theorem → "why remarkable" → example → proof (7 steps) → summary.
+% Proof uses the UV=I → VU=I result from Lecture 8 §5.
+% ALT REJECTED: proving compatibility directly for cross-filling only (too narrow).
 % ═══════════════════════════════════════
 \section{The Projection Decomposition Theorem}
 
+% ADR: AUDIENCE EMOTION — tension: we have a special structure (compatible family),
+% but we required TWO conditions. Can we get it from LESS?
 \begin{frame}{The Big Question}
 
 Compatible families seem like a very \x{special} structure. We required:
@@ -358,6 +401,9 @@ We don't assume the $R_i$ are projections. We don't assume $R_i R_j = 0$.
 \end{frame}
 
 
+% ADR: AUDIENCE EMOTION — surprise/delight: the rank condition ALONE forces everything.
+% No assumption that R_i are projections, no assumption R_iR_j=0.
+% This is the most powerful theorem in the projection chapter.
 \begin{frame}{The Stunning Answer}
 
 \begin{thm}[Projection Decomposition --- The Climax]
@@ -377,6 +423,8 @@ Then \x{automatically}:
 \end{frame}
 
 
+% ADR: AUDIENCE ATTENTION — reinforce the surprise before moving to examples.
+% Restate what was NOT assumed. Students in passive mode need repetition.
 \begin{frame}{Why Is This Remarkable?}
 
 We \x{never assumed} the $R_i$ are projections.
@@ -401,6 +449,9 @@ Key: The rank condition forces a rigid algebraic structure.
 \end{frame}
 
 
+% ADR: AUDIENCE ATTENTION — concrete example before the proof.
+% Reuse the Lecture 8 diagonal cross-filling example so students see continuity.
+% Colors: \pvt red for pivot, \crs blue for cross-arm, \bl/\gn for R_1/R_2.
 \begin{frame}{Example: Let's Try It}
 
 Take a rank-2 projection (from Lecture 8's diagonal cross-filling):
@@ -417,6 +468,8 @@ $$P = \underbrace{\frac{1}{6}\begin{pmatrix} \pvt{4} & \crs{-2} & \crs{-2} \\ \c
 \end{frame}
 
 
+% ADR: WHY — show the theorem IN ACTION: just check rank, get everything for free.
+% Sanity check via trace reinforces trace=rank from Lecture 8 §3.
 \begin{frame}{Example: Check the Rank Condition}
 
 $$\operatorname{rank}(\bl{R_1}) + \operatorname{rank}(\gn{R_2}) = \bl{1} + \gn{1} = 2 = \operatorname{rank}(P) \quad \checkmark$$
@@ -433,15 +486,15 @@ The theorem \x{predicts} (without any computation!):
 
 \vspace{0.5em}
 
-\x{Quick sanity check}: $\operatorname{trace}(\bl{R_1}) = \frac{\bl{4}+\bl{1}+\bl{1}}{6} = \bl{1}$, \; $\operatorname{trace}(\gn{R_2}) = \frac{\gn{0}+\gn{1}+\gn{1}}{2} = \gn{1}$
+\x{Quick sanity check} (trace $=$ rank for projections, Lecture 8 \S3):
 
-\vspace{0.3em}
-
-Each piece has trace $= 1$. This is consistent with being a rank-1 projection (since $\operatorname{trace} = \operatorname{rank}$ for projections).
+$\operatorname{trace}(\bl{R_1}) = \frac{\bl{4}+\bl{1}+\bl{1}}{6} = \bl{1} = \operatorname{rank}(\bl{R_1})$ $\checkmark$, \quad $\operatorname{trace}(\gn{R_2}) = \frac{\gn{0}+\gn{1}+\gn{1}}{2} = \gn{1} = \operatorname{rank}(\gn{R_2})$ $\checkmark$
 
 \end{frame}
 
 
+% ADR: WHY — practical shortcut: trace is O(n) to compute, rank is O(n^3).
+% Contrapositive is the useful direction: trace≠rank → rank condition fails.
 \begin{frame}{Corollary: The Trace Test}
 
 \begin{cor}[Trace Test]
@@ -464,6 +517,8 @@ Trace is just reading off the \rd{diagonal} --- much cheaper than computing rank
 \end{frame}
 
 
+% ADR: AUDIENCE ATTENTION — negative example: show what happens when rank condition fails.
+% The "bad" decomposition has rank(A)+rank(B) > rank(P), and indeed B is not a projection.
 \begin{frame}{Example: Trace Test Catches a Bad Decomposition}
 
 Same $P = \frac{1}{3}\begin{pmatrix} 2 & -1 & -1 \\ -1 & 2 & -1 \\ -1 & -1 & 2 \end{pmatrix}$, but decompose differently:
@@ -485,6 +540,8 @@ Rank condition \x{fails}. And indeed $B$ is \x{not} a projection ($B^2 \neq B$).
 \end{frame}
 
 
+% ADR: WHY — reduce to the case ΣR_i = I_n by adding R_0 = I-P.
+% This is the key trick: working with I_n is cleaner than working with P.
 \begin{frame}{Proof: Step 1 --- Introduce $R_0$}
 
 Define $R_0 = I_n - P$. Since $P$ is a projection, so is $R_0$:
@@ -504,6 +561,8 @@ We have reduced to the case where the pieces sum to $I_n$.
 \end{frame}
 
 
+% ADR: WHY — establish s ≤ n (total rank ≤ dimension). This is what
+% forces UV to be square, which triggers the Lecture 8 §5 machinery.
 \begin{frame}{Proof: Step 2 --- Count Total Rank}
 
 Since $R_0$ is a projection, $\operatorname{rank}(R_0) = \operatorname{trace}(R_0)$ (Lecture 8).
@@ -523,6 +582,8 @@ $$\underbrace{\operatorname{rank}(R_0)}_{= n - \operatorname{rank}(P)} + \underb
 \end{frame}
 
 
+% ADR: WHY — factor R_i = U_iV_i (cross-filling from Lecture 8).
+% This sets up the block matrix assembly in Step 3 continued.
 \begin{frame}{Proof: Step 3 --- Factor Each $R_i$}
 
 Write $r_i = \operatorname{rank}(R_i)$. By cross-filling (Lecture 8), each $R_i$ factors as:
@@ -537,6 +598,9 @@ From Step 2: $s \leq n$.
 \end{frame}
 
 
+% ADR: AUDIENCE ATTENTION — the block assembly is the visual heart of the proof.
+% Colors: \bl blue for U_0/V_0, \rd red for U_1/V_1, \gn green for U_k/V_k.
+% Same-color blocks will become diagonal in VU, different-color → off-diagonal.
 \begin{frame}{Proof: Step 3 (continued) --- Assemble Block Matrices}
 
 Stack all $U_i$ side by side, all $V_i$ on top of each other:
@@ -561,6 +625,8 @@ $$UV = \bl{U_0}\bl{V_0} + \rd{U_1}\rd{V_1} + \cdots + \gn{U_k}\gn{V_k} = R_0 + R
 \end{frame}
 
 
+% ADR: WHY — s < n → rank(UV) < n, contradiction. So s = n, U,V are square.
+% Then invoke Lecture 8 §5 (square case): UV=I → VU=I.
 \begin{frame}{Proof: Step 4 --- $UV = I_n$ Forces $s = n$}
 
 We have: $\underbrace{U}_{n \times s} \cdot \underbrace{V}_{s \times n} = I_n$ and $s \leq n$.
@@ -577,11 +643,14 @@ So $s = n$, meaning $U$ and $V$ are both \x{square} ($n \times n$).
 
 \vspace{0.5em}
 
-Since $UV = I_n$ and both are square: $VU = I_n$ as well (Lecture 5).
+Since $UV = I_n$ and both are square: $VU = I_n$ as well (Lecture 8 \S5, square case).
 
 \end{frame}
 
 
+% ADR: AUDIENCE ATTENTION — VU=I must be shown as explicit colored block matrix
+% (BBS reflection: never skip to subscript formula, always show the matrix).
+% This is the payoff: block structure reveals diagonal=identity, off-diagonal=zero.
 \begin{frame}{Proof: Step 5 --- What Does $VU = I_n$ Look Like?}
 
 Recall the block structure (from Step 3):
@@ -611,6 +680,9 @@ $$VU = \begin{pmatrix}
 \end{frame}
 
 
+% ADR: AUDIENCE ATTENTION — explicit colored matrix = colored identity.
+% Diagonal blocks colored to match (blue=I_{r_0}, red=I_{r_1}, green=I_{r_k}).
+% Off-diagonal = 0 stated explicitly. Students SEE the block-diagonal structure.
 \begin{frame}{Proof: Step 5 (continued) --- Reading Off the Blocks}
 
 $$\begin{pmatrix}
@@ -636,6 +708,8 @@ V_k U_0 & V_k U_1 & \cdots & \gn{V_k U_k}
 \end{frame}
 
 
+% ADR: WHY — diagonal blocks V_iU_i = I give R_i^2 = U_i(V_iU_i)V_i = U_iV_i = R_i.
+% Same cancellation pattern as Lecture 8 §4 (W^TW = I proof).
 \begin{frame}{Proof: Step 6 --- Each $R_i$ Is a Projection}
 
 From Step 5, the \x{diagonal blocks} give us:
@@ -655,6 +729,8 @@ Each $R_i$ is \x{automatically} a projection!
 \end{frame}
 
 
+% ADR: WHY — off-diagonal blocks V_iU_j = 0 give R_iR_j = U_i(V_iU_j)V_j = 0.
+% Same pattern: the middle factor kills everything. QED.
 \begin{frame}{Proof: Step 7 --- Mutual Annihilation}
 
 From Step 5, the \x{off-diagonal blocks} give us: $V_i U_j = 0$ for $i \neq j$.
@@ -678,6 +754,8 @@ $$\implies \operatorname{rank}(R_1) + \cdots + \operatorname{rank}(R_k) = n - \o
 \end{frame}
 
 
+% ADR: AUDIENCE ATTENTION — compress the 7-step proof into one chain.
+% Students can photograph this slide as a proof roadmap.
 \begin{frame}{Summary of the Proof}
 
 The entire proof flows from one chain:
@@ -700,6 +778,9 @@ Key: The rank condition forces $s \leq n$, which forces $VU = I_n$, which forces
 \end{frame}
 
 
+% ADR: AUDIENCE ATTENTION — exercise uses the Lecture 8 R_1,R_2 example.
+% Students verify the rank condition and see the theorem confirm what they
+% already checked by hand. "For free — no need to multiply matrices!"
 \begin{frame}{Exercise: Verify the Rank Condition}
 
 $$P = \underbrace{\begin{pmatrix} 0 & 0 & 0 \\ \bl{-1} & \bl{1} & 0 \\ 0 & 0 & 0 \end{pmatrix}}_{\bl{R_1},\; \operatorname{rank} = \bl{1}} + \underbrace{\begin{pmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ \rd{-1} & 0 & \rd{1} \end{pmatrix}}_{\rd{R_2},\; \operatorname{rank} = \rd{1}}$$
@@ -717,6 +798,9 @@ We get this \x{for free} --- no need to multiply matrices!
 \end{frame}
 
 
+% ADR: AUDIENCE ATTENTION — negative example: same P, different decomposition.
+% rank(R_1)+rank(R_2) = 3 > 2 = rank(P). Theorem does NOT apply.
+% And indeed R_1 is not a projection. Validates the theorem by contrast.
 \begin{frame}{Exercise: When the Rank Condition Fails}
 
 Same $P$, but a \x{different} decomposition:
@@ -736,9 +820,17 @@ Rank condition \x{fails}. And indeed, $\rd{R_1}$ is \x{not} a projection ($\rd{R
 
 % ═══════════════════════════════════════
 % §4 APPLICATIONS
+% ADR: AUDIENCE ATTENTION — three applications in increasing sophistication:
+% 1. Cross-filling (immediate corollary, confirms Lecture 8 result)
+% 2. r_i^T c_j = δ_{ij} (VU=I read off in rank-1 terms)
+% 3. Inner cross-filling (new technique: decompose a factor, not P itself)
+% ALT REJECTED: proving inner cross-filling first (students need the simple
+% corollary to see the theorem is useful before the more advanced application).
 % ═══════════════════════════════════════
 \section{Applications}
 
+% ADR: WHY — immediate corollary: cross-filling always satisfies the rank condition.
+% This gives a second, more powerful proof of compatibility (Lecture 8 proved directly).
 \begin{frame}{Application 1: Cross-Filling Produces Compatible Projections}
 
 \begin{cor}
@@ -760,37 +852,33 @@ In Lecture 8, we proved this directly. The theorem provides a \x{second, more po
 \end{frame}
 
 
+% ADR: WHY — VU=I in terms of rank-1 pieces means r_i^T c_j = δ_{ij}.
+% This is the biorthogonality condition. Concrete verification follows.
 \begin{frame}{Application 2: Rank-1 Projections Have $r_i^T c_j = \delta_{ij}$}
 
 Cross-filling a projection $P$ of rank $r$:
-
-$$P = \underbrace{c_1 r_1^T}_{R_1} + \underbrace{c_2 r_2^T}_{R_2} + \cdots + \underbrace{c_r r_r^T}_{R_r}$$
-
-\vspace{0.3em}
+$$P = \underbrace{\bl{c_1} \bl{r_1^T}}_{\bl{R_1}} + \underbrace{\rd{c_2} \rd{r_2^T}}_{\rd{R_2}} + \cdots + \underbrace{\gn{c_r} \gn{r_r^T}}_{\gn{R_r}}$$
 
 Write as $P = UV$ where:
-$$U = \begin{pmatrix}
+$$\underbrace{\begin{pmatrix}
 | & & | \\
-c_1 & \cdots & c_r \\
+\bl{c_1} & \cdots & \gn{c_r} \\
 | & & |
-\end{pmatrix}, \quad
-V = \begin{pmatrix}
-- & r_1^T & - \\
+\end{pmatrix}}_{U}, \quad
+\underbrace{\begin{pmatrix}
+- & \bl{r_1^T} & - \\
 & \vdots & \\
-- & r_r^T & -
-\end{pmatrix}$$
-
-\vspace{0.3em}
+- & \gn{r_r^T} & -
+\end{pmatrix}}_{V}$$
 
 The theorem gives $VU = I_r$, which means:
-
-$$r_i^T c_j = \begin{cases} 1 & i = j \\ 0 & i \neq j \end{cases}$$
+$$\bl{r_i^T} \rd{c_j} = \begin{cases} 1 & i = j \;\text{(same color)} \\ 0 & i \neq j \;\text{(different color)} \end{cases}$$
 
 \end{frame}
 
 \begin{frame}{Verify with Our Example}
 
-$$R_1 = \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}\begin{pmatrix} -1 & 1 & 0 \end{pmatrix}, \quad R_2 = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}\begin{pmatrix} -1 & 0 & 1 \end{pmatrix}$$
+$$\bl{R_1} = \bl{\begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}}\bl{\begin{pmatrix} -1 & 1 & 0 \end{pmatrix}}, \quad \rd{R_2} = \rd{\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}}\rd{\begin{pmatrix} -1 & 0 & 1 \end{pmatrix}}$$
 
 \vspace{0.3em}
 
@@ -798,17 +886,20 @@ Check $r_i^T c_j = \delta_{ij}$:
 
 \vspace{0.3em}
 
-$r_1^T c_1 = \begin{pmatrix} -1 & 1 & 0 \end{pmatrix}\begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix} = 1$ $\checkmark$ \qquad
-$r_1^T c_2 = \begin{pmatrix} -1 & 1 & 0 \end{pmatrix}\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} = 0$ $\checkmark$
+$\bl{r_1^T} \bl{c_1} = \bl{\begin{pmatrix} -1 & 1 & 0 \end{pmatrix}}\bl{\begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}} = \bl{1}$ $\checkmark$ \qquad
+$\bl{r_1^T} \rd{c_2} = \bl{\begin{pmatrix} -1 & 1 & 0 \end{pmatrix}}\rd{\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}} = 0$ $\checkmark$
 
 \vspace{0.3em}
 
-$r_2^T c_1 = \begin{pmatrix} -1 & 0 & 1 \end{pmatrix}\begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix} = 0$ $\checkmark$ \qquad
-$r_2^T c_2 = \begin{pmatrix} -1 & 0 & 1 \end{pmatrix}\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} = 1$ $\checkmark$
+$\rd{r_2^T} \bl{c_1} = \rd{\begin{pmatrix} -1 & 0 & 1 \end{pmatrix}}\bl{\begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}} = 0$ $\checkmark$ \qquad
+$\rd{r_2^T} \rd{c_2} = \rd{\begin{pmatrix} -1 & 0 & 1 \end{pmatrix}}\rd{\begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}} = \rd{1}$ $\checkmark$
 
 \end{frame}
 
 
+% ADR: AUDIENCE EMOTION — "what if P is given in factored form?"
+% Motivates inner cross-filling: decompose a smaller factor instead of P itself.
+% This is the bridge to §5 (inner diagonal cross-filling for orthogonal projections).
 \begin{frame}{Application 3: Inner Cross-Filling --- Motivation}
 
 Cross-filling decomposes $P$ directly into rank-1 pieces.
@@ -830,6 +921,8 @@ The Projection Decomposition Theorem will guarantee that the resulting pieces st
 \end{frame}
 
 
+% ADR: WHY — theorem statement with the bottleneck condition rank(P)=rank(M_i).
+% Remark explains why this is a natural condition (rank of product ≤ rank of factor).
 \begin{frame}{Inner Cross-Filling: Theorem}
 
 \begin{thm}[Inner Cross-Filling]
@@ -848,6 +941,8 @@ Then $P = S_1 + \cdots + S_s$ is a compatible family of projections.
 \end{frame}
 
 
+% ADR: WHY — proof is 3 lines: distribute, bound rank, invoke PDT.
+% "Outer factors carried along for the ride" — memorable phrasing.
 \begin{frame}{Inner Cross-Filling: Why It Works}
 
 Clearly $P = S_1 + S_2 + \cdots + S_s$ (distribute the product over the sum).
@@ -869,6 +964,8 @@ Key: We decompose an \x{inner factor} $M_i$ rather than $P$ itself. The outer fa
 \end{frame}
 
 
+% ADR: AUDIENCE ATTENTION — trivial example first: P = U·I_2·V, cross-fill I_2.
+% Result is coordinate projections. Students see inner cross-filling = obvious here.
 \begin{frame}{Inner Cross-Filling: Example}
 
 Let $P = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}$ (projection onto $xy$-plane). Factorize:
@@ -901,6 +998,9 @@ We decomposed the $3 \times 3$ projection by cross-filling the \x{smaller} $2 \t
 \end{frame}
 
 
+% ADR: AUDIENCE ATTENTION — non-trivial example: M is NOT identity.
+% Same P as §1 review, different factorization. Shows inner cross-filling
+% recovers the same R_1,R_2 as direct cross-filling. "Different path, same answer."
 \begin{frame}{Non-Trivial Example: Setup}
 
 Same projection $P = \begin{pmatrix} 0 & 0 & 0 \\ -1 & 1 & 0 \\ -1 & 0 & 1 \end{pmatrix}$, but a \x{different} factorization:
@@ -914,31 +1014,38 @@ Here $M$ is \x{not} the identity! But $\operatorname{rank}(P) = 2 = \operatornam
 
 \begin{frame}{Non-Trivial Example: Inner Cross-Fill $M$}
 
-Cross-fill $M = \begin{pmatrix} 1 & -1 \\ 0 & 1 \end{pmatrix}$ at pivot $(1,1)$:
+Cross-fill $M = \begin{pmatrix} \pvt{1} & \crs{-1} \\ \crs{0} & 1 \end{pmatrix}$ at pivot $(\pvt{1},\pvt{1})$:
 
-$$Q_1 = \begin{pmatrix} 1 & -1 \\ 0 & 0 \end{pmatrix}, \quad Q_2 = \begin{pmatrix} 0 & 0 \\ 0 & 1 \end{pmatrix}$$
-
-\vspace{0.3em}
-
-$$S_1 = UQ_1V = \begin{pmatrix} 0 & 0 & 0 \\ -1 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}, \quad S_2 = UQ_2V = \begin{pmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ -1 & 0 & 1 \end{pmatrix}$$
+$$\bl{Q_1} = \bl{\begin{pmatrix} 1 & -1 \\ 0 & 0 \end{pmatrix}}, \quad \rd{Q_2} = \rd{\begin{pmatrix} 0 & 0 \\ 0 & 1 \end{pmatrix}}$$
 
 \vspace{0.3em}
 
-$S_1^2 = S_1$ $\checkmark$, \; $S_2^2 = S_2$ $\checkmark$, \; $S_1 S_2 = 0$ $\checkmark$
+$$\bl{S_1} = U\bl{Q_1}V = \bl{\begin{pmatrix} 0 & 0 & 0 \\ -1 & 1 & 0 \\ 0 & 0 & 0 \end{pmatrix}}, \quad \rd{S_2} = U\rd{Q_2}V = \rd{\begin{pmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ -1 & 0 & 1 \end{pmatrix}}$$
 
 \vspace{0.3em}
 
-Key: We cross-filled a $2 \times 2$ factor $M$ (not $P$ itself), and the theorem guarantees compatibility!
+$\bl{S_1}^2 = \bl{S_1}$ $\checkmark$, \; $\rd{S_2}^2 = \rd{S_2}$ $\checkmark$, \; $\bl{S_1}\rd{S_2} = 0$ $\checkmark$
+
+\vspace{0.3em}
+
+Cross-filled the $\rd{2 \times 2}$ factor $M$ (not $P$ itself) --- the theorem guarantees compatibility!
 
 \end{frame}
 
 
 % ═══════════════════════════════════════
 % §5 INNER DIAGONAL CROSS-FILLING
+% ADR: AUDIENCE ATTENTION — combine two ideas: inner (§4) + diagonal (Lecture 8 §4).
+% Key payoff: for P = B(B^TB)^{-1}B^T, cross-fill the SMALL (B^TB)^{-1}
+% instead of the big P. Efficiency: O(r^2) vs O(n^2).
+% ALT REJECTED: only stating the theorem without the B(B^TB)^{-1}B^T application
+% (that application is the whole reason this section exists).
 % ═══════════════════════════════════════
 
 \section{Inner Diagonal Cross-Filling for Orthogonal Projections}
 
+% ADR: AUDIENCE EMOTION — "can we combine these two powerful ideas?"
+% Students have seen inner (§4) and diagonal (Lecture 8). Natural question.
 \begin{frame}{Combining Inner and Diagonal Cross-Filling}
 
 From Lecture 8: diagonal cross-filling decomposes an orthogonal projection $P$ into rank-1 \x{orthogonal} projections.
@@ -958,6 +1065,8 @@ If $P = UMU^T$ where $M$ is a \x{small symmetric} matrix, can we diagonally cros
 \end{frame}
 
 
+% ADR: WHY — state the setup clearly: P = UMU^T with U full column rank, M symmetric.
+% The rank condition is automatic when U has full column rank (explained next slide).
 \begin{frame}{The Setup: $P = UMU^T$}
 
 Suppose an orthogonal projection has the form:
@@ -1039,6 +1148,9 @@ Each $R_j$ is a projection \x{and} symmetric $\implies$ orthogonal projection. \
 \end{frame}
 
 
+% ADR: AUDIENCE EMOTION — "this is the whole point": P = B(B^TB)^{-1}B^T
+% has the form UMU^T with M = (B^TB)^{-1}. Cross-fill the small M!
+% This is the bridge to Lecture 10 (orthogonal projection formula).
 \begin{frame}{The Key Example: Orthogonal Projection Formula}
 
 The most important case: the orthogonal projection onto $\operatorname{Col}(B)$:
@@ -1064,6 +1176,8 @@ Instead of diagonally cross-filling the $n \times n$ matrix $P$, we cross-fill t
 \end{frame}
 
 
+% ADR: AUDIENCE ATTENTION — concrete efficiency comparison.
+% 100×3 example: cross-fill 3×3 instead of 100×100. Dramatic difference.
 \begin{frame}{Efficiency Comparison}
 
 \begin{center}
@@ -1092,12 +1206,15 @@ Inner: cross-fill a $3 \times 3$ matrix!
 \end{frame}
 
 
+% ADR: AUDIENCE ATTENTION — reuse the §3 example P = (1/3)(2,-1,-1;...).
+% Students recognize the matrix. Show UMU^T factorization explicitly.
+% Colors: \pvt red for pivot, \crs blue for cross-arm in M.
 \begin{frame}{Example: Start from a Concrete $P$}
 
 The same $P$ from \S3:
-$$\underbrace{\frac{1}{3}\begin{pmatrix} 2 & -1 & -1 \\ -1 & 2 & -1 \\ -1 & -1 & 2 \end{pmatrix}}_{P} = \underbrace{\begin{pmatrix} 1 & 0 \\ 0 & 1 \\ -1 & -1 \end{pmatrix}}_{U} \cdot \underbrace{\frac{1}{3}\begin{pmatrix} 2 & -1 \\ -1 & 2 \end{pmatrix}}_{M} \cdot \underbrace{\begin{pmatrix} 1 & 0 & -1 \\ 0 & 1 & -1 \end{pmatrix}}_{U^T}$$
+$$\underbrace{\frac{1}{3}\begin{pmatrix} 2 & -1 & -1 \\ -1 & 2 & -1 \\ -1 & -1 & 2 \end{pmatrix}}_{P\;(3 \times 3)} = \underbrace{\begin{pmatrix} 1 & 0 \\ 0 & 1 \\ -1 & -1 \end{pmatrix}}_{U\;(3 \times 2)} \cdot \underbrace{\frac{1}{3}\begin{pmatrix} \pvt{2} & \crs{-1} \\ \crs{-1} & 2 \end{pmatrix}}_{\x{$M$}\;(2 \times 2)} \cdot \underbrace{\begin{pmatrix} 1 & 0 & -1 \\ 0 & 1 & -1 \end{pmatrix}}_{U^T\;(2 \times 3)}$$
 
-$U$ has full column rank $\checkmark$, $M$ is symmetric $\checkmark$.
+$U$ has full column rank $\checkmark$, \; $M = M^T$ $\checkmark$, \; $\operatorname{rank}(M) = 2 = \operatorname{rank}(P)$ $\checkmark$
 
 \vspace{0.3em}
 
@@ -1110,111 +1227,67 @@ $U$ has full column rank $\checkmark$, $M$ is symmetric $\checkmark$.
 
 $$M = \frac{1}{3}\begin{pmatrix} \pvt{2} & \crs{-1} \\ \crs{-1} & 2 \end{pmatrix}$$
 
-\x{Diagonal pivot $(1,1)$}, value $= \frac{2}{3}$:
+\x{Diagonal pivot $(\pvt{1},\pvt{1})$}, value $= \pvt{\tfrac{2}{3}}$:
 
-$$Q_1 = \frac{1}{2/3} \cdot \frac{1}{3}\begin{pmatrix} \pvt{2} \\ \crs{-1} \end{pmatrix} \cdot \frac{1}{3}\begin{pmatrix} \pvt{2} & \crs{-1} \end{pmatrix} = \frac{1}{6}\begin{pmatrix} 4 & -2 \\ -2 & 1 \end{pmatrix}$$
+$$\bl{Q_1} = \frac{1}{\pvt{2/3}} \cdot \underbrace{\frac{1}{3}\begin{pmatrix} \pvt{2} \\ \crs{-1} \end{pmatrix}}_{\text{col}_1} \cdot \underbrace{\frac{1}{3}\begin{pmatrix} \pvt{2} & \crs{-1} \end{pmatrix}}_{\text{row}_1} = \bl{\frac{1}{6}\begin{pmatrix} 4 & -2 \\ -2 & 1 \end{pmatrix}}$$
 
-$$Q_2 = M - Q_1 = \frac{1}{2}\begin{pmatrix} 0 & 0 \\ 0 & 1 \end{pmatrix}$$
+$$\rd{Q_2} = M - \bl{Q_1} = \rd{\frac{1}{2}\begin{pmatrix} 0 & 0 \\ 0 & 1 \end{pmatrix}}$$
 
-$Q_1 = Q_1^T$ $\checkmark$, \; $Q_2 = Q_2^T$ $\checkmark$ \quad (diagonal pivots preserve symmetry!)
+$\bl{Q_1} = \bl{Q_1}^T$ $\checkmark$, \; $\rd{Q_2} = \rd{Q_2}^T$ $\checkmark$ \quad (diagonal pivots preserve symmetry!)
 
 \end{frame}
 
 
+% ADR: AUDIENCE EMOTION — "same result as §3's direct cross-filling!"
+% Students see two different paths converge to the same R_1, R_2.
+% Colors: \bl blue for R_1, \rd red for R_2. Trace check confirms orthogonality.
 \begin{frame}{Example: Two Orthogonal Projections Emerge!}
 
-$$\bl{R_1} = UQ_1U^T = \frac{1}{6}\begin{pmatrix} \bl{4} & \bl{-2} & \bl{-2} \\ \bl{-2} & \bl{1} & \bl{1} \\ \bl{-2} & \bl{1} & \bl{1} \end{pmatrix}$$
-$$\rd{R_2} = UQ_2U^T = \frac{1}{2}\begin{pmatrix} \rd{0} & \rd{0} & \rd{0} \\ \rd{0} & \rd{1} & \rd{-1} \\ \rd{0} & \rd{-1} & \rd{1} \end{pmatrix}$$
+$$\bl{R_1} = U\bl{Q_1}U^T = \bl{\frac{1}{6}\!\begin{pmatrix} 4 & \!-2 & \!-2 \\ -2 & 1 & 1 \\ -2 & 1 & 1 \end{pmatrix}}, \;\;
+\rd{R_2} = U\rd{Q_2}U^T = \rd{\frac{1}{2}\!\begin{pmatrix} 0 & 0 & 0 \\ 0 & 1 & \!-1 \\ 0 & \!-1 & 1 \end{pmatrix}}$$
 
-\vspace{0.3em}
+$\bl{R_1} = \bl{R_1}^T$ $\checkmark$, \; $\operatorname{trace}(\bl{R_1}) = \frac{\bl{4}+\bl{1}+\bl{1}}{6} = \bl{1}$ \quad $\implies$ rank-1 \x{orthogonal} projection!
 
-$\bl{R_1} = \bl{R_1}^T$ $\checkmark$, \; $\operatorname{trace}(\bl{R_1}) = 1$ $\checkmark$ \quad $\implies$ \x{orthogonal} projection!
-
-$\rd{R_2} = \rd{R_2}^T$ $\checkmark$, \; $\operatorname{trace}(\rd{R_2}) = 1$ $\checkmark$ \quad $\implies$ \x{orthogonal} projection!
+$\rd{R_2} = \rd{R_2}^T$ $\checkmark$, \; $\operatorname{trace}(\rd{R_2}) = \frac{\rd{0}+\rd{1}+\rd{1}}{2} = \rd{1}$ \quad $\implies$ rank-1 \x{orthogonal} projection!
 
 \vspace{0.3em}
 
 $\bl{R_1}\rd{R_2} = 0$ $\checkmark$, \; $\bl{R_1} + \rd{R_2} = P$ $\checkmark$
 
-\vspace{0.5em}
+\vspace{0.3em}
 
-Same result as \S3's direct cross-filling --- but obtained from a $\rd{2 \times 2}$ matrix instead of $3 \times 3$!
+Same result as \S3's direct cross-filling --- obtained from the $\x{$2 \times 2$}$ matrix $M$ instead of $3 \times 3$!
 
 \end{frame}
 
 
 % ═══════════════════════════════════════
-% §6 SPECTRAL DECOMPOSITION PREVIEW
-% ═══════════════════════════════════════
-\section{Preview: Spectral Decomposition}
-
-\begin{frame}{Compatible Families and Matrix Powers}
-
-Suppose $\{P_1, P_2, \ldots, P_n\}$ is a compatible family with $P_1 + \cdots + P_n = I$.
-
-\vspace{0.3em}
-
-If $A = \lambda_1 P_1 + \lambda_2 P_2 + \cdots + \lambda_n P_n$, then:
-
-$$AB = (\lambda_1 P_1 + \cdots)(\mu_1 P_1 + \cdots) = \lambda_1\mu_1 P_1 + \cdots + \lambda_n\mu_n P_n$$
-
-because $P_i P_j = 0$ for $i \neq j$.
-
-\vspace{0.5em}
-
-In particular:
-
-$$A^k = \lambda_1^k P_1 + \lambda_2^k P_2 + \cdots + \lambda_n^k P_n$$
-
-\end{frame}
-
-
-\begin{frame}{Example: Computing Matrix Powers}
-
-$$\begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix} = 1 \cdot \underbrace{\frac{1}{2}\begin{pmatrix} 1 & -1 \\ -1 & 1 \end{pmatrix}}_{P_1} + 3 \cdot \underbrace{\frac{1}{2}\begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}}_{P_2}$$
-
-\vspace{0.3em}
-
-$P_1^2 = P_1$ $\checkmark$, \; $P_2^2 = P_2$ $\checkmark$, \; $P_1 P_2 = 0$ $\checkmark$, \; $P_1 + P_2 = I_2$ $\checkmark$
-
-\vspace{0.5em}
-
-Therefore:
-
-$$\begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}^n = 1^n P_1 + 3^n P_2 = \frac{1}{2}\begin{pmatrix} 1 + 3^n & -1 + 3^n \\ -1 + 3^n & 1 + 3^n \end{pmatrix}$$
-
-\vspace{0.3em}
-
-This is the main idea behind \x{spectral decomposition} (Chapter 5).
-
-\end{frame}
-
-
-% ═══════════════════════════════════════
-% §7 SUMMARY
+% §6 SUMMARY
+% ADR: AUDIENCE ATTENTION — "photograph slide": students snapshot this for review.
+% Numbered list mirrors the lecture arc so students can relocate any result.
 % ═══════════════════════════════════════
 \section{Summary}
 
 \begin{frame}{Key Results}
 
 \begin{enumerate}
-\item \x{Compatible Families}: Projections $\{P_1, \ldots, P_k\}$ with $P_iP_j = 0$ --- subsums are projections, vector decompositions are linearly independent.
+\item \x{Compatible families} (\S1--\S2): Projections $\{P_1, \ldots, P_k\}$ with $P_iP_j = 0$. Subsums are projections; vector decompositions are unique.
 
 \vspace{0.3em}
 
-\item \x{Projection Decomposition Theorem}: If $P = R_1 + \cdots + R_k$ with $\operatorname{rank}(R_1) + \cdots + \operatorname{rank}(R_k) \leq \operatorname{rank}(P)$, then each $R_i$ is a projection and $R_iR_j = 0$ --- \x{automatically}.
+\item \x{Projection Decomposition Theorem} (\S3): $P = R_1 + \cdots + R_k$ with $\sum \operatorname{rank}(R_i) \leq \operatorname{rank}(P)$ $\Longrightarrow$ each $R_i$ is a projection and $R_iR_j = 0$ --- \x{automatically}.
 
 \vspace{0.3em}
 
-\item \x{Cross-Filling}: Special case of the theorem --- always produces compatible families.
+\item \x{Cross-filling produces compatible families} (\S3--\S4): Rank-1 pieces from cross-filling always satisfy the rank condition.
 
 \vspace{0.3em}
 
-\item \x{Inner Cross-Filling}: Decompose an inner factor of $P$ --- the outer factors carry along.
+\item \x{Inner cross-filling} (\S4): Decompose a factor inside $P = M_1 M_i M_k$ --- the outer factors carry along.
 
 \vspace{0.3em}
 
-\item \x{Inner Diagonal Cross-Filling}: For $P = UMU^T$ with $M$ symmetric, diagonally cross-fill the small $M$ $\to$ orthogonal sub-projections.
+\item \x{Inner diagonal cross-filling} (\S5): For $P = UMU^T$, diagonally cross-fill the small $M$ $\to$ orthogonal sub-projections. Key case: $M = (B^TB)^{-1}$.
 \end{enumerate}
 
 \end{frame}
@@ -1234,8 +1307,8 @@ In Lecture 10:
 \begin{itemize}
 \item A projection is \x{uniquely determined} by $\operatorname{Col}(P)$ and $\operatorname{Null}(P)$
 \item Construction formula: $P = B(AB)^{-1}A$
-\item Orthogonal projection formula: $P = B(B^TB)^{-1}B^T$ (proof)
-\item Inner diagonal cross-filling of $(B^TB)^{-1}$ $\to$ \x{orthogonal basis} for $\operatorname{Col}(B)$
+\item Orthogonal projection formula: $P = B(B^TB)^{-1}B^T$
+\item Inner diagonal cross-filling of $(B^TB)^{-1}$ $\to$ \x{orthogonal basis}
 \end{itemize}
 
 \end{frame}
