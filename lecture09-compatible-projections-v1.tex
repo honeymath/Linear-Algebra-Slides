@@ -493,53 +493,6 @@ $\operatorname{trace}(\bl{R_1}) = \frac{\bl{4}+\bl{1}+\bl{1}}{6} = \bl{1} = \ope
 \end{frame}
 
 
-% ADR: WHY — practical shortcut: trace is O(n) to compute, rank is O(n^3).
-% Contrapositive is the useful direction: trace≠rank → rank condition fails.
-\begin{frame}{Corollary: The Trace Test}
-
-\begin{cor}[Trace Test]
-If $P = R_1 + R_2 + \cdots + R_k$ satisfies the rank condition, then each $R_i$ is a projection, so:
-$$\operatorname{trace}(R_i) = \operatorname{rank}(R_i)$$
-\end{cor}
-
-\vspace{0.5em}
-
-In particular, if each $R_i$ has rank 1, then each must have $\operatorname{trace}(R_i) = 1$.
-
-\vspace{0.5em}
-
-\x{Contrapositive}: If you decompose $P = R_1 + R_2$ and find $\operatorname{trace}(R_1) \neq \operatorname{rank}(R_1)$, then the rank condition \x{must fail} --- no need to check ranks!
-
-\vspace{0.5em}
-
-Trace is just reading off the \rd{diagonal} --- much cheaper than computing rank.
-
-\end{frame}
-
-
-% ADR: AUDIENCE ATTENTION — negative example: show what happens when rank condition fails.
-% The "bad" decomposition has rank(A)+rank(B) > rank(P), and indeed B is not a projection.
-\begin{frame}{Example: Trace Test Catches a Bad Decomposition}
-
-Same $P = \frac{1}{3}\begin{pmatrix} 2 & -1 & -1 \\ -1 & 2 & -1 \\ -1 & -1 & 2 \end{pmatrix}$, but decompose differently:
-
-$$P = \underbrace{\begin{pmatrix} \rd{1} & 0 & 0 \\ 0 & \rd{1} & 0 \\ 0 & 0 & \rd{0} \end{pmatrix}}_{A, \;\operatorname{trace} = \rd{2}} + \underbrace{\begin{pmatrix} \rd{-\frac{1}{3}} & -\frac{1}{3} & -\frac{1}{3} \\ -\frac{1}{3} & \rd{-\frac{1}{3}} & -\frac{1}{3} \\ -\frac{1}{3} & -\frac{1}{3} & \rd{\frac{2}{3}} \end{pmatrix}}_{B, \;\operatorname{trace} \approx \rd{0}}$$
-
-\vspace{0.3em}
-
-$\operatorname{trace}(A) = \rd{2}$ but $\operatorname{rank}(A) = 2$. Trace $\neq$ rank? That's fine for $A$ itself.
-
-\vspace{0.3em}
-
-But $\operatorname{rank}(A) + \operatorname{rank}(B) = 2 + 2 = 4 > 2 = \operatorname{rank}(P)$.
-
-\vspace{0.3em}
-
-Rank condition \x{fails}. And indeed $B$ is \x{not} a projection ($B^2 \neq B$).
-
-\end{frame}
-
-
 % ADR: WHY — reduce to the case ΣR_i = I_n by adding R_0 = I-P.
 % This is the key trick: working with I_n is cleaner than working with P.
 \begin{frame}{Proof: Step 1 --- Introduce $R_0$}
