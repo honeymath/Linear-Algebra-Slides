@@ -1,0 +1,1395 @@
+
+\documentclass[10pt]{beamer}
+\usetheme{metropolis}
+
+% ── Packages ──
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,matrix,backgrounds,calc,shapes.geometric}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{etoolbox}
+
+% ── Theorem environments ──
+\theoremstyle{definition}
+\newtheorem{defi}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}{Corollary}[section]
+
+% Custom theorem styles with colors
+\setbeamercolor{block title}{bg=red!75!black,fg=white}
+\setbeamercolor{block body}{bg=yellow!10!white}
+
+\AtBeginEnvironment{prop}{%
+  \setbeamercolor{block title}{bg=yellow!75!black,fg=black}%
+  \setbeamercolor{block body}{bg=yellow!10!white}%
+}
+\AtEndEnvironment{prop}{%
+  \setbeamercolor{block title}{bg=red!75!black,fg=white}%
+}
+
+\AtBeginEnvironment{thm}{%
+  \setbeamercolor{block title}{bg=yellow!75!black,fg=black}%
+  \setbeamercolor{block body}{bg=yellow!10!white}%
+}
+\AtEndEnvironment{thm}{%
+  \setbeamercolor{block title}{bg=red!75!black,fg=white}%
+}
+
+\AtBeginEnvironment{cor}{%
+  \setbeamercolor{block title}{bg=yellow!75!black,fg=black}%
+  \setbeamercolor{block body}{bg=yellow!10!white}%
+}
+\AtEndEnvironment{cor}{%
+  \setbeamercolor{block title}{bg=red!75!black,fg=white}%
+}
+
+% ── Highlighting ──
+\newcommand{\x}[1]{\alert{\textbf{#1}}}
+
+% ── Cross-filling colors ──
+\newcommand{\pvt}[1]{{\color{red}\mathbf{#1}}}       % pivot
+\newcommand{\crs}[1]{{\color{blue}#1}}                % cross arm
+\newcommand{\gn}[1]{{\color{green!60!black}#1}}       % green highlight
+\newcommand{\rd}[1]{{\color{red}#1}}                  % red highlight
+\newcommand{\bl}[1]{{\color{blue}#1}}                 % blue highlight
+\newcommand{\tl}[1]{{\color{teal}#1}}                 % teal highlight
+\newcommand{\gz}{{\color{gray}0}}                      % gray zero (consumed)
+
+\title{Lecture 10: Constructing Projections}
+\subtitle{MATH203 Applied Linear Algebra}
+\date{}
+\titlegraphic{}
+
+\begin{document}
+\maketitle
+
+
+% ═══════════════════════════════════════
+% §1 UNIQUENESS
+% ADR: AUDIENCE EMOTION — students have spent 3 lectures decomposing
+% projections. Now reverse direction: can we BUILD one from specifications?
+% Before constructing, establish that the answer is unique (if it exists).
+% This motivates the construction: we're not picking one of many, we're
+% finding THE one.
+% Structure: tension → theorem → proof → significance.
+% ═══════════════════════════════════════
+\section{Uniqueness of Projections}
+
+
+% ADR: AUDIENCE EMOTION — tension opening (Macro P12).
+% Frame the reverse problem: Lectures 8-9 decomposed P. Now: build P.
+% The sunlight model makes "Col + Null" concrete (floor + sunlight direction).
+\begin{frame}{The Reverse Problem}
+
+Lectures 8--9: Given a projection $P$, \x{decompose} it into pieces.
+
+\vspace{0.5em}
+
+Now the reverse: Given two subspaces, can we \x{construct} a projection?
+
+\vspace{0.5em}
+
+In the sunlight model:
+\begin{itemize}
+\item $\operatorname{Col}(P)$ $=$ the \x{floor} (where shadows land)
+\item $\operatorname{Null}(P)$ $=$ the \x{sunlight direction} (what gets killed)
+\end{itemize}
+
+\vspace{0.5em}
+
+\x{Question}: If we specify the floor and the sunlight direction, is the projection \x{unique}?
+
+\end{frame}
+
+
+% ADR: AUDIENCE EMOTION — the answer is yes, and the proof is short.
+% Three-step proof: P = QP, Q = QP, therefore P = Q.
+% Uses the interchanging property from Lecture 7 (Col(P) = Null(I-P)).
+\begin{frame}{Uniqueness Theorem}
+
+\begin{thm}[Uniqueness of Projection]
+If two projections $P$ and $Q$ satisfy:
+$$\operatorname{Col}(P) = \operatorname{Col}(Q) \quad \text{and} \quad \operatorname{Null}(P) = \operatorname{Null}(Q)$$
+then $P = Q$.
+\end{thm}
+
+\vspace{0.3em}
+
+\textbf{Proof}:
+
+\x{Step 1}: $\operatorname{Col}(P) = \operatorname{Col}(Q) = \operatorname{Null}(I-Q)$ (Lecture 7, interchanging).
+
+So $(I-Q)P = 0$, which gives $\bl{P = QP}$.
+
+\vspace{0.3em}
+
+\x{Step 2}: $\operatorname{Null}(Q) = \operatorname{Null}(P) = \operatorname{Col}(I-P)$ (Lecture 7, interchanging).
+
+So $Q(I-P) = 0$, which gives $\rd{Q = QP}$.
+
+\vspace{0.3em}
+
+\x{Step 3}: $P = \bl{QP} = \rd{Q}$. \qed
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — restate the significance before moving on.
+% "Floor + sunlight = unique projection" anchors the construction problem.
+\begin{frame}{What This Means}
+
+Specifying \x{two subspaces} uniquely determines the projection:
+
+\vspace{0.5em}
+
+\begin{center}
+Floor ($\operatorname{Col}(P)$) $+$ Sunlight direction ($\operatorname{Null}(P)$) $\;\longrightarrow\;$ \x{exactly one} $P$
+\end{center}
+
+\vspace{0.5em}
+
+So the construction problem has at most one answer.
+
+\vspace{0.5em}
+
+\x{Next question}: How do we \x{find} it?
+
+\end{frame}
+
+
+% ═══════════════════════════════════════
+% §2 THE CONSTRUCTION FORMULA
+% ADR: AUDIENCE EMOTION — this is the heart of the lecture.
+% The formula P = B(AB)^{-1}A is NOT pulled from thin air.
+% It emerges in two clean steps from the two specifications:
+%   (1) Col(P) = Col(B) and Null(P) = Null(A) together force P = B(?)A
+%   (2) P² = P plus cancellation laws force (?) = (AB)^{-1}
+% The derivation is SHORT and INEVITABLE — no detour through left inverses.
+% Left/right inverse interpretation is a CONSEQUENCE, not a derivation tool.
+% ═══════════════════════════════════════
+\section{The Construction Formula}
+
+
+% ADR: AUDIENCE ATTENTION — set up the problem with concrete notation.
+% B represents the floor (Col), A represents the sunlight (Null).
+% State dimensions explicitly so students see AB is square.
+\begin{frame}{Setup}
+
+\x{Given}:
+\begin{itemize}
+\item $W = \operatorname{Col}(B)$ where $B$ is $n \times r$, full column rank \quad (the \x{floor})
+\item $S = \operatorname{Null}(A)$ where $A$ is $r \times n$, full row rank \quad (the \x{sunlight})
+\item $W \cap S = \{\mathbf{0}\}$ and $\dim(W) + \dim(S) = n$
+\end{itemize}
+
+\vspace{0.5em}
+
+\x{Goal}: Find the unique projection $P$ with $\operatorname{Col}(P) = W$ and $\operatorname{Null}(P) = S$.
+
+\vspace{0.5em}
+
+Note: $AB$ is $r \times r$ (square).
+
+\end{frame}
+
+
+% ADR: AUDIENCE EMOTION — the two specifications SIMULTANEOUSLY force P = B(?)A.
+% Col(P) = Col(B) means output lives in Col(B) → left factor must be B.
+% Null(P) = Null(A) means killed by A → right factor must be A.
+% The middle (?) is the only unknown. Students see this as OBVIOUS.
+\begin{frame}{What Shape Must $P$ Have?}
+
+$\operatorname{Col}(P) = \operatorname{Col}(B)$: every output is a combination of columns of $B$.
+
+So $P$ must have $B$ on the \x{left}.
+
+\vspace{0.5em}
+
+$\operatorname{Null}(P) = \operatorname{Null}(A)$: exactly the vectors killed by $A$ are killed by $P$.
+
+So $P$ must have $A$ on the \x{right}.
+
+\vspace{0.5em}
+
+Together:
+
+$$P = \underbrace{B}_{n \times r} \cdot \underbrace{\rd{(?)}}_{r \times r} \cdot \underbrace{A}_{r \times n}$$
+
+\vspace{0.3em}
+
+The only unknown is the $r \times r$ matrix $\rd{(?)}$ in the middle.
+
+\end{frame}
+
+
+% ADR: AUDIENCE EMOTION — P² = P determines the middle factor.
+% The algebra is clean: B(?)AB(?)A = B(?)A → cancel B (left) and A (right)
+% → (?)AB(?) = (?) → (?) = (AB)^{-1}.
+% Students discover the formula themselves in one calculation.
+\begin{frame}{$P^2 = P$ Determines $\rd{(?)}$}
+
+$$P^2 = \big(B\rd{(?)}A\big)\big(B\rd{(?)}A\big) = B\rd{(?)}\underbrace{AB}_{r \times r}\rd{(?)}A$$
+
+\vspace{0.3em}
+
+We need $P^2 = P$, i.e., $B\rd{(?)}AB\rd{(?)}A = B\rd{(?)}A$.
+
+\vspace{0.5em}
+
+$B$ has full column rank (left-cancelable). $A$ has full row rank (right-cancelable).
+
+Cancel $B$ on the left and $A$ on the right:
+
+$$\rd{(?)} \cdot AB \cdot \rd{(?)} = \rd{(?)}$$
+
+\vspace{0.3em}
+
+So $\rd{(?)}$ must be the inverse of $AB$:
+
+$$\boxed{\rd{(?)} = (AB)^{-1}}$$
+
+\end{frame}
+
+
+% ADR: AUDIENCE EMOTION — the reveal. State the formula as a theorem.
+% The audience has already DERIVED it in two steps, so this is confirmation.
+% Restate the logical chain: specs → shape → P² = P → formula.
+\begin{frame}{The Construction Formula}
+
+\begin{thm}[Construction of Projection]
+Let $W = \operatorname{Col}(B)$, $S = \operatorname{Null}(A)$, with $W \cap S = \{\mathbf{0}\}$ (equivalently, $AB$ invertible).
+
+The unique projection with $\operatorname{Col}(P) = W$ and $\operatorname{Null}(P) = S$ is:
+
+$$\boxed{P = B(AB)^{-1}A}$$
+\end{thm}
+
+\vspace{0.5em}
+
+The derivation in two steps:
+
+\vspace{0.2em}
+
+$\begin{cases} \operatorname{Col}(P) = \operatorname{Col}(B) \\ \operatorname{Null}(P) = \operatorname{Null}(A) \end{cases}$ $\;\xrightarrow{\text{shape}}\;$ $P = B(?)A$ $\;\xrightarrow{P^2 = P}\;$ $(?) = (AB)^{-1}$
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — transition: before examples, explain WHY AB must
+% be invertible. This is NOT a technical aside — it's the geometric content
+% of "floor and sunlight don't overlap." Bridge theorem callback (Macro P8).
+\begin{frame}{Why $W \cap S = \{\mathbf{0}\}$ $\iff$ $AB$ Invertible}
+
+\x{Callback} (Lecture 6, Bridge Theorem):
+
+$$\operatorname{Null}(A) \cap \operatorname{Col}(B) = \{\mathbf{0}\} \quad\Longleftrightarrow\quad \operatorname{Null}(AB) = \operatorname{Null}(B)$$
+
+\vspace{0.5em}
+
+Since $B$ has full column rank: $\operatorname{Null}(B) = \{\mathbf{0}\}$.
+
+\vspace{0.3em}
+
+So $W \cap S = \{\mathbf{0}\}$ $\iff$ $\operatorname{Null}(AB) = \{\mathbf{0}\}$ $\iff$ $AB$ is invertible.
+
+\vspace{0.5em}
+
+(Recall: $AB$ is $r \times r$ square, so null space $= \{\mathbf{0}\}$ $\iff$ invertible, by Lecture 8.)
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — the formula has three parts with clear roles.
+% Label each part with \underbrace to make the structure visible.
+% Verification is short: P² = P in one line, PB = B in one line.
+\begin{frame}{Reading the Formula}
+
+$$P = \underbrace{B}_{\text{output in Col}(B)} \cdot \underbrace{(AB)^{-1}}_{\text{rescale}} \cdot \underbrace{A}_{\text{test: killed by Null}(A)\text{?}}$$
+
+\vspace{0.5em}
+
+\x{Right to left}: $A$ tests the input. If $A\mathbf{v} = \mathbf{0}$, the input is killed. Otherwise, $(AB)^{-1}$ rescales, and $B$ outputs a vector on the floor.
+
+\vspace{0.5em}
+
+Quick verification:
+\begin{itemize}
+\item $P^2 = B(AB)^{-1}\underbrace{AB(AB)^{-1}}_{= I}A = B(AB)^{-1}A = P$ $\checkmark$
+\item $PB = B(AB)^{-1}AB = B$ \quad (floor vectors are fixed) $\checkmark$
+\end{itemize}
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — connection to Lecture 8 §5 and one-sided inverses.
+% This is a CONSEQUENCE of the formula, not part of the derivation.
+% Students see that the construction formula naturally produces left/right inverses.
+% This connects to homework 2 and closes the loop with Lecture 8.
+\begin{frame}{Bonus: Left and Right Inverses for Free}
+
+The formula $P = B(AB)^{-1}A$ contains two one-sided inverses:
+
+\vspace{0.5em}
+
+\begin{itemize}
+\item $(AB)^{-1}A$ is a \rd{left inverse} of $B$: \quad $(AB)^{-1}AB = I_r$ $\checkmark$
+
+\vspace{0.3em}
+
+\item $B(AB)^{-1}$ is a \bl{right inverse} of $A$: \quad $AB(AB)^{-1} = I_r$ $\checkmark$
+\end{itemize}
+
+\vspace{0.5em}
+
+\x{Callback} (Lecture 8 \S5): $UV = I$ $\Rightarrow$ $VU$ is a projection.
+
+\vspace{0.3em}
+
+Here: $\rd{(AB)^{-1}A} \cdot B = I$ $\Rightarrow$ $B \cdot \rd{(AB)^{-1}A}$ is a projection. $\checkmark$
+
+\vspace{0.3em}
+
+The construction formula and the $UV = I$ theory are \x{two views of the same thing}.
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — concrete example before moving on.
+% Use the same example from the lecture notes: R^3, rank-1 projection.
+% Show all steps explicitly.
+\begin{frame}{Example: Projection in $\mathbb{R}^3$}
+
+\x{Floor}: $W = \operatorname{span}\left\{\begin{pmatrix} 1\\0\\1 \end{pmatrix}\right\}$, \quad \x{Sunlight}: $S = \operatorname{span}\left\{\begin{pmatrix} 1\\0\\-1 \end{pmatrix}, \begin{pmatrix} 0\\1\\0 \end{pmatrix}\right\}$
+
+\vspace{0.3em}
+
+$B = \begin{pmatrix} 1\\0\\1 \end{pmatrix}$, \; $A = \begin{pmatrix} 1 & 0 & 1 \end{pmatrix}$ \; (since $S$ satisfies $x_1 + x_3 = 0$).
+
+\vspace{0.3em}
+
+$AB = \begin{pmatrix} 1 & 0 & 1 \end{pmatrix}\begin{pmatrix} 1\\0\\1 \end{pmatrix} = 2$, \quad $(AB)^{-1} = \frac{1}{2}$.
+
+\vspace{0.3em}
+
+$$P = B(AB)^{-1}A = \begin{pmatrix} 1\\0\\1 \end{pmatrix} \cdot \frac{1}{2} \cdot \begin{pmatrix} 1 & 0 & 1 \end{pmatrix} = \frac{1}{2}\begin{pmatrix} 1 & 0 & 1 \\ 0 & 0 & 0 \\ 1 & 0 & 1 \end{pmatrix}$$
+
+\end{frame}
+
+
+\begin{frame}{Example: Verification}
+
+$P = \frac{1}{2}\begin{pmatrix} 1 & 0 & 1 \\ 0 & 0 & 0 \\ 1 & 0 & 1 \end{pmatrix}$, \quad $P^2 = P$ $\checkmark$, \quad $\operatorname{rank}(P) = 1 = \operatorname{trace}(P)$ $\checkmark$
+
+\vspace{0.5em}
+
+$P\begin{pmatrix} 1\\0\\1 \end{pmatrix} = \begin{pmatrix} 1\\0\\1 \end{pmatrix}$ $\checkmark$ \; (floor vector is fixed)
+
+\vspace{0.3em}
+
+$P\begin{pmatrix} 1\\0\\-1 \end{pmatrix} = \mathbf{0}$ $\checkmark$, \quad $P\begin{pmatrix} 0\\1\\0 \end{pmatrix} = \mathbf{0}$ $\checkmark$ \; (sunlight vectors killed)
+
+\end{frame}
+
+
+% ═══════════════════════════════════════
+% §3 ORTHOGONAL PROJECTION FORMULA
+% ADR: AUDIENCE EMOTION — the orthogonal case is the most important special case.
+% Key insight: orthogonal means Null(P) = Col(B)^⊥ = Null(B^T).
+% So just set A = B^T in the general formula. One-step specialization.
+% Must prove B^TB invertible and P = P^T (two short proofs).
+% ═══════════════════════════════════════
+\section{Orthogonal Projection Formula}
+
+
+% ADR: AUDIENCE EMOTION — tension: what makes orthogonal special?
+% The sunlight is perpendicular to the floor. Translate to algebra.
+\begin{frame}{What Makes Orthogonal Projections Special?}
+
+An \x{orthogonal} projection: the sunlight direction is \x{perpendicular} to the floor.
+
+$$\operatorname{Null}(P) = \operatorname{Col}(P)^{\perp}$$
+
+\vspace{0.5em}
+
+\x{Callback} (Lecture 6, Four Subspaces): $\operatorname{Col}(B)^{\perp} = \operatorname{Null}(B^T)$.
+
+\vspace{0.5em}
+
+So for orthogonal projection onto $\operatorname{Col}(B)$:
+
+$$\operatorname{Null}(P) = \operatorname{Null}(B^T)$$
+
+\vspace{0.5em}
+
+In the construction formula, this means $A = B^T$.
+
+\end{frame}
+
+
+% ADR: AUDIENCE EMOTION — the reveal. One substitution gives the formula.
+\begin{frame}{The Orthogonal Projection Formula}
+
+Substitute $A = B^T$ into $P = B(AB)^{-1}A$:
+
+$$\boxed{P = B(B^TB)^{-1}B^T}$$
+
+\vspace{0.5em}
+
+\x{But wait}: Is $B^TB$ invertible? We assumed $W \cap S = \{\mathbf{0}\}$, i.e., $\operatorname{Col}(B) \cap \operatorname{Null}(B^T) = \{\mathbf{0}\}$. Is this always true?
+
+\end{frame}
+
+
+% ADR: WHY — prove B^TB is always invertible when B has full column rank.
+% The proof uses the norm trick: x^T(B^TB)x = ||Bx||² = 0 → Bx = 0 → x = 0.
+\begin{frame}{$B^TB$ Is Always Invertible}
+
+\begin{prop}
+If $B$ is $n \times r$ with full column rank, then $B^TB$ is invertible.
+\end{prop}
+
+\vspace{0.3em}
+
+\textbf{Proof}: Suppose $(B^TB)\mathbf{x} = \mathbf{0}$. Then:
+
+$$\|B\mathbf{x}\|^2 = (B\mathbf{x})^T(B\mathbf{x}) = \mathbf{x}^T\underbrace{(B^TB)\mathbf{x}}_{= \mathbf{0}} = 0$$
+
+So $B\mathbf{x} = \mathbf{0}$. Since $B$ has full column rank: $\mathbf{x} = \mathbf{0}$. \qed
+
+\vspace{0.5em}
+
+No disjointness condition needed --- for orthogonal projections, $B^TB$ is \x{automatically} invertible!
+
+\end{frame}
+
+
+% ADR: WHY — prove P = P^T (the defining property of orthogonal projection).
+% Uses (B^TB)^{-1} is symmetric because B^TB is symmetric.
+\begin{frame}{$P = P^T$: It's Really Orthogonal}
+
+Since $B^TB$ is symmetric, so is $(B^TB)^{-1}$:
+
+$$P^T = \big(B(B^TB)^{-1}B^T\big)^T = B\big((B^TB)^{-1}\big)^TB^T = B(B^TB)^{-1}B^T = P \quad \checkmark$$
+
+\vspace{0.5em}
+
+So $P^2 = P$ and $P = P^T$: $P$ is an \x{orthogonal} projection. $\checkmark$
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — concrete example. Projection onto a line in R².
+% Small enough to compute in one frame.
+\begin{frame}{Example: Projection onto a Line}
+
+Project orthogonally onto $W = \operatorname{span}\left\{\begin{pmatrix} 1 \\ 2 \end{pmatrix}\right\}$ in $\mathbb{R}^2$.
+
+\vspace{0.3em}
+
+$B = \begin{pmatrix} 1 \\ 2 \end{pmatrix}$, \quad $B^TB = 1 + 4 = 5$, \quad $(B^TB)^{-1} = \frac{1}{5}$.
+
+\vspace{0.5em}
+
+$$P = \frac{1}{5}\begin{pmatrix} 1 \\ 2 \end{pmatrix}\begin{pmatrix} 1 & 2 \end{pmatrix} = \frac{1}{5}\begin{pmatrix} 1 & 2 \\ 2 & 4 \end{pmatrix}$$
+
+\vspace{0.5em}
+
+$P = P^T$ $\checkmark$, \quad $P^2 = P$ $\checkmark$, \quad $\operatorname{trace}(P) = 1 = \operatorname{rank}(P)$ $\checkmark$
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — second example: projection onto a plane.
+% R^3 example so students see the formula with r = 2.
+\begin{frame}{Example: Projection onto a Plane}
+
+Project orthogonally onto $W = \operatorname{span}\left\{\begin{pmatrix} 1\\1\\1 \end{pmatrix}, \begin{pmatrix} 0\\1\\2 \end{pmatrix}\right\}$ in $\mathbb{R}^3$.
+
+\vspace{0.3em}
+
+$B = \begin{pmatrix} 1 & 0 \\ 1 & 1 \\ 1 & 2 \end{pmatrix}$, \quad $B^TB = \begin{pmatrix} 3 & 3 \\ 3 & 5 \end{pmatrix}$, \quad $(B^TB)^{-1} = \frac{1}{6}\begin{pmatrix} 5 & -3 \\ -3 & 3 \end{pmatrix}$
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — show step-by-step computation of P = B(B^TB)^{-1}B^T.
+\begin{frame}{Example: Projection onto a Plane (continued)}
+
+Compute $B(B^TB)^{-1}$ first:
+
+$$\begin{pmatrix} 1 & 0 \\ 1 & 1 \\ 1 & 2 \end{pmatrix} \cdot \frac{1}{6}\begin{pmatrix} 5 & -3 \\ -3 & 3 \end{pmatrix} = \frac{1}{6}\begin{pmatrix} 5 & -3 \\ 2 & 0 \\ -1 & 3 \end{pmatrix}$$
+
+\vspace{0.3em}
+
+Then multiply by $B^T$:
+
+$$P = \frac{1}{6}\begin{pmatrix} 5 & -3 \\ 2 & 0 \\ -1 & 3 \end{pmatrix}\begin{pmatrix} 1 & 1 & 1 \\ 0 & 1 & 2 \end{pmatrix} = \frac{1}{6}\begin{pmatrix} 5 & 2 & -1 \\ 2 & 2 & 2 \\ -1 & 2 & 5 \end{pmatrix}$$
+
+\vspace{0.3em}
+
+$P = P^T$ $\checkmark$, \quad $\operatorname{trace}(P) = \frac{5+2+5}{6} = 2 = \operatorname{rank}(P)$ $\checkmark$
+
+\end{frame}
+
+
+% ═══════════════════════════════════════
+% §4 INNER DIAGONAL CROSS-FILLING
+% ADR: AUDIENCE EMOTION — moved from Lecture 9 where it was a forward-reference.
+% Now that students have P = B(B^TB)^{-1}B^T, the motivation is concrete:
+% P is n×n but (B^TB)^{-1} is r×r. Cross-fill the SMALL matrix.
+% Key payoff: Bd_j are orthogonal basis vectors. No Gram-Schmidt needed.
+% Structure: tension → theorem → proof → key insight → example.
+% ═══════════════════════════════════════
+\section{Inner Diagonal Cross-Filling}
+
+
+% ADR: AUDIENCE EMOTION — tension driven by the concrete formula.
+% P = B(B^TB)^{-1}B^T is n×n, potentially huge.
+% But (B^TB)^{-1} is only r×r. Can we work with the small matrix?
+\begin{frame}{A Big Matrix and a Small Matrix}
+
+We have $P = B\underbrace{(B^TB)^{-1}}_{r \times r}B^T$ where $P$ is $n \times n$.
+
+\vspace{0.5em}
+
+From Lecture 9 (\S4, Inner Cross-Filling): we can decompose an \x{inner factor} instead of $P$ itself.
+
+\vspace{0.5em}
+
+\x{Idea}: Diagonally cross-fill the \x{small} $r \times r$ matrix $(B^TB)^{-1}$, and let the Projection Decomposition Theorem guarantee compatibility.
+
+\vspace{0.5em}
+
+When $r \ll n$, this is a \x{huge} efficiency gain.
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — theorem statement. Clean and self-contained.
+\begin{frame}{Inner Diagonal Cross-Filling: Theorem}
+
+\begin{thm}[Inner Diagonal Cross-Filling]
+Let $P = B(B^TB)^{-1}B^T$ be an orthogonal projection. Diagonally cross-fill:
+$$(B^TB)^{-1} = Q_1 + Q_2 + \cdots + Q_r$$
+
+Define $R_j = BQ_jB^T$. Then:
+\begin{enumerate}
+\item $P = R_1 + R_2 + \cdots + R_r$
+\item Each $R_j$ is a rank-1 \x{orthogonal} projection
+\item $\{R_1, \ldots, R_r\}$ is a compatible family
+\end{enumerate}
+\end{thm}
+
+\end{frame}
+
+
+% ADR: WHY — proof is 3 steps: sum, rank condition, symmetry.
+% PDT from Lecture 9 does the heavy lifting.
+\begin{frame}{Why It Works}
+
+\x{Step 1} (sum): $\sum R_j = \sum BQ_jB^T = B\left(\sum Q_j\right)B^T = B(B^TB)^{-1}B^T = P$ $\checkmark$
+
+\vspace{0.5em}
+
+\x{Step 2} (rank): $\operatorname{rank}(R_j) \leq \operatorname{rank}(Q_j) = 1$, so:
+$$\operatorname{rank}(R_1) + \cdots + \operatorname{rank}(R_r) \leq \underbrace{1 + \cdots + 1}_{r} = \operatorname{rank}(P)$$
+
+By the PDT (Lecture 9): each $R_j$ is a projection and $R_j R_l = 0$. $\checkmark$
+
+\vspace{0.5em}
+
+\x{Step 3} (symmetry): Diagonal pivots preserve symmetry, so $Q_j = Q_j^T$:
+$$R_j^T = (BQ_jB^T)^T = BQ_j^TB^T = BQ_jB^T = R_j \;\checkmark$$
+
+Each $R_j$ is a projection \x{and} symmetric $\implies$ orthogonal projection. \qed
+
+\end{frame}
+
+
+% ADR: AUDIENCE EMOTION — the REAL payoff: orthonormal basis extraction.
+% Each R_j = (1/q_jj)(Bd_j)(Bd_j)^T is a rank-1 orthogonal projection.
+% R_j = u_j u_j^T forces ||Bc_j||² = q_jj, so pivot value = squared norm.
+% Compatible family → Col(R_i) ⊥ Col(R_j) → Bd_i ⊥ Bd_j.
+% Normalize by √q_jj → orthonormal basis. No Gram-Schmidt needed!
+\begin{frame}{The Real Payoff: Orthonormal Basis}
+
+Each $Q_j$ from diagonal cross-filling has the form:
+
+$$Q_j = \frac{1}{q_{jj}} \mathbf{c}_j \mathbf{c}_j^T$$
+
+where $\mathbf{c}_j$ is the column at the pivot position, $q_{jj}$ is the pivot value.
+
+\vspace{0.3em}
+
+So: $R_j = BQ_jB^T = \frac{1}{q_{jj}} (B\mathbf{c}_j)(B\mathbf{c}_j)^T$
+
+\vspace{0.3em}
+
+Since $R_j$ is a rank-1 orthogonal projection, $R_j = \mathbf{u}_j\mathbf{u}_j^T$ for a \x{unit} vector $\mathbf{u}_j$:
+
+$$\mathbf{u}_j = \frac{B\mathbf{c}_j}{\sqrt{q_{jj}}} \qquad \text{(the pivot value gives the norm!)}$$
+
+\vspace{0.3em}
+
+Since $R_iR_j = 0$ for $i \neq j$: \;\; $\x{$\mathbf{u}_1, \; \mathbf{u}_2, \; \ldots, \; \mathbf{u}_r$ \;\; are orthonormal}$
+
+\vspace{0.3em}
+
+\x{No Gram-Schmidt needed.} The orthonormal basis emerges from cross-filling $(B^TB)^{-1}$.
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — recipe summary before the example.
+% Three steps, each one line. Students can photograph this.
+\begin{frame}{Recipe}
+
+Given a basis $\{\mathbf{b}_1, \ldots, \mathbf{b}_r\}$ for a subspace $W$ (columns of $B$):
+
+\vspace{0.5em}
+
+\x{Step 1}: Compute $(B^TB)^{-1}$ \quad ($r \times r$ symmetric matrix)
+
+\vspace{0.3em}
+
+\x{Step 2}: Diagonally cross-fill $(B^TB)^{-1}$: read off column $\mathbf{d}_j$ at each pivot
+
+\vspace{0.3em}
+
+\x{Step 3}: Compute $B\mathbf{d}_j$ $\to$ orthogonal basis vector for $W$
+
+\vspace{0.3em}
+
+\x{Step 4}: Normalize: $\mathbf{u}_j = B\mathbf{d}_j \,/\, \|B\mathbf{d}_j\|$ $\to$ \x{orthonormal} basis for $W$
+
+\vspace{0.5em}
+
+$\mathbf{d}_j$ tells you the \x{coefficients} for combining the original columns of $B$.
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — reuse the plane example from §3.
+% Students already know B and (B^TB)^{-1}. Now cross-fill it.
+\begin{frame}{Example: Extracting an Orthogonal Basis}
+
+From \S3: $B = \begin{pmatrix} 1 & 0 \\ 1 & 1 \\ 1 & 2 \end{pmatrix}$, \quad $(B^TB)^{-1} = \frac{1}{6}\begin{pmatrix} \pvt{5} & \crs{-3} \\ \crs{-3} & 3 \end{pmatrix}$
+
+\vspace{0.3em}
+
+\x{Diagonal pivot $(\pvt{1},\pvt{1})$}, value $= \pvt{\frac{5}{6}}$. Read off column 1:
+
+$$\mathbf{d}_1 \propto \begin{pmatrix} 5 \\ -3 \end{pmatrix} \quad\Longrightarrow\quad B\mathbf{d}_1 = \begin{pmatrix} 1 & 0 \\ 1 & 1 \\ 1 & 2 \end{pmatrix}\begin{pmatrix} 5 \\ -3 \end{pmatrix} = \bl{\begin{pmatrix} 5 \\ 2 \\ -1 \end{pmatrix}}$$
+
+\vspace{0.3em}
+
+Remainder: $Q_2 = \frac{1}{5}\begin{pmatrix} 0 & 0 \\ 0 & 1 \end{pmatrix}$. Read off: $\mathbf{d}_2 \propto \begin{pmatrix} 0 \\ 1 \end{pmatrix}$.
+
+$$B\mathbf{d}_2 = \begin{pmatrix} 1 & 0 \\ 1 & 1 \\ 1 & 2 \end{pmatrix}\begin{pmatrix} 0 \\ 1 \end{pmatrix} = \rd{\begin{pmatrix} 0 \\ 1 \\ 2 \end{pmatrix}}$$
+
+\end{frame}
+
+
+% ADR: AUDIENCE EMOTION — verify orthogonality. The dot product is zero.
+% Students see the payoff: orthogonal basis from a 2×2 cross-filling.
+\begin{frame}{Example: Verify Orthogonality}
+
+$$\bl{\begin{pmatrix} 5 \\ 2 \\ -1 \end{pmatrix}}^T \rd{\begin{pmatrix} 0 \\ 1 \\ 2 \end{pmatrix}} = 0 + 2 - 2 = 0 \quad \checkmark$$
+
+\vspace{0.5em}
+
+$\left\{\bl{\begin{pmatrix} 5 \\ 2 \\ -1 \end{pmatrix}}, \rd{\begin{pmatrix} 0 \\ 1 \\ 2 \end{pmatrix}}\right\}$ is an \x{orthogonal basis} for $\operatorname{Col}(B)$.
+
+\vspace{0.5em}
+
+Obtained by cross-filling a $\rd{2 \times 2}$ matrix, not the $3 \times 3$ projection!
+
+\end{frame}
+
+
+% ADR: AUDIENCE EMOTION — the final step: normalize to orthonormal.
+% Pivot value gives the norm (via R_j = u_j u_j^T), but for proportional d_j
+% just compute ||Bd_j|| directly. Students see a clean orthonormal basis.
+\begin{frame}{Example: Normalize $\to$ Orthonormal Basis}
+
+$\|B\mathbf{d}_1\|^2 = 25 + 4 + 1 = 30$, \quad $\|B\mathbf{d}_2\|^2 = 0 + 1 + 4 = 5$
+
+\vspace{0.5em}
+
+$$\left\{\;\frac{1}{\sqrt{30}}\bl{\begin{pmatrix} 5 \\ 2 \\ -1 \end{pmatrix}}, \;\; \frac{1}{\sqrt{5}}\rd{\begin{pmatrix} 0 \\ 1 \\ 2 \end{pmatrix}}\;\right\} \quad \text{is an \x{orthonormal basis} for } \operatorname{Col}(B)$$
+
+\vspace{0.5em}
+
+From a $2 \times 2$ cross-filling: orthonormal basis, no Gram-Schmidt.
+
+\end{frame}
+
+
+% ═══════════════════════════════════════
+% §5 CROSS-FILLING THE INVERSE
+% ADR: AUDIENCE EMOTION — §4 required computing (B^TB)^{-1} first, then
+% cross-filling it: two expensive operations. This section shows how to
+% get the cross-filling of the inverse directly, without computing it.
+% Block matrix trick: cross-fill [A I; I 0], pivots in A never read the
+% bottom-right block, so it passively accumulates -A^{-1}.
+% Structure: tension → block matrix → key insight (reveal) → proof → example.
+% ═══════════════════════════════════════
+\section{Cross-Filling the Inverse}
+
+
+% ADR: AUDIENCE EMOTION — tension. §4 had two steps. Can we do it in one?
+% Recall the concrete pain: we had to invert B^TB BEFORE we could cross-fill it.
+\begin{frame}{Two Steps for One Goal}
+
+In \S4, we extracted an orthonormal basis by:
+
+\vspace{0.3em}
+
+\x{Step 1}: Compute $(B^TB)^{-1}$ \quad (one $O(r^3)$ operation)
+
+\x{Step 2}: Cross-fill $(B^TB)^{-1}$ \quad (another $O(r^3)$ operation)
+
+\vspace{0.5em}
+
+The object we \x{want} is the cross-filling of the inverse.
+
+The object we \x{have} is the original matrix $B^TB$.
+
+\vspace{0.5em}
+
+\x{Question}: Can we get the cross-filling of $A^{-1}$ directly from $A$, without computing $A^{-1}$ first?
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — introduce the block matrix.
+% Key insight: rank = r, so the big matrix is redundant. All info is in A.
+% User feedback: prove rank via matrix multiplication, not row-reduction notation.
+% Left-multiply by an invertible matrix to get (A I; 0 0).
+\begin{frame}{A Matrix That Knows Its Own Inverse}
+
+Let $A$ be $r \times r$ invertible. Consider:
+
+$$M = \begin{pmatrix} A & I \\ I & A^{-1} \end{pmatrix} \qquad (2r \times 2r)$$
+
+\vspace{0.3em}
+
+$\operatorname{rank}(M) = \;?$ \;\; Left-multiply by an invertible matrix:
+
+$$\underbrace{\begin{pmatrix} I & 0 \\ -A^{-1} & I \end{pmatrix}}_{\text{invertible}} \begin{pmatrix} A & I \\ I & A^{-1} \end{pmatrix} = \begin{pmatrix} A & I \\ 0 & 0 \end{pmatrix}$$
+
+\vspace{0.3em}
+
+$\operatorname{rank}(M) = r$. \; So $M$ decomposes into exactly $r$ rank-1 pieces.
+
+\end{frame}
+
+
+% ADR: AUDIENCE EMOTION — the key insight + reveal. This is the climax.
+% Pivots in A → columns from (A,I)^T, rows from (A,I) → A^{-1} never read.
+% So replace A^{-1} with 0 → same decomposition → remainder reveals A^{-1}.
+\begin{frame}{The Inverse Is Passive}
+
+Cross-fill $M$ with pivots in $A$ (top-left block). Each rank-1 piece reads:
+
+\begin{itemize}
+\item Pivot column $j$: \; column of $A$ (top) $+$ column of $\bl{I}$ (bottom)
+\item Pivot row $i$: \; row of $A$ (left) $+$ row of $\bl{I}$ (right)
+\end{itemize}
+
+\vspace{0.3em}
+
+The $\rd{A^{-1}}$ block is \x{never read} — it only receives updates passively.
+
+\vspace{0.5em}
+
+\x{So replace it with $0$}:
+
+$$M_0 = \begin{pmatrix} A & \bl{I} \\ \bl{I} & \rd{0} \end{pmatrix}$$
+
+Same pivots, same rank-1 pieces. After $r$ steps, bottom-right remainder $= \rd{-A^{-1}}$.
+
+\end{frame}
+
+
+% ADR: WHY — prove the claim. General X in bottom-right: pivots in A never
+% read it, so the C_k's are the same regardless of X. The C_k bottom-right
+% blocks always give the cross-filling of A^{-1}. User feedback: use general X.
+\begin{frame}{Why It Works}
+
+$M = \begin{pmatrix} A & I \\ I & A^{-1} \end{pmatrix}$ has rank $r$, so cross-filling with pivots in $A$ completes:
+
+$$M = C_1 + C_2 + \cdots + C_r \qquad \text{(remainder} = 0\text{)}$$
+
+\vspace{0.3em}
+
+Now for \x{any} $X$ in the bottom-right: $\begin{pmatrix} A & I \\ I & X \end{pmatrix}$ produces the \x{same} $C_k$'s. So:
+
+$$\begin{pmatrix} A & I \\ I & X \end{pmatrix} = C_1 + \cdots + C_r + \underbrace{\begin{pmatrix} 0 & 0 \\ 0 & X - A^{-1} \end{pmatrix}}_{\text{remainder}}$$
+
+Each $C_k$'s bottom-right block is a slice of $A^{-1}$'s cross-filling — \x{regardless} of $X$.
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — example with the running B^TB from §3-§4.
+% Colors: blue for I blocks. Bottom-right is * (don't care).
+% User feedback: use * for bottom-right positions we never need to track.
+\begin{frame}{Example: Setup}
+
+From \S3: $B^TB = \begin{pmatrix} 3 & 3 \\ 3 & 5 \end{pmatrix}$. Form the block matrix:
+
+$$\begin{pmatrix} 3 & 3 & \bl{1} & \bl{0} \\ 3 & 5 & \bl{0} & \bl{1} \\ \bl{1} & \bl{0} & * & * \\ \bl{0} & \bl{1} & * & * \end{pmatrix} = \begin{pmatrix} B^TB & \bl{I} \\ \bl{I} & * \end{pmatrix}$$
+
+\vspace{0.3em}
+
+$*$ = anything (we just showed it doesn't matter). Cross-fill with pivots in $B^TB$.
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — step 1. Full M₀ = rank-1 + M₁ with underbrace.
+% Green d entries. Numeric slice = (1/q)·d·d^T.
+\begin{frame}{Example: Step 1 — Pivot $= \pvt{3}$}
+
+$$\underbrace{\begin{pmatrix} \pvt{3} & \crs{3} & \crs{1} & \crs{0} \\ \crs{3} & 5 & 0 & 1 \\ \gn{1} & 0 & * & * \\ \gn{0} & 1 & * & * \end{pmatrix}}_{M_0}
+= \underbrace{\begin{pmatrix} 3 & 3 & 1 & 0 \\ 3 & 3 & 1 & 0 \\ 1 & 1 & \rd{\tfrac{1}{3}} & \rd{0} \\ 0 & 0 & \rd{0} & \rd{0} \end{pmatrix}}_{\text{rank-1}}
++ \underbrace{\begin{pmatrix} \gz & \gz & \gz & \gz \\ \gz & 2 & -1 & 1 \\ \gz & -1 & * & * \\ \gz & 1 & * & * \end{pmatrix}}_{M_1}$$
+
+\vspace{0.3em}
+
+$\gn{\mathbf{d}_1} = \gn{(1, 0)}^T$, \; $q_1 = \pvt{3}$.
+
+\vspace{0.2em}
+
+Slice 1 of $(B^TB)^{-1}$: \; $\underbrace{\dfrac{1}{\pvt{3}}}_{1/q_1}\underbrace{\gn{\begin{pmatrix}1\\0\end{pmatrix}\begin{pmatrix}1&0\end{pmatrix}}}_{\gn{\mathbf{d}_1}\gn{\mathbf{d}_1}^T} = \rd{\begin{pmatrix} 1/3 & 0 \\ 0 & 0 \end{pmatrix}}$
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — step 2. Full M₁ = rank-1 + 0 with underbrace.
+% Green d entries. Numeric slice.
+\begin{frame}{Example: Step 2 — Pivot $= \pvt{2}$}
+
+$$\underbrace{\begin{pmatrix} \gz & \gz & \gz & \gz \\ \gz & \pvt{2} & \crs{-1} & \crs{1} \\ \gz & \gn{-1} & * & * \\ \gz & \gn{1} & * & * \end{pmatrix}}_{M_1}
+= \underbrace{\begin{pmatrix} 0 & 0 & 0 & 0 \\ 0 & 2 & -1 & 1 \\ 0 & -1 & \rd{\tfrac{1}{2}} & \rd{-\tfrac{1}{2}} \\ 0 & 1 & \rd{-\tfrac{1}{2}} & \rd{\tfrac{1}{2}} \end{pmatrix}}_{\text{rank-1}}
++ \underbrace{\begin{pmatrix} 0 \\ & 0 \\ & & * & * \\ & & * & * \end{pmatrix}}_{=\,0}$$
+
+\vspace{0.3em}
+
+$\gn{\mathbf{d}_2} = \gn{(-1, 1)}^T$, \; $q_2 = \pvt{2}$. \; Done!
+
+\vspace{0.2em}
+
+Slice 2 of $(B^TB)^{-1}$: \; $\underbrace{\dfrac{1}{\pvt{2}}}_{1/q_2}\underbrace{\gn{\begin{pmatrix}-1\\1\end{pmatrix}\begin{pmatrix}-1&1\end{pmatrix}}}_{\gn{\mathbf{d}_2}\gn{\mathbf{d}_2}^T} = \rd{\begin{pmatrix} 1/2 & -1/2 \\ -1/2 & 1/2 \end{pmatrix}}$
+
+\end{frame}
+
+
+% ADR: AUDIENCE EMOTION — the payoff. Two slices add up to (B^TB)^{-1}.
+% Students verify against the value they already know from §3.
+\begin{frame}{Example: Reassemble}
+
+Two slices of $(B^TB)^{-1}$, obtained \x{without computing the inverse}:
+
+$$\rd{\begin{pmatrix} 1/3 & 0 \\ 0 & 0 \end{pmatrix}} + \rd{\begin{pmatrix} 1/2 & -1/2 \\ -1/2 & 1/2 \end{pmatrix}} = \frac{1}{6}\begin{pmatrix} 5 & -3 \\ -3 & 3 \end{pmatrix}$$
+
+\vspace{0.3em}
+
+Compare with \S3: \; $(B^TB)^{-1} = \frac{1}{6}\begin{pmatrix} 5 & -3 \\ -3 & 3 \end{pmatrix}$ \; $\checkmark$
+
+\vspace{0.5em}
+
+One cross-filling of the $4 \times 4$ block matrix produced the cross-filling of the $2 \times 2$ inverse. \x{No inversion step.}
+
+\end{frame}
+
+
+% ADR: AUDIENCE EMOTION — transition: this technique IS Gram-Schmidt.
+% Each slice gives coefficients d_j for one orthogonal vector Bd_j.
+% User: "这本质上就是Gram-Schmidt的cross filling形式"
+\begin{frame}{Gram-Schmidt as Cross-Filling}
+
+\textbf{Problem.} \; $B = \begin{pmatrix} 1 & 1 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}$ \; (three vectors in $\mathbb{R}^4$). Find \x{orthonormal basis} for $\operatorname{Col}(B)$.
+
+\vspace{0.5em}
+
+Cross-fill $\begin{pmatrix} B^TB & I \\ I & 0 \end{pmatrix}$. Each step simultaneously:
+
+\vspace{0.2em}
+
+\begin{itemize}
+\item Cross-fills $B^TB$ (top-left) \x{and} $(B^TB)^{-1}$ (bottom-right slices)
+\item The bottom of each pivot column gives $\mathbf{d}_j$ $\to$ $B\mathbf{d}_j$ = orthogonal vector (\S4)
+\end{itemize}
+
+\vspace{0.3em}
+
+One cross-fill does \x{everything}.
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — non-trivial example with r=3.
+% B columns: (1,1,0,0), (1,0,1,0), (1,0,0,1). All pairwise inner products = 1.
+% B^TB = [[2,1,1],[1,2,1],[1,1,2]] = I + J. Pivots: 2, 3/2, 4/3.
+% (B^TB)^{-1} = (1/4)(3I - J) — clean factored form.
+% Answer: u_1 = (1,1,0,0)/sqrt2, u_2 = (1,-1,2,0)/sqrt6, u_3 = (1,-1,-1,3)/(2sqrt3).
+\begin{frame}{Setup: $B^TB$ and the $6 \times 6$ Block Matrix}
+
+$B^TB = \begin{pmatrix} 2 & 1 & 1 \\ 1 & 2 & 1 \\ 1 & 1 & 2 \end{pmatrix}$. \; Block matrix ($6 \times 6$):
+
+$$M_0 = \begin{pmatrix} 2 & 1 & 1 & \bl{1} & \bl{0} & \bl{0} \\ 1 & 2 & 1 & \bl{0} & \bl{1} & \bl{0} \\ 1 & 1 & 2 & \bl{0} & \bl{0} & \bl{1} \\ \bl{1} & \bl{0} & \bl{0} & * & * & * \\ \bl{0} & \bl{1} & \bl{0} & * & * & * \\ \bl{0} & \bl{0} & \bl{1} & * & * & * \end{pmatrix}$$
+
+Three diagonal pivots to extract. Pivot values: $\pvt{2}$, $\pvt{\tfrac{3}{2}}$, $\pvt{\tfrac{4}{3}}$.
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — step 1. Pivot (1,1) = 2. Full M₀ = rank-1 + M₁
+% with underbrace. Green d entries. Numeric slice = (1/q)·d·d^T.
+\begin{frame}{Cross-Fill Step 1: Pivot $= \pvt{2}$}
+
+\scalebox{0.55}{$\displaystyle
+\underbrace{\begin{pmatrix} \pvt{2} & \crs{1} & \crs{1} & \crs{1} & \crs{0} & \crs{0} \\ \crs{1} & 2 & 1 & 0 & 1 & 0 \\ \crs{1} & 1 & 2 & 0 & 0 & 1 \\ \gn{1} & 0 & 0 & * & * & * \\ \gn{0} & 1 & 0 & * & * & * \\ \gn{0} & 0 & 1 & * & * & * \end{pmatrix}}_{M_0}
+\!=\!
+\underbrace{\begin{pmatrix} 2 & 1 & 1 & 1 & 0 & 0 \\ 1 & \tfrac{1}{2} & \tfrac{1}{2} & \tfrac{1}{2} & 0 & 0 \\ 1 & \tfrac{1}{2} & \tfrac{1}{2} & \tfrac{1}{2} & 0 & 0 \\ 1 & \tfrac{1}{2} & \tfrac{1}{2} & \rd{\tfrac{1}{2}} & \rd{0} & \rd{0} \\ 0 & 0 & 0 & \rd{0} & \rd{0} & \rd{0} \\ 0 & 0 & 0 & \rd{0} & \rd{0} & \rd{0} \end{pmatrix}}_{\text{rank-1}}
+\!+\!
+\underbrace{\begin{pmatrix} \gz & \gz & \gz & \gz & \gz & \gz \\ \gz & \tfrac{3}{2} & \tfrac{1}{2} & {-}\tfrac{1}{2} & 1 & 0 \\ \gz & \tfrac{1}{2} & \tfrac{3}{2} & {-}\tfrac{1}{2} & 0 & 1 \\ \gz & {-}\tfrac{1}{2} & {-}\tfrac{1}{2} & * & * & * \\ \gz & 1 & 0 & * & * & * \\ \gz & 0 & 1 & * & * & * \end{pmatrix}}_{M_1}
+$}
+
+\vspace{0.3em}
+
+$\gn{\mathbf{d}_1} = \gn{(1, 0, 0)}^T$, \; $q_1 = \pvt{2}$. \quad
+Slice 1: \; $\underbrace{\dfrac{1}{\pvt{2}}}_{1/q_1}\underbrace{\gn{\begin{pmatrix}1\\0\\0\end{pmatrix}\!\begin{pmatrix}1&0&0\end{pmatrix}}}_{\gn{\mathbf{d}_1}\gn{\mathbf{d}_1}^T} = \rd{\begin{pmatrix} 1/2 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix}}$
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — step 2. First row/col consumed (gray).
+% Full M₁ = rank-1 + M₂ with underbrace. Green d entries.
+\begin{frame}{Cross-Fill Step 2: Pivot $= \pvt{\tfrac{3}{2}}$}
+
+\scalebox{0.55}{$\displaystyle
+\underbrace{\begin{pmatrix} \gz & \gz & \gz & \gz & \gz & \gz \\ \gz & \pvt{\tfrac{3}{2}} & \crs{\tfrac{1}{2}} & \crs{{-}\tfrac{1}{2}} & \crs{1} & \crs{0} \\ \gz & \crs{\tfrac{1}{2}} & \tfrac{3}{2} & {-}\tfrac{1}{2} & 0 & 1 \\ \gz & \gn{{-}\tfrac{1}{2}} & {-}\tfrac{1}{2} & * & * & * \\ \gz & \gn{1} & 0 & * & * & * \\ \gz & \gn{0} & 1 & * & * & * \end{pmatrix}}_{M_1}
+\!=\!
+\underbrace{\begin{pmatrix} 0 & 0 & 0 & 0 & 0 & 0 \\ 0 & \tfrac{3}{2} & \tfrac{1}{2} & {-}\tfrac{1}{2} & 1 & 0 \\ 0 & \tfrac{1}{2} & \tfrac{1}{6} & {-}\tfrac{1}{6} & \tfrac{1}{3} & 0 \\ 0 & {-}\tfrac{1}{2} & {-}\tfrac{1}{6} & \rd{\tfrac{1}{6}} & \rd{{-}\tfrac{1}{3}} & \rd{0} \\ 0 & 1 & \tfrac{1}{3} & \rd{{-}\tfrac{1}{3}} & \rd{\tfrac{2}{3}} & \rd{0} \\ 0 & 0 & 0 & \rd{0} & \rd{0} & \rd{0} \end{pmatrix}}_{\text{rank-1}}
+\!+\!
+\underbrace{\begin{pmatrix} \gz & \gz & \gz & \gz & \gz & \gz \\ \gz & \gz & \gz & \gz & \gz & \gz \\ \gz & \gz & \tfrac{4}{3} & {-}\tfrac{1}{3} & {-}\tfrac{1}{3} & 1 \\ \gz & \gz & {-}\tfrac{1}{3} & * & * & * \\ \gz & \gz & {-}\tfrac{1}{3} & * & * & * \\ \gz & \gz & 1 & * & * & * \end{pmatrix}}_{M_2}
+$}
+
+\vspace{0.3em}
+
+$\gn{\mathbf{d}_2} = \gn{({-}\tfrac{1}{2}, 1, 0)}^T$, \; $q_2 = \pvt{\tfrac{3}{2}}$. \quad
+Slice 2: \; $\underbrace{\dfrac{2}{\pvt{3}}}_{1/q_2}\underbrace{\gn{\begin{pmatrix}-1/2\\1\\0\end{pmatrix}\!\begin{pmatrix}-1/2&1&0\end{pmatrix}}}_{\gn{\mathbf{d}_2}\gn{\mathbf{d}_2}^T} = \rd{\begin{pmatrix} 1/6 & -1/3 & 0 \\ -1/3 & 2/3 & 0 \\ 0 & 0 & 0 \end{pmatrix}}$
+
+\end{frame}
+
+
+% ADR: AUDIENCE ATTENTION — step 3. First two rows/cols consumed.
+% Full M₂ = rank-1 + 0 with underbrace. Green d entries.
+\begin{frame}{Cross-Fill Step 3: Pivot $= \pvt{\tfrac{4}{3}}$}
+
+\scalebox{0.55}{$\displaystyle
+\underbrace{\begin{pmatrix} \gz & \gz & \gz & \gz & \gz & \gz \\ \gz & \gz & \gz & \gz & \gz & \gz \\ \gz & \gz & \pvt{\tfrac{4}{3}} & \crs{{-}\tfrac{1}{3}} & \crs{{-}\tfrac{1}{3}} & \crs{1} \\ \gz & \gz & \gn{{-}\tfrac{1}{3}} & * & * & * \\ \gz & \gz & \gn{{-}\tfrac{1}{3}} & * & * & * \\ \gz & \gz & \gn{1} & * & * & * \end{pmatrix}}_{M_2}
+\!=\!
+\underbrace{\begin{pmatrix} 0 & 0 & 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 & 0 & 0 \\ 0 & 0 & \tfrac{4}{3} & {-}\tfrac{1}{3} & {-}\tfrac{1}{3} & 1 \\ 0 & 0 & {-}\tfrac{1}{3} & \rd{\tfrac{1}{12}} & \rd{\tfrac{1}{12}} & \rd{{-}\tfrac{1}{4}} \\ 0 & 0 & {-}\tfrac{1}{3} & \rd{\tfrac{1}{12}} & \rd{\tfrac{1}{12}} & \rd{{-}\tfrac{1}{4}} \\ 0 & 0 & 1 & \rd{{-}\tfrac{1}{4}} & \rd{{-}\tfrac{1}{4}} & \rd{\tfrac{3}{4}} \end{pmatrix}}_{\text{rank-1}}
+\!+\!
+\underbrace{\begin{pmatrix} 0 \\ & 0 \\ & & 0 \\ & & & * & * & * \\ & & & * & * & * \\ & & & * & * & * \end{pmatrix}}_{=\,0}
+$}
+
+\vspace{0.3em}
+
+$\gn{\mathbf{d}_3} = \gn{({-}\tfrac{1}{3}, {-}\tfrac{1}{3}, 1)}^T$, \; $q_3 = \pvt{\tfrac{4}{3}}$. \; Done!
+
+\vspace{0.2em}
+
+Slice 3: \; $\underbrace{\dfrac{3}{\pvt{4}}}_{1/q_3}\underbrace{\gn{\begin{pmatrix}-1/3\\-1/3\\1\end{pmatrix}\!\begin{pmatrix}-1/3&-1/3&1\end{pmatrix}}}_{\gn{\mathbf{d}_3}\gn{\mathbf{d}_3}^T} = \rd{\begin{pmatrix} 1/12 & 1/12 & -1/4 \\ 1/12 & 1/12 & -1/4 \\ -1/4 & -1/4 & 3/4 \end{pmatrix}}$
+
+\end{frame}
+
+
+% ADR: AUDIENCE EMOTION — the slices already cross-filled (B^TB)^{-1}.
+% Show the actual three red slice matrices summing up.
+\begin{frame}{Bonus: $(B^TB)^{-1}$ for Free}
+
+Three slices sum to $(B^TB)^{-1}$:
+
+$$\scalebox{0.88}{$\rd{\begin{pmatrix} \tfrac{1}{2} & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix}} + \rd{\begin{pmatrix} \tfrac{1}{6} & {-}\tfrac{1}{3} & 0 \\ {-}\tfrac{1}{3} & \tfrac{2}{3} & 0 \\ 0 & 0 & 0 \end{pmatrix}} + \rd{\begin{pmatrix} \tfrac{1}{12} & \tfrac{1}{12} & {-}\tfrac{1}{4} \\ \tfrac{1}{12} & \tfrac{1}{12} & {-}\tfrac{1}{4} \\ {-}\tfrac{1}{4} & {-}\tfrac{1}{4} & \tfrac{3}{4} \end{pmatrix}} = \frac{1}{4}\begin{pmatrix} 3 & -1 & -1 \\ -1 & 3 & -1 \\ -1 & -1 & 3 \end{pmatrix}$}$$
+
+\vspace{0.5em}
+
+Each $\gn{\mathbf{d}_j}$ came from the \x{bottom of the pivot column}. No separate computation needed!
+
+\end{frame}
+
+
+% ADR: AUDIENCE EMOTION — compute Bd_j and state the answer.
+% Pivots 2, 3/2, 4/3. Normalize by sqrt(q_j). Clear fractions for clean display.
+\begin{frame}{Conclusion: Orthonormal Basis}
+
+$\mathbf{u}_j = B\mathbf{d}_j \,/\, \sqrt{q_j}$. \; Clear fractions, then normalize:
+
+\vspace{0.3em}
+
+$B\mathbf{d}_1 = \mathbf{b}_1 = (1,1,0,0)^T$ \quad $\Longrightarrow$ \quad $\mathbf{u}_1 = \dfrac{1}{\sqrt{2}}(1,1,0,0)^T$
+
+\vspace{0.3em}
+
+$B\mathbf{d}_2 = {-}\tfrac{1}{2}\mathbf{b}_1 + \mathbf{b}_2 = (\tfrac{1}{2},{-}\tfrac{1}{2},1,0)^T$ \quad $\Longrightarrow$ \quad $\mathbf{u}_2 = \dfrac{1}{\sqrt{6}}(1,{-}1,2,0)^T$
+
+\vspace{0.3em}
+
+$B\mathbf{d}_3 = {-}\tfrac{1}{3}(\mathbf{b}_1{+}\mathbf{b}_2) + \mathbf{b}_3 = (\tfrac{1}{3},{-}\tfrac{1}{3},{-}\tfrac{1}{3},1)^T$ \quad $\Longrightarrow$ \quad $\mathbf{u}_3 = \dfrac{1}{2\sqrt{3}}(1,{-}1,{-}1,3)^T$
+
+\vspace{0.5em}
+
+One $6 \times 6$ cross-fill $=$ \x{Gram-Schmidt without Gram-Schmidt.}
+
+\end{frame}
+
+
+% ═══════════════════════════════════════
+% §6 EXTENDING TO AN ORTHONORMAL BASIS
+% ADR: AUDIENCE EMOTION — show the full power: Gram-Schmidt + I-P, all by
+% cross-filling. Part A: inner diagonal cross-fill of 4×4 block to get w₁,w₂.
+% Part B: I-P projects to W⊥, cross-fill I-P to get w₃,w₄,w₅.
+% ═══════════════════════════════════════
+\section{Extending to an Orthonormal Basis}
+
+
+% ADR: TENSION — Gram-Schmidt problem statement. Standard problem, our method.
+\begin{frame}{Problem}
+
+Given two vectors in $\mathbb{R}^5$:
+$$\mathbf{v}_1 = \begin{pmatrix} 1\\1\\1\\1\\1 \end{pmatrix}, \qquad \mathbf{v}_2 = \begin{pmatrix} 1\\1\\1\\0\\0 \end{pmatrix}$$
+
+\vspace{0.3em}
+
+\x{Goal}: Find an orthonormal basis $\{\mathbf{w}_1, \ldots, \mathbf{w}_5\}$ for $\mathbb{R}^5$ such that
+$$\operatorname{span}\{\mathbf{w}_1\} = \operatorname{span}\{\mathbf{v}_1\}, \qquad \operatorname{span}\{\mathbf{w}_1, \mathbf{w}_2\} = \operatorname{span}\{\mathbf{v}_1, \mathbf{v}_2\}$$
+
+\vspace{0.3em}
+
+\textbf{Strategy}: Inner diagonal cross-filling for $\mathbf{w}_1, \mathbf{w}_2$, then $I - P$ trick for $\mathbf{w}_3, \mathbf{w}_4, \mathbf{w}_5$.
+
+\end{frame}
+
+
+% ADR: Setup — B, B^TB, 4×4 block matrix with * in bottom-right, blue I blocks.
+\begin{frame}{Setup}
+
+$B = \begin{pmatrix} 1 & 1 \\ 1 & 1 \\ 1 & 1 \\ 1 & 0 \\ 1 & 0 \end{pmatrix}$, \quad
+$B^TB = \begin{pmatrix} 5 & 3 \\ 3 & 3 \end{pmatrix}$
+
+\vspace{0.5em}
+
+Build the $4 \times 4$ block matrix:
+
+$$M_0 = \begin{pmatrix} B^TB & \bl{I} \\ \bl{I} & * \end{pmatrix} = \begin{pmatrix} \pvt{5} & \crs{3} & \crs{\bl{1}} & \crs{\bl{0}} \\ \crs{3} & 3 & \bl{0} & \bl{1} \\ \crs{\bl{1}} & \bl{0} & * & * \\ \crs{\bl{0}} & \bl{1} & * & * \end{pmatrix}$$
+
+\vspace{0.3em}
+
+$\pvt{red}$ = pivot, $\crs{blue}$ = cross arm, $*$ = don't care (bottom-right receives passively).
+
+\end{frame}
+
+
+% ADR: Step 1 — pivot 5. Full M₀ = rank-1 + M₁ with underbrace.
+% Red on extracted bottom-right slice. Green on d entries (pivot col bottom).
+% Show slice = (1/q)·d·d^T with underbrace.
+\begin{frame}{Cross-Fill Step 1: Pivot $= \pvt{5}$}
+
+$$\underbrace{\begin{pmatrix} \pvt{5} & \crs{3} & \crs{1} & \crs{0} \\ \crs{3} & 3 & 0 & 1 \\ \gn{1} & 0 & * & * \\ \gn{0} & 1 & * & * \end{pmatrix}}_{M_0}
+= \underbrace{\begin{pmatrix} 5 & 3 & 1 & 0 \\ 3 & \tfrac{9}{5} & \tfrac{3}{5} & 0 \\ 1 & \tfrac{3}{5} & \rd{\tfrac{1}{5}} & \rd{0} \\ 0 & 0 & \rd{0} & \rd{0} \end{pmatrix}}_{\text{rank-1}}
++ \underbrace{\begin{pmatrix} \gz & \gz & \gz & \gz \\ \gz & \tfrac{6}{5} & {-}\tfrac{3}{5} & 1 \\ \gz & {-}\tfrac{3}{5} & * & * \\ \gz & 1 & * & * \end{pmatrix}}_{M_1}$$
+
+\vspace{0.3em}
+
+$\gn{\mathbf{d}_1} = \gn{(1, 0)}^T$ (pivot column bottom), \; $q_1 = \pvt{5}$.
+
+\vspace{0.2em}
+
+Slice 1 of $(B^TB)^{-1}$: \; $\underbrace{\dfrac{1}{\pvt{5}}}_{1/q_1}\underbrace{\gn{\begin{pmatrix}1\\0\end{pmatrix}\begin{pmatrix}1&0\end{pmatrix}}}_{\gn{\mathbf{d}_1}\gn{\mathbf{d}_1}^T} = \rd{\begin{pmatrix} 1/5 & 0 \\ 0 & 0 \end{pmatrix}}$
+
+\end{frame}
+
+
+% ADR: Step 2 — pivot 6/5. Same pattern. Green for d₂ entries.
+\begin{frame}{Cross-Fill Step 2: Pivot $= \pvt{\tfrac{6}{5}}$}
+
+$$\underbrace{\begin{pmatrix} \gz & \gz & \gz & \gz \\ \gz & \pvt{\tfrac{6}{5}} & \crs{{-}\tfrac{3}{5}} & \crs{1} \\ \gz & \gn{{-}\tfrac{3}{5}} & * & * \\ \gz & \gn{1} & * & * \end{pmatrix}}_{M_1}
+= \underbrace{\begin{pmatrix} 0 & 0 & 0 & 0 \\ 0 & \tfrac{6}{5} & {-}\tfrac{3}{5} & 1 \\ 0 & {-}\tfrac{3}{5} & \rd{\tfrac{3}{10}} & \rd{{-}\tfrac{1}{2}} \\ 0 & 1 & \rd{{-}\tfrac{1}{2}} & \rd{\tfrac{5}{6}} \end{pmatrix}}_{\text{rank-1}}
++ \underbrace{\begin{pmatrix} 0 \\ & 0 \\ & & * & * \\ & & * & * \end{pmatrix}}_{= \, 0}$$
+
+\vspace{0.3em}
+
+$\gn{\mathbf{d}_2} = \gn{({-}\tfrac{3}{5},\; 1)}^T$ (pivot column bottom), \; $q_2 = \pvt{\tfrac{6}{5}}$. \; Done!
+
+\vspace{0.2em}
+
+Slice 2 of $(B^TB)^{-1}$: \; $\underbrace{\dfrac{5}{6}}_{1/q_2}\underbrace{\gn{\begin{pmatrix}-3/5\\1\end{pmatrix}\begin{pmatrix}-3/5&1\end{pmatrix}}}_{\gn{\mathbf{d}_2}\gn{\mathbf{d}_2}^T} = \rd{\begin{pmatrix} 3/10 & -1/2 \\ -1/2 & 5/6 \end{pmatrix}}$
+
+\end{frame}
+
+
+% ADR: Reassemble the inverse, then compute w₁, w₂.
+\begin{frame}{Result: $\mathbf{w}_1, \mathbf{w}_2$}
+
+$(B^TB)^{-1} = \rd{\begin{pmatrix} 1/5 & 0 \\ 0 & 0 \end{pmatrix}} + \rd{\begin{pmatrix} 3/10 & -1/2 \\ -1/2 & 5/6 \end{pmatrix}} = \dfrac{1}{6}\begin{pmatrix} 3 & -3 \\ -3 & 5 \end{pmatrix}$
+
+\vspace{0.5em}
+
+$B\mathbf{d}_1 = \mathbf{v}_1 = (1,1,1,1,1)^T$, \quad $\|\cdot\|^2 = q_1 = 5$
+
+$$\boxed{\mathbf{w}_1 = \frac{1}{\sqrt{5}}(1,1,1,1,1)^T}$$
+
+\vspace{0.3em}
+
+$B\mathbf{d}_2 = {-}\tfrac{3}{5}\mathbf{v}_1 + \mathbf{v}_2 = \tfrac{1}{5}(2, 2, 2, {-}3, {-}3)^T$, \quad $\|\cdot\|^2 = q_2 = \tfrac{6}{5}$
+
+$$\boxed{\mathbf{w}_2 = \frac{1}{\sqrt{30}}(2, 2, 2, {-}3, {-}3)^T}$$
+
+\end{frame}
+
+
+% ADR: TENSION — I-P trick motivation.
+\begin{frame}{The $I - P$ Trick}
+
+We have an orthonormal basis for $W = \operatorname{span}\{\mathbf{v}_1, \mathbf{v}_2\}$.
+
+\x{But we need all of $\mathbb{R}^5$} --- three more vectors orthogonal to $W$.
+
+\vspace{0.5em}
+
+$P = \mathbf{w}_1\mathbf{w}_1^T + \mathbf{w}_2\mathbf{w}_2^T$ projects onto $W$.
+
+$I - P$ projects onto $W^\perp$.
+
+\vspace{0.5em}
+
+\x{Key idea}: Cross-fill $I - P$ to decompose it into rank-1 projections.
+
+Each rank-1 projection gives one basis vector for $W^\perp$.
+
+$\operatorname{rank}(I - P) = 5 - 2 = 3$ $\Longrightarrow$ exactly $\mathbf{w}_3, \mathbf{w}_4, \mathbf{w}_5$.
+
+\end{frame}
+
+
+% ADR: Compute I-P. Show the 5×5 matrix with color highlights on pivot.
+\begin{frame}{Computing $I - P$}
+
+$P = \mathbf{w}_1\mathbf{w}_1^T + \mathbf{w}_2\mathbf{w}_2^T$. After calculation:
+
+$$I - P = \begin{pmatrix}
+\pvt{\tfrac{2}{3}} & \crs{{-}\tfrac{1}{3}} & \crs{{-}\tfrac{1}{3}} & \crs{0} & \crs{0} \\[4pt]
+\crs{{-}\tfrac{1}{3}} & \tfrac{2}{3} & {-}\tfrac{1}{3} & 0 & 0 \\[4pt]
+\crs{{-}\tfrac{1}{3}} & {-}\tfrac{1}{3} & \tfrac{2}{3} & 0 & 0 \\[4pt]
+\crs{0} & 0 & 0 & \tfrac{1}{2} & {-}\tfrac{1}{2} \\[4pt]
+\crs{0} & 0 & 0 & {-}\tfrac{1}{2} & \tfrac{1}{2}
+\end{pmatrix}$$
+
+\vspace{0.3em}
+
+$\operatorname{rank}(I - P) = 3$, \quad $\operatorname{trace}(I - P) = \tfrac{2}{3} + \tfrac{2}{3} + \tfrac{2}{3} + \tfrac{1}{2} + \tfrac{1}{2} = 3$ $\checkmark$
+
+\end{frame}
+
+
+% ADR: Cross-fill I-P step 1 — pivot 2/3. M = R + remainder with underbrace.
+\begin{frame}{Cross-Fill $I - P$, Step 1: Pivot $= \pvt{\tfrac{2}{3}}$}
+
+\scalebox{0.72}{$\displaystyle
+\underbrace{\begin{pmatrix}
+\pvt{\tfrac{2}{3}} & \crs{{-}\tfrac{1}{3}} & \crs{{-}\tfrac{1}{3}} & \crs{0} & \crs{0} \\[2pt]
+\crs{{-}\tfrac{1}{3}} & \tfrac{2}{3} & {-}\tfrac{1}{3} & 0 & 0 \\[2pt]
+\crs{{-}\tfrac{1}{3}} & {-}\tfrac{1}{3} & \tfrac{2}{3} & 0 & 0 \\[2pt]
+\crs{0} & 0 & 0 & \tfrac{1}{2} & {-}\tfrac{1}{2} \\[2pt]
+\crs{0} & 0 & 0 & {-}\tfrac{1}{2} & \tfrac{1}{2}
+\end{pmatrix}}_{I-P}
+\!=\!
+\underbrace{\begin{pmatrix}
+\tfrac{2}{3} & {-}\tfrac{1}{3} & {-}\tfrac{1}{3} & 0 & 0 \\[2pt]
+{-}\tfrac{1}{3} & \tfrac{1}{6} & \tfrac{1}{6} & 0 & 0 \\[2pt]
+{-}\tfrac{1}{3} & \tfrac{1}{6} & \tfrac{1}{6} & 0 & 0 \\[2pt]
+0 & 0 & 0 & 0 & 0 \\[2pt]
+0 & 0 & 0 & 0 & 0
+\end{pmatrix}}_{R_3}
+\!+\!
+\underbrace{\begin{pmatrix}
+\gz & \gz & \gz & \gz & \gz \\[2pt]
+\gz & \tfrac{1}{2} & {-}\tfrac{1}{2} & 0 & 0 \\[2pt]
+\gz & {-}\tfrac{1}{2} & \tfrac{1}{2} & 0 & 0 \\[2pt]
+\gz & 0 & 0 & \tfrac{1}{2} & {-}\tfrac{1}{2} \\[2pt]
+\gz & 0 & 0 & {-}\tfrac{1}{2} & \tfrac{1}{2}
+\end{pmatrix}}_{M_1}
+$}
+
+\vspace{0.5em}
+
+$R_3 = \mathbf{w}_3\mathbf{w}_3^T$: \quad $\boxed{\mathbf{w}_3 = \dfrac{1}{\sqrt{6}}(2, {-}1, {-}1, 0, 0)^T}$
+
+\end{frame}
+
+
+% ADR: Cross-fill I-P step 2 — pivot 1/2. Same underbrace pattern.
+\begin{frame}{Cross-Fill $I - P$, Step 2: Pivot $= \pvt{\tfrac{1}{2}}$}
+
+\scalebox{0.72}{$\displaystyle
+\underbrace{\begin{pmatrix}
+\gz & \gz & \gz & \gz & \gz \\[2pt]
+\gz & \pvt{\tfrac{1}{2}} & \crs{{-}\tfrac{1}{2}} & \crs{0} & \crs{0} \\[2pt]
+\gz & \crs{{-}\tfrac{1}{2}} & \tfrac{1}{2} & 0 & 0 \\[2pt]
+\gz & \crs{0} & 0 & \tfrac{1}{2} & {-}\tfrac{1}{2} \\[2pt]
+\gz & \crs{0} & 0 & {-}\tfrac{1}{2} & \tfrac{1}{2}
+\end{pmatrix}}_{M_1}
+\!=\!
+\underbrace{\begin{pmatrix}
+0 & 0 & 0 & 0 & 0 \\[2pt]
+0 & \tfrac{1}{2} & {-}\tfrac{1}{2} & 0 & 0 \\[2pt]
+0 & {-}\tfrac{1}{2} & \tfrac{1}{2} & 0 & 0 \\[2pt]
+0 & 0 & 0 & 0 & 0 \\[2pt]
+0 & 0 & 0 & 0 & 0
+\end{pmatrix}}_{R_4}
+\!+\!
+\underbrace{\begin{pmatrix}
+\gz & \gz & \gz & \gz & \gz \\[2pt]
+\gz & \gz & \gz & \gz & \gz \\[2pt]
+\gz & \gz & \gz & \gz & \gz \\[2pt]
+\gz & \gz & \gz & \tfrac{1}{2} & {-}\tfrac{1}{2} \\[2pt]
+\gz & \gz & \gz & {-}\tfrac{1}{2} & \tfrac{1}{2}
+\end{pmatrix}}_{M_2}
+$}
+
+\vspace{0.5em}
+
+$R_4 = \mathbf{w}_4\mathbf{w}_4^T$: \quad $\boxed{\mathbf{w}_4 = \dfrac{1}{\sqrt{2}}(0, 1, {-}1, 0, 0)^T}$
+
+\end{frame}
+
+
+% ADR: Cross-fill I-P step 3 — pivot 1/2, last vector.
+\begin{frame}{Cross-Fill $I - P$, Step 3: Pivot $= \pvt{\tfrac{1}{2}}$}
+
+\scalebox{0.72}{$\displaystyle
+\underbrace{\begin{pmatrix}
+\gz & \gz & \gz & \gz & \gz \\[2pt]
+\gz & \gz & \gz & \gz & \gz \\[2pt]
+\gz & \gz & \gz & \gz & \gz \\[2pt]
+\gz & \gz & \gz & \pvt{\tfrac{1}{2}} & \crs{{-}\tfrac{1}{2}} \\[2pt]
+\gz & \gz & \gz & \crs{{-}\tfrac{1}{2}} & \tfrac{1}{2}
+\end{pmatrix}}_{M_2}
+\!=\!
+\underbrace{\begin{pmatrix}
+0 & 0 & 0 & 0 & 0 \\[2pt]
+0 & 0 & 0 & 0 & 0 \\[2pt]
+0 & 0 & 0 & 0 & 0 \\[2pt]
+0 & 0 & 0 & \tfrac{1}{2} & {-}\tfrac{1}{2} \\[2pt]
+0 & 0 & 0 & {-}\tfrac{1}{2} & \tfrac{1}{2}
+\end{pmatrix}}_{R_5}
+\!+\!
+\underbrace{\begin{pmatrix}
+0 & 0 & 0 & 0 & 0 \\[2pt]
+0 & 0 & 0 & 0 & 0 \\[2pt]
+0 & 0 & 0 & 0 & 0 \\[2pt]
+0 & 0 & 0 & 0 & 0 \\[2pt]
+0 & 0 & 0 & 0 & 0
+\end{pmatrix}}_{M_3 = 0}
+$}
+
+\vspace{0.5em}
+
+$R_5 = \mathbf{w}_5\mathbf{w}_5^T$: \quad $\boxed{\mathbf{w}_5 = \dfrac{1}{\sqrt{2}}(0, 0, 0, 1, {-}1)^T}$
+
+\vspace{0.3em}
+
+Done! \; $I - P = R_3 + R_4 + R_5$.
+
+\end{frame}
+
+
+% ADR: PHOTOGRAPH SLIDE — all 5 vectors, verification.
+\begin{frame}{Complete Orthonormal Basis for $\mathbb{R}^5$}
+
+\begin{tabular}{r@{\;$=$\;}l@{\qquad}l}
+$\mathbf{w}_1$ & $\dfrac{1}{\sqrt{5}}(1,1,1,1,1)^T$ & from $B\mathbf{d}_1$ \\[8pt]
+$\mathbf{w}_2$ & $\dfrac{1}{\sqrt{30}}(2,2,2,{-}3,{-}3)^T$ & from $B\mathbf{d}_2$ \\[8pt]
+$\mathbf{w}_3$ & $\dfrac{1}{\sqrt{6}}(2,{-}1,{-}1,0,0)^T$ & from cross-filling $I - P$ \\[8pt]
+$\mathbf{w}_4$ & $\dfrac{1}{\sqrt{2}}(0,1,{-}1,0,0)^T$ & from cross-filling $I - P$ \\[8pt]
+$\mathbf{w}_5$ & $\dfrac{1}{\sqrt{2}}(0,0,0,1,{-}1)^T$ & from cross-filling $I - P$
+\end{tabular}
+
+\vspace{0.5em}
+
+$\operatorname{span}\{\mathbf{w}_1\} = \operatorname{span}\{\mathbf{v}_1\}$ $\checkmark$, \quad $\operatorname{span}\{\mathbf{w}_1,\mathbf{w}_2\} = \operatorname{span}\{\mathbf{v}_1,\mathbf{v}_2\}$ $\checkmark$
+
+\vspace{0.3em}
+
+\x{All done by cross-filling} --- no Gram-Schmidt formula needed!
+
+\end{frame}
+
+
+% ═══════════════════════════════════════
+% §7 SUMMARY
+% ADR: AUDIENCE ATTENTION — photograph slide for review.
+% ═══════════════════════════════════════
+\section{Summary}
+
+\begin{frame}{Key Results}
+
+\begin{enumerate}
+\item \x{Uniqueness} (\S1): $\operatorname{Col}(P)$ and $\operatorname{Null}(P)$ uniquely determine a projection.
+
+\vspace{0.3em}
+
+\item \x{Construction formula} (\S2): $P = B(AB)^{-1}A$, where $\operatorname{Col}(B) = $ floor, $\operatorname{Null}(A) = $ sunlight. The formula is \x{forced} by three constraints.
+
+\vspace{0.3em}
+
+\item \x{Orthogonal projection} (\S3): Set $A = B^T$ $\to$ $P = B(B^TB)^{-1}B^T$.
+
+\vspace{0.3em}
+
+\item \x{Inner diagonal cross-filling} (\S4): Cross-fill the small $(B^TB)^{-1}$, normalize $\to$ \x{orthonormal} basis. No Gram-Schmidt.
+
+\vspace{0.3em}
+
+\item \x{Cross-filling the inverse} (\S5): Cross-fill $\left(\begin{smallmatrix} A & I \\ I & 0 \end{smallmatrix}\right)$ with pivots in $A$ $\to$ $A^{-1}$ emerges in the bottom-right. No separate inversion.
+
+\vspace{0.3em}
+
+\item \x{Extending to orthonormal basis} (\S6): Cross-fill $B^TB$ for $W$, then cross-fill $I - P$ for $W^\perp$. Full basis, all by cross-filling.
+\end{enumerate}
+
+\end{frame}
+
+
+\begin{frame}{Looking Ahead}
+
+With projection theory complete, we have all the tools for \x{spectral decomposition}.
+
+\vspace{0.5em}
+
+If a matrix $A$ can be written as:
+$$A = \lambda_1 P_1 + \lambda_2 P_2 + \cdots + \lambda_k P_k$$
+where $\{P_1, \ldots, P_k\}$ is a compatible family, then:
+
+\vspace{0.3em}
+
+\begin{itemize}
+\item $A^n = \lambda_1^n P_1 + \cdots + \lambda_k^n P_k$
+\item $e^A = e^{\lambda_1} P_1 + \cdots + e^{\lambda_k} P_k$
+\end{itemize}
+
+\vspace{0.5em}
+
+Finding the $\lambda_i$ (eigenvalues) and $P_i$ (spectral projections) is the goal of the next chapter.
+
+\end{frame}
+
+
+\end{document}
