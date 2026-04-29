@@ -730,15 +730,93 @@ Pattern: $f_{\lambda_i}(t) = \dfrac{\text{product of all }(t - \lambda_j)\text{ 
 \end{frame}
 
 
-% ADR: General theorem + progression table. By now the audience has seen
-% three cases. The theorem just NAMES what they already know.
-% The progression table (m=1, m=2, general m) shows the pattern explicitly.
-% The closing line "Remainder Theorem is the special case m=1" is the
-% narrative punchline: everything in this section was one idea at different scales.
+% ADR: WHY LAGRANGE WORKS — the vector space argument.
+% The audience has seen m=1, m=2, m=3. They see the pattern: at each
+% level, there are exactly enough Lagrange basis polynomials to span
+% the remainder space. But WHY must this always work?
+%
+% The answer is a LINEAR ALGEBRA argument — a callback to the tools
+% the students already have. Polynomials of degree < m form an
+% m-dimensional vector space. The natural basis is {1, t, ..., t^{m-1}}.
+% The Lagrange polynomials are m vectors in this space, and their value
+% table is the identity matrix — which proves linear independence
+% (the only way to get the zero value table (0,...,0) from a linear
+% combination is all coefficients = 0). By dimension counting:
+% m independent vectors in an m-dimensional space = basis = span.
+%
+% WHY THIS FRAME IS HERE (between examples and general theorem):
+% The audience discovered the pattern through examples. Before we
+% STATE the general theorem, we EXPLAIN why it must hold. The theorem
+% then feels like a consequence of reasoning, not an axiom. The flow:
+% discovery (m=1,2,3) → understanding (vector space) → conclusion
+% (general theorem) is more satisfying than discovery → black box.
+%
+% WHY USE LINEAR ALGEBRA TO EXPLAIN LAGRANGE:
+% This IS a linear algebra course. Showing that Lagrange works because
+% of dimension + linear independence is a meta-lesson: the tools from
+% this course explain things far beyond matrices. The audience sees
+% their own knowledge being used — "I already know why this works!"
+%
+% AUDIENCE EMOTION: "it's just a change of basis — I already know this!"
+% AUDIENCE ATTENTION: the callback to familiar concepts (basis, dimension,
+% linear independence) creates connection to earlier lectures; the
+% identity matrix in the value table is visually immediate.
+\begin{frame}[shrink=5]{Why Does Lagrange Always Work?}
+
+Polynomials of degree $< m$ form a \x{vector space} of dimension $m$.
+
+\vfill
+
+\x{Natural basis}: $\;\{1,\; t,\; t^2,\; \ldots,\; t^{m-1}\}$ \quad ($m$ vectors)
+
+\vfill\pause
+
+The Lagrange polynomials $f_{\lambda_1}(t), \ldots, f_{\lambda_m}(t)$ are \x{also} $m$ polynomials of degree $< m$.
+
+\vfill
+
+Are they linearly independent? \; Look at their value tables:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{c|cccc}
+ & $\lambda_1$ & $\lambda_2$ & $\cdots$ & $\lambda_m$ \\
+\hline
+$f_{\lambda_1}$ & $\x{1}$ & $0$ & $\cdots$ & $0$ \\
+$f_{\lambda_2}$ & $0$ & $\x{1}$ & $\cdots$ & $0$ \\
+$\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ & $\vdots$ \\
+$f_{\lambda_m}$ & $0$ & $0$ & $\cdots$ & $\x{1}$
+\end{tabular}
+\end{center}
+
+\vfill
+
+The value table is the \x{identity matrix} --- so they are \x{linearly independent}.
+
+\vfill\pause
+
+$m$ independent vectors in an $m$-dimensional space $\implies$ they form a \x{basis}.
+
+\vfill
+
+Every polynomial of degree $< m$ is a unique linear combination of the Lagrange basis.
+
+\vfill
+
+\x{Two bases for the same space}: $\;\underbrace{1,\; t,\; \ldots,\; t^{m-1}}_{\text{natural basis}} \quad\longleftrightarrow\quad \underbrace{f_{\lambda_1},\; f_{\lambda_2},\; \ldots,\; f_{\lambda_m}}_{\text{Lagrange basis}}$
+
+\end{frame}
+
+
+% ADR: General theorem + progression table. The audience now has BOTH
+% the pattern (from m=1,2,3) AND the reason (vector space argument).
+% The theorem is the conclusion of both threads — it feels inevitable.
+% The progression table organizes three slides of information into one
+% scannable visual. The closing line "Remainder Theorem is the special
+% case m=1" is the narrative punchline.
 %
 % AUDIENCE EMOTION: satisfaction — "I see the whole picture now"
-% AUDIENCE ATTENTION: the progression table organizes three slides
-% of information into one scannable visual — compression is satisfying.
+% AUDIENCE ATTENTION: the progression table is compression — satisfying.
 \begin{frame}[shrink=5]{Lagrange Interpolation = Generalized Remainder Theorem}
 
 \begin{thm}[Lagrange Interpolation]
@@ -1525,7 +1603,7 @@ $$\implies\quad P_1 + P_3 + P_5 = I$$
 %
 % AUDIENCE EMOTION: triumph — "I can compute A^n for ANY matrix now"
 % AUDIENCE ATTENTION: the boxed formula is the visual reward.
-\begin{frame}{Step 3: $A^n$ by Value Tables}
+\begin{frame}[shrink=2]{Step 3: $A^n$ by Value Tables}
 
 $A^n$ has value table $\;(1^n,\; 3^n,\; 5^n) = (1,\; 3^n,\; 5^n)$.
 
