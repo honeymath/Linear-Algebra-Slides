@@ -264,25 +264,28 @@ This is not a formula. This is bookkeeping.
 % AUDIENCE EMOTION: hope — "this could actually work!"
 % AUDIENCE ATTENTION: the boxed formula A^n = 2^n P_1 + 3^n P_2 is
 % visually striking; the underbrace "= P_1" makes P^n = P visceral.
-\begin{frame}{The Dream: Projections Make Powers Trivial}
+\begin{frame}[shrink=2]{The Goal: What Would the Ideal Formula Look Like?}
+
+We don't know the answer yet. But let's \x{imagine} the best possible outcome.
+
+\vfill
 
 From Lectures 7--10, you know \x{projections}:
 $$P^2 = P \;\implies\; P^n = P \quad\text{for all } n \geq 1.$$
 
 \vfill\pause
 
-What if we could decompose $A$ into projections?
+\x{If} we could somehow write $A = 2 P_1 + 3 P_2$ for projections $P_1, P_2$, then:
 
-$$A = \underbrace{2}_{\lambda_1}\!\cdot P_1 + \underbrace{3}_{\lambda_2}\!\cdot P_2$$
-
-\vfill
-
-Then:
 $$A^n = 2^n\!\cdot\!\underbrace{P_1^n}_{= P_1} + 3^n\!\cdot\!\underbrace{P_2^n}_{= P_2} = \boxed{2^n P_1 + 3^n P_2}$$
 
 \vfill\pause
 
 A \x{closed formula}. Plug in $n = 100$? Done.
+
+\vfill
+
+This is \x{the formula we want to arrive at} by the end of this lecture.
 
 \vfill
 
@@ -320,6 +323,39 @@ To understand any matrix, decompose it into projections.
 % │ projections?" This launches §3.                                    │
 % └─────────────────────────────────────────────────────────────────────┘
 \section{Eigenvalues and Eigenvectors}
+
+
+% ADR: BRIDGE FRAME — transition from algebraic (§1) to geometric (§2).
+% §1 was entirely algebraic: A^n, recurrences, the dream formula.
+% §2 opens with a geometric picture (vectors getting scaled).
+% Without a bridge, the audience feels a jarring jump. This frame
+% says: "we've seen the algebraic goal; now let's look at what happens
+% GEOMETRICALLY when A acts on vectors."
+% AUDIENCE EMOTION: orientation — "oh, we're changing perspective now"
+% AUDIENCE ATTENTION: whitespace resets; the question refocuses them.
+\begin{frame}{}
+
+\vfill
+
+\begin{center}
+{\Large We've seen the \x{algebraic} goal:}
+
+\vspace{0.5cm}
+
+{\large decompose $A$ into a sum of projections.}
+
+\vspace{1cm}
+
+{\Large Now: what happens \x{geometrically}?}
+
+\vspace{0.5cm}
+
+{\large When $A$ acts on a vector, which vectors ``survive''?}
+\end{center}
+
+\vfill
+
+\end{frame}
 
 
 % ADR: Geometry BEFORE definition. The audience sees the picture first,
@@ -407,23 +443,40 @@ $\lambda = 1$ & vector \x{doesn't move}
 \end{frame}
 
 
-% ADR: Connect eigenvalues to L14's characteristic polynomial.
-% Introduce the RUNNING EXAMPLE that will carry through §3-4.
-% Clean eigenvalues 0,1,2 make all later computations integer arithmetic.
-% AUDIENCE EMOTION: confidence — "I already know how to find eigenvalues"
-% AUDIENCE ATTENTION: the running example A is introduced once and reused
-% throughout — no context-switching cost in later frames.
-\begin{frame}{Where Do Eigenvalues Come From?}
+% ADR: PROPOSITION — roots of det(tI-A) are eigenvalues.
+% The definition said: eigenvalue = λ such that Av = λv for non-zero v.
+% Now we PROVE that roots of det(tI-A) are eigenvalues. The proof uses
+% two facts the students already know: (1) det = 0 ⟹ not full rank,
+% (2) not full rank ⟹ non-trivial null space. This is a proposition,
+% NOT a definition — the user explicitly flagged this logic gap.
+%
+% After the proof, introduce the RUNNING EXAMPLE that will carry
+% through §3-4. Clean eigenvalues 0,1,2 for integer arithmetic.
+% AUDIENCE EMOTION: "oh! the eigenvalues hide inside the determinant"
+% AUDIENCE ATTENTION: the proof is short (3 lines) and uses familiar tools.
+\begin{frame}[shrink=5]{Where Do Eigenvalues Come From?}
 
-From Lecture 14: the \x{characteristic polynomial}
-
-$$\det(tI - A) = (t - \lambda_1)(t - \lambda_2)\cdots(t - \lambda_n)$$
+\begin{prop}
+If $\lambda$ is a root of $\det(tI - A)$, then $\lambda$ is an \x{eigenvalue} of $A$.
+\end{prop}
 
 \vfill
 
-The roots $\lambda_1, \ldots, \lambda_n$ are the \x{eigenvalues}.
+\textbf{Proof.}\; $\lambda$ is a root means $\det(\lambda I - A) = 0$.
 
-\vfill
+\medskip
+
+$\det(\lambda I - A) = 0 \;\implies\;$ the matrix $(\lambda I - A)$ is \x{not invertible}.
+
+\medskip
+
+Not invertible $\implies$ the equation $(\lambda I - A)\vec{x} = \vec{0}$ has a \x{non-zero solution} $\vec{v}$.
+
+\medskip
+
+So $A\vec{v} = \lambda\vec{v}$ with $\vec{v} \neq \vec{0}$: that is exactly an eigenvector. \;\qed
+
+\vfill\pause
 
 \textbf{Running example for today}:
 
@@ -513,21 +566,36 @@ Plug in $t = A$:
 
 $$g(A) = Q(A) \cdot \underbrace{A(A-I)(A-2I)}_{\x{$= 0$ by Cayley--Hamilton!}} + R(A) = R(A)$$
 
-\vfill\pause
+\vfill
 
 So $g(A)$ depends only on the \x{remainder} $R(t)$.
 
+\vfill\pause
+
+What determines $R$? \; Can we try $t = 7$?
+
+\medskip
+
+$g(7) = Q(7) \cdot \underbrace{7 \cdot 6 \cdot 5}_{\neq\, 0} + R(7)$ \quad--- useless! We don't know $Q(7)$.
+
 \vfill
 
-$R(t)$ has degree $< 3$, so it is determined by \x{three values}:
-
-$$g(0), \quad g(1), \quad g(2) \qquad\text{(the values at the eigenvalues!)}$$
+But at $t = 0, 1, 2$: the divisor $t(t\!-\!1)(t\!-\!2)$ is \x{zero}! The $Q$ term \x{vanishes}:
+$$R(0) = g(0), \qquad R(1) = g(1), \qquad R(2) = g(2)$$
 
 \vfill
 
-If we can express $R$ in terms of these values, we get:
+\x{Only the eigenvalues} give us access to $R$ without knowing $Q$.
 
-$$g(A) = g(0) \cdot P_0 + g(1) \cdot P_1 + g(2) \cdot P_2$$
+\medskip
+
+$R(t)$ has degree $< 3$ and we know \x{three values} $\implies$ $R$ is \x{uniquely determined}.
+
+\vfill\pause
+
+If we can express $R$ in terms of these values:
+
+$$g(A) = R(A) = g(0) \cdot P_0 + g(1) \cdot P_1 + g(2) \cdot P_2$$
 
 for some matrices $P_0, P_1, P_2$.  \; \x{The dream from \S 1!}
 
@@ -617,7 +685,11 @@ for some matrices $P_0, P_1, P_2$.  \; \x{The dream from \S 1!}
 
 Start with what we know. Dividing $g(t)$ by \x{one} factor $(t - a)$:
 
-$$g(t) = Q(t)\cdot(t - a) + \underbrace{g(a)}_{\text{remainder}}$$
+$$g(t) = Q(t)\cdot(t - a) + R$$
+
+\vfill
+
+Why is $R = g(a)$? \; Plug in $t = a$: the factor $(t-a)$ becomes \x{zero}, so $g(a) = 0 + R$.
 
 \vfill\pause
 
@@ -687,45 +759,102 @@ Same shape as $m = 1$, but with \x{2 points} instead of $1$.
 \end{frame}
 
 
-% ADR: The 3-point case uses the RUNNING EXAMPLE's eigenvalues 0,1,2.
-% The audience should notice: "wait, those are the eigenvalues of our
-% matrix A!" — this foreshadows the connection in §4 without us saying it.
-% We let the audience make the connection themselves (discovery > exposition).
-%
-% The general pattern formula at the bottom is stated as an OBSERVATION,
-% not a theorem — it emerges from the three cases the audience has seen.
-% AUDIENCE EMOTION: anticipation — "these are A's eigenvalues... is that
-% a coincidence?" (the connection to §4 is brewing in their minds)
-% AUDIENCE ATTENTION: the 3×3 table with 1/0 pattern is visually
-% satisfying — the identity matrix pattern is now unmistakable.
+% ADR: The 3-point case makes the HIDDEN LOGIC explicit:
+% (1) We know R's values at eigenvalues (from previous frame).
+% (2) Write R in a basis → need to find coefficients.
+% (3) If the basis has identity-matrix value table → values ARE coefficients.
+% (4) This is the BENEFIT the user demanded: identity matrix = no equations.
+% Then a separate frame CONSTRUCTS the basis (zeros + normalization).
+% AUDIENCE EMOTION: "oh! the identity matrix isn't decoration — it's the
+% whole point!" → then "and we can BUILD such a basis easily."
 \begin{frame}[shrink=5]{$m = 3$: Three Points — at $0, 1, 2$}
 
-Dividing $g(t)$ by $t(t-1)(t-2)$: remainder has degree $\leq 2$,
-
-determined by \x{three} values: $g(0)$, $g(1)$, $g(2)$.
+We know $R(0) = g(0)$, $R(1) = g(1)$, $R(2) = g(2)$. \; How to find $R(t)$?
 
 \vfill
 
+\textbf{Strategy}: write $R(t) = c_0 f_0(t) + c_1 f_1(t) + c_2 f_2(t)$ in some basis.
+
+\vfill\pause
+
+Plug in each eigenvalue to find the coefficients $c_i$:
+
+\medskip
+
+{\small
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
-\begin{tabular}{c|ccc}
- & $\underbrace{\dfrac{(t-1)(t-2)}{(0-1)(0-2)}}_{f_0(t) = \frac{(t-1)(t-2)}{2}}$
- & $\underbrace{\dfrac{t(t-2)}{(1-0)(1-2)}}_{f_1(t) = -t(t-2)}$
- & $\underbrace{\dfrac{t(t-1)}{(2-0)(2-1)}}_{f_2(t) = \frac{t(t-1)}{2}}$ \\[4pt]
-\hline
-$t = 0$ & $1$ & $0$ & $0$ \\
-$t = 1$ & $0$ & $1$ & $0$ \\
-$t = 2$ & $0$ & $0$ & $1$
+\begin{tabular}{rcl}
+$R(0)$ &$=$& $c_0 \cdot f_0(0) + c_1 \cdot f_1(0) + c_2 \cdot f_2(0)$ \\
+$R(1)$ &$=$& $c_0 \cdot f_0(1) + c_1 \cdot f_1(1) + c_2 \cdot f_2(1)$ \\
+$R(2)$ &$=$& $c_0 \cdot f_0(2) + c_1 \cdot f_1(2) + c_2 \cdot f_2(2)$
 \end{tabular}
+\end{center}
+}
+
+\vfill
+
+If the value table of $\{f_0, f_1, f_2\}$ is the \x{identity matrix}:
+
+\medskip
+
+\begin{center}
+$R(0) = c_0 \cdot \x{1} + c_1 \cdot 0 + c_2 \cdot 0 = c_0$
 \end{center}
 
 \vfill
 
-$$g(t) = Q(t)\cdot t(t-1)(t-2) + g(0)\cdot f_0(t) + g(1)\cdot f_1(t) + g(2)\cdot f_2(t)$$
+The identity matrix makes \x{values $=$ coefficients} --- no equations to solve!
+
+$$c_0 = R(0) = g(0), \quad c_1 = R(1) = g(1), \quad c_2 = R(2) = g(2)$$
+
+\vfill\pause
+
+\textbf{Result}: $\;R(t) = g(0)\cdot f_0(t) + g(1)\cdot f_1(t) + g(2)\cdot f_2(t)$
 
 \vfill
 
-Pattern: $f_{\lambda_i}(t) = \dfrac{\text{product of all }(t - \lambda_j)\text{ for }j \neq i}{\text{same product evaluated at }\lambda_i}$
+\x{Goal}: design $f_i$ so that $f_i(\lambda_j) = \delta_{ij}$. How?
+
+\end{frame}
+
+
+\begin{frame}{Constructing the Lagrange Basis}
+
+Want $f_0(t)$: equals $1$ at $t = 0$, equals $0$ at $t = 1$ and $t = 2$.
+
+\vfill
+
+Zero at $1$ and $2$ $\implies$ must contain $(t-1)(t-2)$ as factor.
+
+\medskip
+
+Equals $1$ at $t = 0$ $\implies$ normalize: $\;\displaystyle f_0(t) = \frac{(t-1)(t-2)}{(0-1)(0-2)}$
+
+\vfill\pause
+
+{\small
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{c|ccc}
+ & $\underbrace{\dfrac{(t-1)(t-2)}{(0-1)(0-2)}}_{f_0(t)}$
+ & $\underbrace{\dfrac{t(t-2)}{(1-0)(1-2)}}_{f_1(t)}$
+ & $\underbrace{\dfrac{t(t-1)}{(2-0)(2-1)}}_{f_2(t)}$ \\[4pt]
+\hline
+$t = 0$ & $\x{1}$ & $0$ & $0$ \\
+$t = 1$ & $0$ & $\x{1}$ & $0$ \\
+$t = 2$ & $0$ & $0$ & $\x{1}$
+\end{tabular}
+\end{center}
+}
+
+\vfill
+
+Identity matrix --- \x{exactly what we needed!}
+
+\vfill\pause
+
+General pattern: $\displaystyle f_{\lambda_i}(t) = \frac{\prod_{j \neq i}(t - \lambda_j)}{\prod_{j \neq i}(\lambda_i - \lambda_j)}$
 
 \end{frame}
 
@@ -1107,29 +1236,45 @@ Two polynomials with the \x{same value table} give the \x{same matrix}.
 % AUDIENCE EMOTION: "matrix multiplication is just entry-wise?!" (power)
 % AUDIENCE ATTENTION: the side-by-side comparison (matrix vs. value table)
 % makes the simplification visceral.
-\begin{frame}{Arithmetic in Value Tables}
+\begin{frame}[shrink=3]{Arithmetic in Value Tables}
 
 \x{Addition}: value tables add entry-wise.
 
-$$\underbrace{(0,1,2)}_{A} + \underbrace{(1,1,1)}_{I} = \underbrace{(1,2,3)}_{A + I} \qquad \checkmark$$
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{c|ccc}
+ & $t = 0$ & $t = 1$ & $t = 2$ \\
+\hline
+$A$ & $0$ & $1$ & $2$ \\
+$I$ & $1$ & $1$ & $1$ \\
+\hline
+$A + I$ & $\x{1}$ & $\x{2}$ & $\x{3}$
+\end{tabular}
+\end{center}
 
 \vfill\pause
 
 \x{Multiplication}: value tables \x{multiply entry-wise}!
 
-$$\underbrace{(0,1,2)}_{A} \cdot \underbrace{(0,1,2)}_{A} = \underbrace{(0,1,4)}_{A^2} \qquad \checkmark$$
-
-\vfill
-
-Why? \; Because $g(A) \cdot h(A) = (g \cdot h)(A)$, and $(g \cdot h)(\lambda_i) = g(\lambda_i) \cdot h(\lambda_i)$.
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{c|ccc}
+ & $t = 0$ & $t = 1$ & $t = 2$ \\
+\hline
+$A$ & $0$ & $1$ & $2$ \\
+$\times\; A$ & $0$ & $1$ & $2$ \\
+\hline
+$A^2$ & $\x{0}$ & $\x{1}$ & $\x{4}$
+\end{tabular}
+\end{center}
 
 \vfill\pause
 
-Matrix multiplication (hard) $\longleftrightarrow$ entry-wise multiplication (easy).
+Why? \; $g(A) \cdot h(A) = (g \cdot h)(A)$, and $(g \cdot h)(\lambda_i) = g(\lambda_i) \cdot h(\lambda_i)$.
 
 \vfill
 
-The value table turns matrix algebra into \x{$\mathbb{R}^3$ arithmetic}.
+The value table turns \x{matrix algebra} into \x{$\mathbb{R}^3$ arithmetic}.
 
 \end{frame}
 
@@ -1178,15 +1323,15 @@ The spectral projections play the role of \x{coordinate axes}.
 
 
 % ADR: PRACTICE — the audience uses value tables to answer questions.
-% Three examples, chosen to cover:
+% Four examples, chosen to cover:
 %   1. Projection (P₁): value table has only 0s and 1s → P²=P ✓
 %   2. Non-projection (A): value table has a 2 → 2²=4≠2 → A²≠A ✗
-%   3. Sum of projections (P₀+P₁): value table (1,1,0), still 0s and 1s → projection ✓
+%   3. Sum of compatible projections (P₀+P₁): value table (1,1,0),
+%      all entries 0 or 1 → projection ✓ (compatible sums work!)
+%   4. Non-projection (A+I): value table (1,2,3), has entries > 1 → ✗
 %
-% The non-projection example is critical: it shows that the test can
+% The non-projection examples are critical: they show the test can
 % FAIL, which makes the passing cases more meaningful.
-% The sum P₀+P₁ example is the surprise: "a sum of projections is
-% also a projection?!" — the value table makes it obvious.
 %
 % AUDIENCE EMOTION: confidence building → surprise at P₀+P₁
 % AUDIENCE ATTENTION: active — they are checking each example
@@ -1204,17 +1349,15 @@ Square entry-wise: $(0^2, 1^2, 2^2) = (0,1,\rd{4}) \neq (0,1,\rd{2})$. \; $A^2 \
 
 \vfill\pause
 
-\x{Is $P_0 + P_1$ a projection?} \; Value table: $(1,1,0) + (0,1,0)$\ldots
+\x{Is $P_0 + P_1$ a projection?} \; Value table: $(1,0,0) + (0,1,0) = (1,1,0)$.
 
-\medskip
-
-Wait --- that gives $(1, \rd{2}, 0)$, and $2^2 = 4 \neq 2$. \; Not a projection.
+Square: $(1,1,0)$. \; Same! \; $(P_0 + P_1)^2 = P_0 + P_1$ \;\checkmark
 
 \vfill\pause
 
-\x{Is $P_0 + P_2$ a projection?} \; Value table: $(1,0,0) + (0,0,1) = (1,0,1)$.
+\x{Is $A + I$ a projection?} \; Value table: $(0,1,2) + (1,1,1) = (1,2,3)$.
 
-Square: $(1,0,1)$. \; Same! \; $(P_0 + P_2)^2 = P_0 + P_2$ \;\checkmark
+Square: $(1, \rd{4}, \rd{9}) \neq (1, \rd{2}, \rd{3})$. \; $(A+I)^2 \neq A+I$ \;\x{$\boldsymbol\times$}
 
 \vfill
 
@@ -1299,50 +1442,51 @@ The \x{dream from \S 1} is real: $A = \lambda_1 P_1 + \lambda_2 P_2 + \cdots + \
 \end{frame}
 
 
-% ADR: Prove (A - λᵢI)Pᵢ = 0 via VALUE TABLES, not by Lagrange definition.
-% The value table argument: (t - λᵢ) is zero at λᵢ, fᵢ is zero everywhere
-% EXCEPT at λᵢ. Their product is zero at every eigenvalue → matrix = 0.
-% This is the value table method doing EVERYTHING — the user's explicit
-% request: "as long as you have the value table method, use it for everything."
+% ADR: Show AP_i = λ_i P_i directly via value tables.
+% The user explicitly requested: no (A-λI)P=0 detour. Since we have
+% value tables, show the result directly: value table of A·P_i equals
+% value table of λ_i·P_i. Entry-wise: (0,1,2)·(1,0,0) = (0,0,0) = 0·(1,0,0).
+% This is cleaner and shows the eigenvector relationship AP = λP
+% without going through the parenthesized form.
 %
-% AUDIENCE EMOTION: "the value table even gives us eigenvectors!"
-% AUDIENCE ATTENTION: the three checks are fast and visual.
-\begin{frame}{$(A - \lambda_i I) \cdot P_{\lambda_i} = 0$ --- by Value Tables}
+% AUDIENCE EMOTION: "the value table gives us eigenvectors directly!"
+% AUDIENCE ATTENTION: three fast checks, each showing AP_i = λ_i P_i.
+\begin{frame}{$A P_{\lambda_i} = \lambda_i P_{\lambda_i}$ --- by Value Tables}
 
-\x{$\lambda_1 = 0$}: \; value table of $(A - 0 \cdot I) = A$ is $(0, 1, 2)$.
+\x{$\lambda_1 = 0$}: \; multiply value tables of $A$ and $P_0$ entry-wise:
 
-$(0,1,2) \cdot \underbrace{(1,0,0)}_{P_0} = (0, 0, 0) = 0$ \;\checkmark
-
-\vfill\pause
-
-\x{$\lambda_2 = 1$}: \; value table of $(A - I)$ is $(0\!-\!1,\; 1\!-\!1,\; 2\!-\!1) = (-1, 0, 1)$.
-
-$(-1,0,1) \cdot \underbrace{(0,1,0)}_{P_1} = (0, 0, 0) = 0$ \;\checkmark
+$(0,1,2) \cdot (1,0,0) = (0,0,0) = 0 \cdot (1,0,0) \quad\implies\quad A P_0 = 0 \cdot P_0$ \;\checkmark
 
 \vfill\pause
 
-\x{$\lambda_3 = 2$}: \; value table of $(A - 2I)$ is $(-2, -1, 0)$.
+\x{$\lambda_2 = 1$}: \; multiply value tables of $A$ and $P_1$ entry-wise:
 
-$(-2,-1,0) \cdot \underbrace{(0,0,1)}_{P_2} = (0, 0, 0) = 0$ \;\checkmark
+$(0,1,2) \cdot (0,1,0) = (0,1,0) = 1 \cdot (0,1,0) \quad\implies\quad A P_1 = 1 \cdot P_1$ \;\checkmark
+
+\vfill\pause
+
+\x{$\lambda_3 = 2$}: \; multiply value tables of $A$ and $P_2$ entry-wise:
+
+$(0,1,2) \cdot (0,0,1) = (0,0,2) = 2 \cdot (0,0,1) \quad\implies\quad A P_2 = 2 \cdot P_2$ \;\checkmark
 
 \vfill
 
-\x{Why it works}: $(t - \lambda_i)$ is zero at $\lambda_i$, \; $P_{\lambda_i}$ is zero everywhere \x{else}.
+\x{Why it works}: the value table of $A$ is $(\lambda_1, \lambda_2, \lambda_3)$.
 
-Their product is zero at \x{every} eigenvalue $\implies$ $(A - \lambda_i I)\, P_{\lambda_i} = 0$.
+Multiply by $P_i$'s value table $(0,\ldots, \x{1}, \ldots, 0)$: only the $\lambda_i$ entry survives.
 
 \end{frame}
 
 
 % ADR: Eigenvectors as COLUMNS of projections — no equation solving.
-% The previous frame proved (A-λᵢI)Pᵢ = 0 via value tables.
-% Now we just rewrite that as APᵢ = λᵢPᵢ and read off columns.
+% The previous frame showed AP_i = λ_i P_i via value tables.
+% Now we just read off columns: each column of P_i is an eigenvector.
 %
 % AUDIENCE EMOTION: delight — "no equation solving?! just read columns?!"
 % AUDIENCE ATTENTION: the table is compact and verifiable.
 \begin{frame}{Eigenvectors: Just Read the Columns}
 
-We just showed: $(A - \lambda_i I)\, P_{\lambda_i} = 0$, \; i.e.\ $A\, P_{\lambda_i} = \lambda_i\, P_{\lambda_i}$.
+We just showed: $A\, P_{\lambda_i} = \lambda_i\, P_{\lambda_i}$.
 
 \vfill
 
