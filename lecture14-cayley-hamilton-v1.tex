@@ -1,0 +1,1242 @@
+
+\documentclass[10pt]{beamer}
+\usetheme{metropolis}
+
+% ── Packages ──
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,matrix,backgrounds,calc,shapes.geometric,decorations.pathreplacing}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{etoolbox}
+\usepackage{cancel}
+
+% ── Theorem environments ──
+\theoremstyle{definition}
+\newtheorem{defi}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}{Corollary}[section]
+
+% Custom theorem styles with colors
+\setbeamercolor{block title}{bg=red!75!black,fg=white}
+\setbeamercolor{block body}{bg=yellow!10!white}
+
+\AtBeginEnvironment{prop}{%
+  \setbeamercolor{block title}{bg=yellow!75!black,fg=black}%
+  \setbeamercolor{block body}{bg=yellow!10!white}%
+}
+\AtEndEnvironment{prop}{%
+  \setbeamercolor{block title}{bg=red!75!black,fg=white}%
+}
+
+\AtBeginEnvironment{thm}{%
+  \setbeamercolor{block title}{bg=yellow!75!black,fg=black}%
+  \setbeamercolor{block body}{bg=yellow!10!white}%
+}
+\AtEndEnvironment{thm}{%
+  \setbeamercolor{block title}{bg=red!75!black,fg=white}%
+}
+
+\AtBeginEnvironment{cor}{%
+  \setbeamercolor{block title}{bg=yellow!75!black,fg=black}%
+  \setbeamercolor{block body}{bg=yellow!10!white}%
+}
+\AtEndEnvironment{cor}{%
+  \setbeamercolor{block title}{bg=red!75!black,fg=white}%
+}
+
+% ── Highlighting ──
+\newcommand{\x}[1]{\alert{\textbf{#1}}}
+
+% ── Color shortcuts ──
+\newcommand{\rd}[1]{{\color{red!70!black}#1}}
+\newcommand{\bl}[1]{{\color{blue!70!black}#1}}
+\newcommand{\gn}[1]{{\color{green!60!black}#1}}
+
+\title{Lecture 14: Cayley--Hamilton Theorem}
+\subtitle{MATH203 Applied Linear Algebra}
+\date{}
+\titlegraphic{}
+
+\begin{document}
+\maketitle
+
+
+% ═══════════════════════════════════════
+% §1 ANNIHILATING POLYNOMIALS
+% ═══════════════════════════════════════
+\section{Annihilating Polynomials}
+
+
+% ── Frame 1: Tension ──────────────────────────────
+\begin{frame}{}
+\vfill
+\begin{center}
+{\Large How do you compute $A^{100}$\,?}
+\end{center}
+\vfill
+
+Let $A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}$.
+
+\vfill
+
+Direct approach: multiply $A$ by itself $100$ times.
+
+\vfill
+
+That is $99$ matrix multiplications. \x{Very painful.}
+
+\vfill
+
+Is there a shortcut?
+
+\vfill
+\end{frame}
+
+
+% ── Frame 2: Annihilating polynomial helps ──────────────────
+\begin{frame}{What If We Knew a Shortcut for $A^2$\,?}
+
+Suppose someone told us:
+$$\x{$A^2 = 5A + 2I$}$$
+
+\vfill
+
+Then we can reduce \x{every} power of $A$:
+\begin{align*}
+A^3 &= A \cdot A^2 = A(5A + 2I) = 5\underbrace{A^2}_{5A+2I} + 2A\\
+    &= 5(5A + 2I) + 2A = \bl{27A + 10I}
+\end{align*}
+
+\vfill
+
+\begin{align*}
+A^4 &= A \cdot A^3 = A(27A + 10I) = 27\underbrace{A^2}_{5A+2I} + 10A\\
+    &= 27(5A + 2I) + 10A = \bl{145A + 54I}
+\end{align*}
+
+\vfill
+
+Every power of $A$ is just $\alpha A + \beta I$ --- two numbers!
+\vfill
+\end{frame}
+
+
+% ── Frame 3: The power of annihilating polynomials ──────────
+\begin{frame}{Why This Works}
+
+The relation $A^2 = 5A + 2I$ means:
+$$A^2 - 5A - 2I = 0.$$
+
+\vfill
+
+So the polynomial $f(t) = t^2 - 5t - 2$ satisfies $f(A) = 0$.
+
+It \x{kills} the matrix $A$.
+
+\vfill
+
+\begin{defi}
+A polynomial $f(t) = c_0 + c_1 t + c_2 t^2 + \cdots + c_n t^n$ is called an \x{annihilating polynomial} of a matrix $A$ if
+$$f(A) = c_0 I + c_1 A + c_2 A^2 + \cdots + c_n A^n = 0.$$
+\end{defi}
+
+\vfill
+
+If $f$ annihilates $A$ and has degree $d$, then every $A^n$ can be written
+as a combination of $I, A, \ldots, A^{d-1}$.
+
+\vfill
+\end{frame}
+
+
+% ── Frame 4: Existence ──────────────────────────────
+\begin{frame}{Does Every Matrix Have an Annihilating Polynomial?}
+
+Consider a $2 \times 2$ matrix $A$.
+
+\vfill
+
+The space $\mathbb{R}^{2 \times 2}$ of all $2 \times 2$ matrices has dimension \x{$4$}.
+
+\vfill
+
+Now look at these \x{five} matrices:
+$$I, \quad A, \quad A^2, \quad A^3, \quad A^4$$
+
+\vfill
+
+Five vectors in a $4$-dimensional space $\Longrightarrow$ \x{linearly dependent.}
+
+\vfill
+
+So there exist coefficients $c_0, c_1, c_2, c_3, c_4$ (not all zero) with
+$$c_0 I + c_1 A + c_2 A^2 + c_3 A^3 + c_4 A^4 = 0.$$
+
+\vfill
+
+This is an annihilating polynomial of degree $\leq 4$.
+
+\vfill
+\end{frame}
+
+
+% ── Frame 5: General existence ──────────────────────────────
+\begin{frame}{Existence in General}
+
+For an $n \times n$ matrix $A$:
+
+\vfill
+
+$\mathbb{R}^{n \times n}$ has dimension $n^2$.
+
+\vfill
+
+The $n^2 + 1$ matrices $I, A, A^2, \ldots, A^{n^2}$ must be \x{linearly dependent}.
+
+\vfill
+
+$\Longrightarrow$ an annihilating polynomial of degree $\leq n^2$ always exists.
+
+\vfill
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{c|c|c}
+matrix size & dimension of $\mathbb{R}^{n\times n}$ & guaranteed degree \\
+\hline
+$2 \times 2$ & $4$ & $\leq 4$ \\
+$3 \times 3$ & $9$ & $\leq 9$ \\
+$10 \times 10$ & $100$ & $\leq 100$
+\end{tabular}
+\end{center}
+
+\vfill
+
+\x{Problem}: degree $n^2$ is big. And this argument does not tell us
+\x{how} to find the polynomial.
+
+Can we do better?
+\vfill
+\end{frame}
+
+
+% ── Frame 6: The real question ──────────────────────────────
+\begin{frame}{}
+\vfill
+\begin{center}
+{\Large Can we find an annihilating polynomial\\[6pt]
+of degree $n$ (not $n^2$),\\[6pt]
+\x{systematically}?}
+\end{center}
+\vfill
+\end{frame}
+
+
+% ── Frame 7: The characteristic polynomial ──────────────────
+\begin{frame}{The Characteristic Polynomial}
+
+\begin{defi}
+For an $n \times n$ matrix $A$, the expression
+$$\det(\lambda I - A)$$
+is a polynomial in $\lambda$ of degree $n$. It is called the \x{characteristic polynomial} of $A$.
+\end{defi}
+
+\vfill
+
+Why is it a polynomial of degree $n$?
+
+\vfill
+
+Each entry of $\lambda I - A$ is at most degree $1$ in $\lambda$.
+
+The determinant multiplies $n$ entries (one per column),
+
+so the result has degree $\leq n$.
+
+\vfill
+
+The leading term comes from the diagonal:
+
+$$(\lambda - a_{11})(\lambda - a_{22}) \cdots (\lambda - a_{nn}) = \lambda^n + \cdots$$
+
+\vfill
+\end{frame}
+
+
+% ── Frame 8: Compute example ──────────────────────────────
+\begin{frame}{Example: Characteristic Polynomial of a $2 \times 2$ Matrix}
+
+Let $A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}$.
+
+\vfill
+
+$$\det(\lambda I - A) = \det \begin{pmatrix} \lambda - 1 & -2 \\ -3 & \lambda - 4 \end{pmatrix}$$
+
+\vfill
+
+$$= (\lambda - 1)(\lambda - 4) - (-2)(-3)$$
+
+\vfill
+
+$$= \lambda^2 - 5\lambda + 4 - 6$$
+
+\vfill
+
+$$= \lambda^2 - 5\lambda - 2$$
+
+\vfill
+
+This is a polynomial of degree $2$ in $\lambda$.
+\vfill
+\end{frame}
+
+
+% ── Frame 9: Cayley-Hamilton statement ──────────────────────
+\begin{frame}{The Cayley--Hamilton Theorem}
+
+\begin{thm}[Cayley--Hamilton]
+For any $n \times n$ matrix $A$, the characteristic polynomial $\det(\lambda I - A)$
+is an \x{annihilating polynomial} of $A$.
+
+\medskip
+
+That is: if $\det(\lambda I - A) = \lambda^n + c_{n-1}\lambda^{n-1} + \cdots + c_0$,
+
+then $A^n + c_{n-1}A^{n-1} + \cdots + c_0 I = 0$.
+\end{thm}
+
+\vfill
+
+This gives us an annihilating polynomial of degree exactly $n$,
+
+computed \x{systematically} from $\det(\lambda I - A)$.
+
+\vfill
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{c|c|c}
+matrix size & dimension argument & Cayley--Hamilton \\
+\hline
+$2 \times 2$ & degree $\leq 4$ & degree $\leq \x{2}$ \\
+$3 \times 3$ & degree $\leq 9$ & degree $\leq \x{3}$ \\
+$10 \times 10$ & degree $\leq 100$ & degree $\leq \x{10}$
+\end{tabular}
+\end{center}
+
+\vfill
+\end{frame}
+
+
+% ── Frame 10: Verification ──────────────────────────────
+\begin{frame}{Let's Check: Does It Really Work?}
+
+$A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}$, \quad
+$\det(\lambda I - A) = \lambda^2 - 5\lambda - 2$.
+
+\vfill
+
+We need to verify: $A^2 - 5A - 2I = 0$.
+
+\vfill
+
+$$A^2 = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix} = \begin{pmatrix} 7 & 10 \\ 15 & 22 \end{pmatrix}$$
+
+\vfill
+
+$$A^2 - 5A - 2I = \begin{pmatrix} 7 & 10 \\ 15 & 22 \end{pmatrix} - \begin{pmatrix} 5 & 10 \\ 15 & 20 \end{pmatrix} - \begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix} = \begin{pmatrix} 0 & 0 \\ 0 & 0 \end{pmatrix}$$
+
+\vfill
+
+\x{It works!}
+
+\vfill
+
+But \x{why} does it always work? We need a proof.
+
+\vfill
+\end{frame}
+
+
+% ── Frame 11: Proof idea — adjugate ──────────────────────
+\begin{frame}{Proof Idea: The Adjugate}
+
+Recall the adjugate identity: for any square matrix $M$,
+$$M^{\!*} \cdot M = \det(M) \cdot I.$$
+
+\vfill
+
+Apply this to $M = \lambda I - A$:
+$$\underbrace{(\lambda I - A)^{*}}_{\text{adjugate}} \cdot\; (\lambda I - A) \;=\; \det(\lambda I - A) \cdot I$$
+
+\vfill
+
+Rearrange:
+
+$$\frac{\det(\lambda I - A) \cdot I}{\lambda I - A} \;=\; (\lambda I - A)^{*}$$
+
+\vfill
+
+The right side is a \x{polynomial} in $\lambda$ (each entry of the adjugate is a determinant of a submatrix of $\lambda I - A$, hence a polynomial).
+
+\vfill
+
+So $\det(\lambda I - A) \cdot I$ is \x{divisible} by $(\lambda I - A)$, with
+\x{zero remainder}!
+
+\vfill
+\end{frame}
+
+
+% ── Frame 12: Why zero remainder implies Cayley-Hamilton ────
+\begin{frame}{From Divisibility to Cayley--Hamilton}
+
+We have:
+$$\det(\lambda I - A) \cdot I = (\lambda I - A)^{*} \cdot (\lambda I - A) + \underbrace{0}_{\text{remainder}}$$
+
+\vfill
+
+From polynomial division (which we will learn next):
+
+\medskip
+
+\begin{center}
+\fbox{\parbox{0.85\textwidth}{\centering
+The \x{remainder} of dividing a polynomial by $(\lambda - A)$\\
+equals the value of \x{plugging in} $\lambda = A$.
+}}
+\end{center}
+
+\vfill
+
+Since the remainder is $0$:
+$$\det(\lambda I - A)\Big|_{\lambda\,=\,A} = 0 \cdot I = 0$$
+
+\vfill
+
+That is exactly the Cayley--Hamilton theorem!
+
+\vfill
+
+$\to$ To make this rigorous, we need to understand \x{polynomial division}.
+
+\vfill
+\end{frame}
+
+
+% ═══════════════════════════════════════
+% §2 POLYNOMIAL DIVISION
+% ═══════════════════════════════════════
+\section{Polynomial Division}
+
+
+% ── Frame 13: Tension ──────────────────────────────
+\begin{frame}{}
+\vfill
+\begin{center}
+{\Large How do you \x{divide} polynomials?}
+\end{center}
+\vfill
+
+The proof of Cayley--Hamilton needs polynomial division.
+
+\vfill
+
+We start with ordinary (scalar) polynomials,
+
+then extend to matrix polynomials.
+
+\vfill
+\end{frame}
+
+
+% ── Frame 14: Number fractions ──────────────────────────────
+\begin{frame}{Simplifying Fractions: Numbers}
+
+When the numerator is bigger than the denominator, extract the integer part:
+
+\vfill
+
+$$\frac{7}{2} = \underbrace{3}_{\text{quotient}} + \frac{\overbrace{1}^{\text{remainder}}}{2}$$
+
+\vfill
+
+$$\frac{13}{5} = \underbrace{2}_{\text{quotient}} + \frac{\overbrace{3}^{\text{remainder}}}{5}$$
+
+\vfill
+
+The pattern:
+
+$$\frac{\text{big number}}{\text{small number}} = \text{integer} + \frac{\text{remainder}}{\text{small number}}$$
+
+\vfill
+
+\x{Can we do the same thing for polynomials?}
+
+\vfill
+\end{frame}
+
+
+% ── Frame 15: Polynomial fraction ──────────────────────────
+\begin{frame}{Simplifying Fractions: Polynomials}
+
+Consider the fraction
+$$\frac{t^3 + 2}{t - 1}.$$
+
+\vfill
+
+The numerator $t^3 + 2$ has degree $3$.
+
+The denominator $t - 1$ has degree $1$.
+
+\vfill
+
+Since degree of numerator $>$ degree of denominator,
+
+we can extract a \x{polynomial quotient}:
+
+\vfill
+$$\frac{t^3 + 2}{t - 1} = \underbrace{(\;\cdots\;)}_{\substack{\text{polynomial}\\\text{(degree } 2\text{)}}} + \frac{\text{remainder}}{t - 1}$$
+
+\vfill
+
+How do we find the quotient and remainder? $\to$ \x{Long division.}
+
+\vfill
+\end{frame}
+
+
+% ── Frame 16: Long division ──────────────────────────────
+\begin{frame}{Long Division: $\boldsymbol{(t^3 + 2) \div (t - 1)}$}
+
+\vfill
+
+$$\begin{array}{rllll}
+&&{\color{red!70!black} t^2}&+{\color{red!70!black}t}&+{\color{red!70!black}1}\\
+    \cline{2-5}
+    t-1 \;\Big)& t^3 &  &  & +2 \\[2pt]
+    & t^3 & -t^2 &  & \\
+    \cline{2-3}
+    &  & t^2 &  & +2\\[2pt]
+    &   & t^2 & -t & \\
+    \cline{3-4}
+    &   &  & t & +2 \\[2pt]
+    &   &     & t & -1 \\
+    \cline{4-5}
+    &   &     &  & {\color{blue!70!black}3} \\
+\end{array}$$
+
+\vfill
+
+\x{Quotient}: $\rd{t^2 + t + 1}$ \hfill
+\x{Remainder}: $\bl{3}$
+
+\vfill
+\end{frame}
+
+
+% ── Frame 17: Result ──────────────────────────────
+\begin{frame}{The Result}
+
+$$\frac{t^3 + 2}{t - 1} = \rd{t^2 + t + 1} + \frac{\bl{3}}{t - 1}$$
+
+\vfill
+
+This is the polynomial analogue of $\dfrac{7}{2} = 3 + \dfrac{1}{2}$.
+
+\vfill
+
+Now multiply both sides by $(t - 1)$:
+
+\vfill
+
+$$\boxed{\;t^3 + 2 = (t - 1)\rd{(t^2 + t + 1)} + \bl{3}\;}$$
+
+\vfill
+
+This is the \x{division formula}:
+
+$$f(t) = \underbrace{(t - a)}_{\text{divisor}} \cdot \underbrace{Q(t)}_{\text{quotient}} + \underbrace{R}_{\text{remainder}}$$
+
+\vfill
+\end{frame}
+
+
+% ── Frame 18: Key insight ──────────────────────────────
+\begin{frame}{The Remainder Is the Value at $t = 1$}
+
+$$t^3 + 2 = \underbrace{(t - 1)(t^2 + t + 1)}_{\text{this part is } 0 \text{ when } t = 1} + \;\bl{3}$$
+
+\vfill
+
+Plug in $t = 1$:
+
+$$\underbrace{1^3 + 2}_{= \, 3} = \underbrace{(1 - 1)}_{= \, 0} \cdot (\cdots) + \bl{3}$$
+
+\vfill
+
+$$3 = 0 + \bl{3} \qquad \checkmark$$
+
+\vfill
+
+The remainder $\bl{3}$ equals the value of $f(t) = t^3 + 2$ at $t = 1$.
+
+\vfill
+
+Is this a coincidence?
+
+\vfill
+\end{frame}
+
+
+% ── Frame 19: Why ──────────────────────────────
+\begin{frame}{Why Does This Always Work?}
+
+Dividing $f(t)$ by $(t - a)$ gives:
+
+$$f(t) = (t - a) \cdot Q(t) + R$$
+
+\vfill
+
+where $R$ is a constant (degree of remainder $<$ degree of divisor).
+
+\vfill
+
+Now plug in $t = a$:
+
+$$f(a) = \underbrace{(a - a)}_{=\; 0} \cdot Q(a) + R = R$$
+
+\vfill
+
+So the remainder is \x{always} equal to $f(a)$.
+
+\vfill
+
+\begin{center}
+\fbox{Remainder of $f(t) \div (t - a)$ $\;=\;$ $f(a)$}
+\end{center}
+
+\vfill
+\end{frame}
+
+
+% ── Frame 20: Remainder Theorem ──────────────────────────────
+\begin{frame}{Remainder Theorem}
+
+\begin{thm}[Remainder Theorem]
+Let $f(t)$ be any polynomial and let $a$ be any number. Then
+$$f(t) = (t - a) \cdot Q(t) + f(a)$$
+for some polynomial $Q(t)$.
+
+In words: the \x{remainder} of dividing $f(t)$ by $(t - a)$ equals $f(a)$.
+\end{thm}
+
+\vfill
+
+Two ways to find the remainder:
+
+\vfill
+
+\begin{enumerate}
+\item \x{Long division} --- divide step by step, read off the remainder.
+
+\item \x{Direct substitution} --- just compute $f(a)$.
+      That \emph{is} the remainder.
+\end{enumerate}
+
+\vfill
+\end{frame}
+
+
+% ── Frame 21: Example ──────────────────
+\begin{frame}{Example: $\boldsymbol{(t^2 - 5t - 2) \div (t - 1)}$}
+
+\x{Step 1.} Predict the remainder by direct substitution:
+
+$$f(1) = 1^2 - 5(1) - 2 = 1 - 5 - 2 = \bl{-6}$$
+
+\vfill
+
+\x{Step 2.} Verify by long division:
+
+$$\begin{array}{rlll}
+&&{\color{red!70!black} t}&{\color{red!70!black}{}-4}\\
+    \cline{2-4}
+    t-1 \;\Big)& t^2 & -5t  & -2 \\[2pt]
+    & t^2 & -t &  \\
+    \cline{2-3}
+    &  & -4t & -2  \\[2pt]
+    &   & -4t & +4  \\
+    \cline{3-4}
+    &   &  & {\color{blue!70!black}-6}  \\
+\end{array}$$
+
+\vfill
+
+$$\frac{t^2 - 5t - 2}{t - 1} = \rd{t - 4} + \frac{\bl{-6}}{t - 1} \qquad \checkmark$$
+
+\vfill
+\end{frame}
+
+
+% ── Frame 22: Second example ──────────────────
+\begin{frame}{Example: $\boldsymbol{(t^2 - 5t - 2) \div (t - 3)}$}
+
+\x{Step 1.} Predict the remainder:
+
+$$f(3) = 3^2 - 5(3) - 2 = 9 - 15 - 2 = \bl{-8}$$
+
+\vfill
+
+\x{Step 2.} Verify by long division:
+
+$$\begin{array}{rlll}
+&&{\color{red!70!black} t}&{\color{red!70!black}{}-2}\\
+    \cline{2-4}
+    t-3 \;\Big)& t^2 & -5t  & -2 \\[2pt]
+    & t^2 & -3t &  \\
+    \cline{2-3}
+    &  & -2t & -2  \\[2pt]
+    &   & -2t & +6  \\
+    \cline{3-4}
+    &   &  & {\color{blue!70!black}-8}  \\
+\end{array}$$
+
+\vfill
+
+$$\frac{t^2 - 5t - 2}{t - 3} = \rd{t - 2} + \frac{\bl{-8}}{t - 3} \qquad \checkmark$$
+
+\vfill
+\end{frame}
+
+
+% ── Frame 23: Divisibility ──────────────────────────────
+\begin{frame}{When Is the Remainder Zero?}
+
+$$f(t) = (t - a) \cdot Q(t) + \underbrace{f(a)}_{\text{remainder}}$$
+
+\vfill
+
+If $f(a) = 0$, the remainder vanishes:
+
+$$f(t) = (t - a) \cdot Q(t)$$
+
+\vfill
+
+So $(t - a)$ \x{divides} $f(t)$ with no remainder.
+
+\vfill
+
+\begin{cor}
+$(t - a)$ divides $f(t)$ if and only if $a$ is a root of $f$, i.e.\ $f(a) = 0$.
+\end{cor}
+
+\vfill
+
+Example: $f(t) = t^2 - 5t + 6$. Then $f(2) = 4 - 10 + 6 = 0$,
+
+so $(t - 2)$ divides $f(t)$. Indeed $t^2 - 5t + 6 = (t-2)(t-3)$.
+
+\vfill
+\end{frame}
+
+
+% ── Frame 24: Connection back to Cayley-Hamilton ────────────
+\begin{frame}{Back to Cayley--Hamilton}
+
+\vfill
+
+Recall our proof strategy:
+
+\vfill
+
+\begin{enumerate}
+\item The adjugate identity tells us
+$$\det(\lambda I - A) \cdot I = (\lambda I - A)^{*} \cdot (\lambda I - A)$$
+so $\det(\lambda I - A) \cdot I$ is \x{divisible} by $(\lambda I - A)$.
+
+\vfill
+
+\item The remainder of dividing by $(\lambda - A)$ equals the value at $\lambda = A$.
+
+\vfill
+
+\item Since the division is exact (zero remainder), plugging in $\lambda = A$ gives $0$.
+\end{enumerate}
+
+\vfill
+
+To make this rigorous:
+we need polynomial division with \x{matrix coefficients}.
+
+\vfill
+$\to$ \x{Next section.}
+
+\vfill
+\end{frame}
+
+
+
+% ═══════════════════════════════════════
+% §3 DIVIDING BY (λ − A)
+% ═══════════════════════════════════════
+\section{Dividing by $(\lambda - A)$}
+
+
+% ── Frame 25: False proof ──────────────────────────────
+\begin{frame}{A Tempting but \rd{Wrong} Proof}
+
+\vfill
+
+``Proof'' of Cayley--Hamilton:
+
+$$\det(\lambda I - A)\Big|_{\lambda\,=\,A} = \det(AI - A) = \det(0) = 0. \qquad \rd{\text{WRONG!}}$$
+
+\vfill
+
+The error: you \x{cannot} plug a matrix into $\det(\lambda I - A)$ directly.
+
+\vfill
+
+The $\lambda$ inside $\det(\lambda I - A)$ sits in a \x{scalar} slot.
+
+Replacing it with a matrix changes the meaning of the expression entirely.
+
+\vfill
+\end{frame}
+
+
+% ── Frame 26: Why wrong ──────────────────────────────
+\begin{frame}{Why the False Proof Fails}
+
+Consider $\det(\lambda I_2) = \lambda^2$. The scalar polynomial is $f(\lambda) = \lambda^2$.
+
+\vfill
+
+Plug in $B = \begin{pmatrix}1&2\\3&4\end{pmatrix}$:
+
+\vfill
+
+\begin{itemize}
+\item \x{Correct}: expand first, then substitute:
+
+$f(B) = B^2 = \begin{pmatrix} 7 & 10 \\ 15 & 22 \end{pmatrix}$ \quad (a $2 \times 2$ matrix)
+
+\vfill
+
+\item \rd{Wrong}: substitute inside the determinant:
+
+$\det(B \cdot I_2) = \det(B) = -2$ \quad (a number, not a matrix!)
+\end{itemize}
+
+\vfill
+
+$\begin{pmatrix}7&10\\15&22\end{pmatrix} \neq -2$
+\qquad They are not even the same type of object.
+
+\vfill
+\end{frame}
+
+
+% ── Frame 27: Correct approach ──────────────────────────────
+\begin{frame}{The Correct Approach}
+
+\vfill
+
+\x{Step 1.} Expand $\det(\lambda I - A)$ to get a \x{scalar} polynomial:
+
+$$\det(\lambda I - A) = \lambda^2 - 5\lambda - 2$$
+
+\vfill
+
+\x{Step 2.} Substitute $\lambda = A$ into the \x{expanded} polynomial:
+
+$$f(A) = A^2 - 5A - 2I$$
+
+\vfill
+
+\begin{center}
+\fbox{\parbox{0.82\textwidth}{\centering
+\x{Expand first}, then substitute.\\[3pt]
+Never substitute a matrix directly into a determinant.
+}}
+\end{center}
+
+\vfill
+\end{frame}
+
+
+% ── Frame 28: Division setup ──────────────────────────────
+\begin{frame}{Dividing $\lambda^2 - 5\lambda - 2$ by $(\lambda - A)$}
+
+\vfill
+
+We treat $A$ as a \x{constant} and divide:
+
+$$\frac{\lambda^2 - 5\lambda - 2}{\lambda - A}$$
+
+\vfill
+
+The divisor $(\lambda - A)$ has leading coefficient $1$ (it is \x{monic}),
+
+so long division works exactly as before.
+
+\vfill
+
+The only difference: quotient and remainder now have \x{matrix coefficients}.
+
+\vfill
+\end{frame}
+
+
+% ── Frame 29: Long division with matrices ──────────────────
+\begin{frame}{Long Division: $\boldsymbol{(\lambda^2 - 5\lambda - 2) \div (\lambda - A)}$}
+
+\vfill
+
+$$\begin{array}{rlll}
+&&{\color{red!70!black} \lambda}&+{\color{red!70!black}(A-5I)}\\
+    \cline{2-4}
+    \lambda-A \;\Big)& \lambda^2 & -5\lambda  & -2I \\[4pt]
+    & \lambda^2 & -A\lambda &  \\
+    \cline{2-3}
+    &  & (A-5I)\lambda & -2I  \\[4pt]
+    &   & (A-5I)\lambda & -(A^2-5A)  \\
+    \cline{3-4}
+    &   &  & {\color{blue!70!black}A^2-5A-2I}  \\
+\end{array}$$
+
+\vfill
+
+\x{Quotient}: $\rd{\lambda I + (A - 5I)}$ \hfill
+\x{Remainder}: $\bl{A^2 - 5A - 2I}$
+
+\vfill
+\end{frame}
+
+
+% ── Frame 30: Result ──────────────────────────────
+\begin{frame}{The Result}
+
+$$\frac{\lambda^2 - 5\lambda - 2}{\lambda - A} = \rd{\lambda I + (A-5I)} + \frac{\bl{A^2 - 5A - 2I}}{\lambda I - A}$$
+
+\vfill
+
+Multiply both sides by $(\lambda I - A)$:
+
+$$(\lambda^2 - 5\lambda - 2) \cdot I = \rd{[\lambda I + (A-5I)]} \cdot (\lambda I - A) + \bl{A^2 - 5A - 2I}$$
+
+\vfill
+
+The remainder $\bl{A^2 - 5A - 2I}$ is exactly $f(A)$
+
+--- the value of plugging $\lambda = A$ into $f(\lambda) = \lambda^2 - 5\lambda - 2$.
+
+\vfill
+
+Just like the scalar case!
+
+\vfill
+\end{frame}
+
+
+% ── Frame 31: Why remainder = f(A) ──────────────────────────
+\begin{frame}{Why the Remainder Equals $f(A)$}
+
+\vfill
+
+We have the division formula:
+
+$$f(\lambda) \cdot I = Q(\lambda) \cdot (\lambda I - A) + R$$
+
+where $R$ is a constant matrix (does not depend on $\lambda$).
+
+\vfill
+
+Plug in $\lambda = A$ into the \x{expanded} polynomial:
+
+$$f(A) = Q(A) \cdot \underbrace{(AI - A)}_{=\; 0} + R = R$$
+
+\vfill
+
+So $R = f(A)$, exactly as in the scalar case.
+
+\vfill
+
+\begin{thm}[Matrix Remainder Theorem]
+$$f(\lambda) \cdot I = Q(\lambda) \cdot (\lambda I - A) + f(A)$$
+The remainder of dividing $f(\lambda) \cdot I$ by $(\lambda I - A)$ equals $f(A)$.
+\end{thm}
+
+\vfill
+\end{frame}
+
+
+% ── Frame 32: Uniqueness ──────────────────────────────
+\begin{frame}{Existence and Uniqueness of Matrix Polynomial Division}
+
+\vfill
+
+For any \x{monic} divisor $d(\lambda)$ (leading coefficient $= I$),
+
+the division
+
+$$F(\lambda) = Q(\lambda) \cdot d(\lambda) + R(\lambda), \qquad \deg R < \deg d$$
+
+always \x{exists} and is \x{unique}.
+
+\vfill
+
+\begin{itemize}
+\item \x{Existence}: the long division algorithm works because the leading
+coefficient $I$ is invertible --- each step reduces the degree by $1$.
+
+\vfill
+
+\item \x{Uniqueness}: if two decompositions exist, their difference forces
+a degree contradiction.
+\end{itemize}
+
+\vfill
+
+See \x{Homework 4, Problem 9} for the full proof.
+
+\vfill
+\end{frame}
+
+
+% ═══════════════════════════════════════
+% §4 PROOF OF THE CAYLEY–HAMILTON THEOREM
+% ═══════════════════════════════════════
+\section{Proof of the Cayley--Hamilton Theorem}
+
+
+% ── Frame 33: Section opener ──────────────────────────────
+\begin{frame}{}
+\vfill
+\begin{center}
+{\Large Now we have all the tools.\\[12pt]
+Let's \x{prove} Cayley--Hamilton.}
+\end{center}
+\vfill
+\end{frame}
+
+
+% ── Frame 34: Adjugate identity ──────────────────────────────
+\begin{frame}{The Adjugate Identity}
+
+\vfill
+
+Recall: for any square matrix $M$,
+
+$$M^* \cdot M = \det(M) \cdot I$$
+
+where $M^*$ is the \x{adjugate} (matrix of cofactors, transposed).
+
+\vfill
+
+Apply this to $M = \lambda I - A$:
+
+$$(\lambda I - A)^{*} \cdot (\lambda I - A) = \det(\lambda I - A) \cdot I$$
+
+\vfill
+
+Rearrange:
+
+$$\frac{\det(\lambda I - A) \cdot I}{\lambda I - A} = (\lambda I - A)^{*}$$
+
+\vfill
+\end{frame}
+
+
+% ── Frame 35: Adjugate is a polynomial ──────────────────────
+\begin{frame}{The Adjugate Is a Matrix Polynomial}
+
+For $A = \begin{pmatrix}1&2\\3&4\end{pmatrix}$, \quad
+$\lambda I - A = \begin{pmatrix} \lambda-1 & -2 \\ -3 & \lambda-4 \end{pmatrix}$
+
+\vfill
+
+The adjugate (swap diagonal, negate off-diagonal):
+
+$$(\lambda I - A)^* = \begin{pmatrix} \lambda-4 & 2 \\ 3 & \lambda-1 \end{pmatrix}$$
+
+\vfill
+
+Write as a \x{polynomial in $\lambda$} with matrix coefficients:
+
+$$(\lambda I - A)^* = \begin{pmatrix}1&0\\0&1\end{pmatrix}\lambda + \begin{pmatrix}-4&2\\3&-1\end{pmatrix}$$
+
+\vfill
+
+Each entry of $(\lambda I-A)^*$ is a cofactor = determinant of a submatrix
+of $\lambda I - A$, hence a \x{polynomial in $\lambda$}.
+
+\vfill
+\end{frame}
+
+
+% ── Frame 36: Verify adjugate identity ──────────────────────
+\begin{frame}{Verify: $(\lambda I-A)^* \cdot (\lambda I-A) = \det(\lambda I-A) \cdot I$}
+
+\vfill
+
+$$\begin{pmatrix}\lambda-4&2\\3&\lambda-1\end{pmatrix}\begin{pmatrix}\lambda-1&-2\\-3&\lambda-4\end{pmatrix}$$
+
+\vfill
+
+$$= \begin{pmatrix}(\lambda\!-\!4)(\lambda\!-\!1)-6 & -2(\lambda\!-\!4)+2(\lambda\!-\!4) \\ 3(\lambda\!-\!1)-3(\lambda\!-\!1) & -6+(\lambda\!-\!1)(\lambda\!-\!4)\end{pmatrix}$$
+
+\vfill
+
+$$= \begin{pmatrix}\lambda^2-5\lambda-2 & 0 \\ 0 & \lambda^2-5\lambda-2\end{pmatrix} = (\lambda^2 - 5\lambda - 2) \cdot I \quad \checkmark$$
+
+\vfill
+
+The adjugate $(\lambda I-A)^*$ is a \x{pure polynomial} --- no $(\lambda I - A)^{-1}$ term.
+
+\vfill
+\end{frame}
+
+
+% ── Frame 37: Two decompositions ──────────────────────────────
+\begin{frame}{Two Ways to Write the Same Fraction}
+
+\x{Way 1} --- polynomial division (from \S 3):
+
+$$\frac{\det(\lambda I-A) \cdot I}{\lambda I - A} = \rd{Q(\lambda)} + \frac{\bl{f(A)}}{\lambda I - A}$$
+
+where $\bl{f(A)} = A^2 - 5A - 2I$ is the remainder.
+
+\vfill
+
+\x{Way 2} --- adjugate identity (from \S 4):
+
+$$\frac{\det(\lambda I - A) \cdot I}{\lambda I - A} = \gn{(\lambda I - A)^*}$$
+
+\vfill
+
+The right side is a \x{pure polynomial} --- no $(\lambda I-A)^{-1}$ term!
+
+\vfill
+\end{frame}
+
+
+% ── Frame 38: Comparing ──────────────────────────────
+\begin{frame}{Comparing the Two Decompositions}
+
+\vfill
+
+Setting them equal:
+
+$$\underbrace{\rd{Q(\lambda)}}_{\text{polynomial}} + \underbrace{\frac{\bl{f(A)}}{\lambda I - A}}_{\text{not polynomial}} = \underbrace{\gn{(\lambda I - A)^*}}_{\text{polynomial}}$$
+
+\vfill
+
+Move the polynomial parts to one side:
+
+$$\frac{\bl{f(A)}}{\lambda I - A} = \underbrace{\gn{(\lambda I - A)^*} - \rd{Q(\lambda)}}_{\text{polynomial in } \lambda}$$
+
+\vfill
+
+The left side has $(\lambda I - A)^{-1}$, which $\to 0$ as $\lambda \to \infty$.
+
+\vfill
+
+A polynomial that $\to 0$ as $\lambda \to \infty$ must be \x{identically zero}.
+
+\vfill
+
+Therefore $\bl{f(A)} \cdot (\lambda I - A)^{-1} = 0$, \quad so \quad $\bl{f(A) = 0}$. \qquad $\square$
+
+\vfill
+\end{frame}
+
+
+% ── Frame 39: Theorem restated ──────────────────────────────
+\begin{frame}{Cayley--Hamilton Theorem --- Proved!}
+
+\begin{thm}[Cayley--Hamilton]
+For any $n \times n$ matrix $A$:
+
+if\; $\det(\lambda I - A) = \lambda^n + c_{n-1}\lambda^{n-1} + \cdots + c_0$,
+
+then\; $A^n + c_{n-1}A^{n-1} + \cdots + c_0 I = 0$.
+\end{thm}
+
+\vfill
+
+\x{Proof summary}:
+
+\begin{enumerate}
+\item Expand $\det(\lambda I - A) = f(\lambda)$, a scalar polynomial of degree $n$.
+
+\item Polynomial division: \;$f(\lambda)\cdot I = Q(\lambda)\cdot(\lambda I-A) + f(A)$.
+
+\item Adjugate identity: \;$f(\lambda)\cdot I = (\lambda I-A)^* \cdot (\lambda I - A)$.
+
+\item Comparing: the adjugate decomposition has \x{zero remainder}.
+
+\item By uniqueness: $f(A) = 0$. \quad $\square$
+\end{enumerate}
+
+\vfill
+\end{frame}
+
+
+% ── Frame 40: Application ──────────────────────────────
+\begin{frame}{Application: Computing Matrix Powers}
+
+For $A = \begin{pmatrix}1&2\\3&4\end{pmatrix}$, Cayley--Hamilton gives $A^2 = 5A + 2I$.
+
+\vfill
+
+\begin{align*}
+A^3 &= A \cdot A^2 = A(5A+2I) = 5\underbrace{A^2}_{5A+2I} + 2A = 27A + 10I \\[6pt]
+    &= 27\begin{pmatrix}1&2\\3&4\end{pmatrix} + 10\begin{pmatrix}1&0\\0&1\end{pmatrix}
+     = \begin{pmatrix} 37 & 54 \\ 81 & 118 \end{pmatrix}
+\end{align*}
+
+\vfill
+
+\begin{align*}
+A^4 &= A \cdot A^3 = 27\underbrace{A^2}_{5A+2I} + 10A = 145A + 54I \\[6pt]
+    &= \begin{pmatrix} 199 & 290 \\ 435 & 634 \end{pmatrix}
+\end{align*}
+
+\vfill
+
+Every power: $A^n = \alpha_n A + \beta_n I$ for just \x{two numbers} $\alpha_n, \beta_n$.
+
+\vfill
+\end{frame}
+
+
+% ── Frame 41: Exercise ──────────────────────────────
+\begin{frame}{Exercise}
+
+\vfill
+
+Let $B = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}$.
+
+\vfill
+
+\begin{enumerate}
+\item Compute $\det(\lambda I - B)$.
+
+\vfill
+
+\item Use the Cayley--Hamilton theorem to express $B^2$ in terms of $B$ and $I$.
+
+\vfill
+
+\item Compute $B^5$.
+\end{enumerate}
+
+\vfill
+\end{frame}
+
+
+\end{document}
