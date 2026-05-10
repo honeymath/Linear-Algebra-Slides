@@ -151,24 +151,20 @@ where $P_1, \ldots, P_m$ are compatible projections that partition $I$.
 
 \vfill
 
-Each $P_i$ is a projection: $P_i^2 = P_i$.
+\begin{center}
+$$A = \lambda_1 P_1 + \lambda_2 P_2 + \cdots + \lambda_m P_m$$
+
+\vspace{0.6cm}
+
+$$\underbrace{\mathbf{v}}_{\text{any vector}} = \underbrace{P_1 \mathbf{v}}_{\in\,\operatorname{Col}(P_1)} + \underbrace{P_2\mathbf{v}}_{\in\,\operatorname{Col}(P_2)} + \cdots + \underbrace{P_m\mathbf{v}}_{\in\,\operatorname{Col}(P_m)}$$
+\end{center}
 
 \vfill
-
-Every projection projects \x{onto} some subspace --- its column space $\operatorname{Col}(P_i)$.
-
-\vfill
-
-$$\mathbf{v} = P_1 \mathbf{v} + P_2\mathbf{v} + \cdots + P_m\mathbf{v}$$
-
-$$P_i\mathbf{v} \in \operatorname{Col}(P_i)$$
-
-\vfill\pause
 
 \begin{center}
 {\Large \x{What is $\operatorname{Col}(P_i)$?}}
 
-\vspace{0.6cm}
+\vspace{0.5cm}
 
 {\Large What does $A$ do to vectors in $\operatorname{Col}(P_i)$?}
 \end{center}
@@ -227,16 +223,28 @@ $$A = \underbrace{1}_{\lambda_1} \cdot P_1 + \underbrace{3}_{\lambda_2} \cdot P_
 \end{frame}
 
 
-% ADR: Pick a test vector and compute what each projection does to it.
-% v = (2,3) is chosen so that BOTH pieces P_1 v and P_3 v are nonzero
-% with clean integer entries: P_1 v = (1,1), P_3 v = (1,2).
-%
-% The explicit 2x2 matrix-vector multiplications are shown so students
-% can follow each step. The sum P_1 v + P_3 v = v is the concrete
-% meaning of P_1 + P_3 = I.
-%
-% AUDIENCE EMOTION: "oh, every vector really does split into 2 pieces"
-% AUDIENCE ATTENTION: concrete numbers they can verify in their heads.
+\begin{frame}{Our Plan}
+
+\vfill
+
+\begin{center}
+{\large \x{Goal}: Discover what $\operatorname{Col}(P_i)$ is.}
+\end{center}
+
+\vfill
+
+\begin{enumerate}
+\item Pick a test vector $\mathbf{v}$, split it as $\mathbf{v} = P_1\mathbf{v} + P_3\mathbf{v}$.
+\item Apply $A$ to each piece --- see what happens.
+\item Explain \x{why} using value tables.
+\item Name the subspace $\operatorname{Col}(P_i)$.
+\end{enumerate}
+
+\vfill
+
+\end{frame}
+
+
 \begin{frame}{What Does $P_i$ Do to a Vector?}
 
 Pick $\mathbf{v} = \begin{pmatrix}2\\3\end{pmatrix}$. \quad Apply each projection:
@@ -477,14 +485,6 @@ $\;=\;$ value table of $3 P_3$ \;\checkmark
 \end{frame}
 
 
-% ADR: Left multiplication too -- P_i A = lambda_i P_i.
-% This is quick but important: it sets up left eigenvectors in S3.
-% The key point: value table multiplication is entry-wise, so order
-% doesn't matter. This proves A commutes with each P_i.
-%
-% AUDIENCE EMOTION: "A commutes with P_i -- and the value table makes
-% it obvious"
-% AUDIENCE ATTENTION: short frame, one key fact, builds on previous.
 \begin{frame}{$A$ Commutes With Each $P_i$}
 
 What about $P_1 A$? \x{Multiply} value tables in the other order:
@@ -512,114 +512,31 @@ $AP_i = P_i A = \lambda_i P_i \qquad\text{for each } i$
 }}
 \end{center}
 
-\vfill
-
-$A$ commutes with every spectral projection.
-
-\vfill
-
-(This fact will matter when we find \x{left eigenvectors} later.)
-
 \end{frame}
 
 
-% ADR: From AP_i = lambda_i P_i to the eigenspace definition.
-% The logic: if x in Col(P_i), then P_i x = x (projection fixes its
-% column space), so Ax = AP_i x = lambda_i P_i x = lambda_i x.
-% Every vector in Col(P_i) is just scaled by lambda_i.
-%
-% This is the bridge from "what P_i does" to "what eigenspace means."
-%
-% AUDIENCE EMOTION: "so Col(P_i) is where A just multiplies by lambda_i"
-% AUDIENCE ATTENTION: the chain Ax = AP_ix = lambda_iP_ix = lambda_ix
-% is short and each step has a reason shown explicitly.
-\begin{frame}{From $AP_i = \lambda_i P_i$ to Eigenvectors}
-
-Suppose $\mathbf{x} \in \operatorname{Col}(P_i)$.
-
-\vfill
-
-Since $P_i$ is a projection, it \x{fixes} its own column space: $P_i\mathbf{x} = \mathbf{x}$.
-
-\vfill\pause
-
-Then:
-
-$$A\mathbf{x} = A \underbrace{P_i \mathbf{x}}_{= \mathbf{x}} = \underbrace{AP_i}_{= \lambda_i P_i}\mathbf{x} = \lambda_i \underbrace{P_i\mathbf{x}}_{= \mathbf{x}} = \lambda_i \mathbf{x}$$
-
-\vfill
-
-Every vector in $\operatorname{Col}(P_i)$ is scaled by $\lambda_i$.
-
-\vfill\pause
-
-\begin{center}
-\fbox{\parbox{0.75\textwidth}{\centering
-$\operatorname{Col}(P_i)$ = the subspace where $A$ acts as\\[4pt]
-\x{scalar multiplication by $\lambda_i$}.
-}}
-\end{center}
-
-\end{frame}
-
-
-% ADR: The eigenspace definition. We define it as Col(P_i) FIRST,
-% then give the equivalent {x : Ax = lambda x} form.
-%
-% Then verify on the running 2x2 example: find a basis for each
-% Col(P_i) and check that A scales it by the right eigenvalue.
-%
-% Col(P_1) = span{(1,1)^T}: first column of P_1 = (2,2)^T ~ (1,1)^T
-% Check: A(1,1)^T = (-1+2, -4+5)^T = (1,1)^T = 1*(1,1)^T
-%
-% Col(P_3) = span{(1,2)^T}: second column of P_3 = (1,2)^T
-% Check: A(1,2)^T = (-1+4, -4+10)^T = (3,6)^T = 3*(1,2)^T
-%
-% AUDIENCE EMOTION: "so THAT's what an eigenspace is"
-% AUDIENCE ATTENTION: two quick checks -- each is one line of
-% 2x2 arithmetic the audience can do in their head.
-\begin{frame}{The Eigenspace}
+\begin{frame}[shrink=10]{Answer: $\operatorname{Col}(P_i)$ is the \x{Eigenspace}}
 
 \begin{defi}[Eigenspace]
 The \x{eigenspace} of $A$ for eigenvalue $\lambda_i$ is
 $$E_{\lambda_i} \;=\; \bigl\{\,\mathbf{x} \in \mathbb{R}^n : A\mathbf{x} = \lambda_i \mathbf{x}\,\bigr\}$$
 \end{defi}
 
-\vfill
+\vfill\pause
 
-The set of all vectors that $A$ simply \x{scales} by $\lambda_i$.
+If $\mathbf{x} \in \operatorname{Col}(P_i)$, then $P_i$ fixes it: $P_i\mathbf{x} = \mathbf{x}$.
 
-\vfill
-
-\begin{prop}
-$E_{\lambda_i} = \operatorname{Col}(P_i)$ \quad (the column space of the spectral projection).
-\end{prop}
-
-\vfill
-
-\textit{Proof on next slide.}
-
-\end{frame}
-
-\begin{frame}{Proof: $E_{\lambda_i} = \operatorname{Col}(P_i)$}
-
-Proof ($\supseteq$): If $\mathbf{x} \in \operatorname{Col}(P_i)$, then $P_i\mathbf{x} = \mathbf{x}$ (projection fixes its column space), so
-
-$$A\mathbf{x} = A P_i\mathbf{x} = \lambda_i P_i\mathbf{x} = \lambda_i\mathbf{x} \quad\implies\quad \mathbf{x} \in E_{\lambda_i}$$
+$$A\mathbf{x} = A \underbrace{P_i \mathbf{x}}_{= \mathbf{x}} = \underbrace{AP_i}_{= \lambda_i P_i}\mathbf{x} = \lambda_i \underbrace{P_i\mathbf{x}}_{= \mathbf{x}} = \lambda_i \mathbf{x} \qquad\implies\quad \operatorname{Col}(P_i) \subseteq E_{\lambda_i}$$
 
 \vfill\pause
 
-Proof ($\subseteq$): $P_i$ is a \x{polynomial} of $A$ (Lagrange interpolation formula from L15).
+Conversely: $P_i$ is a polynomial of $A$ (Lagrange formula). If $A\mathbf{x} = \lambda_i\mathbf{x}$, then $f(A)\mathbf{x} = f(\lambda_i)\mathbf{x}$ for any polynomial $f$. Since $P_i$ evaluates to $1$ at $\lambda_i$:
 
-\smallskip
+$$P_i\mathbf{x} = 1 \cdot \mathbf{x} = \mathbf{x} \qquad\implies\quad E_{\lambda_i} \subseteq \operatorname{Col}(P_i)$$
 
-For any polynomial $f$ of $A$: if $A\mathbf{x} = \lambda_i\mathbf{x}$, then $f(A)\mathbf{x} = f(\lambda_i)\mathbf{x}$.
+\vfill
 
-\smallskip
-
-Since $P_i$ is the Lagrange polynomial that evaluates to \x{$1$} at $\lambda_i$:
-
-$$P_i\mathbf{x} = 1 \cdot \mathbf{x} = \mathbf{x} \quad\implies\quad \mathbf{x} \in \operatorname{Col}(P_i) \qed$$
+$$\boxed{E_{\lambda_i} = \operatorname{Col}(P_i)}$$
 
 \end{frame}
 
@@ -634,41 +551,14 @@ $A\begin{pmatrix}1\\1\end{pmatrix} = \begin{pmatrix}1\\1\end{pmatrix} = \x{1}\be
 $E_3 = \operatorname{Col}(P_3) = \operatorname{span}\left\{\begin{pmatrix}1\\2\end{pmatrix}\right\}$. \quad
 $A\begin{pmatrix}1\\2\end{pmatrix} = \begin{pmatrix}3\\6\end{pmatrix} = \x{3}\begin{pmatrix}1\\2\end{pmatrix}$ \;\checkmark
 
-\vfill\pause
+\vfill
 
 \begin{center}
 \fbox{\parbox{0.75\textwidth}{\centering
-The eigenspace $E_{\lambda_i}$ is \x{exactly} the column space of $P_i$.\\[4pt]
-The spectral projections \x{project onto} the eigenspaces.
+$P_i$ projects onto $E_{\lambda_i}$:\\[4pt]
+the subspace where $A$ acts as \x{scalar multiplication by $\lambda_i$}.
 }}
 \end{center}
-
-\end{frame}
-
-
-% ADR: Section summary -- crystallize the key insight before moving on.
-% One big statement, no clutter.
-%
-% AUDIENCE EMOTION: "I understand what eigenspaces ARE now -- they're
-% where A just multiplies"
-% AUDIENCE ATTENTION: one-line summary, then scene change.
-\begin{frame}{}
-
-\vfill
-
-\begin{center}
-{\Large $P_i$ projects onto $E_{\lambda_i}$:}
-
-\vspace{0.8cm}
-
-{\Large the subspace where $A$ acts as}
-
-\vspace{0.8cm}
-
-{\Large \x{scalar multiplication by $\lambda_i$}.}
-\end{center}
-
-\vfill
 
 \end{frame}
 
@@ -689,10 +579,31 @@ The spectral projections \x{project onto} the eigenspaces.
 \section{Compatible Projections Revisited}
 
 
-% ADR: Value table checks for projection property.
-% Square each entry: if same, it's a projection.
-% AUDIENCE EMOTION: "value tables make this instant"
-% AUDIENCE ATTENTION: two tables side by side, scannable.
+\begin{frame}{What We Want to Show}
+
+\vfill
+
+\x{Two main points} in this section:
+
+\vfill
+
+\begin{enumerate}
+\item Any vector $\mathbf{v}$ can be \x{decomposed into eigenvectors} --- one from each eigenspace $E_{\lambda_i}$.
+
+\vspace{0.3cm}
+
+\item Eigenvectors with \x{different eigenvalues} are \x{linearly independent}: the decomposition is unique.
+\end{enumerate}
+
+\vfill
+
+The key: $P_1, \ldots, P_m$ are \x{compatible projections} (Lecture 8--9).
+
+\vfill
+
+\end{frame}
+
+
 \begin{frame}[shrink=5]{Recall: Where Did $P_1, P_3$ Come From?}
 
 In Lecture 15, we plugged $A$ into the \x{Lagrange interpolation polynomials}:
@@ -848,29 +759,15 @@ No extra verification needed --- it's built into the construction.
 \end{frame}
 
 
-% ADR: THE theorem on linear independence of eigenvectors.
-% This is a SERIOUS theorem, stated in full generality for m
-% eigenvectors with m distinct eigenvalues.
-% Proof uses spectral projections: P_i kills eigenvectors from
-% other eigenspaces (because the Lagrange formula for P_i contains
-% the factor (A - lambda_j I)), and P_i fixes its own eigenspace.
-% Apply P_i to the linear combination: all terms except the i-th vanish.
-%
-% Legacy slides (SpectralDecompositionForRepeatedRoots.tex, line 852)
-% state this as a theorem with this exact proof technique.
-%
-% AUDIENCE EMOTION: "a powerful theorem with a clean proof"
-% AUDIENCE ATTENTION: the proof is short but the theorem is general.
 \begin{frame}[shrink=5]{Eigenvectors With Different Eigenvalues Are Independent}
 
-From Lecture 9, Proposition (Independent Decompositions):
+Recall from Lecture 9 (Property 2, Independent Decompositions):
 
 \vfill
 
 \begin{center}
 \fbox{\parbox{0.88\textwidth}{
-For a compatible family $\{P_1, \ldots, P_m\}$, the nonzero vectors among $\{P_1\mathbf{v}, \ldots, P_m\mathbf{v}\}$ are \x{linearly independent}.\\[4pt]
-{\small Proof: multiply both sides of $\sum c_i P_i\mathbf{v} = 0$ by $P_j$. Since $P_jP_i = 0$ for $j \neq i$, only the $j$-th term survives: $c_j P_j\mathbf{v} = 0$.}
+For a compatible family $\{P_1, \ldots, P_m\}$, the nonzero vectors among $\{P_1\mathbf{v}, \ldots, P_m\mathbf{v}\}$ are \x{linearly independent}.
 }}
 \end{center}
 
@@ -886,7 +783,7 @@ Let $\mathbf{v}_1, \ldots, \mathbf{v}_m$ be eigenvectors of $A$ with \x{distinct
 
 Each $\mathbf{v}_i \in E_{\lambda_i} = \operatorname{Col}(P_i)$, so $P_i\mathbf{v}_i = \mathbf{v}_i \neq 0$ and $P_j\mathbf{v}_i = 0$ for $j \neq i$.
 
-The Lecture 9 proposition applies directly. \qed
+This is a direct consequence of Lecture 9.
 
 \end{frame}
 
@@ -1021,50 +918,11 @@ To find eigenvectors, we \x{cross-fill} each projection (Lecture 8).
 \end{frame}
 
 
-% ADR: Cross-fill P_2, step 1. Pivot at (1,1)=1.
-% Show the extraction of column vector and row vector.
-% AUDIENCE EMOTION: "I remember this from L08"
-% AUDIENCE ATTENTION: concrete step, clean numbers.
-\begin{frame}[shrink=5]{Cross-Fill $P_2$ --- Step 1}
+\begin{frame}[shrink=10]{Cross-Fill $P_2$ (Rank 2)}
 
-$$P_2 = \begin{pmatrix}\pvt{1}&\crs{0}&\crs{-1}\\\crs{0}&1&-1\\\crs{0}&0&0\end{pmatrix}$$
-
-\vfill
-
-Pivot at position $(1,1)$: $\pvt{1}$. \quad Column through pivot: $\crs{\begin{pmatrix}1\\0\\0\end{pmatrix}}$. \quad Row through pivot: $\crs{\begin{pmatrix}1&0&-1\end{pmatrix}}$.
-
-\vfill
-
-Rank-1 piece (outer product of column $\times$ row):
-
-$$R_1 = \crs{\begin{pmatrix}1\\0\\0\end{pmatrix}}\crs{\begin{pmatrix}1&0&-1\end{pmatrix}} = \begin{pmatrix}\pvt{1}&\crs{0}&\crs{-1}\\\crs{0}&0&0\\\crs{0}&0&0\end{pmatrix}$$
-
-\vfill
-
-Remainder: $P_2 - R_1 = \begin{pmatrix}0&0&0\\0&1&-1\\0&0&0\end{pmatrix}$
-
-\end{frame}
-
-
-% ADR: Cross-fill P_2, step 2. Pivot at (2,2)=1 in the remainder.
-% Then assemble U_2 and V_2 and verify V_2 U_2 = I_2.
-% AUDIENCE EMOTION: "two steps, and we're done"
-% AUDIENCE ATTENTION: the verification V_2 U_2 = I is the payoff.
-\begin{frame}[shrink=10]{Cross-Fill $P_2$ --- Step 2 and Assembly}
-
-Remainder: $\begin{pmatrix}0&0&0\\0&\pvt{1}&\crs{-1}\\0&\crs{0}&0\end{pmatrix}$. \quad Pivot at $(2,2)$: $\pvt{1}$.
-
-\vfill
-
-$$R_2 = \crs{\begin{pmatrix}0\\1\\0\end{pmatrix}}\crs{\begin{pmatrix}0&1&-1\end{pmatrix}} = \begin{pmatrix}0&0&0\\0&\pvt{1}&\crs{-1}\\0&\crs{0}&0\end{pmatrix}$$
+$$\underbrace{P_2}_{\text{rank }2} = \underbrace{\begin{pmatrix}\pvt{1}&\crs{0}&\crs{-1}\\\crs{0}&0&0\\\crs{0}&0&0\end{pmatrix}}_{\substack{R_1\\\text{rank }1}} + \underbrace{\begin{pmatrix}0&0&0\\0&\pvt{1}&\crs{-1}\\0&\crs{0}&0\end{pmatrix}}_{\substack{R_2\\\text{rank }1}}$$
 
 \vfill\pause
-
-\x{Matrix sum} (colored cross-filling decomposition):
-
-$$P_2 = \underbrace{\begin{pmatrix}\pvt{1}&\crs{0}&\crs{-1}\\\crs{0}&0&0\\\crs{0}&0&0\end{pmatrix}}_{R_1} + \underbrace{\begin{pmatrix}0&0&0\\0&\pvt{1}&\crs{-1}\\0&\crs{0}&0\end{pmatrix}}_{R_2}$$
-
-\vfill
 
 \x{Two-factor form} (stack columns and rows):
 
@@ -1073,207 +931,113 @@ $$P_2 = \underbrace{\begin{pmatrix}1&0\\0&1\\0&0\end{pmatrix}}_{U_2} \underbrace
 \end{frame}
 
 
-% ADR: Cross-fill P_5 (rank 1, one step). Quick.
-% AUDIENCE EMOTION: "rank 1 is easy"
-% AUDIENCE ATTENTION: contrast with the two-step P_2 cross-fill.
-\begin{frame}[shrink=5]{Cross-Fill $P_5$ --- One Step}
+\begin{frame}[shrink=5]{Cross-Fill $P_5$ (Rank 1) and Eigenvectors}
 
-$$P_5 = \begin{pmatrix}\crs{0}&\crs{0}&\crs{1}\\\crs{0}&\crs{0}&\crs{1}\\\crs{0}&\crs{0}&\pvt{1}\end{pmatrix}$$
+$$\underbrace{P_5}_{\text{rank }1} = \underbrace{\begin{pmatrix}1\\1\\1\end{pmatrix}}_{U_5}\underbrace{\begin{pmatrix}0&0&1\end{pmatrix}}_{V_5}, \qquad V_5 U_5 = 1 \;\checkmark$$
 
-\vfill
+\vfill\pause
 
-Pivot at $(3,3)$: $\pvt{1}$.
+\x{Columns of $U_i$} = right eigenvectors ($B\mathbf{u} = \lambda\mathbf{u}$):
 
-\vfill
+\smallskip
 
-$$P_5 = \crs{\begin{pmatrix}1\\1\\1\end{pmatrix}}\crs{\begin{pmatrix}0&0&1\end{pmatrix}} = \underbrace{\begin{pmatrix}1\\1\\1\end{pmatrix}}_{U_5}\underbrace{\begin{pmatrix}0&0&1\end{pmatrix}}_{V_5}$$
-
-\vfill
-
-Check: $V_5 U_5 = \begin{pmatrix}0&0&1\end{pmatrix}\begin{pmatrix}1\\1\\1\end{pmatrix} = 1$ \;\checkmark
-
-\end{frame}
-
-
-% ADR: Columns of U_i = right eigenvectors. Verify B u = lambda u.
-% The audience sees CONCRETE eigenvectors emerge from cross-filling.
-% AUDIENCE EMOTION: "cross-filling gives eigenvectors!"
-% AUDIENCE ATTENTION: three quick verifications.
-\begin{frame}[shrink=5]{Columns = Right Eigenvectors, Rows = Left Eigenvectors}
-
-\x{Right eigenvectors} (columns of $U_i$): verify $B\mathbf{u} = \lambda\mathbf{u}$:
-
-\vfill
-
-$B\begin{pmatrix}1\\0\\0\end{pmatrix} = \x{2}\begin{pmatrix}1\\0\\0\end{pmatrix}$ \;\checkmark \qquad
-$B\begin{pmatrix}0\\1\\0\end{pmatrix} = \x{2}\begin{pmatrix}0\\1\\0\end{pmatrix}$ \;\checkmark \qquad
+$B\begin{pmatrix}1\\0\\0\end{pmatrix} = \x{2}\begin{pmatrix}1\\0\\0\end{pmatrix}$ \;\checkmark \quad
+$B\begin{pmatrix}0\\1\\0\end{pmatrix} = \x{2}\begin{pmatrix}0\\1\\0\end{pmatrix}$ \;\checkmark \quad
 $B\begin{pmatrix}1\\1\\1\end{pmatrix} = \x{5}\begin{pmatrix}1\\1\\1\end{pmatrix}$ \;\checkmark
 
 \vfill\pause
 
-\x{Left eigenvectors} (rows of $V_i$): verify $\mathbf{v}^T B = \lambda\mathbf{v}^T$:
+\x{Rows of $V_i$} = left eigenvectors ($\mathbf{v}^T B = \lambda\mathbf{v}^T$):
 
-\vfill
+\smallskip
 
 $\begin{pmatrix}1&0&-1\end{pmatrix}B = \x{2}\begin{pmatrix}1&0&-1\end{pmatrix}$ \;\checkmark \quad
 $\begin{pmatrix}0&1&-1\end{pmatrix}B = \x{2}\begin{pmatrix}0&1&-1\end{pmatrix}$ \;\checkmark \quad
 $\begin{pmatrix}0&0&1\end{pmatrix}B = \x{5}\begin{pmatrix}0&0&1\end{pmatrix}$ \;\checkmark
 
-\vfill\pause
-
-Cross-eigenspace: $V_2 U_5 = 0$, $V_5 U_2 = 0$ (from $P_2 P_5 = 0$, as in \S2).
-
 \end{frame}
 
 
-% ADR: Rows of V_i = left eigenvectors. Verify v^T B = lambda v^T.
-% Left eigenvectors satisfy the TRANSPOSE eigenvalue equation.
-% AUDIENCE EMOTION: "cross-filling gives left eigenvectors too!"
-% AUDIENCE ATTENTION: three checks, same pattern as right eigenvectors.
-% (Left eigenvectors and cross-eigenspace orthogonality merged into frame above)
+\begin{frame}[shrink=5]{Cross-Filling Produces Rank-1 Projections (L08, L09)}
 
-
-% ADR: Cross-eigenspace orthogonality: V_2 U_5 = 0, V_5 U_2 = 0.
-% Left eigenvectors from one eigenspace IGNORE right eigenvectors
-% from the other. This comes from P_2 P_5 = 0 → U_2(V_2 U_5)V_5 = 0.
-% AUDIENCE EMOTION: "left and right eigenvectors from different
-% eigenspaces are orthogonal!"
-% AUDIENCE ATTENTION: two quick computations, then the explanation.
-% (Cross-eigenspace orthogonality merged into combined frame above)
-
-
-% ADR: Summary of cross-filling -- boxed key insight.
-% AUDIENCE EMOTION: "cross-filling gives everything at once"
-% AUDIENCE ATTENTION: clean summary, transition to diagonalization.
-\begin{frame}[shrink=5]{Recall: Cross-Filling Produces Rank-1 Projections (L08, L09)}
-
-From Lecture 8: cross-filling a projection gives rank-1 pieces $R_i$ that are \x{themselves projections}.
-
-From Lecture 9 (Corollary):
+From Lecture 9: cross-filling a projection gives \x{rank-1 projections} that form a compatible family.
 
 \vfill
 
-\begin{center}
-\fbox{\parbox{0.88\textwidth}{
-Let $P$ be a projection. Cross-fill $P = R_1 + \cdots + R_r$ into rank-1 pieces.\\[4pt]
-Then $\{R_1, \ldots, R_r\}$ is a \x{compatible family of rank-1 projections}.\\[4pt]
-{\small (Proof: $\sum\operatorname{rank}(R_i) = r = \operatorname{rank}(P)$, apply Projection Decomposition Theorem.)}
-}}
-\end{center}
+$$P_2 = \underbrace{\begin{pmatrix}\pvt{1}&\crs{0}&\crs{-1}\\\crs{0}&0&0\\\crs{0}&0&0\end{pmatrix}}_{\substack{R_1\\\text{rank-1 projection}}} + \underbrace{\begin{pmatrix}0&0&0\\0&\pvt{1}&\crs{-1}\\0&\crs{0}&0\end{pmatrix}}_{\substack{R_2\\\text{rank-1 projection}}}$$
+
+\vfill
+
+$R_1, R_2$ compatible: $R_1 R_2 = 0$, $R_1^2 = R_1$, $R_2^2 = R_2$. \quad $P_5$ already rank 1.
 
 \vfill\pause
 
-For our $P_2$ (rank 2):
-
-$$P_2 = \underbrace{\begin{pmatrix}\pvt{1}&\crs{0}&\crs{-1}\\\crs{0}&0&0\\\crs{0}&0&0\end{pmatrix}}_{R_1\;\text{(rank 1, projection)}} + \underbrace{\begin{pmatrix}0&0&0\\0&\pvt{1}&\crs{-1}\\0&\crs{0}&0\end{pmatrix}}_{R_2\;\text{(rank 1, projection)}}$$
-
-\vfill
-
-$R_1, R_2$ are compatible: $R_1 R_2 = 0$, $R_1^2 = R_1$, $R_2^2 = R_2$. And $P_5$ is already rank 1.
+Cross-eigenspace: $V_2 U_5 = 0$, $V_5 U_2 = 0$ \quad (from $P_2 P_5 = 0$).
 
 \end{frame}
 
 
 \begin{frame}[shrink=5]{The Final Spectral Decomposition}
 
-Start from: $B = 2P_2 + 5P_5$.
+$B = 2P_2 + 5P_5$. Replace $P_2 = R_1 + R_2$: now \x{every piece is rank 1}:
 
 \vfill
 
-Replace $P_2 = R_1 + R_2$ (its rank-1 pieces). Now \x{every piece is rank 1}:
+$$B \;=\; \underbrace{\rd{2}\cdot\rd{R_1}}_{\text{rank 1}} \;+\; \underbrace{\bl{2}\cdot\bl{R_2}}_{\text{rank 1}} \;+\; \underbrace{\gn{5}\cdot\gn{P_5}}_{\text{rank 1}}$$
 
-$$B \;=\; \rd{2}\cdot\rd{R_1} \;+\; \bl{2}\cdot\bl{R_2} \;+\; \gn{5}\cdot\gn{P_5}$$
+\vfill
+
+Each $R_i$ is a rank-1 projection (L09), and the eigenvalue $2$ appears \x{twice}.
 
 \vfill\pause
 
-Write out each rank-1 piece as column $\times$ row:
-
-$$B \;=\; \rd{2}\cdot\rd{\begin{pmatrix}1\\0\\0\end{pmatrix}\begin{pmatrix}1&0&-1\end{pmatrix}} \;+\; \bl{2}\cdot\bl{\begin{pmatrix}0\\1\\0\end{pmatrix}\begin{pmatrix}0&1&-1\end{pmatrix}} \;+\; \gn{5}\cdot\gn{\begin{pmatrix}1\\1\\1\end{pmatrix}\begin{pmatrix}0&0&1\end{pmatrix}}$$
-
-\vfill
-
-Three \rd{colored} \bl{rank-1} \gn{pieces} --- one per eigenvector.
-
-From Lecture 8: a sum of rank-1 matrices becomes a \x{product} $\longrightarrow$
+From Lecture 8: a sum of rank-1 matrices $= $ a \x{product} $\longrightarrow$
 
 \end{frame}
 
 
-% ┌───────��─────────────────────���────────────────────────────��──────────┐
-% │ SECTION-LEVEL ADR: DIAGONALIZATION                                 │
-% │                                                                    │
-% │ Stack all the U_i side by side to form P (right eigenvector matrix)│
-% │ Stack all the V_i vertically to form Q = P^{-1}                   │
-% │ QP = I from the within/across orthogonality.                       │
-% │ B = PDP^{-1} where D has eigenvalues on the diagonal.             │
-% │                                                                    │
-% │ The cancellation algebra: B^n = PD^nP^{-1} because P^{-1}P = I   │
-% │ cancels in the middle. g(B) = Pg(D)P^{-1} for any polynomial g.   │
-% │ This is the SAME as the value table method -- two notations for    │
-% │ the same machine.                                                  │
-% │                                                                    │
-% │ NO CHANGE-OF-BASIS LANGUAGE. Diagonalization emerges purely from   │
-% │ stacking cross-fillings.                                           │
-% └──���──────────────────────────────────────────────────────────────��───┘
-\begin{frame}[shrink=15]{From Sum to Product (The Cross-Filling Spirit)}
+\section{Diagonalization: Stacking the Cross-Fillings}
 
-Stack \rd{columns} into $P$, \rd{scalars} into $D$, \rd{rows} into $Q$:
+\begin{frame}[shrink=15]{From Sum to Product}
+
+$$B \;=\; \rd{2}\cdot\rd{R_1} + \bl{2}\cdot\bl{R_2} + \gn{5}\cdot\gn{P_5}$$
 
 \vfill
 
-$$B \;=\; \rd{2}\cdot\rd{\begin{pmatrix}1\\0\\0\end{pmatrix}}\rd{\begin{pmatrix}1&0&-1\end{pmatrix}} \;+\; \bl{2}\cdot\bl{\begin{pmatrix}0\\1\\0\end{pmatrix}}\bl{\begin{pmatrix}0&1&-1\end{pmatrix}} \;+\; \gn{5}\cdot\gn{\begin{pmatrix}1\\1\\1\end{pmatrix}}\gn{\begin{pmatrix}0&0&1\end{pmatrix}}$$
+Write with \x{general variable $\lambda$} replacing the eigenvalues:
+
+$$\rd{\lambda}\cdot\rd{\begin{pmatrix}1\\0\\0\end{pmatrix}}\rd{\begin{pmatrix}1&0&-1\end{pmatrix}} + \bl{\lambda}\cdot\bl{\begin{pmatrix}0\\1\\0\end{pmatrix}}\bl{\begin{pmatrix}0&1&-1\end{pmatrix}} + \gn{\lambda}\cdot\gn{\begin{pmatrix}1\\1\\1\end{pmatrix}}\gn{\begin{pmatrix}0&0&1\end{pmatrix}}$$
 
 \vfill
 
-$$= \underbrace{\begin{pmatrix}\rd{1}&\bl{0}&\gn{1}\\\rd{0}&\bl{1}&\gn{1}\\\rd{0}&\bl{0}&\gn{1}\end{pmatrix}}_{P\;\text{(columns)}} \underbrace{\begin{pmatrix}\rd{2}&&\\&\bl{2}&\\&&\gn{5}\end{pmatrix}}_{D\;\text{(scalars)}} \underbrace{\begin{pmatrix}\rd{1}&\rd{0}&\rd{-1}\\\bl{0}&\bl{1}&\bl{-1}\\\gn{0}&\gn{0}&\gn{1}\end{pmatrix}}_{Q\;\text{(rows)}}$$
+$$= \underbrace{\begin{pmatrix}\rd{1}&\bl{0}&\gn{1}\\\rd{0}&\bl{1}&\gn{1}\\\rd{0}&\bl{0}&\gn{1}\end{pmatrix}}_{P} \underbrace{\begin{pmatrix}\rd{\lambda}&&\\&\bl{\lambda}&\\&&\gn{\lambda}\end{pmatrix}}_{D(\lambda)} \underbrace{\begin{pmatrix}\rd{1}&\rd{0}&\rd{-1}\\\bl{0}&\bl{1}&\bl{-1}\\\gn{0}&\gn{0}&\gn{1}\end{pmatrix}}_{Q}$$
 
-\vfill\pause
+\vfill
 
-Each \rd{column} of $P$ pairs with the matching \rd{row} of $Q$ and \rd{scalar} in $D$.
+\x{Same $P$, same $Q$} --- only the \x{diagonal changes}.
 
 \end{frame}
 
 
-\begin{frame}[shrink=10]{The General Formula}
+\begin{frame}[shrink=10]{The General Formula: $g(B) = P\,g(D)\,Q$}
 
-$$B \;=\; \rd{\lambda_1}\,\rd{\mathbf{u}_1}\rd{\mathbf{v}_1^T} + \bl{\lambda_2}\,\bl{\mathbf{u}_2}\bl{\mathbf{v}_2^T} + \gn{\lambda_3}\,\gn{\mathbf{u}_3}\gn{\mathbf{v}_3^T} \;=\; P\begin{pmatrix}\rd{\lambda_1}&&\\&\bl{\lambda_2}&\\&&\gn{\lambda_3}\end{pmatrix}Q$$
+For \x{any} function $g$, replace each diagonal entry $\lambda_i$ by $g(\lambda_i)$:
 
-\vfill\pause
-
-More generally, replace $\lambda_i$ by $g(\lambda_i)$:
-
-$$g(B) = \rd{g(\lambda_1)}\,\rd{\mathbf{u}_1}\rd{\mathbf{v}_1^T} + \bl{g(\lambda_2)}\,\bl{\mathbf{u}_2}\bl{\mathbf{v}_2^T} + \gn{g(\lambda_3)}\,\gn{\mathbf{u}_3}\gn{\mathbf{v}_3^T} = P\begin{pmatrix}\rd{g(\lambda_1)}&&\\&\bl{g(\lambda_2)}&\\&&\gn{g(\lambda_3)}\end{pmatrix}Q$$
+$$g(B) = P\begin{pmatrix}\rd{g(\lambda_1)}&&\\&\bl{g(\lambda_2)}&\\&&\gn{g(\lambda_3)}\end{pmatrix}Q$$
 
 \vfill\pause
 
-\x{Same columns, same rows} --- only the \x{scalars on the diagonal change}.
+Set $g(\lambda) = 1$ for all $\lambda$:
 
-\vfill
-
-$g(\lambda) = \lambda^n$: \quad $B^n = P\begin{pmatrix}2^n&&\\&2^n&\\&&5^n\end{pmatrix}P^{-1}$
-
-\end{frame}
-
-
-\begin{frame}[shrink=10]{Why $Q = P^{-1}$ (Set $g \equiv 1$)}
-
-Apply the general formula with $g(\lambda) = 1$ for all $\lambda$:
-
-\vfill
-
-$$g(B) = \rd{g(\lambda_1)}\,\rd{\mathbf{u}_1}\rd{\mathbf{v}_1^T} + \bl{g(\lambda_2)}\,\bl{\mathbf{u}_2}\bl{\mathbf{v}_2^T} + \gn{g(\lambda_3)}\,\gn{\mathbf{u}_3}\gn{\mathbf{v}_3^T} = P\begin{pmatrix}\rd{g(\lambda_1)}&&\\&\bl{g(\lambda_2)}&\\&&\gn{g(\lambda_3)}\end{pmatrix}Q$$
-
-\vfill
-
-$$I = \rd{1}\cdot\rd{\mathbf{u}_1}\rd{\mathbf{v}_1^T} + \bl{1}\cdot\bl{\mathbf{u}_2}\bl{\mathbf{v}_2^T} + \gn{1}\cdot\gn{\mathbf{u}_3}\gn{\mathbf{v}_3^T} = P\begin{pmatrix}\rd{1}&&\\&\bl{1}&\\&&\gn{1}\end{pmatrix}Q = PQ$$
-
-\vfill\pause
-
-Left side: $\rd{R_1} + \bl{R_2} + \gn{P_5} = P_2 + P_5 = I$ \quad (value table from \S2). \;\checkmark
+$$\underbrace{\rd{1}\cdot\rd{R_1} + \bl{1}\cdot\bl{R_2} + \gn{1}\cdot\gn{P_5}}_{= P_2 + P_5 = I\;\text{(value table from \S2)}} = P\begin{pmatrix}\rd{1}&&\\&\bl{1}&\\&&\gn{1}\end{pmatrix}Q = PQ$$
 
 \vfill
 
 $$\boxed{PQ = I, \qquad\text{so}\quad Q = P^{-1}}$$
+
+\vfill\pause
+
+Set $g(\lambda) = \lambda$ (identity): $\quad B = PDP^{-1}$. \quad Set $g(\lambda) = \lambda^n$: $\quad B^n = PD^nP^{-1}$.
 
 \end{frame}
 
@@ -1483,6 +1247,31 @@ Together, they completely describe what $A$ does.
 % ADR: The tension -- B from S3 had a repeated char poly root.
 % AUDIENCE EMOTION: "wait, our assumption said distinct factors!"
 % AUDIENCE ATTENTION: the contradiction grabs attention.
+\begin{frame}[shrink=5]{Eigenvalues Are Roots of Any Annihilating Polynomial}
+
+\begin{thm}
+If $p(A) = 0$ and $\lambda$ is an eigenvalue of $A$, then $p(\lambda) = 0$.
+\end{thm}
+
+\vfill
+
+\textit{Proof:} Let $A\mathbf{x} = \lambda\mathbf{x}$ with $\mathbf{x} \neq \mathbf{0}$. Then:
+
+$$\mathbf{0} = p(A)\mathbf{x} = p(\lambda)\mathbf{x}$$
+
+Since $\mathbf{x} \neq \mathbf{0}$: $\;\;p(\lambda) = 0$. \qed
+
+\vfill\pause
+
+\x{Consequence}: Every annihilating polynomial must have \x{all eigenvalues} as roots.
+
+\vfill
+
+Our spectral decomposition uses an annihilating polynomial with \x{distinct linear factors}. If the characteristic polynomial $\det(tI - A)$ has repeated factors, we need a \x{simpler} annihilating polynomial.
+
+\end{frame}
+
+
 \begin{frame}{A Repeated Root That Worked}
 
 $B$ from \S3 had $\det(tI - B) = (t-2)^{\x{2}}(t-5)$ --- a \x{repeated} root!
@@ -1499,15 +1288,11 @@ Yet the spectral machinery worked perfectly:
 
 \vfill\pause
 
-\x{Why?} The characteristic polynomial can repeat. What matters is a different polynomial.
+\x{Why?} There exists a simpler annihilating polynomial with distinct factors.
 
 \end{frame}
 
 
-% ADR: Minimal polynomial definition. Lowest-degree monic poly that
-% annihilates A. It divides every annihilating polynomial.
-% AUDIENCE EMOTION: "there's a polynomial that controls everything"
-% AUDIENCE ATTENTION: definition, then concrete example.
 \begin{frame}{The Minimal Polynomial}
 
 \begin{defi}[Minimal Polynomial]
@@ -1603,34 +1388,52 @@ This situation needs \x{new tools} --- a topic for a future lecture.
 \end{frame}
 
 
-% ADR: Summary of the restriction. Clean boxed statement.
-% AUDIENCE EMOTION: "now I know the boundary"
-% AUDIENCE ATTENTION: boxed takeaway.
+\begin{frame}[shrink=5]{The Criterion for Diagonalizability}
+
+\begin{thm}
+$A$ is \x{diagonalizable} if and only if the minimal polynomial $m(t)$ factors into \x{distinct linear factors}:
+$$m(t) = (t - \lambda_1)(t - \lambda_2)\cdots(t - \lambda_k), \qquad \lambda_i\text{ all distinct}$$
+\end{thm}
+
+\vfill\pause
+
+($\Leftarrow$): Distinct linear factors $\implies$ spectral decomposition works $\implies$ diagonalizable. (This is exactly what we did in \S1--\S4.)
+
+\vfill
+
+($\Rightarrow$): If $A = PDP^{-1}$, then $(A - \lambda_1 I)\cdots(A - \lambda_k I) = P(D - \lambda_1 I)\cdots(D - \lambda_k I)P^{-1} = 0$, because every diagonal entry of $D$ is one of the $\lambda_i$'s.
+
+\end{frame}
+
+
 \begin{frame}{The Real Restriction}
 
 \vfill
 
 \begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lccc}
+ & Char.\ poly & Min.\ poly & Diag.? \\
+\hline
+$B = \left(\begin{smallmatrix}2&0&3\\0&2&3\\0&0&5\end{smallmatrix}\right)$ & $(t-2)^2(t-5)$ & $(t-2)(t-5)$ & \checkmark \\[4pt]
+$3I_2$ & $(t-3)^2$ & $(t-3)$ & \checkmark \\[4pt]
+$J = \left(\begin{smallmatrix}2&1\\0&2\end{smallmatrix}\right)$ & $(t-2)^2$ & $(t-2)^2$ & \x{$\boldsymbol\times$}
+\end{tabular}
+\end{center}
+
+\vfill
+
+\begin{center}
 \fbox{\parbox{0.88\textwidth}{\centering
-The characteristic polynomial CAN have repeated roots.\\[6pt]
+The characteristic polynomial CAN have repeated roots --- that's fine.\\[6pt]
 The \x{minimal polynomial} is what matters:\\[8pt]
-Distinct linear factors in $m(t)$ $\implies$ \x{diagonalizable}.\\[8pt]
-Repeated factor in $m(t)$ $\implies$ needs new tools (future lecture).
+$A$ is diagonalizable $\;\iff\;$ $m(t)$ has \x{distinct linear factors}.
 }}
 \end{center}
 
-\vfill\pause
+\vfill
 
-\begin{center}
-\renewcommand{\arraystretch}{1.4}
-\begin{tabular}{lcc}
- & Char.\ poly & Min.\ poly \\
-\hline
-$B = \left(\begin{smallmatrix}2&0&3\\0&2&3\\0&0&5\end{smallmatrix}\right)$ & $(t-2)^2(t-5)$ & $(t-2)(t-5)$ \quad\checkmark \\[4pt]
-$3I_2$ & $(t-3)^2$ & $(t-3)$ \quad\checkmark \\[4pt]
-$J = \left(\begin{smallmatrix}2&1\\0&2\end{smallmatrix}\right)$ & $(t-2)^2$ & $(t-2)^2$ \quad\x{$\boldsymbol\times$}
-\end{tabular}
-\end{center}
+Repeated factor in $m(t)$: needs new tools (future lecture).
 
 \end{frame}
 
