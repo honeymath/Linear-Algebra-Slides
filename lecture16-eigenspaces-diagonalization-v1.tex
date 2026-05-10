@@ -1,5 +1,7 @@
 
 \documentclass[10pt]{beamer}
+\usepackage{silence}
+\WarningFilter{beamerthememetropolis}{You need to compile with XeLaTeX}
 \usetheme{metropolis}
 
 % ── Packages ──
@@ -60,11 +62,14 @@
 
 \title{Lecture 16: Eigenspaces and Diagonalization}
 \subtitle{MATH203 Applied Linear Algebra}
-\date{Updated May 6, 2026}
+\date{Updated May 10, 2026}
 \titlegraphic{}
 
 \begin{document}
-\maketitle
+\begin{frame}[plain]
+\vspace*{-14pt}
+\titlepage
+\end{frame}
 
 
 % ┌─────────────────────────────────────────────────────────────────────┐
@@ -116,7 +121,7 @@
 % │   E_3 = Col(P_3) = span{(1,2)^T}: A(1,2)^T = 3*(1,2)^T          │
 % │   Test v = (2,3): P_1 v = (1,1), P_3 v = (1,2), sum = (2,3)     │
 % └─────────────────────────────────────────────────────────────────────┘
-\section{What Does $P_i$ Project Onto?}
+\section{\texorpdfstring{What Does $P_i$ Project Onto?}{What Does Pi Project Onto?}}
 
 
 % ADR: State the standing assumption ONCE, at the very start.
@@ -851,13 +856,16 @@ Every vector decomposes \x{uniquely} into eigenvector pieces.\\[6pt]
 \section{Cross-Filling the Spectral Projections}
 
 
-% ADR: Introduce a 3x3 example with a repeated eigenvalue.
-% B is upper triangular so eigenvalues are visible, but the spectral
-% machinery works without using that. The repeated eigenvalue 2 gives
-% a rank-2 projection P_2 that requires genuine cross-filling.
+% ADR: Introduce a 3x3 example with a repeated eigenvalue, but do NOT
+% immediately construct spectral projections. Lecture 15 only authorized
+% Lagrange spectral decomposition when the annihilating polynomial has
+% distinct roots. The characteristic polynomial here has a repeated root,
+% so the audience must see the obstruction first, then the simplification
+% to the smaller annihilating polynomial (t-2)(t-5).
 %
-% AUDIENCE EMOTION: "repeated eigenvalue? will our method still work?"
-% AUDIENCE ATTENTION: new example, slight tension about the repeated root.
+% AUDIENCE EMOTION: "wait -- the old assumption is broken."
+% AUDIENCE ATTENTION: the repeated root becomes productive tension rather
+% than a hidden logical gap.
 \begin{frame}[shrink=5]{A New Example --- Repeated Eigenvalue}
 
 $$\underbrace{B = \begin{pmatrix}2&0&3\\0&2&3\\0&0&5\end{pmatrix}}_{\text{eigenvalues } 2, 2, 5}, \qquad \det(tI - B) = (t-2)^2(t-5)$$
@@ -866,9 +874,123 @@ $$\underbrace{B = \begin{pmatrix}2&0&3\\0&2&3\\0&0&5\end{pmatrix}}_{\text{eigenv
 
 Two \x{distinct} eigenvalues: $\lambda_1 = 2$, $\lambda_2 = 5$.
 
+\vfill
+
+\begin{center}
+\fbox{\parbox{0.78\textwidth}{\centering
+\x{Warning}: the characteristic polynomial has a repeated root.\\[4pt]
+We cannot use the Lecture 15 spectral decomposition yet.
+}}
+\end{center}
+
+\end{frame}
+
+
+% ADR: Make the dimension obstruction explicit. The user flagged the exact
+% issue: with (t-2)^2(t-5), the remainder space has dimension 3, while
+% the two ordinary Lagrange value functions at 2 and 5 only supply two
+% directions. Therefore value tables at two distinct eigenvalues do not
+% determine a remainder modulo the characteristic polynomial.
+% AUDIENCE EMOTION: "now I see why repeated roots are not harmless."
+\begin{frame}[shrink=5]{Why Lagrange Does Not Apply Yet}
+
+Lecture 15 worked because the annihilating polynomial had \x{distinct roots}:
+
+$$h(t) = (t-\lambda_1)\cdots(t-\lambda_m), \qquad h(A)=0$$
+
+\vfill
+
+Then remainders have degree $<m$, so the remainder space has dimension $m$.
+
+\vfill
+
+\x{Here} the characteristic polynomial is
+
+$$\det(tI - B) = (t-2)^2(t-5), \qquad (B-2I)^2(B-5I)=0.$$
+
+\vfill
+
+Remainders modulo $\det(tI - B)$ have degree $<3$:
+
+$$a + bt + ct^2 \qquad \text{a \x{3-dimensional} space.}$$
+
+\vfill
+
+But ordinary Lagrange at the two points $2,5$ gives only \x{two} value functions.
+
+\vfill
+
+\begin{center}
+\fbox{\parbox{0.82\textwidth}{\centering
+Two value-table columns cannot control a 3-dimensional remainder space.\\[4pt]
+So $P_2, P_5$ are not justified from $\det(tI - B)$ alone.
+}}
+\end{center}
+
+\end{frame}
+
+
+% ADR: Show the pragmatic move: try to delete the repeated power and test
+% whether the smaller distinct-root polynomial still annihilates B.
+% This matches the user's requested narration: get rid of the power on one
+% eigenvalue, plug B in, and fortunately get zero.
+% AUDIENCE EMOTION: "we can try a smaller polynomial, but must check it."
+\begin{frame}[shrink=8]{Try a Simpler Polynomial}
+
+The repeated root is the problem:
+
+$$\det(tI - B) = \underbrace{(t-2)^2}_{\text{repeated}}(t-5).$$
+
+\vfill
+
+\x{Try}: remove the extra copy of $(t-2)$:
+
+$$q(t) = (t-2)(t-5).$$
+
+\vfill
+
+Now check whether it really annihilates $B$:
+
+$$B-2I = \begin{pmatrix}0&0&3\\0&0&3\\0&0&3\end{pmatrix}, \qquad
+B-5I = \begin{pmatrix}-3&0&3\\0&-3&3\\0&0&0\end{pmatrix}$$
+
+\vfill
+
+$$q(B) = (B-2I)(B-5I)
+= \begin{pmatrix}0&0&3\\0&0&3\\0&0&3\end{pmatrix}
+\begin{pmatrix}-3&0&3\\0&-3&3\\0&0&0\end{pmatrix}
+= \begin{pmatrix}0&0&0\\0&0&0\\0&0&0\end{pmatrix}.$$
+
+\vfill
+
+\x{Good}: $q(B)=0$, and $q(t)$ has distinct roots $2,5$.
+
+\end{frame}
+
+
+% ADR: Only now are the spectral projections legal. The smaller
+% annihilating polynomial has degree 2, so the remainder space is
+% two-dimensional and the two Lagrange basis polynomials span it.
+% AUDIENCE EMOTION: "now the Lagrange machinery is back on solid ground."
+\begin{frame}[shrink=5]{Now Lagrange Is Legal}
+
+We found a \x{smaller annihilating polynomial}:
+
+$$q(t) = (t-2)(t-5), \qquad q(B)=0.$$
+
+\vfill
+
+Remainders modulo $q(t)$ have degree $<2$:
+
+$$a + bt \qquad \text{a \x{2-dimensional} space.}$$
+
+\vfill
+
+Now the two Lagrange basis polynomials at $2$ and $5$ are enough.
+
 \vfill\pause
 
-\x{Spectral projections} (Lagrange formula):
+\x{Spectral projections}:
 
 $$P_5 = \frac{B - 2I}{5 - 2} = \frac{1}{3}\begin{pmatrix}0&0&3\\0&0&3\\0&0&3\end{pmatrix} = \begin{pmatrix}0&0&1\\0&0&1\\0&0&1\end{pmatrix}$$
 
@@ -1406,6 +1528,143 @@ $$m(t) = (t - \lambda_1)(t - \lambda_2)\cdots(t - \lambda_k), \qquad \lambda_i\t
 \end{frame}
 
 
+% ADR: Add the computational corollary requested by the instructor.
+% The minimal polynomial criterion is theoretically clean but inconvenient:
+% students can compute det(tI-A), but they usually cannot compute m(t)
+% directly. The useful test is: factor the characteristic polynomial,
+% delete repeated powers, then plug A into that square-free part.
+% Terminology: "square-free part" is the standard computational phrase;
+% "radical" is also used algebraically, but we introduce it only as a
+% parenthetical synonym, not as new primary notation.
+% AUDIENCE EMOTION: "this is a test I can actually perform."
+\begin{frame}[shrink=5]{Practical Corollary: Delete the Repeated Powers}
+
+\begin{cor}[Practical diagonalizability test]
+A matrix $A$ is \x{diagonalizable} if and only if:
+
+\begin{enumerate}
+\item $\det(tI-A)$ factors into linear factors:
+$$\det(tI-A)=(t-\lambda_1)^{a_1}\cdots(t-\lambda_k)^{a_k}.$$
+
+\item After deleting the repeated powers, the remaining polynomial annihilates $A$:
+$$\underbrace{(A-\lambda_1 I)\cdots(A-\lambda_k I)}_{\text{plug $A$ into the square-free part}}=0.$$
+\end{enumerate}
+\end{cor}
+
+\vfill
+
+The polynomial
+$$q(t)=(t-\lambda_1)\cdots(t-\lambda_k)$$
+is called the \x{square-free part} of $\det(tI-A)$.
+
+\vfill
+
+Some books also call it the \x{radical} of the characteristic polynomial.
+
+\end{frame}
+
+
+% ADR: Explain why the practical corollary is equivalent to the minimal
+% polynomial theorem without asking students to compute the minimal
+% polynomial. This is the bridge from theory to usable algorithm.
+% AUDIENCE EMOTION: "the theorem became an algorithm."
+\begin{frame}[shrink=5]{Why This Is the Same Criterion}
+
+Let
+$$q(t)=(t-\lambda_1)\cdots(t-\lambda_k)$$
+be the square-free part of $\det(tI-A)$.
+
+\vfill
+
+\x{If $q(A)=0$:}
+
+\smallskip
+
+Then $q(t)$ is an annihilating polynomial with distinct linear factors.
+So the minimal polynomial divides $q(t)$, hence also has distinct linear factors.
+
+\vfill
+
+By the theorem: $A$ is diagonalizable.
+
+\vfill\pause
+
+\x{If $A$ is diagonalizable:}
+
+\smallskip
+
+The minimal polynomial is exactly the product of the distinct eigenvalue factors:
+$$m(t)=(t-\lambda_1)\cdots(t-\lambda_k)=q(t).$$
+
+\vfill
+
+So $q(A)=m(A)=0$.
+
+\end{frame}
+
+
+% ADR: Concrete examples immediately after the corollary. The user asked
+% for several examples and a practical test. Each example follows the same
+% three-line template: characteristic polynomial, delete powers, plug in.
+% This repeated format is deliberate: students should leave with a recipe.
+\begin{frame}[shrink=5]{Examples of the Practical Test}
+
+\x{Example 1: repeated root, still diagonalizable}
+
+$$B=\begin{pmatrix}2&0&3\\0&2&3\\0&0&5\end{pmatrix}, \qquad \det(tI-B)=(t-2)^2(t-5).$$
+
+Delete powers: $q(t)=(t-2)(t-5)$.
+
+$$(B-2I)(B-5I)=0 \qquad\implies\qquad B\text{ is diagonalizable.}$$
+
+\vfill
+
+\x{Example 2: scalar matrix}
+
+$$A=3I_2, \qquad \det(tI-A)=(t-3)^2.$$
+
+Delete powers: $q(t)=t-3$.
+
+$$A-3I=0 \qquad\implies\qquad A\text{ is diagonalizable.}$$
+
+\end{frame}
+
+
+% ADR: Include a failure case right after the passing cases. The failure
+% is essential because it shows the test is not just confirming what the
+% characteristic polynomial already says. The exact same repeated-root
+% characteristic shape can pass or fail depending on q(A).
+\begin{frame}[shrink=5]{Example: Same Repeated Root, Different Result}
+
+\x{Shear matrix}
+
+$$J=\begin{pmatrix}2&1\\0&2\end{pmatrix}, \qquad \det(tI-J)=(t-2)^2.$$
+
+\vfill
+
+Delete powers: $q(t)=t-2$.
+
+\vfill
+
+Now test:
+
+$$q(J)=J-2I=\begin{pmatrix}0&1\\0&0\end{pmatrix}\neq 0.$$
+
+\vfill
+
+So the square-free part does \x{not} annihilate $J$.
+
+\vfill
+
+$$\boxed{J\text{ is not diagonalizable.}}$$
+
+\vfill
+
+This is why repeated roots in $\det(tI-A)$ are not the issue. The issue is whether deleting the powers still gives an annihilating polynomial.
+
+\end{frame}
+
+
 \begin{frame}{The Real Restriction}
 
 \vfill
@@ -1436,12 +1695,6 @@ $A$ is diagonalizable $\;\iff\;$ $m(t)$ has \x{distinct linear factors}.
 Repeated factor in $m(t)$: needs new tools (future lecture).
 
 \end{frame}
-
-
-% ┌─────────────────────────────────────────────────────────────────────┐
-% │ SUMMARY AND PREVIEW                                                │
-% └─────────────────────────────���───────────────────────────────────────┘
-\section*{}
 
 
 % ADR: Summary of the lecture. Key results in a compact boxed list.
