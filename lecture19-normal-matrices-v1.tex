@@ -2246,37 +2246,93 @@ $$
 
 \vfill\pause
 
-Use the same AB/BA fact from the projection lectures:
+Use the previous projection-lecture fact.  If
 
 $$
-\underbrace{\tl{\Omega}}_{\bl{A}}\,
-\underbrace{\tl{\Omega}^H}_{\rd{B}}
-=I
-\quad\Longrightarrow\quad
-\rd{B}=\bl{A}^{-1}.
+\bl{A}\rd{B}=I,
 $$
 
-\vfill\pause
-
-Therefore reverse the order:
+then the reversed product is first a projection:
 
 $$
-\underbrace{\tl{\Omega}^H}_{\rd{B}}\,
-\underbrace{\tl{\Omega}}_{\bl{A}}
-=
-\bl{A}^{-1}\bl{A}
-=I.
+(\rd{B}\bl{A})^2
+=\rd{B}\underbrace{\bl{A}\rd{B}}_{I}\bl{A}
+=\rd{B}\bl{A}.
 $$
 
 \vfill
 
-Equivalently,
+So $\rd{B}\bl{A}$ is a projection.
+
+\end{frame}
+
+
+\begin{frame}[shrink=6]{Why That Projection Is Identity}
+
+Continue with $\bl{A}\rd{B}=I$ and $Q=\rd{B}\bl{A}$.
+
+\vfill
+
+We already know $Q$ is a projection.
+
+\vfill\pause
+
+Trace reverses products:
 
 $$
-\tl{\Omega}^H\tl{\Omega}=I.
+\operatorname{tr}(Q)
+=\operatorname{tr}(\rd{B}\bl{A})
+=\operatorname{tr}(\bl{A}\rd{B})
+=\operatorname{tr}(I)
+=n.
 $$
 
 \vfill\pause
+
+For a projection, trace equals rank:
+
+$$
+\operatorname{rank}(Q)=\operatorname{tr}(Q)=n.
+$$
+
+\vfill
+
+Thus $Q$ has full rank, so $Q=I$.
+
+\end{frame}
+
+
+\begin{frame}[shrink=6]{Apply the Reversal to $\Omega$}
+
+Now put
+
+$$
+\bl{A}=\tl{\Omega},
+\qquad
+\rd{B}=\tl{\Omega}^H.
+$$
+
+\vfill
+
+Since
+
+$$
+\bl{A}\rd{B}
+=\tl{\Omega}\tl{\Omega}^H
+=I,
+$$
+
+\vfill\pause
+
+the reversed order is also identity:
+
+$$
+\rd{B}\bl{A}
+=\tl{\Omega}^H\tl{\Omega}
+=I.
+$$
+
+\vfill
 
 Therefore $\tl{\Omega}$ is \x{unitary}, and
 
