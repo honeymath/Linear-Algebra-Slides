@@ -1226,6 +1226,87 @@ $$
 \end{frame}
 
 
+\begin{frame}{Callback: Complete by Projection Complement}
+
+Collect the existing orthonormal vectors:
+
+$$
+B=\begin{pmatrix}
+|&|&&|\\
+u_1&u_2&\cdots&u_r\\
+|&|&&|
+\end{pmatrix}.
+$$
+
+\vfill
+
+Then the orthogonal projection onto their span is:
+
+$$
+P=BB^T.
+$$
+
+\vfill
+
+The complement projection is:
+
+$$
+I-P.
+$$
+
+\begin{center}
+\x{This is exactly the previous projection-complement method.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Diagonal Cross-Fill the Complement}
+
+From previous lectures:
+
+\vfill
+
+\begin{center}
+\x{Cross-filling an orthogonal projection gives orthonormal vectors.}
+\end{center}
+
+\vfill
+
+Apply that to the complement projection:
+
+$$
+I-P.
+$$
+
+\vfill
+
+\begin{center}
+\x{Now the missing directions come from the same old machine.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Complement Gives Missing Axes}
+
+Cross-filling gives rank-one orthogonal projections:
+
+$$
+I-P=w_{r+1}w_{r+1}^T+\cdots+w_mw_m^T.
+$$
+
+\vfill
+
+Use these vectors as the missing output axes:
+
+$$
+u_{r+1}=w_{r+1},\quad \ldots,\quad u_m=w_m.
+$$
+
+\end{frame}
+
+
 \begin{frame}{Stack Everything}
 
 For every input axis:
@@ -1368,7 +1449,11 @@ $$
 $$
 u_i=\frac{Av_i}{\sigma_i}.
 $$
-\item Complete the $u_i$'s to an orthonormal basis if needed.
+\item Complete by the previous projection method:
+$$
+B=(u_1\ \cdots\ u_r),\quad P=BB^T,\quad I-P.
+$$
+Diagonal cross-fill $I-P$.
 \item Stack the equations $Av_i=\sigma_i u_i$.
 \end{enumerate}
 
