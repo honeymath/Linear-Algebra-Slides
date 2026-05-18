@@ -2087,9 +2087,47 @@ $$
 \end{frame}
 
 
-\begin{frame}[shrink=6]{Reverse the Order}
+\begin{frame}[shrink=6]{Why the Reverse Order Is Identity}
 
-The other order is the inner-product table of the columns:
+The old cross-filling tool gives
+
+$$
+\rd{P}=\bl{U}\bl{U}^H
+\qquad\text{and the columns of }\bl{U}\text{ are linearly independent.}
+$$
+
+\vfill\pause
+
+Because $P$ is a projection,
+
+$$
+\rd{P}^2=\rd{P}.
+$$
+
+\vfill\pause
+
+Substitute $\rd{P}=\bl{U}\bl{U}^H$:
+
+$$
+(\bl{U}\bl{U}^H)(\bl{U}\bl{U}^H)=\bl{U}\bl{U}^H.
+$$
+
+\vfill\pause
+
+Left-cancel $\bl{U}$ and right-cancel $\bl{U}^H$:
+
+$$
+\bl{U}^H\bl{U}=I_r.
+$$
+
+\x{This is the AB/BA mechanism from the projection lectures.}
+
+\end{frame}
+
+
+\begin{frame}[shrink=6]{Read the Reverse Order as a Table}
+
+The reversed product is the inner-product table of the columns:
 
 $$
 \bl{U}^H\bl{U}=
@@ -2107,20 +2145,13 @@ $$
 \gn{\mathbf u_r}^H\rd{\mathbf u_2} &
 \cdots &
 \gn{\mathbf u_r}^H\gn{\mathbf u_r}
-\end{pmatrix}.
-$$
-
-\vfill\pause
-
-Cross-filling produces orthonormal columns, so this table is
-
-$$
-\bl{U}^H\bl{U}=I_r.
+\end{pmatrix}
+=I_r.
 $$
 
 \vfill
 
-\x{So the old tool gives both orders:} $P=\bl{U}\bl{U}^H$ and $\bl{U}^H\bl{U}=I_r$.
+\x{So cross-filling produces an orthonormal column table.}
 
 \end{frame}
 
@@ -2205,9 +2236,9 @@ $$
 \end{frame}
 
 
-\begin{frame}{Reverse the Order Again}
+\begin{frame}[shrink=6]{Reverse the Order Again}
 
-We have a square matrix identity
+We have a square matrix identity:
 
 $$
 \tl{\Omega}\tl{\Omega}^H=I.
@@ -2215,15 +2246,35 @@ $$
 
 \vfill\pause
 
-For square matrices, if $AB=I$, then $B=A^{-1}$ and the reversed order is also identity:
+Use the same AB/BA fact from the projection lectures:
 
 $$
-\tl{\Omega}^H\tl{\Omega}=I.
+\underbrace{\tl{\Omega}}_{\bl{A}}\,
+\underbrace{\tl{\Omega}^H}_{\rd{B}}
+=I
+\quad\Longrightarrow\quad
+\rd{B}=\bl{A}^{-1}.
+$$
+
+\vfill\pause
+
+Therefore reverse the order:
+
+$$
+\underbrace{\tl{\Omega}^H}_{\rd{B}}\,
+\underbrace{\tl{\Omega}}_{\bl{A}}
+=
+\bl{A}^{-1}\bl{A}
+=I.
 $$
 
 \vfill
 
-Equivalently, $\tl{\Omega}^H\tl{\Omega}$ is the inner-product table of the stacked columns, and it is $I$.
+Equivalently,
+
+$$
+\tl{\Omega}^H\tl{\Omega}=I.
+$$
 
 \vfill\pause
 
