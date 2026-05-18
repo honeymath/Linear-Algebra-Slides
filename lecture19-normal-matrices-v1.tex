@@ -343,6 +343,37 @@ $$
 \end{frame}
 
 
+\begin{frame}{Start in One Complex Dimension}
+
+For one complex number $z=a+bi$, ordinary absolute value satisfies
+
+$$
+|z|^2=a^2+b^2.
+$$
+
+\vfill\pause
+
+The algebraic way to get this number is
+
+$$
+\overline{z}z=(a-bi)(a+bi)=a^2+b^2.
+$$
+
+\vfill\pause
+
+So complex length already contains the rule:
+
+$$
+\boxed{|z|^2=\overline{z}z.}
+$$
+
+\vfill
+
+\x{Hermitian length is the vector version of this one-dimensional fact.}
+
+\end{frame}
+
+
 \begin{frame}[shrink=5]{The Missing Move}
 
 The problem is this multiplication:
@@ -652,18 +683,13 @@ $$
 \end{frame}
 
 
-\begin{frame}{Why $A^H$ Is the Correct Mirror}
+\begin{frame}{Why $A^H$ Is the Matrix-Level Mirror}
 
-Hermitian conjugate is the operation that moves $A$ across the inner product:
+We stay at the matrix level.
 
-$$
-\langle A\mathbf{v},\mathbf{w}\rangle_H
-=(A\mathbf{v})^H\mathbf{w}.
-$$
+\vfill
 
-\vfill\pause
-
-Use the product rule:
+The only operation we need is:
 
 $$
 (A\mathbf{v})^H\mathbf{w}
@@ -672,7 +698,7 @@ $$
 
 \vfill\pause
 
-So
+In inner-product notation this says:
 
 $$
 \langle A\mathbf{v},\mathbf{w}\rangle_H
@@ -682,7 +708,7 @@ $$
 
 \vfill
 
-\x{Key:} $A^H$ is the mirror-action of $A$.
+\x{No extra abstract structure is being introduced:} $A^H$ is just conjugate transpose.
 
 \end{frame}
 
@@ -711,6 +737,13 @@ In words:
 \begin{center}
 \x{$A$ commutes with its Hermitian conjugate.}
 \end{center}
+
+\vfill
+
+If $A$ is real, then $A^H=A^T$, so normal means
+$$
+AA^T=A^TA.
+$$
 
 \vfill\pause
 
@@ -745,6 +778,8 @@ A=\begin{pmatrix}
 A^H=A.
 $$
 
+If all entries are real, this is exactly a real symmetric matrix: $A^T=A$.
+
 \vfill\pause
 
 Then $A$ is automatically normal:
@@ -756,7 +791,7 @@ $$
 \end{frame}
 
 
-\begin{frame}{Second Special Case: Skew-Hermitian Symmetric}
+\begin{frame}[shrink=5]{Second Special Case: Skew-Hermitian Symmetric}
 
 \begin{block}{Definition: Skew-Hermitian Symmetric}
 A matrix $A$ is \x{skew-Hermitian symmetric} if
@@ -777,6 +812,8 @@ i&2+i\\
 \qquad
 A^H=-A.
 $$
+
+If all entries are real, this is exactly a real skew-symmetric matrix: $A^T=-A$.
 
 \vfill\pause
 
@@ -810,6 +847,8 @@ i&1
 \end{pmatrix}.
 $$
 
+If all entries are real, this is exactly a real orthogonal matrix: $U^TU=UU^T=I$.
+
 \vfill\pause
 
 Unitary matrices are automatically normal:
@@ -817,6 +856,37 @@ Unitary matrices are automatically normal:
 $$
 UU^H=I=U^HU.
 $$
+
+\end{frame}
+
+
+\begin{frame}{What Does $U^HU=I$ Mean?}
+
+Write the columns of $U$ as
+
+$$
+U=\begin{pmatrix}|&|& &|\\
+\bl{\mathbf u_1}&\rd{\mathbf u_2}&\cdots&\gn{\mathbf u_n}\\
+|&|& &|
+\end{pmatrix}.
+$$
+
+\vfill\pause
+
+Then $U^HU$ is the Hermitian inner-product table of the columns:
+
+$$
+U^HU=
+\begin{pmatrix}
+\langle \bl{\mathbf u_1},\bl{\mathbf u_1}\rangle_H & \langle \bl{\mathbf u_1},\rd{\mathbf u_2}\rangle_H & \cdots\\
+\langle \rd{\mathbf u_2},\bl{\mathbf u_1}\rangle_H & \langle \rd{\mathbf u_2},\rd{\mathbf u_2}\rangle_H & \cdots\\
+\vdots&\vdots&\ddots
+\end{pmatrix}.
+$$
+
+\vfill
+
+\x{So $U^HU=I$ means the columns form a Hermitian orthonormal basis.}
 
 \end{frame}
 
@@ -863,7 +933,7 @@ So $JJ^H\ne J^HJ$. This matrix is \x{not normal}.
 % └─────────────────────────────────────────────────────────────────────┘
 \section{Diagonalizability}
 
-\begin{frame}{Before Spectral Projections}
+\begin{frame}{Goal Before Spectral Projections}
 
 We want to use spectral projections:
 
@@ -873,7 +943,7 @@ $$
 
 \vfill\pause
 
-But this only makes sense after we know:
+But spectral projections are legitimate only after we know:
 
 $$
 A\text{ is diagonalizable.}
@@ -881,286 +951,16 @@ $$
 
 \vfill
 
-So first we prove:
+So the first goal is:
 
 \begin{block}{Theorem}
 Every normal matrix over $\mathbb{C}$ is diagonalizable.
 \end{block}
 
-\vfill
-
-\x{Method:} characteristic polynomial $\to$ radical polynomial $\to$ nilpotent normal matrix.
-
 \end{frame}
 
 
-\begin{frame}{Positivity Lemma for Matrices}
-
-\begin{block}{Positivity Lemma}
-For any complex matrix $M$,
-$$
-MM^H=0
-\quad\Longrightarrow\quad
-M=0.
-$$
-\end{block}
-
-\vfill\pause
-
-Why? The $i$-th diagonal entry of $MM^H$ is
-
-$$
-\text{row}_i(M)\,\text{row}_i(M)^H
-=\|\text{row}_i(M)\|_H^2.
-$$
-
-\vfill
-
-If $MM^H=0$, every row has Hermitian length $0$.
-
-\vfill
-
-Therefore every row is zero.
-
-\end{frame}
-
-
-\begin{frame}{Nilpotent Matrices}
-
-\begin{block}{Definition: Nilpotent Matrix}
-A matrix $N$ is \x{nilpotent} if
-$$
-N^m=0
-$$
-for some positive integer $m$.
-\end{block}
-
-\vfill
-
-Example:
-
-$$
-N=\begin{pmatrix}0&1\\0&0\end{pmatrix},
-\qquad
-N^2=0.
-$$
-
-\vfill\pause
-
-Nilpotent means: repeat the action enough times, and everything disappears.
-
-\end{frame}
-
-
-\begin{frame}{Polynomials Preserve Normality}
-
-\begin{block}{Proposition}
-If $A$ is normal, then every polynomial $f(A)$ is normal.
-\end{block}
-
-\vfill\pause
-
-Reason:
-
-$$
-AA^H=A^HA
-\quad\Longrightarrow\quad
-A^m(A^H)^n=(A^H)^nA^m.
-$$
-
-\vfill
-
-Also
-
-$$
-f(A)^H=\overline{f}(A^H).
-$$
-
-\vfill
-
-So $f(A)$ commutes with $f(A)^H$.
-
-\end{frame}
-
-
-\begin{frame}{Normal Nilpotent Matrices Are Zero}
-
-\begin{block}{Lemma}
-If $N$ is normal and nilpotent, then
-$$
-N=0.
-$$
-\end{block}
-
-\vfill\pause
-
-Nilpotent means $N^m=0$ for some $m$.
-
-\vfill
-
-Choose a power of two larger than $m$:
-
-$$
-2^r\ge m.
-$$
-
-\vfill\pause
-
-Then
-
-$$
-N^{2^r}=0.
-$$
-
-\vfill
-
-\x{Goal:} descend from $N^{2^r}=0$ to $N=0$.
-
-\end{frame}
-
-
-\begin{frame}{Step 1: Make a Positive Product}
-
-Since $N$ is normal,
-
-$$
-NN^H=N^HN.
-$$
-
-\vfill
-
-So powers of $N$ commute with powers of $N^H$.
-
-\vfill\pause
-
-From $N^{2^r}=0$, multiply by $(N^H)^{2^r}$:
-
-$$
-N^{2^r}(N^H)^{2^r}=0.
-$$
-
-\vfill\pause
-
-Because the factors commute, this is
-
-$$
-\bigl(N^{2^{r-1}}(N^H)^{2^{r-1}}\bigr)
-\bigl(N^{2^{r-1}}(N^H)^{2^{r-1}}\bigr)=0.
-$$
-
-\end{frame}
-
-
-\begin{frame}{Step 2: Recognize $MM^H$}
-
-Set
-
-$$
-M=N^{2^{r-1}}.
-$$
-
-\vfill
-
-Then
-
-$$
-M^H=(N^H)^{2^{r-1}}.
-$$
-
-\vfill\pause
-
-So the previous equation becomes
-
-$$
-(MM^H)(MM^H)=0.
-$$
-
-\vfill
-
-Since $(MM^H)^H=MM^H$, this is
-
-$$
-(MM^H)(MM^H)^H=0.
-$$
-
-\end{frame}
-
-
-\begin{frame}[shrink=8]{Step 3: Positivity Gives One Descent}
-
-From
-
-$$
-(MM^H)(MM^H)^H=0,
-$$
-
-positivity gives
-
-$$
-MM^H=0.
-$$
-
-\vfill\pause
-
-Apply positivity again:
-
-$$
-MM^H=0\quad\Longrightarrow\quad M=0.
-$$
-
-\vfill\pause
-
-But $M=N^{2^{r-1}}$, so
-
-$$
-N^{2^r}=0
-\quad\Longrightarrow\quad
-N^{2^{r-1}}=0.
-$$
-
-\vfill
-
-\x{One power of two has been removed.}
-
-\end{frame}
-
-
-\begin{frame}{Induction: Repeat the Descent}
-
-The same argument works at every level:
-
-$$
-N^{2^s}=0
-\quad\Longrightarrow\quad
-N^{2^{s-1}}=0.
-$$
-
-\vfill\pause
-
-Apply it repeatedly:
-
-$$
-N^{2^r}=0
-\Longrightarrow
-N^{2^{r-1}}=0
-\Longrightarrow
-\cdots
-\Longrightarrow
-N^2=0
-\Longrightarrow
-N=0.
-$$
-
-\vfill
-
-\begin{block}{Conclusion}
-Normal nilpotent matrices must be zero.
-\end{block}
-
-\end{frame}
-
-
-\begin{frame}{The Radical Polynomial}
+\begin{frame}{Recall the Practical Criterion}
 
 Write the characteristic polynomial honestly as a determinant:
 
@@ -1170,7 +970,7 @@ $$
 
 \vfill
 
-The \x{radical polynomial} removes repeated powers:
+Remove repeated powers:
 
 $$
 r_A(t)=\prod_{i=1}^k(t-\lambda_i).
@@ -1180,48 +980,462 @@ $$
 
 Previous lecture criterion:
 
-\begin{block}{Diagonalizability Criterion}
 $$
 A\text{ diagonalizable}
 \quad\Longleftrightarrow\quad
 r_A(A)=0.
 $$
+
+\end{frame}
+
+
+
+\begin{frame}{Trace of the Goal}
+
+The goal is not a list of procedures.
+
+\vfill
+
+The goal is one obstruction:
+
+$$
+A\text{ diagonalizable}
+\quad\Longleftrightarrow\quad
+r_A(A)=0.
+$$
+
+\vfill\pause
+
+So for a normal matrix, everything concentrates on this expression:
+
+$$
+\boxed{r_A(A)}.
+$$
+
+\vfill
+
+\x{Question:} what kind of matrix is produced by plugging $A$ into this radical polynomial?
+
+\end{frame}
+
+
+\begin{frame}{Nilpotent Matrices}
+
+\begin{block}{Definition: Nilpotent Matrix}
+A matrix $N$ is \x{nilpotent} if some power of it is zero:
+$$
+N^{\rd{m}}=0
+$$
+for some positive integer $\rd{m}$.
+\end{block}
+
+\vfill
+
+Example:
+
+$$
+N=\begin{pmatrix}0&1\\0&0\end{pmatrix},
+\qquad
+N^{\rd{2}}=0.
+$$
+
+\vfill
+
+Nilpotent means: after enough repeated multiplication, the matrix disappears.
+
+\end{frame}
+
+
+\begin{frame}[shrink=6]{What Always Happens to $r_A(A)$?}
+
+Write
+
+$$
+\det(tI-A)=\prod_{i=1}^k(t-\lambda_i)^{\rd{m_i}},
+\qquad
+r_A(t)=\prod_{i=1}^k(t-\lambda_i).
+$$
+
+\vfill\pause
+
+Let
+
+$$
+\rd{M}=\max\{\rd{m_1},\ldots,\rd{m_k}\}.
+$$
+
+\vfill
+
+Then every exponent in $r_A(t)^{\rd{M}}$ is large enough:
+
+$$
+r_A(t)^{\rd{M}}
+=\prod_{i=1}^k(t-\lambda_i)^{\rd{M}}
+=\det(tI-A)\,q(t).
+$$
+
+\vfill\pause
+
+Plug in $A$:
+
+$$
+r_A(A)^{\rd{M}}=\left.\det(tI-A)\right|_{t=A}q(A)=0.
+$$
+
+\vfill
+
+\x{So $r_A(A)$ is always nilpotent.}
+
+\end{frame}
+
+
+\begin{frame}[shrink=8]{The Strategy Trace}
+
+For every matrix $A$:
+
+$$
+r_A(A)\quad\text{is nilpotent.}
+$$
+
+\vfill\pause
+
+For a normal matrix $A$, we want one more property:
+
+$$
+r_A(A)\quad\text{is normal.}
+$$
+
+\vfill\pause
+
+Then the whole theorem reduces to one collapse:
+
+$$
+\boxed{\text{normal + nilpotent} \Longrightarrow 0.}
+$$
+
+\vfill
+
+After that collapse,
+
+$$
+r_A(A)=0,
+$$
+
+so $A$ is diagonalizable.
+
+\end{frame}
+
+
+\begin{frame}{Normal Nilpotent Matrices Must Vanish}
+
+Assume $N$ is normal and nilpotent.
+
+\vfill
+
+Nilpotent gives some power zero. Choose a power of two beyond it:
+
+$$
+N^{\rd{2^r}}=0.
+$$
+
+\vfill\pause
+
+Because $N$ is normal,
+
+$$
+NN^H=N^HN,
+$$
+
+so powers of $N$ commute with powers of $N^H$.
+
+\vfill
+
+\x{We will descend from $N^{\rd{2^r}}=0$ to $N=0$.}
+
+\end{frame}
+
+
+\begin{frame}[shrink=7]{The Descent Calculation}
+
+Start with
+
+$$
+N^{\rd{2^r}}=0.
+$$
+
+\vfill
+
+Multiply by $(N^H)^{\rd{2^r}}$:
+
+$$
+N^{\rd{2^r}}(N^H)^{\rd{2^r}}=0.
+$$
+
+\vfill\pause
+
+Since powers commute, fold the product as
+
+$$
+\bigl(N^{\bl{2^{r-1}}}(N^H)^{\bl{2^{r-1}}}\bigr)
+\bigl(N^{\bl{2^{r-1}}}(N^H)^{\bl{2^{r-1}}}\bigr)=0.
+$$
+
+\vfill
+
+Set
+
+$$
+M=N^{\bl{2^{r-1}}}.
+$$
+
+Then the equation becomes
+
+$$
+(MM^H)(MM^H)^H=0.
+$$
+
+\end{frame}
+
+
+\begin{frame}{The Hidden Tool Appears}
+
+The proof now needs one simple fact:
+
+$$
+XX^H=0\quad\Longrightarrow\quad X=0.
+$$
+
+\vfill\pause
+
+Why? Write the rows of $X$ as colored vectors:
+
+$$
+X=
+\begin{pmatrix}
+\bl{\mathbf r_1}\\
+\rd{\mathbf r_2}\\
+\gn{\mathbf r_3}\\
+\vdots
+\end{pmatrix}.
+$$
+
+\vfill
+
+Then $XX^H$ is the Hermitian inner-product table of these row vectors.
+
+\end{frame}
+
+
+\begin{frame}[shrink=6]{The Inner-Product Table}
+
+$$
+XX^H=
+\begin{pmatrix}
+\langle\bl{\mathbf r_1},\bl{\mathbf r_1}\rangle_H &
+\langle\bl{\mathbf r_1},\rd{\mathbf r_2}\rangle_H &
+\langle\bl{\mathbf r_1},\gn{\mathbf r_3}\rangle_H & \cdots\\
+\langle\rd{\mathbf r_2},\bl{\mathbf r_1}\rangle_H &
+\langle\rd{\mathbf r_2},\rd{\mathbf r_2}\rangle_H &
+\langle\rd{\mathbf r_2},\gn{\mathbf r_3}\rangle_H & \cdots\\
+\langle\gn{\mathbf r_3},\bl{\mathbf r_1}\rangle_H &
+\langle\gn{\mathbf r_3},\rd{\mathbf r_2}\rangle_H &
+\langle\gn{\mathbf r_3},\gn{\mathbf r_3}\rangle_H & \cdots\\
+\vdots&\vdots&\vdots&\ddots
+\end{pmatrix}.
+$$
+
+\vfill\pause
+
+If $XX^H=0$, then the diagonal entries are zero:
+
+$$
+\|\bl{\mathbf r_1}\|_H^2=0,
+\qquad
+\|\rd{\mathbf r_2}\|_H^2=0,
+\qquad
+\|\gn{\mathbf r_3}\|_H^2=0,
+\quad\ldots
+$$
+
+\vfill
+
+So every row vector is zero, hence $X=0$.
+
+\end{frame}
+
+
+\begin{frame}[shrink=6]{Use the Tool Twice}
+
+We had
+
+$$
+(MM^H)(MM^H)^H=0.
+$$
+
+\vfill\pause
+
+Apply the table fact to
+
+$$
+X=MM^H.
+$$
+
+This gives
+
+$$
+MM^H=0.
+$$
+
+\vfill\pause
+
+Apply the same table fact again to
+
+$$
+X=M.
+$$
+
+This gives
+
+$$
+M=0.
+$$
+
+\vfill
+
+Since $M=N^{\bl{2^{r-1}}}$,
+
+$$
+N^{\rd{2^r}}=0\quad\Longrightarrow\quad N^{\bl{2^{r-1}}}=0.
+$$
+
+\end{frame}
+
+
+\begin{frame}{Repeat the Descent}
+
+The same argument removes one half of the exponent each time:
+
+$$
+N^{\rd{2^r}}=0
+\Longrightarrow
+N^{\bl{2^{r-1}}}=0
+\Longrightarrow
+N^{\gn{2^{r-2}}}=0
+\Longrightarrow
+\cdots
+\Longrightarrow
+N^{2}=0
+\Longrightarrow
+N=0.
+$$
+
+\vfill
+
+\begin{block}{Collapse}
+Normal nilpotent matrices must be zero.
 \end{block}
 
 \end{frame}
 
 
-\begin{frame}{Normal Implies Diagonalizable}
+\begin{frame}{Why Is $r_A(A)$ Normal?}
 
-Set
-
-$$
-N=r_A(A)=\prod_{i=1}^k(A-\lambda_i I).
-$$
-
-\vfill\pause
-
-By Cayley--Hamilton,
+We still owe one property from the trace:
 
 $$
-\left.\det(tI-A)\right|_{t=A}=0.
-$$
-
-\vfill
-
-So some power of $N$ is zero:
-
-$$
-N^m=0.
+A\text{ normal}\quad\Longrightarrow\quad r_A(A)\text{ normal}.
 $$
 
 \vfill\pause
 
-Also $N$ is a polynomial in normal $A$, so $N$ is normal.
+This is a polynomial question.
 
 \vfill
 
-Normal + nilpotent $\Rightarrow N=0$.
+If $A$ commutes with $A^H$, then powers of $A$ commute with powers of $A^H$:
+
+$$
+A^m(A^H)^n=(A^H)^nA^m.
+$$
+
+\vfill
+
+So every polynomial in $A$ commutes with its Hermitian conjugate.
+
+\end{frame}
+
+
+\begin{frame}[shrink=8]{Example: Commute a Quadratic Polynomial}
+
+Take
+
+$$
+f(A)=A^2+2A+I.
+$$
+
+Then
+
+$$
+f(A)^H=(A^H)^2+2A^H+I.
+$$
+
+\vfill\pause
+
+Because $A$ is normal, every $A$ commutes with every $A^H$. For example,
+
+$$
+A^2(A^H)^2=AA A^HA^H
+=AA^HAA^H
+=(A^H)^2A^2.
+$$
+
+\vfill\pause
+
+Term by term, the same commuting changes
+
+$$
+f(A)f(A)^H
+\quad\text{into}\quad
+f(A)^Hf(A).
+$$
+
+\vfill
+
+\x{Therefore polynomial outputs of a normal matrix are normal.}
+
+\end{frame}
+
+
+\begin{frame}[shrink=8]{Normal Implies Diagonalizable}
+
+Let
+
+$$
+N=r_A(A).
+$$
+
+\vfill\pause
+
+The trace now closes:
+
+$$
+\begin{array}{rcl}
+\text{radical output} &:& N=r_A(A)\\[1mm]
+\text{always} &:& N\text{ is nilpotent}\\[1mm]
+\text{because }A\text{ is normal} &:& N\text{ is normal}\\[1mm]
+\text{collapse} &:& N=0
+\end{array}
+$$
+
+\vfill\pause
+
+Thus
+
+$$
+r_A(A)=0.
+$$
+
+By the criterion, $A$ is diagonalizable.
 
 \end{frame}
 
@@ -1264,9 +1478,9 @@ $$
 % │ Avoid eigenvector chasing. Use previous lectures: spectral          │
 % │ projections are polynomials in A.                                  │
 % └─────────────────────────────────────────────────────────────────────┘
-\section{Spectral Projections}
+\section{Spectral Projections of Normal Matrices}
 
-\begin{frame}{Use Projections, Not Eigenvector Chasing}
+\begin{frame}{Spectral Projections of Normal Matrices}
 
 Now $A$ is diagonalizable, so previous lectures give:
 
@@ -1329,6 +1543,31 @@ $$
 \vfill
 
 \x{Normal matrices force the orthogonal case.}
+
+\end{frame}
+
+
+\begin{frame}{What Does a Hermitian Projection Mean?}
+
+A projection always splits space into two pieces:
+
+$$
+\mathbf v=P\mathbf v+(I-P)\mathbf v.
+$$
+
+\vfill\pause
+
+If also $P^H=P$, then the two pieces are perpendicular:
+
+$$
+\langle P\mathbf v,(I-P)\mathbf w\rangle_H
+=(P\mathbf v)^H(I-P)\mathbf w
+=\mathbf v^HP(I-P)\mathbf w=0.
+$$
+
+\vfill
+
+\x{Hermitian projection = projection onto a perpendicular component.}
 
 \end{frame}
 
@@ -1569,35 +1808,40 @@ $$
 \end{frame}
 
 
-\begin{frame}{Apply This to Spectral Projections}
+\begin{frame}[shrink=6]{Immediately: Eigenspaces Are Perpendicular}
 
-For normal $A$, we proved:
-
+Take
 $$
-P_i^H=P_i.
-$$
-
-\vfill\pause
-
-So each $P_i$ is a Hermitian orthogonal projection:
-
-$$
-\operatorname{Col}(P_i)\perp_H\operatorname{Null}(P_i).
-$$
-
-\vfill\pause
-
-But
-
-$$
-\operatorname{Col}(P_i)=E_{\lambda_i},
+\mathbf v\in \operatorname{Im}(P_i),
 \qquad
-\operatorname{Null}(P_i)=\bigoplus_{j\ne i}E_{\lambda_j}.
+\mathbf w\in \operatorname{Im}(P_j),
+\qquad i\ne j.
+$$
+
+\vfill\pause
+
+Then $P_i\mathbf v=\mathbf v$ and $P_j\mathbf w=\mathbf w$. Hence
+
+$$
+\langle \mathbf v,\mathbf w\rangle_H
+=\langle P_i\mathbf v,P_j\mathbf w\rangle_H
+=(P_i\mathbf v)^H(P_j\mathbf w).
+$$
+
+\vfill\pause
+
+Because $P_i^H=P_i$ and compatible projections satisfy $P_iP_j=0$,
+
+$$
+(P_i\mathbf v)^H(P_j\mathbf w)
+=\mathbf v^HP_i^HP_j\mathbf w
+=\mathbf v^HP_iP_j\mathbf w
+=0.
 $$
 
 \vfill
 
-\x{Therefore each eigenspace is perpendicular to all the others.}
+\x{Therefore different eigenspaces are Hermitian perpendicular.}
 
 \end{frame}
 
@@ -1806,7 +2050,7 @@ $$
 \end{frame}
 
 
-\begin{frame}{Use the Old Tool: Diagonal Cross-Filling}
+\begin{frame}{Use the Old Tool Algebraically}
 
 From the orthogonal projection lectures:
 
@@ -1817,21 +2061,66 @@ orthonormal basis vectors for $\operatorname{Col}(P)$.
 
 \vfill\pause
 
-In symbols:
+Write the produced vectors as colored columns:
 
 $$
-P=\mathbf{u}_1\mathbf{u}_1^H+\cdots+\mathbf{u}_r\mathbf{u}_r^H,
-$$
-
-where
-
-$$
-\mathbf{u}_a^H\mathbf{u}_b=\delta_{ab}.
+\bl{U}=
+\begin{pmatrix}
+|&|& &|\\
+\bl{\mathbf u_1}&\rd{\mathbf u_2}&\cdots&\gn{\mathbf u_r}\\
+|&|& &|
+\end{pmatrix}.
 $$
 
 \vfill
 
-\x{Same logic as before, with $H$ replacing $T$.}
+The algebraic output is
+
+$$
+P=\bl{U}\bl{U}^H
+=\bl{\mathbf u_1}\bl{\mathbf u_1}^H
++\rd{\mathbf u_2}\rd{\mathbf u_2}^H
++\cdots+
+\gn{\mathbf u_r}\gn{\mathbf u_r}^H.
+$$
+
+\end{frame}
+
+
+\begin{frame}[shrink=6]{Reverse the Order}
+
+The other order is the inner-product table of the columns:
+
+$$
+\bl{U}^H\bl{U}=
+\begin{pmatrix}
+\bl{\mathbf u_1}^H\bl{\mathbf u_1} &
+\bl{\mathbf u_1}^H\rd{\mathbf u_2} &
+\cdots &
+\bl{\mathbf u_1}^H\gn{\mathbf u_r}\\
+\rd{\mathbf u_2}^H\bl{\mathbf u_1} &
+\rd{\mathbf u_2}^H\rd{\mathbf u_2} &
+\cdots &
+\rd{\mathbf u_2}^H\gn{\mathbf u_r}\\
+\vdots&\vdots&\ddots&\vdots\\
+\gn{\mathbf u_r}^H\bl{\mathbf u_1} &
+\gn{\mathbf u_r}^H\rd{\mathbf u_2} &
+\cdots &
+\gn{\mathbf u_r}^H\gn{\mathbf u_r}
+\end{pmatrix}.
+$$
+
+\vfill\pause
+
+Cross-filling produces orthonormal columns, so this table is
+
+$$
+\bl{U}^H\bl{U}=I_r.
+$$
+
+\vfill
+
+\x{So the old tool gives both orders:} $P=\bl{U}\bl{U}^H$ and $\bl{U}^H\bl{U}=I_r$.
 
 \end{frame}
 
@@ -1841,57 +2130,107 @@ $$
 For each eigenvalue $\lambda_i$:
 
 $$
-P_i=\mathbf{u}_{i,1}\mathbf{u}_{i,1}^H+\cdots+\mathbf{u}_{i,r_i}\mathbf{u}_{i,r_i}^H.
+\bl{U_i}=
+\begin{pmatrix}
+|&|& &|\\
+\mathbf{u}_{i,1}&\mathbf{u}_{i,2}&\cdots&\mathbf{u}_{i,r_i}\\
+|&|& &|
+\end{pmatrix}.
 $$
 
 \vfill
 
-The vectors
+The old tool gives
 
 $$
-\mathbf{u}_{i,1},\ldots,\mathbf{u}_{i,r_i}
-$$
-
-form an orthonormal basis of
-
-$$
-E_{\lambda_i}=\operatorname{Col}(P_i).
+\rd{P_i}
+=\bl{U_i}\bl{U_i}^H
+=\mathbf{u}_{i,1}\mathbf{u}_{i,1}^H+\cdots+\mathbf{u}_{i,r_i}\mathbf{u}_{i,r_i}^H,
+\qquad
+\bl{U_i}^H\bl{U_i}=I_{r_i}.
 $$
 
 \vfill\pause
 
-Since different eigenspaces are already perpendicular, putting all these vectors together gives an orthonormal basis of $\mathbb{C}^n$.
+Also
+
+$$
+\operatorname{Col}(\bl{U_i})
+=\operatorname{Col}(\rd{P_i})
+=E_{\lambda_i}.
+$$
 
 \end{frame}
 
 
-\begin{frame}{Collect the Vectors into $\Omega$}
+\begin{frame}[shrink=7]{Stack Algebraically}
 
-Collect all orthonormal eigenvectors as columns:
+Stack the blocks:
 
 $$
-\Omega=
+\tl{\Omega}=
 \begin{pmatrix}
-| & | & & |\\
-\mathbf{u}_{1,1}&\mathbf{u}_{1,2}&\cdots&\mathbf{u}_{k,r_k}\\
-| & | & & |
+\bl{U_1}&\rd{U_2}&\cdots&\gn{U_k}
 \end{pmatrix}.
-$$
-
-\vfill\pause
-
-Because the columns are orthonormal:
-
-$$
-\Omega^H\Omega=I.
 $$
 
 \vfill
 
-So $\Omega$ is \x{unitary}, and
+Then
 
 $$
-\Omega^{-1}=\Omega^H.
+\tl{\Omega}\tl{\Omega}^H
+=
+\bl{U_1}\bl{U_1}^H
++\rd{U_2}\rd{U_2}^H
++\cdots+
+\gn{U_k}\gn{U_k}^H.
+$$
+
+\vfill\pause
+
+But these are exactly the spectral projections:
+
+$$
+\tl{\Omega}\tl{\Omega}^H
+=
+P_1+P_2+\cdots+P_k
+=I.
+$$
+
+\vfill
+
+\x{No geometry is needed here: the identity comes from the projection sum.}
+
+\end{frame}
+
+
+\begin{frame}{Reverse the Order Again}
+
+We have a square matrix identity
+
+$$
+\tl{\Omega}\tl{\Omega}^H=I.
+$$
+
+\vfill\pause
+
+For square matrices, if $AB=I$, then $B=A^{-1}$ and the reversed order is also identity:
+
+$$
+\tl{\Omega}^H\tl{\Omega}=I.
+$$
+
+\vfill
+
+Equivalently, $\tl{\Omega}^H\tl{\Omega}$ is the inner-product table of the stacked columns, and it is $I$.
+
+\vfill\pause
+
+Therefore $\tl{\Omega}$ is \x{unitary}, and
+
+$$
+\tl{\Omega}^{-1}=\tl{\Omega}^H.
 $$
 
 \end{frame}
