@@ -1,0 +1,1467 @@
+\documentclass[10pt]{beamer}
+\usetheme{metropolis}
+
+% ── Packages ──
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{etoolbox}
+
+% ── Theorem environments ──
+\theoremstyle{definition}
+\newtheorem{defi}{Definition}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}[section]
+
+% Custom theorem styles with colors
+\setbeamercolor{block title}{bg=red!75!black,fg=white}
+\setbeamercolor{block body}{bg=yellow!10!white}
+
+\AtBeginEnvironment{prop}{%
+  \setbeamercolor{block title}{bg=yellow!75!black,fg=black}%
+  \setbeamercolor{block body}{bg=yellow!10!white}%
+}
+\AtEndEnvironment{prop}{%
+  \setbeamercolor{block title}{bg=red!75!black,fg=white}%
+}
+
+\AtBeginEnvironment{thm}{%
+  \setbeamercolor{block title}{bg=yellow!75!black,fg=black}%
+  \setbeamercolor{block body}{bg=yellow!10!white}%
+}
+\AtEndEnvironment{thm}{%
+  \setbeamercolor{block title}{bg=red!75!black,fg=white}%
+}
+
+% ── Highlighting ──
+\newcommand{\x}[1]{\alert{\textbf{#1}}}
+\newcommand{\rd}[1]{{\color{red!70!black}#1}}
+\newcommand{\bl}[1]{{\color{blue!70!black}#1}}
+\newcommand{\gn}[1]{{\color{green!60!black}#1}}
+\newcommand{\ora}[1]{{\color{orange!80!black}#1}}
+\newcommand{\gry}[1]{{\color{gray}#1}}
+\newcommand{\oplusperp}{\mathbin{\overset{\perp}{\oplus}}}
+
+\title{Lecture 20: Singular Value Decomposition}
+\subtitle{Balls, Gaussian Clouds, and Real Orthogonal Axes}
+\date{}
+\titlegraphic{}
+
+\begin{document}
+\begin{frame}[plain,shrink=10]
+\titlepage
+\end{frame}
+
+% ═══════════════════════════════════════
+% §1 STATISTICS FIRST
+% ADR: Start from real statistics, not complex/unitary notation. The
+% audience should first see the applied question: a round normal cloud
+% under a linear map becomes an ellipse. SVD names the axes.
+% ═══════════════════════════════════════
+\section{A Statistical Question}
+
+\begin{frame}{Today's Question}
+
+In statistics, a standard normal random vector is \x{round}:
+
+$$
+x\sim N(0,I).
+$$
+
+\vfill
+
+Every direction has the same variance.
+
+\vfill
+
+Now apply a real matrix:
+
+$$
+y=Ax.
+$$
+
+\vfill
+
+\begin{center}
+{\Large \x{What shape is the distribution of $y$?}}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Round Cloud Becomes Ellipse Cloud}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+  % left axes
+  \draw[->,gray] (-3.2,0) -- (-0.7,0);
+  \draw[->,gray] (-2,-1.25) -- (-2,1.25);
+  \node[below] at (-2,-1.55) {input space};
+
+  % round cloud
+  \foreach \r in {0.2,0.4,0.6,0.8,1.0} {
+    \draw[blue!25] (-2,0) circle (\r);
+  }
+  \fill[blue!65] (-2,0) circle (0.05);
+  \node[blue!70!black] at (-2,1.55) {round normal cloud};
+  \node[blue!70!black] at (-2,-1.9) {$x\sim N(0,I)$};
+
+  % arrow
+  \draw[-{Latex[length=4mm]},very thick] (-0.25,0) -- (1.0,0)
+    node[midway,above] {$A$};
+
+  % right axes
+  \draw[->,gray] (1.6,0) -- (4.6,0);
+  \draw[->,gray] (3,-1.35) -- (3,1.35);
+  \node[below] at (3,-1.55) {output space};
+
+  % ellipse cloud rotated
+  \begin{scope}[shift={(3,0)},rotate=25]
+    \foreach \r in {0.2,0.4,0.6,0.8,1.0} {
+      \draw[red!30] (0,0) ellipse ({1.35*\r} and {0.45*\r});
+    }
+    \draw[red!80!black,thick,<->] (-1.35,0) -- (1.35,0);
+    \draw[red!80!black,thick,<->] (0,-0.45) -- (0,0.45);
+  \end{scope}
+  \node[red!70!black] at (3,1.55) {ellipse normal cloud};
+  \node[red!70!black] at (3,-1.9) {$y=Ax$};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{center}
+\x{SVD asks for the axes and axis lengths of this ellipse.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{What Information Do We Need?}
+
+The output cloud has two visible pieces of geometry:
+
+\vfill
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+  \draw[->,gray] (-2.0,0) -- (2.0,0);
+  \draw[->,gray] (0,-1.4) -- (0,1.4);
+
+  \begin{scope}[rotate=28]
+    \draw[red!70!black,very thick] (0,0) ellipse (1.55 and 0.55);
+    \draw[blue!70!black,very thick,<->] (-1.55,0) -- (1.55,0);
+    \draw[red!70!black,very thick,<->] (0,-0.55) -- (0,0.55);
+    \node[blue!70!black] at (1.85,0.15) {$\sigma_1 u_1$};
+    \node[red!70!black] at (-0.45,0.85) {$\sigma_2 u_2$};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\vfill
+
+\begin{itemize}
+\item \x{Directions}: where are the axes?  $\quad u_1,u_2,\ldots$
+\item \x{Lengths}: how long are the axes?  $\quad \sigma_1,\sigma_2,\ldots$
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Covariance Remembers the Shape}
+
+For a random vector, covariance records the shape of the cloud.
+
+\vfill
+
+If $y=Ax$, then:
+
+$$
+\operatorname{Cov}(y)
+=\operatorname{Cov}(Ax)
+=A\,\operatorname{Cov}(x)\,A^T.
+$$
+
+\vfill
+
+\begin{center}
+\x{Linear transformations change covariance by } $C\mapsto ACA^T$.
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Standard Normal Input}
+
+For a standard normal input:
+
+$$
+\operatorname{Cov}(x)=I.
+$$
+
+\vfill
+
+Therefore:
+
+$$
+\operatorname{Cov}(y)
+=AIA^T.
+$$
+
+\vfill
+
+So:
+
+$$
+\boxed{\operatorname{Cov}(y)=AA^T.}
+$$
+
+\end{frame}
+
+
+\begin{frame}{The First Symmetric Matrix}
+
+The output cloud is controlled by the real symmetric matrix
+
+$$
+AA^T,\qquad (AA^T)^T=AA^T.
+$$
+
+\vspace{0.25cm}
+
+So the previous lecture applies:
+
+$$
+AA^T
+=
+\underbrace{U}_{\text{orthogonal axes}}
+\underbrace{\Sigma^2}_{\text{variances along axes}}
+\underbrace{U^T}_{\text{measure in those axes}}.
+$$
+
+\vspace{0.25cm}
+
+\begin{center}
+\x{The output axes come from real symmetric diagonalization.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{No Unitary Matrix Is Needed Here}
+
+This lecture is an applied real-number story.
+
+\vfill
+
+The visible objects are:
+
+$$
+A^T,\qquad
+AA^T,\qquad
+A^TA,\qquad
+U^TU=I,\qquad
+V^TV=I.
+$$
+
+\vfill
+
+The final real formula will be:
+
+$$
+\boxed{A=U\Sigma V^T.}
+$$
+
+\vfill
+
+\begin{center}
+\x{Complex notation is only a later remark: replace $T$ by $H$.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Read the Formula in Three Steps}
+
+The formula
+
+$$
+A=U\Sigma V^T
+$$
+
+is not just symbols. It is a three-step geometric story.
+
+\vfill
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{c|c|c}
+\textbf{Step} & \textbf{Matrix} & \textbf{Geometric action}\\
+\hline
+1 & $V^T$ & rotate the input axes\\
+2 & $\Sigma$ & stretch by axis lengths\\
+3 & $U$ & rotate to the output axes
+\end{tabular}
+\end{center}
+
+\vfill
+
+\begin{center}
+\x{$\Sigma$ stores lengths.  $U$ stores output directions.  $V$ stores input directions.}
+\end{center}
+
+\end{frame}
+
+
+% ═══════════════════════════════════════
+% §2 BALL TO ELLIPSOID
+% ADR: After probability motivation, give the same idea without
+% probability. A unit ball is visually simpler and leads directly to the
+% geometric definition of singular values.
+% ═══════════════════════════════════════
+\section{The Same Question Without Probability}
+
+\begin{frame}{Forget Probability for One Minute}
+
+The same shape question can be asked without random variables.
+
+\vfill
+
+Look at the unit ball:
+
+$$
+B_1=\{x:\|x\|\le 1\}.
+$$
+
+\vfill
+
+Apply a matrix:
+
+$$
+A(B_1)=\{Ax:\|x\|\le 1\}.
+$$
+
+\vfill
+
+\begin{center}
+{\Large \x{What shape is $A(B_1)$?}}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Circle to Ellipse}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+  % input circle
+  \draw[->,gray] (-3.3,0) -- (-0.8,0);
+  \draw[->,gray] (-2.05,-1.3) -- (-2.05,1.3);
+  \draw[blue!70!black,very thick] (-2.05,0) circle (1);
+  \draw[blue!70!black,thick,->] (-2.05,0) -- (-1.05,0)
+    node[midway,below] {$v_1$};
+  \draw[red!70!black,thick,->] (-2.05,0) -- (-2.05,1)
+    node[midway,left] {$v_2$};
+  \node at (-2.05,-1.65) {unit circle};
+
+  % arrow
+  \draw[-{Latex[length=4mm]},very thick] (-0.35,0) -- (0.95,0)
+    node[midway,above] {$A$};
+
+  % output ellipse
+  \draw[->,gray] (1.55,0) -- (4.65,0);
+  \draw[->,gray] (3.1,-1.35) -- (3.1,1.35);
+  \begin{scope}[shift={(3.1,0)},rotate=25]
+    \draw[green!55!black,very thick] (0,0) ellipse (1.45 and 0.55);
+    \draw[blue!70!black,thick,->] (0,0) -- (1.45,0)
+      node[midway,below] {$\sigma_1u_1$};
+    \draw[red!70!black,thick,->] (0,0) -- (0,0.55)
+      node[midway,left] {$\sigma_2u_2$};
+  \end{scope}
+  \node at (3.1,-1.65) {ellipse};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{center}
+\x{The image of a round object has special axes.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Axis Equation}
+
+The special input directions are:
+
+$$
+v_1,\;v_2,\;\ldots
+$$
+
+\vfill
+
+They land exactly on the output axes:
+
+$$
+Av_1=\sigma_1u_1,\qquad
+Av_2=\sigma_2u_2,\qquad
+\cdots
+$$
+
+\vfill
+
+\begin{center}
+\begin{tabular}{c|c|c}
+\textbf{input axis} & \textbf{stretch} & \textbf{output axis}\\
+\hline
+$\bl{v_1}$ & $\bl{\sigma_1}$ & $\bl{u_1}$\\
+$\rd{v_2}$ & $\rd{\sigma_2}$ & $\rd{u_2}$\\
+$\gry{v_3}$ & $\gry{0}$ & invisible
+\end{tabular}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Geometric Definition}
+
+\begin{defi}[Singular Values]
+The singular values of a real matrix $A$ are the axis lengths of the ellipsoid
+
+$$
+A(B_1)=\{Ax:\|x\|\le 1\}.
+$$
+\end{defi}
+
+\vfill
+
+They are written:
+
+$$
+\sigma_1\ge \sigma_2\ge \cdots\ge 0.
+$$
+
+\vfill
+
+\begin{center}
+\x{A singular value is a length, so it is never negative.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{What We Must Find}
+
+SVD asks for three pieces of data:
+
+\vfill
+
+$$
+\boxed{Av_i=\sigma_i u_i}
+$$
+
+\vfill
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{c|c|c}
+\textbf{Symbol} & \textbf{Meaning} & \textbf{Where it lives}\\
+\hline
+$v_i$ & input axis direction & domain of $A$\\
+$\sigma_i$ & axis length & nonnegative number\\
+$u_i$ & output axis direction & codomain of $A$
+\end{tabular}
+\end{center}
+
+\vfill
+
+Once we know these, the matrix itself becomes easy to describe.
+
+\end{frame}
+
+
+\begin{frame}{Stack the Axis Equations}
+
+Write all axis equations at once:
+
+$$
+A
+\underbrace{
+\begin{pmatrix}
+|&|&&|\\
+\bl{v_1}&\rd{v_2}&\cdots&\gry{v_n}\\
+|&|&&|
+\end{pmatrix}
+}_{V}
+=
+\underbrace{
+\begin{pmatrix}
+|&|&&|\\
+\bl{u_1}&\rd{u_2}&\cdots&u_m\\
+|&|&&|
+\end{pmatrix}
+}_{U}
+\underbrace{
+\begin{pmatrix}
+\bl{\sigma_1}&&&\\
+&\rd{\sigma_2}&&\\
+&&\ddots&\\
+&&&0
+\end{pmatrix}
+}_{\Sigma}.
+$$
+
+\vfill
+
+Short version:
+
+$$
+\boxed{AV=U\Sigma.}
+$$
+
+\end{frame}
+
+
+\begin{frame}{From Axis Equations to SVD}
+
+The input axes are orthonormal, so:
+
+$$
+V^TV=I,\qquad V^{-1}=V^T.
+$$
+
+\vfill
+
+Starting from:
+
+$$
+AV=U\Sigma,
+$$
+
+multiply on the right by $V^T$:
+
+$$
+AVV^T=U\Sigma V^T.
+$$
+
+\vfill
+
+Therefore:
+
+$$
+\boxed{A=U\Sigma V^T.}
+$$
+
+\end{frame}
+
+
+\begin{frame}{The Three Actions}
+
+The formula
+
+$$
+A=
+\underbrace{U}_{\text{output axes}}
+\underbrace{\Sigma}_{\text{axis lengths}}
+\underbrace{V^T}_{\text{input coordinates}}
+$$
+
+means:
+
+\vfill
+
+\begin{center}
+\begin{tikzpicture}[node distance=0.55cm,scale=0.82,transform shape]
+  \node (x) [draw,rounded corners,fill=blue!8] {input vector};
+  \node (coord) [draw,rounded corners,fill=blue!8,right=of x] {coordinates in $V$};
+  \node (stretch) [draw,rounded corners,fill=yellow!20,right=of coord] {stretch by $\Sigma$};
+  \node (out) [draw,rounded corners,fill=green!12,right=of stretch] {output vector};
+
+  \draw[-{Latex[length=3mm]},thick] (x) -- node[above] {$V^T$} (coord);
+  \draw[-{Latex[length=3mm]},thick] (coord) -- node[above] {$\Sigma$} (stretch);
+  \draw[-{Latex[length=3mm]},thick] (stretch) -- node[above] {$U$} (out);
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.25cm}
+
+\begin{center}
+\x{Measure, stretch, rebuild.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Circle, Rotate, Stretch, Rotate}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.62]
+  % panel coordinates
+  \foreach \x/\label in {0/{circle},3.0/{rotated circle},6.2/{stretched ellipse},9.6/{final ellipse}} {
+    \draw[->,gray!70] (\x-1.1,0) -- (\x+1.1,0);
+    \draw[->,gray!70] (\x,-1.05) -- (\x,1.05);
+    \node[below,font=\small] at (\x,-1.35) {\label};
+  }
+
+  \draw[blue!70!black,thick] (0,0) circle (0.75);
+  \draw[blue!70!black,->,thick] (0,0)--(0.75,0);
+  \draw[red!70!black,->,thick] (0,0)--(0,0.75);
+
+  \begin{scope}[shift={(3.0,0)},rotate=-30]
+    \draw[blue!70!black,thick] (0,0) circle (0.75);
+    \draw[blue!70!black,->,thick] (0,0)--(0.75,0);
+    \draw[red!70!black,->,thick] (0,0)--(0,0.75);
+  \end{scope}
+
+  \begin{scope}[shift={(6.2,0)}]
+    \draw[green!55!black,thick] (0,0) ellipse (1.05 and 0.38);
+    \draw[blue!70!black,->,thick] (0,0)--(1.05,0) node[midway,below] {$\sigma_1$};
+    \draw[red!70!black,->,thick] (0,0)--(0,0.38) node[midway,left] {$\sigma_2$};
+  \end{scope}
+
+  \begin{scope}[shift={(9.6,0)},rotate=25]
+    \draw[green!55!black,thick] (0,0) ellipse (1.05 and 0.38);
+    \draw[blue!70!black,->,thick] (0,0)--(1.05,0) node[midway,below] {$\sigma_1u_1$};
+    \draw[red!70!black,->,thick] (0,0)--(0,0.38) node[midway,left] {$\sigma_2u_2$};
+  \end{scope}
+
+  \draw[-{Latex[length=3mm]},thick] (1.25,0) -- node[above] {$V^T$} (1.75,0);
+  \draw[-{Latex[length=3mm]},thick] (4.25,0) -- node[above] {$\Sigma$} (4.95,0);
+  \draw[-{Latex[length=3mm]},thick] (7.55,0) -- node[above] {$U$} (8.25,0);
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{center}
+\x{The formula is visual: circle $\to$ circle $\to$ ellipse $\to$ rotated ellipse.}
+\end{center}
+
+\end{frame}
+
+
+% ═══════════════════════════════════════
+% §3 WHY A^T A
+% ADR: Now justify where the input axes come from. Use only real
+% symmetric machinery: A^T A measures output length from the input side.
+% ═══════════════════════════════════════
+\section{Finding the Input Axes}
+
+\begin{frame}{Where Do the Input Axes Come From?}
+
+We need directions $v_i$ such that:
+
+$$
+Av_i=\sigma_i u_i.
+$$
+
+\vfill
+
+But $A$ may be rectangular:
+
+$$
+A:\mathbb R^n\longrightarrow \mathbb R^m.
+$$
+
+\vfill
+
+So $A$ itself may not have eigenvectors.
+
+\vfill
+
+\begin{center}
+{\Large \x{Instead, measure how much $A$ stretches each input direction.}}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{The Stretch-Measuring Matrix}
+
+For any input vector $x$:
+
+$$
+\|Ax\|^2=(Ax)^T(Ax).
+$$
+
+\vfill
+
+Move the transpose:
+
+$$
+(Ax)^T=x^TA^T.
+$$
+
+\vfill
+
+Therefore:
+
+$$
+\boxed{\|Ax\|^2=x^TA^TAx.}
+$$
+
+\vfill
+
+So define:
+
+$$
+\boxed{G=A^TA.}
+$$
+
+\end{frame}
+
+
+\begin{frame}{Why $G=A^TA$ Is Symmetric}
+
+Compute:
+
+$$
+G^T=(A^TA)^T.
+$$
+
+\vfill
+
+Use the transpose product rule:
+
+$$
+(A^TA)^T=A^T(A^T)^T.
+$$
+
+\vfill
+
+Since $(A^T)^T=A$:
+
+$$
+G^T=A^TA=G.
+$$
+
+\vfill
+
+\begin{center}
+\x{$A^TA$ is a real symmetric matrix.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{The Squared Length Is Nonnegative}
+
+For every vector $x$:
+
+$$
+x^TGx=x^TA^TAx.
+$$
+
+\vfill
+
+But:
+
+$$
+x^TA^TAx=(Ax)^T(Ax).
+$$
+
+So:
+
+$$
+x^TGx=\|Ax\|^2\ge 0.
+$$
+
+\vfill
+
+\begin{center}
+\x{We only need this fact: $x^TA^TAx$ is a squared length.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Now Use the Previous Lecture}
+
+We proved:
+
+\vfill
+
+\begin{thm}[Real Symmetric Spectral Theorem]
+If $G$ is real symmetric, then it has an orthonormal eigenbasis.
+Equivalently,
+
+$$
+G=V\Lambda V^T
+$$
+
+for an orthogonal matrix $V$ and a real diagonal matrix $\Lambda$.
+\end{thm}
+
+\vfill
+
+Here:
+
+$$
+G=A^TA.
+$$
+
+\end{frame}
+
+
+\begin{frame}{Apply It to $A^TA$}
+
+Since $A^TA$ is real symmetric:
+
+$$
+A^TA v_i=\lambda_i v_i
+$$
+
+with orthonormal eigenvectors:
+
+$$
+v_i^Tv_j=\delta_{ij}.
+$$
+
+\vfill
+
+Stack them:
+
+$$
+V=
+\begin{pmatrix}
+|&|&&|\\
+v_1&v_2&\cdots&v_n\\
+|&|&&|
+\end{pmatrix},
+\qquad
+V^TV=I.
+$$
+
+\vfill
+
+\begin{center}
+\x{These eigenvectors are the input axes of the ellipsoid.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Input Axes Still Live on the Circle}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  \draw[->,gray] (-2.2,0)--(2.2,0);
+  \draw[->,gray] (0,-1.6)--(0,1.6);
+  \draw[blue!70!black,very thick] (0,0) circle (1.1);
+
+  \begin{scope}[rotate=35]
+    \draw[blue!70!black,->,very thick] (0,0)--(1.1,0) node[midway,below right] {$v_1$};
+    \draw[red!70!black,->,very thick] (0,0)--(0,1.1) node[midway,above left] {$v_2$};
+  \end{scope}
+
+  \node[below] at (0,-1.75) {input unit circle};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.25cm}
+
+\begin{center}
+\x{$v_i$ are not output axes yet. They are special directions on the input circle.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Why Eigenvalues Are Nonnegative}
+
+Suppose:
+
+$$
+A^TA v_i=\lambda_i v_i,
+\qquad
+\|v_i\|=1.
+$$
+
+\vfill
+
+Then:
+
+$$
+\lambda_i
+=\lambda_i v_i^Tv_i
+=v_i^T(A^TA v_i)
+=v_i^TA^TA v_i.
+$$
+
+\vfill
+
+But:
+
+$$
+v_i^TA^TA v_i=\|Av_i\|^2\ge 0.
+$$
+
+\vfill
+
+So:
+
+$$
+\boxed{\lambda_i\ge 0.}
+$$
+
+\end{frame}
+
+
+\begin{frame}{Singular Values Are Square Roots}
+
+The eigenvalues of $A^TA$ are nonnegative:
+
+$$
+\lambda_i\ge0.
+$$
+
+\vfill
+
+So we may define:
+
+$$
+\boxed{\sigma_i=\sqrt{\lambda_i}.}
+$$
+
+\vfill
+
+Then:
+
+$$
+A^TA v_i=\sigma_i^2 v_i.
+$$
+
+\vfill
+
+\begin{center}
+\x{The square root appears because $A^TA$ measures squared length.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Check the Length}
+
+Assume $A^TA v_i=\sigma_i^2v_i$ and $\|v_i\|=1$.
+
+\vfill
+
+Then:
+
+$$
+\begin{aligned}
+\|Av_i\|^2
+&=v_i^TA^TA v_i\\
+&=v_i^T(\sigma_i^2v_i)\\
+&=\sigma_i^2v_i^Tv_i=\sigma_i^2.
+\end{aligned}
+$$
+
+\vfill
+
+Therefore:
+
+$$
+\boxed{\|Av_i\|=\sigma_i.}
+$$
+
+\end{frame}
+
+
+% ═══════════════════════════════════════
+% §4 OUTPUT AXES AND THE THEOREM
+% ADR: Continue from input axes. Students must see that v_i live on the
+% input circle, while u_i are built after applying A. The proof follows
+% real inner products only.
+% ═══════════════════════════════════════
+\section{Output Axes}
+
+\begin{frame}{Now Build the Output Axes}
+
+We already know:
+
+$$
+A^TA v_i=\sigma_i^2v_i,
+\qquad
+\|Av_i\|=\sigma_i.
+$$
+
+\vfill
+
+So if $\sigma_i>0$, define:
+
+$$
+\boxed{u_i=\frac{Av_i}{\sigma_i}.}
+$$
+
+\vfill
+
+Then the axis equation becomes:
+
+$$
+\boxed{Av_i=\sigma_i u_i.}
+$$
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Input Axis Lands on Output Axis}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+  % input circle
+  \draw[->,gray] (-3.2,0)--(-0.8,0);
+  \draw[->,gray] (-2,-1.35)--(-2,1.35);
+  \draw[blue!70!black,very thick] (-2,0) circle (1);
+  \draw[blue!70!black,->,very thick] (-2,0)--(-1.18,0.57) node[midway,above] {$v_i$};
+  \node[below] at (-2,-1.55) {input circle};
+
+  \draw[-{Latex[length=4mm]},very thick] (-0.35,0)--(0.95,0) node[midway,above] {$A$};
+
+  % output ellipse
+  \draw[->,gray] (1.6,0)--(4.4,0);
+  \draw[->,gray] (3,-1.35)--(3,1.35);
+  \begin{scope}[shift={(3,0)},rotate=25]
+    \draw[green!55!black,very thick] (0,0) ellipse (1.25 and 0.45);
+    \draw[blue!70!black,->,very thick] (0,0)--(1.25,0) node[midway,below] {$\sigma_i u_i$};
+    \draw[blue!70!black,dashed,->,thick] (0,0)--(0.85,0) node[midway,above] {$u_i$};
+  \end{scope}
+  \node[below] at (3,-1.55) {output ellipse};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{center}
+\x{$v_i$ is an input direction.  $u_i$ is the normalized output direction.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Check $u_i$ Has Length $1$}
+
+By definition:
+
+$$
+u_i=\frac{Av_i}{\sigma_i}.
+$$
+
+\vfill
+
+So:
+
+$$
+\|u_i\|
+=\left\|\frac{Av_i}{\sigma_i}\right\|
+=\frac{\|Av_i\|}{\sigma_i}
+=\frac{\sigma_i}{\sigma_i}
+=1.
+$$
+
+\vfill
+
+\begin{center}
+\x{Each nonzero output axis direction is a unit vector.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Why Different Output Axes Are Orthogonal}
+
+For $i\ne j$:
+
+$$
+u_i^Tu_j
+=\frac{(Av_i)^T(Av_j)}{\sigma_i\sigma_j}.
+$$
+
+\vfill
+
+Move $A$ to the middle:
+
+$$
+u_i^Tu_j
+=\frac{v_i^TA^TAv_j}{\sigma_i\sigma_j}.
+$$
+
+\vfill
+
+Use $A^TAv_j=\sigma_j^2v_j$:
+
+$$
+u_i^Tu_j
+=\frac{\sigma_j^2}{\sigma_i\sigma_j}v_i^Tv_j
+=0.
+$$
+
+\end{frame}
+
+
+\begin{frame}{Inner-Product Table}
+
+The output vectors are orthonormal:
+
+\vfill
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{c|ccc}
+ & $\bl{u_1}$ & $\rd{u_2}$ & $\gry{u_3}$\\
+\hline
+$\bl{u_1^T}$ & $\bl{1}$ & $0$ & $0$\\
+$\rd{u_2^T}$ & $0$ & $\rd{1}$ & $0$\\
+$\gry{u_3^T}$ & $0$ & $0$ & $\gry{1}$
+\end{tabular}
+\end{center}
+
+\vfill
+
+Matrix form:
+
+$$
+U^TU=I.
+$$
+
+\end{frame}
+
+
+\begin{frame}{What If $\sigma_i=0$?}
+
+If $\sigma_i=0$, then:
+
+$$
+A^TA v_i=0.
+$$
+
+\vfill
+
+Compute the output length:
+
+$$
+\|Av_i\|^2
+=v_i^TA^TA v_i
+=0.
+$$
+
+\vfill
+
+Therefore:
+
+$$
+\boxed{Av_i=0.}
+$$
+
+\vfill
+
+\begin{center}
+\x{Zero singular value = invisible input direction.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Visible and Invisible Directions}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+  \draw[->,gray] (-3.3,0)--(-0.8,0);
+  \draw[->,gray] (-2,-1.3)--(-2,1.3);
+  \draw[blue!70!black,very thick] (-2,0) circle (1);
+  \draw[blue!70!black,->,very thick] (-2,0)--(-1.05,0) node[midway,below] {visible};
+  \draw[gray,->,very thick] (-2,0)--(-2,1) node[midway,left] {zero};
+
+  \draw[-{Latex[length=4mm]},very thick] (-0.35,0)--(0.95,0) node[midway,above] {$A$};
+
+  \draw[->,gray] (1.6,0)--(4.4,0);
+  \draw[->,gray] (3,-1.3)--(3,1.3);
+  \draw[green!55!black,very thick] (3,0) ellipse (1.15 and 0.08);
+  \draw[blue!70!black,->,very thick] (3,0)--(4.15,0) node[midway,below] {visible motion};
+  \fill[gray] (3,0) circle (0.05);
+  \node[gray] at (3,0.45) {zero direction collapses};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.25cm}
+
+\begin{center}
+\x{The null space is exactly the collection of invisible directions.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Complete the Output Basis}
+
+The vectors coming from nonzero singular values span $\operatorname{Col}(A)$.
+
+\vfill
+
+If the output space is larger, complete them:
+
+$$
+u_1,\ldots,u_r
+\quad\leadsto\quad
+u_1,\ldots,u_r,u_{r+1},\ldots,u_m.
+$$
+
+\vfill
+
+The extra vectors live perpendicular to the column space:
+
+$$
+\operatorname{Col}(A)^\perp=\operatorname{Null}(A^T).
+$$
+
+\vfill
+
+\begin{center}
+\x{This gives a full orthogonal matrix $U$.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Stack Everything}
+
+For every input axis:
+
+$$
+Av_i=\sigma_i u_i.
+$$
+
+\vfill
+
+Stack columns:
+
+$$
+A
+\underbrace{
+\begin{pmatrix}
+|&|&&|\\
+v_1&v_2&\cdots&v_n\\
+|&|&&|
+\end{pmatrix}}_{V}
+=
+\underbrace{
+\begin{pmatrix}
+|&|&&|\\
+u_1&u_2&\cdots&u_m\\
+|&|&&|
+\end{pmatrix}}_{U}
+\underbrace{\Sigma}_{\text{rectangular diagonal}}.
+$$
+
+\vfill
+
+So:
+
+$$
+\boxed{AV=U\Sigma.}
+$$
+
+\end{frame}
+
+
+\begin{frame}{Singular Value Decomposition}
+
+Since $V$ is orthogonal:
+
+$$
+V^{-1}=V^T.
+$$
+
+\vfill
+
+From:
+
+$$
+AV=U\Sigma,
+$$
+
+multiply by $V^T$:
+
+$$
+AVV^T=U\Sigma V^T.
+$$
+
+\vfill
+
+Therefore:
+
+$$
+\boxed{A=U\Sigma V^T.}
+$$
+
+\end{frame}
+
+
+\begin{frame}{Theorem}
+
+\begin{thm}[Singular Value Decomposition]
+For every real $m\times n$ matrix $A$, there exist orthogonal matrices
+$U$ and $V$, and a rectangular diagonal matrix $\Sigma$ with nonnegative
+entries, such that
+
+$$
+A=U\Sigma V^T.
+$$
+\end{thm}
+
+\vfill
+
+\begin{center}
+\x{Every real matrix maps balls to ellipsoids with orthogonal axes.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{Proof Photograph}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{ccl}
+$A^TA$ & is real symmetric & previous lecture applies\\
+$A^TA v_i=\sigma_i^2v_i$ & gives & input axes $v_i$\\
+$\|Av_i\|=\sigma_i$ & gives & axis lengths $\sigma_i$\\
+$u_i=Av_i/\sigma_i$ & gives & output axes $u_i$\\
+$Av_i=\sigma_i u_i$ & stack & $AV=U\Sigma$\\
+$V^{-1}=V^T$ & gives & $A=U\Sigma V^T$
+\end{tabular}
+\end{center}
+
+\vfill
+
+\begin{center}
+\x{The whole proof is real symmetric diagonalization of $A^TA$.}
+\end{center}
+
+\end{frame}
+
+
+
+% ═══════════════════════════════════════
+% §5 METHOD SUMMARY
+% ADR: Stop at the decomposition method. Do not turn this into a
+% statistics course. Applications can be saved for a future module.
+% ═══════════════════════════════════════
+\section{Method Summary}
+
+\begin{frame}{The Method}
+
+To decompose a real matrix $A$:
+
+\vfill
+
+\begin{enumerate}
+\item Compute the real symmetric matrix $A^TA$.
+\item Orthogonally diagonalize it:
+$$
+A^TA=V\Sigma^2V^T.
+$$
+\item For each nonzero $\sigma_i$, define:
+$$
+u_i=\frac{Av_i}{\sigma_i}.
+$$
+\item Complete the $u_i$'s to an orthonormal basis if needed.
+\item Stack the equations $Av_i=\sigma_i u_i$.
+\end{enumerate}
+
+\end{frame}
+
+
+\begin{frame}{What Each Piece Means}
+
+The decomposition is:
+
+$$
+\boxed{A=U\Sigma V^T.}
+$$
+
+\vfill
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{c|c}
+\textbf{Piece} & \textbf{Meaning}\\
+\hline
+$V$ & orthonormal input axes on the unit circle\\
+$\Sigma$ & axis lengths of the output ellipsoid\\
+$U$ & orthonormal output axes
+\end{tabular}
+\end{center}
+
+\vfill
+
+\begin{center}
+\x{Input axes $\to$ stretch lengths $\to$ output axes.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}{The Whole Story in One Line}
+
+For every input axis:
+
+$$
+Av_i=\sigma_i u_i.
+$$
+
+\vfill
+
+Stack all columns:
+
+$$
+A
+\underbrace{\begin{pmatrix}|&|&&|\\ v_1&v_2&\cdots&v_n\\ |&|&&|\end{pmatrix}}_{V}
+=
+\underbrace{\begin{pmatrix}|&|&&|\\ u_1&u_2&\cdots&u_m\\ |&|&&|\end{pmatrix}}_{U}
+\underbrace{\Sigma}_{\text{axis lengths}}.
+$$
+
+\vfill
+
+Therefore:
+
+$$
+\boxed{A=U\Sigma V^T.}
+$$
+
+\end{frame}
+
+
+\begin{frame}{Final Summary}
+
+SVD answers one geometric question:
+
+\vfill
+
+\begin{center}
+{\Large \x{What does $A$ do to a round ball?}}
+\end{center}
+
+\vfill
+
+Answer:
+
+$$
+\boxed{\text{round ball}\xrightarrow{\ A\ }\text{ellipsoid with orthogonal axes}.}
+$$
+
+\vfill
+
+The axis data is exactly:
+
+$$
+\boxed{A=U\Sigma V^T.}
+$$
+
+\end{frame}
+
+\end{document}
