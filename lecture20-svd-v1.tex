@@ -43,6 +43,13 @@
 \newcommand{\ora}[1]{{\color{orange!80!black}#1}}
 \newcommand{\gry}[1]{{\color{gray}#1}}
 \newcommand{\oplusperp}{\mathbin{\overset{\perp}{\oplus}}}
+\newcommand{\Vcols}{\begin{pmatrix}|&|& &|\\ \bl{v_1}&\rd{v_2}&\cdots&\gry{v_n}\\ |&|& &|\end{pmatrix}}
+\newcommand{\Ucols}{\begin{pmatrix}|&|& &|\\ \bl{u_1}&\rd{u_2}&\cdots&\gry{u_m}\\ |&|& &|\end{pmatrix}}
+\newcommand{\Vrows}{\begin{pmatrix}-&\bl{v_1^T}&-\\ -&\rd{v_2^T}&-\\ &\vdots&\\ -&\gry{v_n^T}&-\end{pmatrix}}
+\newcommand{\Urows}{\begin{pmatrix}-&\bl{u_1^T}&-\\ -&\rd{u_2^T}&-\\ &\vdots&\\ -&\gry{u_m^T}&-\end{pmatrix}}
+\newcommand{\Sigdisplay}{\begin{pmatrix}\bl{\sigma_1}&0&\cdots&0\\ 0&\rd{\sigma_2}&\cdots&0\\ \vdots&\vdots&\ddots&\vdots\\ 0&0&\cdots&\gry{0}\end{pmatrix}}
+\newcommand{\SigTsigdisplay}{\begin{pmatrix}\bl{\sigma_1^2}&0&\cdots&0\\ 0&\rd{\sigma_2^2}&\cdots&0\\ \vdots&\vdots&\ddots&\vdots\\ 0&0&\cdots&\gry{0}\end{pmatrix}}
+\newcommand{\svdproduct}{\underbrace{\Ucols}_{U}\underbrace{\Sigdisplay}_{\Sigma}\underbrace{\Vrows}_{V^T}}
 
 \title{Lecture 20: Singular Value Decomposition}
 \subtitle{Balls, Gaussian Clouds, and Real Orthogonal Axes}
@@ -55,551 +62,48 @@
 \end{frame}
 
 % ═══════════════════════════════════════
-% §1 STATISTICS FIRST
-% ADR: Start from real statistics, not complex/unitary notation. The
-% audience should first see the applied question: a round normal cloud
-% under a linear map becomes an ellipse. SVD names the axes.
+% §1 MOTIVATION
+% ADR: The opening must be visual and concrete. Start with the three-step
+% picture (circle -> circle -> ellipse -> rotated ellipse), then state the
+% algebraic goal A=U Sigma V^T. Avoid probability/covariance at the entrance.
 % ═══════════════════════════════════════
-\section{A Statistical Question}
+\section{The Visual Question}
 
 \begin{frame}{Today's Question}
 
-In statistics, a standard normal random vector is \x{round}:
-
 $$
-x\sim N(0,I).
+\underbrace{x\in\mathbb R^n}_{\text{input vector}}
+\qquad
+\xrightarrow{\quad
+\underbrace{A}_{m\times n\text{ real matrix}}
+\quad}
+\qquad
+\underbrace{Ax\in\mathbb R^m}_{\text{output vector}}.
 $$
 
 \vfill
 
-Every direction has the same variance.
-
-\vfill
-
-Now apply a real matrix:
-
-$$
-y=Ax.
-$$
+Instead of asking for eigenvectors of $A$, ask a geometric question:
 
 \vfill
 
 \begin{center}
-{\Large \x{What shape is the distribution of $y$?}}
+{\Large\x{What does $A$ do to the round unit ball?}}
+\end{center}
+
+\vfill
+
+\begin{center}
+\x{SVD is the axis system of that transformed shape.}
 \end{center}
 
 \end{frame}
 
 
-\begin{frame}[fragile]{Round Cloud Becomes Ellipse Cloud}
-
-\begin{center}
-\begin{tikzpicture}[scale=0.9]
-  % left axes
-  \draw[->,gray] (-3.2,0) -- (-0.7,0);
-  \draw[->,gray] (-2,-1.25) -- (-2,1.25);
-  \node[below] at (-2,-1.55) {input space};
-
-  % round cloud
-  \foreach \r in {0.2,0.4,0.6,0.8,1.0} {
-    \draw[blue!25] (-2,0) circle (\r);
-  }
-  \fill[blue!65] (-2,0) circle (0.05);
-  \node[blue!70!black] at (-2,1.55) {round normal cloud};
-  \node[blue!70!black] at (-2,-1.9) {$x\sim N(0,I)$};
-
-  % arrow
-  \draw[-{Latex[length=4mm]},very thick] (-0.25,0) -- (1.0,0)
-    node[midway,above] {$A$};
-
-  % right axes
-  \draw[->,gray] (1.6,0) -- (4.6,0);
-  \draw[->,gray] (3,-1.35) -- (3,1.35);
-  \node[below] at (3,-1.55) {output space};
-
-  % ellipse cloud rotated
-  \begin{scope}[shift={(3,0)},rotate=25]
-    \foreach \r in {0.2,0.4,0.6,0.8,1.0} {
-      \draw[red!30] (0,0) ellipse ({1.35*\r} and {0.45*\r});
-    }
-    \draw[red!80!black,thick,<->] (-1.35,0) -- (1.35,0);
-    \draw[red!80!black,thick,<->] (0,-0.45) -- (0,0.45);
-  \end{scope}
-  \node[red!70!black] at (3,1.55) {ellipse normal cloud};
-  \node[red!70!black] at (3,-1.9) {$y=Ax$};
-\end{tikzpicture}
-\end{center}
-
-\vspace{0.2cm}
-
-\begin{center}
-\x{SVD asks for the axes and axis lengths of this ellipse.}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}{What Information Do We Need?}
-
-The output cloud has two visible pieces of geometry:
-
-\vfill
-
-\begin{center}
-\begin{tikzpicture}[scale=1.1]
-  \draw[->,gray] (-2.0,0) -- (2.0,0);
-  \draw[->,gray] (0,-1.4) -- (0,1.4);
-
-  \begin{scope}[rotate=28]
-    \draw[red!70!black,very thick] (0,0) ellipse (1.55 and 0.55);
-    \draw[blue!70!black,very thick,<->] (-1.55,0) -- (1.55,0);
-    \draw[red!70!black,very thick,<->] (0,-0.55) -- (0,0.55);
-    \node[blue!70!black] at (1.85,0.15) {$\sigma_1 u_1$};
-    \node[red!70!black] at (-0.45,0.85) {$\sigma_2 u_2$};
-  \end{scope}
-\end{tikzpicture}
-\end{center}
-
-\vfill
-
-\begin{itemize}
-\item \x{Directions}: where are the axes?  $\quad u_1,u_2,\ldots$
-\item \x{Lengths}: how long are the axes?  $\quad \sigma_1,\sigma_2,\ldots$
-\end{itemize}
-
-\end{frame}
-
-
-\begin{frame}{Covariance Remembers the Shape}
-
-For a random vector, covariance records the shape of the cloud.
-
-\vfill
-
-If $y=Ax$, then:
-
-$$
-\operatorname{Cov}(y)
-=\operatorname{Cov}(Ax)
-=A\,\operatorname{Cov}(x)\,A^T.
-$$
-
-\vfill
-
-\begin{center}
-\x{Linear transformations change covariance by } $C\mapsto ACA^T$.
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}{Standard Normal Input}
-
-For a standard normal input:
-
-$$
-\operatorname{Cov}(x)=I.
-$$
-
-\vfill
-
-Therefore:
-
-$$
-\operatorname{Cov}(y)
-=AIA^T.
-$$
-
-\vfill
-
-So:
-
-$$
-\boxed{\operatorname{Cov}(y)=AA^T.}
-$$
-
-\end{frame}
-
-
-\begin{frame}{The First Symmetric Matrix}
-
-The output cloud is controlled by the real symmetric matrix
-
-$$
-AA^T,\qquad (AA^T)^T=AA^T.
-$$
-
-\vspace{0.25cm}
-
-So the previous lecture applies:
-
-$$
-AA^T
-=
-\underbrace{U}_{\text{orthogonal axes}}
-\underbrace{\Sigma^2}_{\text{variances along axes}}
-\underbrace{U^T}_{\text{measure in those axes}}.
-$$
-
-\vspace{0.25cm}
-
-\begin{center}
-\x{The output axes come from real symmetric diagonalization.}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}{No Unitary Matrix Is Needed Here}
-
-This lecture is an applied real-number story.
-
-\vfill
-
-The visible objects are:
-
-$$
-A^T,\qquad
-AA^T,\qquad
-A^TA,\qquad
-U^TU=I,\qquad
-V^TV=I.
-$$
-
-\vfill
-
-The final real formula will be:
-
-$$
-\boxed{A=U\Sigma V^T.}
-$$
-
-\vfill
-
-\begin{center}
-\x{Complex notation is only a later remark: replace $T$ by $H$.}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}{Read the Formula in Three Steps}
-
-The formula
-
-$$
-A=U\Sigma V^T
-$$
-
-is not just symbols. It is a three-step geometric story.
-
-\vfill
-
-\begin{center}
-\renewcommand{\arraystretch}{1.35}
-\begin{tabular}{c|c|c}
-\textbf{Step} & \textbf{Matrix} & \textbf{Geometric action}\\
-\hline
-1 & $V^T$ & rotate the input axes\\
-2 & $\Sigma$ & stretch by axis lengths\\
-3 & $U$ & rotate to the output axes
-\end{tabular}
-\end{center}
-
-\vfill
-
-\begin{center}
-\x{$\Sigma$ stores lengths.  $U$ stores output directions.  $V$ stores input directions.}
-\end{center}
-
-\end{frame}
-
-
-% ═══════════════════════════════════════
-% §2 BALL TO ELLIPSOID
-% ADR: After probability motivation, give the same idea without
-% probability. A unit ball is visually simpler and leads directly to the
-% geometric definition of singular values.
-% ═══════════════════════════════════════
-\section{The Same Question Without Probability}
-
-\begin{frame}{Forget Probability for One Minute}
-
-The same shape question can be asked without random variables.
-
-\vfill
-
-Look at the unit ball:
-
-$$
-B_1=\{x:\|x\|\le 1\}.
-$$
-
-\vfill
-
-Apply a matrix:
-
-$$
-A(B_1)=\{Ax:\|x\|\le 1\}.
-$$
-
-\vfill
-
-\begin{center}
-{\Large \x{What shape is $A(B_1)$?}}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}[fragile]{Circle to Ellipse}
-
-\begin{center}
-\begin{tikzpicture}[scale=0.9]
-  % input circle
-  \draw[->,gray] (-3.3,0) -- (-0.8,0);
-  \draw[->,gray] (-2.05,-1.3) -- (-2.05,1.3);
-  \draw[blue!70!black,very thick] (-2.05,0) circle (1);
-  \draw[blue!70!black,thick,->] (-2.05,0) -- (-1.05,0)
-    node[midway,below] {$v_1$};
-  \draw[red!70!black,thick,->] (-2.05,0) -- (-2.05,1)
-    node[midway,left] {$v_2$};
-  \node at (-2.05,-1.65) {unit circle};
-
-  % arrow
-  \draw[-{Latex[length=4mm]},very thick] (-0.35,0) -- (0.95,0)
-    node[midway,above] {$A$};
-
-  % output ellipse
-  \draw[->,gray] (1.55,0) -- (4.65,0);
-  \draw[->,gray] (3.1,-1.35) -- (3.1,1.35);
-  \begin{scope}[shift={(3.1,0)},rotate=25]
-    \draw[green!55!black,very thick] (0,0) ellipse (1.45 and 0.55);
-    \draw[blue!70!black,thick,->] (0,0) -- (1.45,0)
-      node[midway,below] {$\sigma_1u_1$};
-    \draw[red!70!black,thick,->] (0,0) -- (0,0.55)
-      node[midway,left] {$\sigma_2u_2$};
-  \end{scope}
-  \node at (3.1,-1.65) {ellipse};
-\end{tikzpicture}
-\end{center}
-
-\vspace{0.2cm}
-
-\begin{center}
-\x{The image of a round object has special axes.}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}{Axis Equation}
-
-The special input directions are:
-
-$$
-v_1,\;v_2,\;\ldots
-$$
-
-\vfill
-
-They land exactly on the output axes:
-
-$$
-Av_1=\sigma_1u_1,\qquad
-Av_2=\sigma_2u_2,\qquad
-\cdots
-$$
-
-\vfill
-
-\begin{center}
-\begin{tabular}{c|c|c}
-\textbf{input axis} & \textbf{stretch} & \textbf{output axis}\\
-\hline
-$\bl{v_1}$ & $\bl{\sigma_1}$ & $\bl{u_1}$\\
-$\rd{v_2}$ & $\rd{\sigma_2}$ & $\rd{u_2}$\\
-$\gry{v_3}$ & $\gry{0}$ & invisible
-\end{tabular}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}{Geometric Definition}
-
-\begin{defi}[Singular Values]
-The singular values of a real matrix $A$ are the axis lengths of the ellipsoid
-
-$$
-A(B_1)=\{Ax:\|x\|\le 1\}.
-$$
-\end{defi}
-
-\vfill
-
-They are written:
-
-$$
-\sigma_1\ge \sigma_2\ge \cdots\ge 0.
-$$
-
-\vfill
-
-\begin{center}
-\x{A singular value is a length, so it is never negative.}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}{What We Must Find}
-
-SVD asks for three pieces of data:
-
-\vfill
-
-$$
-\boxed{Av_i=\sigma_i u_i}
-$$
-
-\vfill
-
-\begin{center}
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{c|c|c}
-\textbf{Symbol} & \textbf{Meaning} & \textbf{Where it lives}\\
-\hline
-$v_i$ & input axis direction & domain of $A$\\
-$\sigma_i$ & axis length & nonnegative number\\
-$u_i$ & output axis direction & codomain of $A$
-\end{tabular}
-\end{center}
-
-\vfill
-
-Once we know these, the matrix itself becomes easy to describe.
-
-\end{frame}
-
-
-\begin{frame}{Stack the Axis Equations}
-
-Write all axis equations at once:
-
-$$
-A
-\underbrace{
-\begin{pmatrix}
-|&|&&|\\
-\bl{v_1}&\rd{v_2}&\cdots&\gry{v_n}\\
-|&|&&|
-\end{pmatrix}
-}_{V}
-=
-\underbrace{
-\begin{pmatrix}
-|&|&&|\\
-\bl{u_1}&\rd{u_2}&\cdots&u_m\\
-|&|&&|
-\end{pmatrix}
-}_{U}
-\underbrace{
-\begin{pmatrix}
-\bl{\sigma_1}&&&\\
-&\rd{\sigma_2}&&\\
-&&\ddots&\\
-&&&0
-\end{pmatrix}
-}_{\Sigma}.
-$$
-
-\vfill
-
-Short version:
-
-$$
-\boxed{AV=U\Sigma.}
-$$
-
-\end{frame}
-
-
-\begin{frame}{From Axis Equations to SVD}
-
-The input axes are orthonormal, so:
-
-$$
-V^TV=I,\qquad V^{-1}=V^T.
-$$
-
-\vfill
-
-Starting from:
-
-$$
-AV=U\Sigma,
-$$
-
-multiply on the right by $V^T$:
-
-$$
-AVV^T=U\Sigma V^T.
-$$
-
-\vfill
-
-Therefore:
-
-$$
-\boxed{A=U\Sigma V^T.}
-$$
-
-\end{frame}
-
-
-\begin{frame}{The Three Actions}
-
-The formula
-
-$$
-A=
-\underbrace{U}_{\text{output axes}}
-\underbrace{\Sigma}_{\text{axis lengths}}
-\underbrace{V^T}_{\text{input coordinates}}
-$$
-
-means:
-
-\vfill
-
-\begin{center}
-\begin{tikzpicture}[node distance=0.55cm,scale=0.82,transform shape]
-  \node (x) [draw,rounded corners,fill=blue!8] {input vector};
-  \node (coord) [draw,rounded corners,fill=blue!8,right=of x] {coordinates in $V$};
-  \node (stretch) [draw,rounded corners,fill=yellow!20,right=of coord] {stretch by $\Sigma$};
-  \node (out) [draw,rounded corners,fill=green!12,right=of stretch] {output vector};
-
-  \draw[-{Latex[length=3mm]},thick] (x) -- node[above] {$V^T$} (coord);
-  \draw[-{Latex[length=3mm]},thick] (coord) -- node[above] {$\Sigma$} (stretch);
-  \draw[-{Latex[length=3mm]},thick] (stretch) -- node[above] {$U$} (out);
-\end{tikzpicture}
-\end{center}
-
-\vspace{0.25cm}
-
-\begin{center}
-\x{Measure, stretch, rebuild.}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}[fragile]{Circle, Rotate, Stretch, Rotate}
+\begin{frame}[fragile]{The Picture First: Circle to Ellipse}
 
 \begin{center}
 \begin{tikzpicture}[scale=0.62]
-  % panel coordinates
   \foreach \x/\label in {0/{circle},3.0/{rotated circle},6.2/{stretched ellipse},9.6/{final ellipse}} {
     \draw[->,gray!70] (\x-1.1,0) -- (\x+1.1,0);
     \draw[->,gray!70] (\x,-1.05) -- (\x,1.05);
@@ -643,330 +147,585 @@ means:
 \end{frame}
 
 
-% ═══════════════════════════════════════
-% §3 WHY A^T A
-% ADR: Now justify where the input axes come from. Use only real
-% symmetric machinery: A^T A measures output length from the input side.
-% ═══════════════════════════════════════
-\section{Finding the Input Axes}
+\begin{frame}[shrink=12]{Our Goal After the Picture}
 
-\begin{frame}{Where Do the Input Axes Come From?}
-
-We need directions $v_i$ such that:
-
-$$
-Av_i=\sigma_i u_i.
-$$
-
-\vfill
-
-But $A$ may be rectangular:
-
-$$
-A:\mathbb R^n\longrightarrow \mathbb R^m.
-$$
-
-\vfill
-
-So $A$ itself may not have eigenvectors.
+\[
+\scriptsize
+\boxed{
+A=
+\underbrace{\Ucols}_{\substack{U\\\text{final output axes}}}
+\underbrace{\Sigdisplay}_{\substack{\Sigma\\\text{axis lengths}}}
+\underbrace{\Vrows}_{\substack{V^T\\\text{special input coordinates}}}
+}.
+\]
 
 \vfill
 
 \begin{center}
-{\Large \x{Instead, measure how much $A$ stretches each input direction.}}
+\x{The picture says: rotate to special coordinates, stretch, rotate back.}
 \end{center}
 
 \end{frame}
 
 
-\begin{frame}{The Stretch-Measuring Matrix}
+\begin{frame}[shrink=12]{The Three Actions}
 
-For any input vector $x$:
-
-$$
-\|Ax\|^2=(Ax)^T(Ax).
-$$
-
-\vfill
-
-Move the transpose:
-
-$$
-(Ax)^T=x^TA^T.
-$$
-
-\vfill
-
-Therefore:
-
-$$
-\boxed{\|Ax\|^2=x^TA^TAx.}
-$$
-
-\vfill
-
-So define:
-
-$$
-\boxed{G=A^TA.}
-$$
-
-\end{frame}
-
-
-\begin{frame}{Why $G=A^TA$ Is Symmetric}
-
-Compute:
-
-$$
-G^T=(A^TA)^T.
-$$
-
-\vfill
-
-Use the transpose product rule:
-
-$$
-(A^TA)^T=A^T(A^T)^T.
-$$
-
-\vfill
-
-Since $(A^T)^T=A$:
-
-$$
-G^T=A^TA=G.
-$$
+\[
+\scriptsize
+A=
+\underbrace{\Ucols}_{\substack{U\\\text{rotate again}}}
+\underbrace{\Sigdisplay}_{\substack{\Sigma\\\text{stretch}}}
+\underbrace{\Vrows}_{\substack{V^T\\\text{rotate}}}.
+\]
 
 \vfill
 
 \begin{center}
-\x{$A^TA$ is a real symmetric matrix.}
-\end{center}
+\begin{tikzpicture}[node distance=0.55cm,scale=0.82,transform shape]
+  \node (x) [draw,rounded corners,fill=blue!8] {input vector};
+  \node (coord) [draw,rounded corners,fill=blue!8,right=of x] {rotate by $V^T$};
+  \node (stretch) [draw,rounded corners,fill=yellow!20,right=of coord] {stretch by $\Sigma$};
+  \node (out) [draw,rounded corners,fill=green!12,right=of stretch] {rotate again by $U$};
 
-\end{frame}
-
-
-\begin{frame}{The Squared Length Is Nonnegative}
-
-For every vector $x$:
-
-$$
-x^TGx=x^TA^TAx.
-$$
-
-\vfill
-
-But:
-
-$$
-x^TA^TAx=(Ax)^T(Ax).
-$$
-
-So:
-
-$$
-x^TGx=\|Ax\|^2\ge 0.
-$$
-
-\vfill
-
-\begin{center}
-\x{We only need this fact: $x^TA^TAx$ is a squared length.}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}{Now Use the Previous Lecture}
-
-We proved:
-
-\vfill
-
-\begin{thm}[Real Symmetric Spectral Theorem]
-If $G$ is real symmetric, then it has an orthonormal eigenbasis.
-Equivalently,
-
-$$
-G=V\Lambda V^T
-$$
-
-for an orthogonal matrix $V$ and a real diagonal matrix $\Lambda$.
-\end{thm}
-
-\vfill
-
-Here:
-
-$$
-G=A^TA.
-$$
-
-\end{frame}
-
-
-\begin{frame}{Apply It to $A^TA$}
-
-Since $A^TA$ is real symmetric:
-
-$$
-A^TA v_i=\lambda_i v_i
-$$
-
-with orthonormal eigenvectors:
-
-$$
-v_i^Tv_j=\delta_{ij}.
-$$
-
-\vfill
-
-Stack them:
-
-$$
-V=
-\begin{pmatrix}
-|&|&&|\\
-v_1&v_2&\cdots&v_n\\
-|&|&&|
-\end{pmatrix},
-\qquad
-V^TV=I.
-$$
-
-\vfill
-
-\begin{center}
-\x{These eigenvectors are the input axes of the ellipsoid.}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}[fragile]{Input Axes Still Live on the Circle}
-
-\begin{center}
-\begin{tikzpicture}[scale=1.0]
-  \draw[->,gray] (-2.2,0)--(2.2,0);
-  \draw[->,gray] (0,-1.6)--(0,1.6);
-  \draw[blue!70!black,very thick] (0,0) circle (1.1);
-
-  \begin{scope}[rotate=35]
-    \draw[blue!70!black,->,very thick] (0,0)--(1.1,0) node[midway,below right] {$v_1$};
-    \draw[red!70!black,->,very thick] (0,0)--(0,1.1) node[midway,above left] {$v_2$};
-  \end{scope}
-
-  \node[below] at (0,-1.75) {input unit circle};
+  \draw[-{Latex[length=3mm]},thick] (x) -- node[above] {$V^T$} (coord);
+  \draw[-{Latex[length=3mm]},thick] (coord) -- node[above] {$\Sigma$} (stretch);
+  \draw[-{Latex[length=3mm]},thick] (stretch) -- node[above] {$U$} (out);
 \end{tikzpicture}
 \end{center}
 
 \vspace{0.25cm}
 
 \begin{center}
-\x{$v_i$ are not output axes yet. They are special directions on the input circle.}
+\x{Rotate, stretch, rotate again.}
 \end{center}
 
 \end{frame}
 
+% ═══════════════════════════════════════
+% §3 WHY A^T A
+% ADR: Keep the reason for A^T A algebraic and short. Start from the
+% desired SVD formula and reverse-engineer what A^T A and AA^T must be.
+% ═══════════════════════════════════════
+\section{Why $A^TA$ Appears}
 
-\begin{frame}{Why Eigenvalues Are Nonnegative}
+\begin{frame}[shrink=30]{Reverse-Engineer the Method}
 
-Suppose:
+\[
+\tiny
+\boxed{
+A=
+\svdproduct
+}.
+\]
 
-$$
-A^TA v_i=\lambda_i v_i,
+\[
+\tiny
+\underbrace{\Urows\Ucols=I}_{U^TU=I}
 \qquad
-\|v_i\|=1.
-$$
+\underbrace{\Vrows\Vcols=I}_{V^TV=I}.
+\]
+
+\[
+\tiny
+\underbrace{A^T}_{\text{transpose of the contract}}
+=
+\underbrace{\Vcols}_{V}
+\underbrace{\begin{pmatrix}
+\bl{\sigma_1}&0&\cdots&0\\
+0&\rd{\sigma_2}&\cdots&0\\
+\vdots&\vdots&\ddots&\vdots\\
+0&0&\cdots&\gry{0}
+\end{pmatrix}}_{\Sigma^T\text{ in the square-picture notation}}
+\underbrace{\Urows}_{U^T}.
+\]
 
 \vfill
 
-Then:
-
-$$
-\lambda_i
-=\lambda_i v_i^Tv_i
-=v_i^T(A^TA v_i)
-=v_i^TA^TA v_i.
-$$
-
-\vfill
-
-But:
-
-$$
-v_i^TA^TA v_i=\|Av_i\|^2\ge 0.
-$$
-
-\vfill
-
-So:
-
-$$
-\boxed{\lambda_i\ge 0.}
-$$
+\[
+\scriptsize
+\begin{aligned}
+\underbrace{A^TA}_{n\times n\text{ input-side square}}\\[0.4em]
+\underbrace{AA^T}_{m\times m\text{ output-side square}}.
+\end{aligned}
+\]
 
 \end{frame}
 
 
-\begin{frame}{Singular Values Are Square Roots}
+\begin{frame}[shrink=35]{Input Axes Come from $A^TA$}
 
-The eigenvalues of $A^TA$ are nonnegative:
-
-$$
-\lambda_i\ge0.
-$$
+\[
+\tiny
+\begin{aligned}
+A^TA
+&=
+\left(
+\underbrace{\Vcols}_{V}
+\underbrace{\Sigdisplay}_{\Sigma^T}
+\underbrace{\Urows}_{U^T}
+\right)
+\left(
+\underbrace{\Ucols}_{U}
+\underbrace{\Sigdisplay}_{\Sigma}
+\underbrace{\Vrows}_{V^T}
+\right)\\
+&=
+\underbrace{\Vcols}_{V}
+\underbrace{\Sigdisplay}_{\Sigma^T}
+\underbrace{\Urows\Ucols}_{I}
+\underbrace{\Sigdisplay}_{\Sigma}
+\underbrace{\Vrows}_{V^T}\\
+&=
+\boxed{
+\underbrace{\Vcols}_{V}
+\underbrace{\SigTsigdisplay}_{\Sigma^T\Sigma}
+\underbrace{\Vrows}_{V^T}
+}.
+\end{aligned}
+\]
 
 \vfill
 
-So we may define:
-
-$$
-\boxed{\sigma_i=\sqrt{\lambda_i}.}
-$$
-
-\vfill
-
-Then:
-
-$$
-A^TA v_i=\sigma_i^2 v_i.
-$$
+\[
+\underbrace{\Sigma^T\Sigma}_{\text{squared singular values}}
+=
+\underbrace{\SigTsigdisplay}_{\text{diagonal matrix}}.
+\]
 
 \vfill
 
 \begin{center}
-\x{The square root appears because $A^TA$ measures squared length.}
+\x{$V$ is an orthogonal eigenbasis of $A^TA$.}
 \end{center}
 
 \end{frame}
 
 
-\begin{frame}{Check the Length}
+\begin{frame}[shrink=35]{Output Axes Come from $AA^T$}
 
-Assume $A^TA v_i=\sigma_i^2v_i$ and $\|v_i\|=1$.
-
-\vfill
-
-Then:
-
-$$
+\[
+\tiny
 \begin{aligned}
-\|Av_i\|^2
-&=v_i^TA^TA v_i\\
-&=v_i^T(\sigma_i^2v_i)\\
-&=\sigma_i^2v_i^Tv_i=\sigma_i^2.
+AA^T
+&=
+\left(
+\underbrace{\Ucols}_{U}
+\underbrace{\Sigdisplay}_{\Sigma}
+\underbrace{\Vrows}_{V^T}
+\right)
+\left(
+\underbrace{\Vcols}_{V}
+\underbrace{\Sigdisplay}_{\Sigma^T}
+\underbrace{\Urows}_{U^T}
+\right)\\
+&=
+\underbrace{\Ucols}_{U}
+\underbrace{\Sigdisplay}_{\Sigma}
+\underbrace{\Vrows\Vcols}_{I}
+\underbrace{\Sigdisplay}_{\Sigma^T}
+\underbrace{\Urows}_{U^T}\\
+&=
+\boxed{
+\underbrace{\Ucols}_{U}
+\underbrace{\SigTsigdisplay}_{\Sigma\Sigma^T}
+\underbrace{\Urows}_{U^T}
+}.
 \end{aligned}
-$$
+\]
 
 \vfill
 
-Therefore:
+\[
+\underbrace{\Sigma\Sigma^T}_{\text{squared singular values}}
+=
+\underbrace{\SigTsigdisplay}_{\text{diagonal matrix}}.
+\]
 
-$$
-\boxed{\|Av_i\|=\sigma_i.}
-$$
+\vfill
+
+\begin{center}
+\x{$U$ is an orthogonal eigenbasis of $AA^T$.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[shrink=15]{The Method}
+
+\[
+\scriptsize
+\begin{aligned}
+A^TA
+&=
+\underbrace{\Vcols}_{\substack{V\\\text{input axes }v_i}}
+\underbrace{\SigTsigdisplay}_{\substack{\Sigma^T\Sigma\\\text{squared lengths }\sigma_i^2}}
+\underbrace{\Vrows}_{V^T},
+\\[0.8em]
+AA^T
+&=
+\underbrace{\Ucols}_{\substack{U\\\text{output axes }u_i}}
+\underbrace{\SigTsigdisplay}_{\substack{\Sigma\Sigma^T\\\text{squared lengths }\sigma_i^2}}
+\underbrace{\Urows}_{U^T}.
+\end{aligned}
+\]
+
+\vfill
+
+\begin{center}
+\x{The square matrices reveal the axes; the diagonal entries reveal the lengths.}
+\end{center}
+
+\end{frame}
+
+% ═══════════════════════════════════════
+% §2 BALL TO ELLIPSOID
+% ADR: After the opening three-action picture, show the concrete unit-ball
+% version that defines singular values as axis lengths.
+% ═══════════════════════════════════════
+\section{Axes of the Ellipse}
+
+\begin{frame}[fragile]{Circle to Ellipse}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+  % input circle
+  \draw[->,gray] (-3.3,0) -- (-0.8,0);
+  \draw[->,gray] (-2.05,-1.3) -- (-2.05,1.3);
+  \draw[blue!70!black,very thick] (-2.05,0) circle (1);
+  \draw[blue!70!black,thick,->] (-2.05,0) -- (-1.24,0.59)
+    node[midway,above] {$v_1$};
+  \draw[red!70!black,thick,->] (-2.05,0) -- (-2.64,0.81)
+    node[midway,left] {$v_2$};
+  \node[blue!70!black] at (-1.05,0.92) {$v_1\perp v_2$};
+  \node at (-2.05,-1.65) {unit circle};
+
+  % arrow
+  \draw[-{Latex[length=4mm]},very thick] (-0.35,0) -- (0.95,0)
+    node[midway,above] {$A$};
+
+  % output ellipse
+  \draw[->,gray] (1.55,0) -- (4.65,0);
+  \draw[->,gray] (3.1,-1.35) -- (3.1,1.35);
+  \begin{scope}[shift={(3.1,0)},rotate=25]
+    \draw[green!55!black,very thick] (0,0) ellipse (1.45 and 0.55);
+    \draw[blue!70!black,thick,->] (0,0) -- (1.45,0)
+      node[midway,below] {$\sigma_1u_1$};
+    \draw[red!70!black,thick,->] (0,0) -- (0,0.55)
+      node[midway,left] {$\sigma_2u_2$};
+  \end{scope}
+  \node at (3.1,-1.65) {ellipse};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{center}
+\x{The image of a round object has special axes.}
+\end{center}
+
+\end{frame}
+
+
+
+\begin{frame}[shrink=10]{Contract First}
+
+\[
+\scriptsize
+\boxed{
+A
+=
+\underbrace{\Ucols}_{\substack{U\\\text{columns define }u_i}}
+\underbrace{\Sigdisplay}_{\substack{\Sigma\\\text{diagonal entries define }\sigma_i}}
+\underbrace{\Vrows}_{\substack{V^T\\\text{rows define }v_i^T}}
+}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{\Vcols}_{V}
+\qquad
+\underbrace{\Vrows}_{V^T}
+\qquad
+\underbrace{\Vrows\Vcols=I}_{V^TV=I}.
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=18]{Contract Gives the Axis Equation}
+
+\[
+\tiny
+\begin{aligned}
+A
+\underbrace{\Vcols}_{V}
+&=
+\left(
+\underbrace{\Ucols}_{U}
+\underbrace{\Sigdisplay}_{\Sigma}
+\underbrace{\Vrows}_{V^T}
+\right)
+\underbrace{\Vcols}_{V}\\[0.5em]
+&=
+\underbrace{\Ucols}_{U}
+\underbrace{\Sigdisplay}_{\Sigma}
+\underbrace{\Vrows\Vcols}_{I}\\[0.5em]
+&=
+\underbrace{\Ucols}_{U}
+\underbrace{\Sigdisplay}_{\Sigma}.
+\end{aligned}
+\]
+
+\vfill
+
+\[
+\boxed{A\,V=U\Sigma.}
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=10]{Expand $AV$}
+
+\[
+\scriptsize
+A
+\underbrace{
+\begin{pmatrix}
+|&|& &|\\
+\bl{v_1}&\rd{v_2}&\cdots&\gry{v_n}\\
+|&|& &|
+\end{pmatrix}}_{\substack{\text{special input directions}\\ V}}
+=
+\underbrace{
+\begin{pmatrix}
+|&|& &|\\
+\bl{Av_1}&\rd{Av_2}&\cdots&\gry{Av_n}\\
+|&|& &|
+\end{pmatrix}}_{\text{left side columns}}.
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=10]{Expand $U\Sigma$}
+
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+|&|& &|\\
+\bl{u_1}&\rd{u_2}&\cdots&\gry{u_n}\\
+|&|& &|
+\end{pmatrix}}_{\substack{U\\\text{output directions}}}
+\underbrace{
+\begin{pmatrix}
+\bl{\sigma_1}&0&\cdots&0\\
+0&\rd{\sigma_2}&\cdots&0\\
+\vdots&\vdots&\ddots&\vdots\\
+0&0&\cdots&\gry{0}
+\end{pmatrix}}_{\substack{\Sigma\\\text{diagonal stretches}}}
+=
+\underbrace{
+\begin{pmatrix}
+|&|& &|\\
+\bl{\sigma_1u_1}&\rd{\sigma_2u_2}&\cdots&\gry{0u_n}\\
+|&|& &|
+\end{pmatrix}}_{\text{right side columns}}.
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=8]{Compare Columns}
+
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+|&|& &|\\
+\bl{Av_1}&\rd{Av_2}&\cdots&\gry{Av_n}\\
+|&|& &|
+\end{pmatrix}}_{AV}
+=
+\underbrace{
+\begin{pmatrix}
+|&|& &|\\
+\bl{\sigma_1u_1}&\rd{\sigma_2u_2}&\cdots&\gry{0u_n}\\
+|&|& &|
+\end{pmatrix}}_{U\Sigma}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{\bl{Av_1=\sigma_1u_1}}_{\text{first column}},
+\qquad
+\underbrace{\rd{Av_2=\sigma_2u_2}}_{\text{second column}},
+\qquad
+\cdots,
+\qquad
+\underbrace{\gry{Av_n=0u_n}}_{\text{last zero column}}.
+\]
+
+\vfill
+
+\[
+\boxed{Av_i=\sigma_i u_i\quad\text{for every displayed column }i.}
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=8]{Notation: Singular Values}
+
+\[
+\scriptsize
+\underbrace{\Sigdisplay}_{\substack{\Sigma\\\text{rectangular diagonal matrix}}}
+\qquad
+\underbrace{\bl{\sigma_1}\ge \rd{\sigma_2}\ge\cdots\ge \gry{0}}_{\text{axis lengths}}
+\]
+
+\vfill
+
+\begin{center}
+\x{The diagonal entries are the singular values; they are lengths, so they are nonnegative.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[shrink=18]{What We Must Find}
+
+\[
+\scriptsize
+\boxed{
+A
+=
+\underbrace{\Ucols}_{\substack{U\\\text{output directions}}}
+\underbrace{\Sigdisplay}_{\substack{\Sigma\\\text{nonnegative lengths}}}
+\underbrace{\Vrows}_{\substack{V^T\\\text{input-coordinate rows}}}
+}
+\]
+
+\vfill
+
+\[
+\scriptsize
+\begin{aligned}
+\underbrace{
+A\Vcols
+}_{\text{contract multiplied by }V}
+&=
+\underbrace{
+\begin{pmatrix}|&|& &|\\
+\bl{u_1}&\rd{u_2}&\cdots&\gry{u_n}\\
+|&|& &|
+\end{pmatrix}}_{U}
+\underbrace{
+\begin{pmatrix}
+\bl{\sigma_1}&0&\cdots&0\\
+0&\rd{\sigma_2}&\cdots&0\\
+\vdots&\vdots&\ddots&\vdots\\
+0&0&\cdots&\gry{0}
+\end{pmatrix}}_{\Sigma}\\
+\underbrace{
+\begin{pmatrix}|&|& &|\\
+\bl{Av_1}&\rd{Av_2}&\cdots&\gry{Av_n}\\
+|&|& &|
+\end{pmatrix}}_{\text{expanded left side}}
+&=
+\underbrace{
+\begin{pmatrix}|&|& &|\\
+\bl{\sigma_1u_1}&\rd{\sigma_2u_2}&\cdots&\gry{0u_n}\\
+|&|& &|
+\end{pmatrix}}_{\text{expanded right side}}.
+\end{aligned}
+\]
+
+\vfill
+
+\begin{center}
+\x{Find the columns and the lengths; then the whole matrix is determined.}
+\end{center}
+
+\end{frame}
+
+
+
+\begin{frame}[shrink=12]{Stack the Axis Equations}
+
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+|&|& &|\\
+\bl{Av_1}&\rd{Av_2}&\cdots&\gry{Av_n}\\
+|&|& &|
+\end{pmatrix}}_{\displaystyle AV}
+=
+\underbrace{
+\begin{pmatrix}
+|&|& &|\\
+\bl{\sigma_1u_1}&\rd{\sigma_2u_2}&\cdots&\gry{0u_n}\\
+|&|& &|
+\end{pmatrix}}_{\displaystyle U\Sigma}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{A\Vcols}_{AV}
+=
+\underbrace{\Ucols\Sigdisplay}_{U\Sigma}.
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=20]{From Axis Equations to SVD}
+
+\[
+\scriptsize
+\underbrace{\Vrows}_{V^T}
+\underbrace{\Vcols}_{V}
+=I,
+\qquad
+\underbrace{V^{-1}=V^T}_{\text{orthogonal inverse}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+A\underbrace{\Vcols}_{V}
+=
+\underbrace{\Ucols}_{U}
+\underbrace{\Sigdisplay}_{\Sigma},
+\]
+
+\[
+\scriptsize
+A
+\underbrace{\Vcols}_{V}
+\underbrace{\Vrows}_{V^T}
+=
+\underbrace{\Ucols}_{U}
+\underbrace{\Sigdisplay}_{\Sigma}
+\underbrace{\Vrows}_{V^T}.
+\]
+
+\[
+\scriptsize
+\boxed{
+A=
+\svdproduct
+}.
+\]
 
 \end{frame}
 
@@ -979,31 +738,52 @@ $$
 % ═══════════════════════════════════════
 \section{Output Axes}
 
-\begin{frame}{Now Build the Output Axes}
+\begin{frame}[shrink=8]{Now Build the Output Axes}
 
-We already know:
+\[
+\scriptsize
+\underbrace{A^TA}_{\text{input-side square}}
+=
+\underbrace{\Vcols}_{\substack{V\\\text{input axes }v_i}}
+\underbrace{\SigTsigdisplay}_{\substack{\Sigma^T\Sigma\\\text{squared lengths }\sigma_i^2}}
+\underbrace{\Vrows}_{V^T},
+\]
 
-$$
-A^TA v_i=\sigma_i^2v_i,
+\[
+\scriptsize
+\underbrace{A^TA v_i=\sigma_i^2v_i}_{\text{one input-axis column}}
 \qquad
-\|Av_i\|=\sigma_i.
-$$
+\underbrace{
+\|Av_i\|^2
+=v_i^TA^TAv_i
+=\sigma_i^2v_i^Tv_i
+=\sigma_i^2
+}_{\text{output length computation}}.
+\]
 
 \vfill
 
-So if $\sigma_i>0$, define:
-
-$$
-\boxed{u_i=\frac{Av_i}{\sigma_i}.}
-$$
+\[
+\scriptsize
+\boxed{
+\underbrace{u_i}_{\text{output axis direction}}
+=
+\underbrace{\frac{Av_i}{\sigma_i}}_{\text{normalized output vector}}
+}
+\qquad
+\underbrace{\sigma_i>0}_{\text{nonzero axis}}.
+\]
 
 \vfill
 
-Then the axis equation becomes:
-
-$$
-\boxed{Av_i=\sigma_i u_i.}
-$$
+\[
+\scriptsize
+\boxed{
+\underbrace{Av_i}_{\text{actual output}}
+=
+\underbrace{\sigma_i u_i}_{\text{length times direction}}
+}
+\]
 
 \end{frame}
 
@@ -1044,23 +824,22 @@ $$
 
 \begin{frame}{Check $u_i$ Has Length $1$}
 
-By definition:
-
 $$
-u_i=\frac{Av_i}{\sigma_i}.
+\underbrace{u_i}_{\text{output unit direction}}
+=
+\underbrace{\frac{Av_i}{\sigma_i}}_{\text{normalize the output vector}}.
 $$
 
 \vfill
 
-So:
-
-$$
+\[
+\scriptsize
 \|u_i\|
 =\left\|\frac{Av_i}{\sigma_i}\right\|
 =\frac{\|Av_i\|}{\sigma_i}
 =\frac{\sigma_i}{\sigma_i}
 =1.
-$$
+\]
 
 \vfill
 
@@ -1071,40 +850,37 @@ $$
 \end{frame}
 
 
-\begin{frame}{Why Different Output Axes Are Orthogonal}
+\begin{frame}[shrink=8]{Why Different Output Axes Are Orthogonal}
 
-For $i\ne j$:
-
-$$
-u_i^Tu_j
+\[
+\scriptsize
+\underbrace{i\ne j}_{\text{different axes}}
+\qquad\Longrightarrow\qquad
+\underbrace{u_i^Tu_j}_{\text{test orthogonality}}
 =\frac{(Av_i)^T(Av_j)}{\sigma_i\sigma_j}.
-$$
+\]
 
 \vfill
 
-Move $A$ to the middle:
-
-$$
+\[
+\scriptsize
 u_i^Tu_j
 =\frac{v_i^TA^TAv_j}{\sigma_i\sigma_j}.
-$$
+\]
 
 \vfill
 
-Use $A^TAv_j=\sigma_j^2v_j$:
-
-$$
+\[
+\scriptsize
 u_i^Tu_j
 =\frac{\sigma_j^2}{\sigma_i\sigma_j}v_i^Tv_j
 =0.
-$$
+\]
 
 \end{frame}
 
 
 \begin{frame}{Inner-Product Table}
-
-The output vectors are orthonormal:
 
 \vfill
 
@@ -1121,40 +897,50 @@ $\gry{u_3^T}$ & $0$ & $0$ & $\gry{1}$
 
 \vfill
 
-Matrix form:
-
-$$
-U^TU=I.
-$$
+\[
+\scriptsize
+\underbrace{\Urows}_{U^T}
+\underbrace{\Ucols}_{U}
+=
+\underbrace{
+\begin{pmatrix}
+1&0&0\\
+0&1&0\\
+0&0&1
+\end{pmatrix}}_{\text{inner-product table}}.
+\]
 
 \end{frame}
 
 
-\begin{frame}{What If $\sigma_i=0$?}
+\begin{frame}[shrink=8]{What If $\sigma_i=0$?}
 
-If $\sigma_i=0$, then:
-
-$$
-A^TA v_i=0.
-$$
+\[
+\scriptsize
+\underbrace{\sigma_i=0}_{\text{zero singular value}}
+\qquad\Longrightarrow\qquad
+\underbrace{A^TA v_i=0}_{\text{eigenvalue }0}.
+\]
 
 \vfill
 
-Compute the output length:
-
-$$
-\|Av_i\|^2
-=v_i^TA^TA v_i
+\[
+\scriptsize
+\underbrace{\|Av_i\|^2}_{\text{squared output length}}
+=
+\underbrace{(Av_i)^T(Av_i)}_{\text{definition of length}}
+=
+\underbrace{v_i^TA^TA v_i}_{\text{move }A\text{ to the middle}}
+=
+\underbrace{v_i^T0}_{A^TA v_i=0}
 =0.
-$$
+\]
 
 \vfill
 
-Therefore:
-
-$$
-\boxed{Av_i=0.}
-$$
+\[
+\boxed{\underbrace{Av_i=0}_{\text{invisible input direction}}.}
+\]
 
 \vfill
 
@@ -1197,24 +983,18 @@ $$
 
 \begin{frame}{Complete the Output Basis}
 
-The vectors coming from nonzero singular values span $\operatorname{Col}(A)$.
-
-\vfill
-
-If the output space is larger, complete them:
-
 $$
-u_1,\ldots,u_r
+\underbrace{u_1,\ldots,u_r}_{\text{directions from nonzero singular values}}
 \quad\leadsto\quad
-u_1,\ldots,u_r,u_{r+1},\ldots,u_m.
+\underbrace{u_1,\ldots,u_r,u_{r+1},\ldots,u_m}_{\text{full output orthonormal basis}}.
 $$
 
 \vfill
 
-The extra vectors live perpendicular to the column space:
-
 $$
-\operatorname{Col}(A)^\perp=\operatorname{Null}(A^T).
+\underbrace{\operatorname{Col}(A)^\perp}_{\text{missing output directions}}
+=
+\underbrace{\operatorname{Null}(A^T)}_{\text{projection-complement source}}.
 $$
 
 \vfill
@@ -1228,30 +1008,27 @@ $$
 
 \begin{frame}{Callback: Complete by Projection Complement}
 
-Collect the existing orthonormal vectors:
-
 $$
-B=\begin{pmatrix}
+B=
+\underbrace{\begin{pmatrix}
 |&|&&|\\
 u_1&u_2&\cdots&u_r\\
 |&|&&|
-\end{pmatrix}.
+\end{pmatrix}}_{\text{existing output axes}}.
 $$
 
 \vfill
 
-Then the orthogonal projection onto their span is:
-
 $$
-P=BB^T.
+\underbrace{P}_{\text{projection onto known axes}}
+=
+\underbrace{BB^T}_{\text{diagonal cross-fill of known columns}}.
 $$
 
 \vfill
 
-The complement projection is:
-
 $$
-I-P.
+\underbrace{I-P}_{\text{orthogonal complement projection}}.
 $$
 
 \begin{center}
@@ -1263,20 +1040,12 @@ $$
 
 \begin{frame}{Diagonal Cross-Fill the Complement}
 
-From previous lectures:
-
 \vfill
-
-\begin{center}
-\x{Cross-filling an orthogonal projection gives orthonormal vectors.}
-\end{center}
-
-\vfill
-
-Apply that to the complement projection:
 
 $$
-I-P.
+\underbrace{I-P}_{\text{complement projection}}
+=
+\underbrace{w_{r+1}w_{r+1}^T+\cdots+w_mw_m^T}_{\text{rank-one orthogonal projections}}.
 $$
 
 \vfill
@@ -1290,107 +1059,134 @@ $$
 
 \begin{frame}{Complement Gives Missing Axes}
 
-Cross-filling gives rank-one orthogonal projections:
-
 $$
-I-P=w_{r+1}w_{r+1}^T+\cdots+w_mw_m^T.
+\underbrace{I-P}_{\text{complement projection}}
+=
+\underbrace{w_{r+1}w_{r+1}^T+\cdots+w_mw_m^T}_{\text{diagonal cross-fill output}}.
 $$
 
 \vfill
 
-Use these vectors as the missing output axes:
-
 $$
-u_{r+1}=w_{r+1},\quad \ldots,\quad u_m=w_m.
+\underbrace{u_{r+1},\ldots,u_m}_{\text{missing output axes}}
+=
+\underbrace{w_{r+1},\ldots,w_m}_{\text{orthonormal complement vectors}}.
 $$
 
 \end{frame}
 
 
-\begin{frame}{Stack Everything}
-
-For every input axis:
+\begin{frame}[shrink=12]{Stack Everything}
 
 $$
-Av_i=\sigma_i u_i.
+\underbrace{Av_i}_{\text{output from input axis}}
+=
+\underbrace{\sigma_i u_i}_{\text{axis length times output direction}}.
 $$
 
 \vfill
 
-Stack columns:
-
-$$
-A
+\[
+\scriptsize
 \underbrace{
 \begin{pmatrix}
-|&|&&|\\
-v_1&v_2&\cdots&v_n\\
-|&|&&|
-\end{pmatrix}}_{V}
+|&|& &|\\
+\bl{Av_1}&\rd{Av_2}&\cdots&\gry{Av_n}\\
+|&|& &|
+\end{pmatrix}}_{AV}
 =
 \underbrace{
 \begin{pmatrix}
-|&|&&|\\
-u_1&u_2&\cdots&u_m\\
-|&|&&|
-\end{pmatrix}}_{U}
-\underbrace{\Sigma}_{\text{rectangular diagonal}}.
-$$
+|&|& &|\\
+\bl{\sigma_1u_1}&\rd{\sigma_2u_2}&\cdots&\gry{0u_n}\\
+|&|& &|
+\end{pmatrix}}_{U\Sigma}.
+\]
 
-\vfill
-
-So:
-
-$$
-\boxed{AV=U\Sigma.}
-$$
-
-\end{frame}
-
-
-\begin{frame}{Singular Value Decomposition}
-
-Since $V$ is orthogonal:
-
-$$
-V^{-1}=V^T.
-$$
-
-\vfill
-
-From:
-
-$$
-AV=U\Sigma,
-$$
-
-multiply by $V^T$:
-
-$$
-AVV^T=U\Sigma V^T.
-$$
-
-\vfill
-
-Therefore:
-
-$$
-\boxed{A=U\Sigma V^T.}
-$$
+\[
+\scriptsize
+\boxed{
+A\underbrace{\Vcols}_{V}
+=
+\underbrace{\Ucols}_{U}
+\underbrace{\Sigdisplay}_{\Sigma}
+}.
+\]
 
 \end{frame}
 
 
-\begin{frame}{Theorem}
+\begin{frame}[shrink=20]{Singular Value Decomposition}
+
+$$
+\underbrace{\Vrows}_{V^T}
+\underbrace{\Vcols}_{V}
+=I,
+\qquad
+\underbrace{V^{-1}=V^T}_{\text{orthogonal inverse}}.
+$$
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+|&|& &|\\
+\bl{Av_1}&\rd{Av_2}&\cdots&\gry{Av_n}\\
+|&|& &|
+\end{pmatrix}}_{AV}
+=
+\underbrace{
+\begin{pmatrix}
+|&|& &|\\
+\bl{\sigma_1u_1}&\rd{\sigma_2u_2}&\cdots&\gry{0u_n}\\
+|&|& &|
+\end{pmatrix}}_{U\Sigma},
+\]
+
+\[
+\scriptsize
+A
+\underbrace{\Vcols}_{V}
+\underbrace{\Vrows}_{V^T}
+=
+\underbrace{\Ucols}_{U}
+\underbrace{\Sigdisplay}_{\Sigma}
+\underbrace{\Vrows}_{V^T}.
+\]
+
+\[
+\scriptsize
+\boxed{
+A=
+\underbrace{\Ucols}_{U}
+\underbrace{\Sigdisplay}_{\Sigma}
+\underbrace{\Vrows}_{V^T}
+}.
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=20]{Theorem}
+
+\[
+\scriptsize
+\boxed{
+A=
+\underbrace{\Ucols}_{\substack{U\\\text{orthogonal output matrix}}}
+\underbrace{\Sigdisplay}_{\substack{\Sigma\\\text{nonnegative rectangular diagonal}}}
+\underbrace{\Vrows}_{\substack{V^T\\\text{orthogonal input coordinates}}}
+}.
+\]
+
+\vfill
 
 \begin{thm}[Singular Value Decomposition]
 For every real $m\times n$ matrix $A$, there exist orthogonal matrices
 $U$ and $V$, and a rectangular diagonal matrix $\Sigma$ with nonnegative
-entries, such that
-
-$$
-A=U\Sigma V^T.
-$$
+entries, such that the displayed factorization holds.
 \end{thm}
 
 \vfill
@@ -1402,19 +1198,43 @@ $$
 \end{frame}
 
 
-\begin{frame}{Proof Photograph}
+\begin{frame}[shrink=18]{Proof Photograph}
 
-\begin{center}
-\renewcommand{\arraystretch}{1.35}
-\begin{tabular}{ccl}
-$A^TA$ & is real symmetric & previous lecture applies\\
-$A^TA v_i=\sigma_i^2v_i$ & gives & input axes $v_i$\\
-$\|Av_i\|=\sigma_i$ & gives & axis lengths $\sigma_i$\\
-$u_i=Av_i/\sigma_i$ & gives & output axes $u_i$\\
-$Av_i=\sigma_i u_i$ & stack & $AV=U\Sigma$\\
-$V^{-1}=V^T$ & gives & $A=U\Sigma V^T$
-\end{tabular}
-\end{center}
+\[
+\tiny
+\begin{aligned}
+\underbrace{A^TA}_{\text{real symmetric}}
+&=
+\underbrace{\Vcols}_{V}
+\underbrace{\SigTsigdisplay}_{\Sigma^T\Sigma}
+\underbrace{\Vrows}_{V^T}\\[0.4em]
+\underbrace{A^TA v_i=\sigma_i^2v_i}_{\text{input eigen-axis}}
+&\Longrightarrow
+\underbrace{\|Av_i\|^2=v_i^TA^TAv_i=\sigma_i^2}_{\text{axis length}}\\[0.4em]
+\underbrace{u_i=\dfrac{Av_i}{\sigma_i}}_{\text{normalize nonzero output}}
+&\Longrightarrow
+\underbrace{Av_i=\sigma_i u_i}_{\text{axis equation}}\\[0.4em]
+\underbrace{
+\begin{pmatrix}|&|& &|\\
+\bl{Av_1}&\rd{Av_2}&\cdots&\gry{Av_n}\\
+|&|& &|
+\end{pmatrix}}_{AV}
+&=
+\underbrace{
+\begin{pmatrix}|&|& &|\\
+\bl{\sigma_1u_1}&\rd{\sigma_2u_2}&\cdots&\gry{0u_n}\\
+|&|& &|
+\end{pmatrix}}_{U\Sigma}\\[0.4em]
+\underbrace{AV=U\Sigma}_{\text{stacked columns}}
+&\Longrightarrow
+\underbrace{
+A=
+\underbrace{\Ucols}_{U}
+\underbrace{\Sigdisplay}_{\Sigma}
+\underbrace{\Vrows}_{V^T}
+}_{\text{right multiply by }V^T}.
+\end{aligned}
+\]
 
 \vfill
 
@@ -1433,53 +1253,562 @@ $V^{-1}=V^T$ & gives & $A=U\Sigma V^T$
 % ═══════════════════════════════════════
 \section{Method Summary}
 
-\begin{frame}{The Method}
+\begin{frame}[shrink=18]{The Method}
 
-To decompose a real matrix $A$:
+\[
+\tiny
+\underbrace{A^TA}_{\text{real symmetric matrix to compute}}
+=
+\underbrace{\Vcols}_{V}
+\underbrace{\SigTsigdisplay}_{\Sigma^2}
+\underbrace{\Vrows}_{V^T}.
+\]
 
 \vfill
 
-\begin{enumerate}
-\item Compute the real symmetric matrix $A^TA$.
-\item Orthogonally diagonalize it:
-$$
-A^TA=V\Sigma^2V^T.
-$$
-\item For each nonzero $\sigma_i$, define:
-$$
-u_i=\frac{Av_i}{\sigma_i}.
-$$
-\item Complete by the previous projection method:
-$$
-B=(u_1\ \cdots\ u_r),\quad P=BB^T,\quad I-P.
-$$
-Diagonal cross-fill $I-P$.
-\item Stack the equations $Av_i=\sigma_i u_i$.
-\end{enumerate}
+\[
+\tiny
+\underbrace{u_i=\frac{Av_i}{\sigma_i}}_{\substack{\text{define output axis}\\\sigma_i>0}}
+\qquad
+\underbrace{
+B=
+\begin{pmatrix}|&|& &|\\
+u_1&u_2&\cdots&u_r\\
+|&|& &|
+\end{pmatrix}}_{\text{known output axes}}
+\qquad
+\underbrace{P=BB^T}_{\text{known-axis projection}}
+\qquad
+\underbrace{I-P}_{\text{missing-axis projection}}.
+\]
+
+\vfill
+
+\[
+\tiny
+\begin{aligned}
+\underbrace{
+\begin{pmatrix}|&|& &|\\
+\bl{Av_1}&\rd{Av_2}&\cdots&\gry{Av_n}\\
+|&|& &|
+\end{pmatrix}}_{AV}
+&=
+\underbrace{
+\begin{pmatrix}|&|& &|\\
+\bl{\sigma_1u_1}&\rd{\sigma_2u_2}&\cdots&\gry{0u_n}\\
+|&|& &|
+\end{pmatrix}}_{U\Sigma}\\[0.4em]
+\underbrace{A\Vcols=U\Sigma}_{\text{stacked axis equations}}
+&\Longrightarrow
+\underbrace{A=
+\underbrace{\Ucols}_{U}
+\underbrace{\Sigdisplay}_{\Sigma}
+\underbrace{\Vrows}_{V^T}}_{\text{SVD contract}}.
+\end{aligned}
+\]
+
+\end{frame}
+
+
+% ═══════════════════════════════════════
+% §6 WORKED EXERCISE
+% ADR: The exercise must be a complete auditable computation. Every object
+% appears entrywise/columnwise before the concept name is used.
+% ═══════════════════════════════════════
+\section{Worked Exercise}
+
+\begin{frame}[shrink=10]{Exercise: Start With a $3\times2$ Matrix}
+
+\[
+\scriptsize
+\underbrace{
+A=
+\begin{pmatrix}
+1&1\\
+1&1\\
+0&0
+\end{pmatrix}}_{\substack{\text{two input coordinates}\\\text{three output coordinates}}}
+\qquad
+\underbrace{
+A^T=
+\begin{pmatrix}
+1&1&0\\
+1&1&0
+\end{pmatrix}}_{\text{rowwise transpose}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+1&1&0\\
+1&1&0
+\end{pmatrix}}_{A^T}
+\underbrace{
+\begin{pmatrix}
+1&1\\
+1&1\\
+0&0
+\end{pmatrix}}_{A}
+=
+\underbrace{
+\begin{pmatrix}
+2&2\\
+2&2
+\end{pmatrix}}_{A^TA}.
+\]
+
+\vfill
+
+\begin{center}
+\x{The input-side square matrix is only $2\times2$.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[shrink=10]{Spectral Projections of $A^TA$}
+
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+2&2\\
+2&2
+\end{pmatrix}}_{B=A^TA}
+=
+\underbrace{
+\bl{4}P_{\bl{4}}+\rd{0}P_{\rd{0}}}_{\text{spectral decomposition form}},
+\qquad
+\underbrace{\lambda_1=\bl{4},\ \lambda_2=\rd{0}}_{\det(tI-B)=t(t-4)}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{P_{\bl{4}}}_{\text{spectral projection for }\lambda=4}
+=
+\underbrace{\frac{B-0I}{4-0}}_{\text{Lagrange projection polynomial}}
+=
+\underbrace{\frac14
+\begin{pmatrix}
+2&2\\
+2&2
+\end{pmatrix}}_{\frac14B}
+=
+\underbrace{
+\begin{pmatrix}
+\frac12&\frac12\\
+\frac12&\frac12
+\end{pmatrix}}_{P_{\bl{4}}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{P_{\rd{0}}}_{\text{spectral projection for }\lambda=0}
+=
+\underbrace{\frac{B-4I}{0-4}}_{\text{Lagrange projection polynomial}}
+=
+\underbrace{
+\begin{pmatrix}
+\frac12&-\frac12\\
+-\frac12&\frac12
+\end{pmatrix}}_{P_{\rd{0}}}.
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=10]{Diagonal Cross-Fill the Projections}
+
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+\frac12&\frac12\\
+\frac12&\frac12
+\end{pmatrix}}_{P_{\bl{4}}}
+=
+\underbrace{
+\begin{pmatrix}
+\frac1{\sqrt2}\\[0.15em]
+\frac1{\sqrt2}
+\end{pmatrix}
+\begin{pmatrix}
+\frac1{\sqrt2}&\frac1{\sqrt2}
+\end{pmatrix}}_{\bl{v_1v_1^T}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+\frac12&-\frac12\\
+-\frac12&\frac12
+\end{pmatrix}}_{P_{\rd{0}}}
+=
+\underbrace{
+\begin{pmatrix}
+\frac1{\sqrt2}\\[0.15em]
+-\frac1{\sqrt2}
+\end{pmatrix}
+\begin{pmatrix}
+\frac1{\sqrt2}&-\frac1{\sqrt2}
+\end{pmatrix}}_{\rd{v_2v_2^T}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{\bl{v_1}=
+\begin{pmatrix}
+\frac1{\sqrt2}\\[0.15em]
+\frac1{\sqrt2}
+\end{pmatrix}}_{\text{cross-filled from }P_{\bl{4}}}
+\qquad
+\underbrace{\rd{v_2}=
+\begin{pmatrix}
+\frac1{\sqrt2}\\[0.15em]
+-\frac1{\sqrt2}
+\end{pmatrix}}_{\text{cross-filled from }P_{\rd{0}}}.
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=10]{Input Axes and Squared Singular Values}
+
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+|&|\\
+\bl{v_1}&\rd{v_2}\\
+|&|
+\end{pmatrix}}_{V}
+=
+\underbrace{
+\begin{pmatrix}
+\frac1{\sqrt2}&\frac1{\sqrt2}\\[0.15em]
+\frac1{\sqrt2}&-\frac1{\sqrt2}
+\end{pmatrix}}_{\text{orthogonal input axes}},
+\qquad
+\underbrace{
+\begin{pmatrix}
+\bl{4}&0\\
+0&\rd{0}
+\end{pmatrix}}_{\Sigma^T\Sigma}.
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=12]{Apply $A$ to the Input Axes}
+
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+1&1\\
+1&1\\
+0&0
+\end{pmatrix}}_{A}
+\underbrace{
+\begin{pmatrix}
+\frac1{\sqrt2}\\[0.15em]
+\frac1{\sqrt2}
+\end{pmatrix}}_{\bl{v_1}}
+=
+\underbrace{
+\begin{pmatrix}
+\sqrt2\\
+\sqrt2\\
+0
+\end{pmatrix}}_{\bl{Av_1}}
+=
+\underbrace{2}_{\bl{\sigma_1}}
+\underbrace{
+\begin{pmatrix}
+\frac1{\sqrt2}\\[0.15em]
+\frac1{\sqrt2}\\[0.15em]
+0
+\end{pmatrix}}_{\bl{u_1}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+1&1\\
+1&1\\
+0&0
+\end{pmatrix}}_{A}
+\underbrace{
+\begin{pmatrix}
+\frac1{\sqrt2}\\[0.15em]
+-\frac1{\sqrt2}
+\end{pmatrix}}_{\rd{v_2}}
+=
+\underbrace{
+\begin{pmatrix}
+0\\
+0\\
+0
+\end{pmatrix}}_{\rd{Av_2}}
+=
+\underbrace{0}_{\rd{\sigma_2}}
+\underbrace{\rd{u_2}}_{\text{not fixed by }Av_2}.
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=10]{Projection Onto the Known Output Axis}
+
+\[
+\scriptsize
+\underbrace{
+B=
+\begin{pmatrix}
+|\\
+\bl{u_1}\\
+|
+\end{pmatrix}
+=
+\begin{pmatrix}
+\frac1{\sqrt2}\\[0.15em]
+\frac1{\sqrt2}\\[0.15em]
+0
+\end{pmatrix}}_{\text{known output-axis matrix}}
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{P}_{\text{projection onto known output axis}}
+=
+\underbrace{BB^T}_{\text{diagonal cross-fill}}
+=
+\underbrace{
+\begin{pmatrix}
+\frac1{\sqrt2}\\[0.15em]
+\frac1{\sqrt2}\\[0.15em]
+0
+\end{pmatrix}
+\begin{pmatrix}
+\frac1{\sqrt2}&\frac1{\sqrt2}&0
+\end{pmatrix}}_{\bl{u_1u_1^T}}
+=
+\underbrace{
+\begin{pmatrix}
+\frac12&\frac12&0\\
+\frac12&\frac12&0\\
+0&0&0
+\end{pmatrix}}_{P}.
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=10]{Cross-Fill the Complement $I-P$}
+
+\[
+\scriptsize
+\underbrace{I-P}_{\text{missing-output projection}}
+=
+\underbrace{
+\begin{pmatrix}
+\frac12&-\frac12&0\\
+-\frac12&\frac12&0\\
+0&0&1
+\end{pmatrix}}_{\text{entrywise complement}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{I-P}_{\text{complement projection}}
+=
+\underbrace{
+\begin{pmatrix}
+\frac1{\sqrt2}\\[0.15em]
+-\frac1{\sqrt2}\\[0.15em]
+0
+\end{pmatrix}
+\begin{pmatrix}
+\frac1{\sqrt2}&-\frac1{\sqrt2}&0
+\end{pmatrix}}_{\rd{u_2u_2^T}}
++
+\underbrace{
+\begin{pmatrix}
+0\\0\\1
+\end{pmatrix}
+\begin{pmatrix}
+0&0&1
+\end{pmatrix}}_{\gry{u_3u_3^T}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{\rd{u_2}=
+\begin{pmatrix}
+\frac1{\sqrt2}\\[0.15em]
+-\frac1{\sqrt2}\\[0.15em]
+0
+\end{pmatrix}}_{\text{missing output axis}}
+\qquad
+\underbrace{\gry{u_3}=
+\begin{pmatrix}
+0\\0\\1
+\end{pmatrix}}_{\text{extra output axis}}.
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=8]{Stack the Exercise Columns}
+
+\[
+\scriptsize
+\underbrace{
+A
+\begin{pmatrix}
+|&|\\
+\bl{v_1}&\rd{v_2}\\
+|&|
+\end{pmatrix}}_{AV}
+=
+\underbrace{
+\begin{pmatrix}
+|&|\\
+\bl{Av_1}&\rd{Av_2}\\
+|&|
+\end{pmatrix}}_{\text{computed outputs}}
+=
+\underbrace{
+\begin{pmatrix}
+|&|\\
+\bl{2u_1}&\rd{0u_2}\\
+|&|
+\end{pmatrix}}_{\text{stretched output axes}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+|&|&|\\
+\bl{u_1}&\rd{u_2}&\gry{u_3}\\
+|&|&|
+\end{pmatrix}}_{U}
+\underbrace{
+\begin{pmatrix}
+\bl{2}&0\\
+0&\rd{0}\\
+0&0
+\end{pmatrix}}_{\Sigma}
+=
+\underbrace{
+\begin{pmatrix}
+|&|\\
+\bl{2u_1}&\rd{0u_2}\\
+|&|
+\end{pmatrix}}_{U\Sigma}.
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=18]{Exercise Answer}
+
+\[
+\scriptsize
+\underbrace{
+U=
+\begin{pmatrix}
+\frac1{\sqrt2}&\frac1{\sqrt2}&0\\[0.15em]
+\frac1{\sqrt2}&-\frac1{\sqrt2}&0\\[0.15em]
+0&0&1
+\end{pmatrix}}_{\text{output orthogonal matrix}}
+\qquad
+\underbrace{
+\Sigma=
+\begin{pmatrix}
+2&0\\
+0&0\\
+0&0
+\end{pmatrix}}_{\text{rectangular diagonal}}
+\qquad
+\underbrace{
+V^T=
+\begin{pmatrix}
+\frac1{\sqrt2}&\frac1{\sqrt2}\\[0.15em]
+\frac1{\sqrt2}&-\frac1{\sqrt2}
+\end{pmatrix}}_{\text{input-coordinate rows}}.
+\]
+
+\vfill
+
+\[
+\tiny
+\boxed{
+\underbrace{
+\begin{pmatrix}
+1&1\\
+1&1\\
+0&0
+\end{pmatrix}}_{A}
+=
+\underbrace{
+\begin{pmatrix}
+\frac1{\sqrt2}&\frac1{\sqrt2}&0\\[0.15em]
+\frac1{\sqrt2}&-\frac1{\sqrt2}&0\\[0.15em]
+0&0&1
+\end{pmatrix}}_{U}
+\underbrace{
+\begin{pmatrix}
+2&0\\
+0&0\\
+0&0
+\end{pmatrix}}_{\Sigma}
+\underbrace{
+\begin{pmatrix}
+\frac1{\sqrt2}&\frac1{\sqrt2}\\[0.15em]
+\frac1{\sqrt2}&-\frac1{\sqrt2}
+\end{pmatrix}}_{V^T}
+}.
+\]
 
 \end{frame}
 
 
 \begin{frame}{What Each Piece Means}
 
-The decomposition is:
-
-$$
-\boxed{A=U\Sigma V^T.}
-$$
-
-\vfill
-
-\begin{center}
-\renewcommand{\arraystretch}{1.35}
-\begin{tabular}{c|c}
-\textbf{Piece} & \textbf{Meaning}\\
-\hline
-$V$ & orthonormal input axes on the unit circle\\
-$\Sigma$ & axis lengths of the output ellipsoid\\
-$U$ & orthonormal output axes
-\end{tabular}
-\end{center}
+\[
+\scriptsize
+\boxed{
+A=
+\underbrace{\Ucols}_{\substack{U\\\text{orthonormal output axes}}}
+\underbrace{\Sigdisplay}_{\substack{\Sigma\\\text{axis lengths of output ellipsoid}}}
+\underbrace{\Vrows}_{\substack{V^T\\\text{orthonormal input-axis coordinates}}}
+}.
+\]
 
 \vfill
 
@@ -1490,62 +1819,63 @@ $U$ & orthonormal output axes
 \end{frame}
 
 
-\begin{frame}{The Whole Story in One Line}
-
-For every input axis:
+\begin{frame}[shrink=15]{The Whole Story in One Line}
 
 $$
-Av_i=\sigma_i u_i.
-$$
-
-\vfill
-
-Stack all columns:
-
-$$
-A
-\underbrace{\begin{pmatrix}|&|&&|\\ v_1&v_2&\cdots&v_n\\ |&|&&|\end{pmatrix}}_{V}
+\underbrace{Av_i}_{\text{image of input axis}}
 =
-\underbrace{\begin{pmatrix}|&|&&|\\ u_1&u_2&\cdots&u_m\\ |&|&&|\end{pmatrix}}_{U}
-\underbrace{\Sigma}_{\text{axis lengths}}.
+\underbrace{\sigma_i u_i}_{\text{stretched output axis}}.
 $$
 
 \vfill
 
-Therefore:
+\[
+\scriptsize
+A
+\underbrace{\Vcols}_{V}
+=
+\underbrace{\Ucols}_{U}
+\underbrace{\Sigdisplay}_{\Sigma}.
+\]
 
-$$
-\boxed{A=U\Sigma V^T.}
-$$
+\[
+\scriptsize
+\boxed{
+A=
+\svdproduct
+}.
+\]
 
 \end{frame}
 
 
-\begin{frame}{Final Summary}
+\begin{frame}[shrink=15]{Final Summary}
 
-SVD answers one geometric question:
+$$
+\boxed{
+\underbrace{\text{round ball}}_{\text{all unit inputs}}
+\xrightarrow{\ A\ }
+\underbrace{\text{ellipsoid with orthogonal axes}}_{\text{visible output shape}}
+}.
+$$
+
+\vfill
+
+\[
+\scriptsize
+\boxed{
+A=
+\underbrace{\Ucols}_{\substack{U\\\text{output axes}}}
+\underbrace{\Sigdisplay}_{\substack{\Sigma\\\text{axis lengths}}}
+\underbrace{\Vrows}_{\substack{V^T\\\text{input-axis coordinates}}}
+}.
+\]
 
 \vfill
 
 \begin{center}
-{\Large \x{What does $A$ do to a round ball?}}
+{\Large \x{SVD records exactly this geometry.}}
 \end{center}
-
-\vfill
-
-Answer:
-
-$$
-\boxed{\text{round ball}\xrightarrow{\ A\ }\text{ellipsoid with orthogonal axes}.}
-$$
-
-\vfill
-
-The axis data is exactly:
-
-$$
-\boxed{A=U\Sigma V^T.}
-$$
 
 \end{frame}
 
