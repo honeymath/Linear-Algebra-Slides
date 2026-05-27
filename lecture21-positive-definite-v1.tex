@@ -341,13 +341,13 @@ $$
 
 
 % ═══════════════════════════════════════
-% §3 MATRIX AS VALUE TABLE
+% §3 MATRIX AS INNER PRODUCT TABLE
 % ADR: Before using e_i^T A e_i in later criteria, introduce the
 % standard basis visually. The user explicitly requested a colored
 % matrix picture showing how e_i selects columns/rows and diagonal
 % pivots.
 % ═══════════════════════════════════════
-\section{Matrix as a Value Table}
+\section{Matrix as an Inner Product Table}
 
 \begin{frame}{Where Does $x^TAx$ Come From?}
 
@@ -417,30 +417,37 @@ $$
 \end{frame}
 
 
-\begin{frame}{Matrix Entries Are Values on Basis Vectors}
+\begin{frame}{Matrix Entries Are Inner Products}
 
-Let $e_1,e_2,\ldots,e_n$ be the standard basis vectors.
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+a_{11}&a_{12}&a_{13}\\
+a_{21}&a_{22}&a_{23}\\
+a_{31}&a_{32}&a_{33}
+\end{pmatrix}}_{A}
+=
+\underbrace{
+\begin{pmatrix}
+\langle e_1,e_1\rangle_A&\langle e_1,e_2\rangle_A&\langle e_1,e_3\rangle_A\\
+\langle e_2,e_1\rangle_A&\langle e_2,e_2\rangle_A&\langle e_2,e_3\rangle_A\\
+\langle e_3,e_1\rangle_A&\langle e_3,e_2\rangle_A&\langle e_3,e_3\rangle_A
+\end{pmatrix}}_{\text{inner product table of basis vectors}}.
+\]
 
 \vfill
 
-Then:
-
-$$
-\langle e_i,e_j\rangle_A=e_i^TAe_j.
-$$
-
-\vfill
-
-This number is exactly the $(i,j)$ entry of $A$:
-
-$$
-\boxed{a_{ij}=e_i^TAe_j.}
-$$
+\[
+\boxed{\underbrace{a_{ij}}_{\text{matrix entry}}
+=
+\underbrace{e_i^TAe_j}_{\langle e_i,e_j\rangle_A}.}
+\]
 
 \vfill
 
 \begin{center}
-\x{The matrix $A$ is the value table of the form.}
+\x{The matrix $A$ is the inner product table of the standard basis.}
 \end{center}
 
 \end{frame}
@@ -654,7 +661,11 @@ $$
 
 \vspace{0.3cm}
 
-Both directions have positive squared-length coefficients.
+\[
+\underbrace{\sqrt{\lambda_1}=2}_{\text{semi-axis length}},
+\qquad
+\underbrace{\sqrt{\lambda_2}=\sqrt2}_{\text{semi-axis length}}.
+\]
 
 \column{0.55\textwidth}
 \begin{center}
@@ -663,8 +674,8 @@ Both directions have positive squared-length coefficients.
   \draw[->,gray] (0,-1.6)--(0,1.6);
   \begin{scope}[rotate=45]
     \draw[blue!70!black,very thick] (0,0) ellipse (1.15 and 0.8);
-    \draw[blue!70!black,->,thick] (0,0)--(1.15,0) node[midway,below] {$\lambda=2$};
-    \draw[red!70!black,->,thick] (0,0)--(0,0.8) node[midway,left] {$\lambda=4$};
+    \draw[red!70!black,->,thick] (0,0)--(1.15,0) node[midway,below] {$\sqrt{\lambda_1}=2$};
+    \draw[blue!70!black,->,thick] (0,0)--(0,0.8) node[midway,left] {$\sqrt{\lambda_2}=\sqrt2$};
   \end{scope}
 \end{tikzpicture}
 \end{center}
@@ -673,7 +684,7 @@ Both directions have positive squared-length coefficients.
 \vspace{0.2cm}
 
 \begin{center}
-\x{Positive eigenvalues $\Rightarrow$ ellipse-type shape.}
+\x{Eigenvalues are squared coefficients; semi-axis lengths use square roots.}
 \end{center}
 
 \end{frame}
@@ -872,11 +883,12 @@ mixed signs & both signs & hyperbola
 
 
 % ═══════════════════════════════════════
-% §5 FACTORIZATION CRITERION
-% ADR: Return to the opening question A=M^T M. Use the eigenvalue
-% criterion to prove exactly when such a factorization exists.
+% §5 SPECTRAL FACTORIZATION
+% ADR: Return to the opening question A=M^T M, but explicitly mark this
+% as the spectral factorization route. A second route by diagonal
+% cross-filling comes later, so this is not the only factorization story.
 % ═══════════════════════════════════════
-\section{Factorization}
+\section{Spectral Factorization}
 
 \begin{frame}{Return to the Opening Question}
 
@@ -976,9 +988,9 @@ $$
 \end{frame}
 
 
-\begin{frame}{Factorization Criterion}
+\begin{frame}{Spectral Factorization Criterion}
 
-\begin{thm}[Factorization Criterion]
+\begin{thm}[Spectral Factorization Criterion]
 For a real symmetric matrix $A$,
 
 $$
@@ -1002,6 +1014,33 @@ x^TM^TMx=\|Mx\|^2>0
 $$
 
 so $M^TM$ is positive definite.
+
+\end{frame}
+
+
+\begin{frame}{There Will Be a Second Factorization}
+
+\[
+\scriptsize
+\underbrace{A=\Omega\Lambda\Omega^T}_{\text{spectral route}}
+\quad\Longrightarrow\quad
+\underbrace{A=M^TM}_{\text{factorization by eigenvalues}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{A=P_1+P_2+\cdots+P_r}_{\text{diagonal cross-filling route}}
+\quad\Longrightarrow\quad
+\underbrace{A=NN^T}_{\text{factorization by cross-filled columns}}.
+\]
+
+\vfill
+
+\begin{center}
+\x{So the eigenvalue construction is one factorization, not the end of the story.}
+\end{center}
 
 \end{frame}
 
@@ -1069,66 +1108,142 @@ Factorization & $A=M^TM$
 % ADR: State the cross-filling criterion first. Cauchy is introduced only
 % as the proof engine for the two PSD facts needed by the criterion.
 % ═══════════════════════════════════════
-\section{Diagonal Cross-Filling}
+\section{Checking Semipositivity by Diagonal Cross-Filling}
 
-\begin{frame}{The Third Criterion}
 
-We already have two tests:
+\begin{frame}[shrink=8]{Cross-Filling Criterion: Two Directions}
 
-\begin{center}
-\renewcommand{\arraystretch}{1.25}
-\begin{tabular}{c|c}
-\textbf{Criterion} & \textbf{Test}\\
-\hline
-Eigenvalues & signs of $\lambda_i$\\
-Factorization & whether $A=M^TM$
-\end{tabular}
-\end{center}
+\[
+\scriptsize
+\underbrace{\text{positive-pivot cross-filling succeeds}}_{\substack{\text{every used pivot }p_k>0\\\text{zero rows/columns may be skipped}}}
+\quad\Longrightarrow\quad
+\underbrace{A=MM^T}_{\text{stack cross-filled columns}}
+\quad\Longrightarrow\quad
+\underbrace{A\succeq0}_{\text{easy direction}}.
+\]
 
 \vfill
 
-Now we want the course-native test:
+\[
+\scriptsize
+\underbrace{A\succeq0}_{\text{hard direction}}
+\quad\Longrightarrow\quad
+\underbrace{\text{cross-filling can proceed legally}}_{\text{needs three modules}}.
+\]
 
-$$
-\boxed{\text{diagonal cross-filling}.}
-$$
+\vfill
+
+\[
+\scriptsize
+\boxed{
+\begin{array}{c}
+\text{The easy direction constructs }MM^T.\\[0.2em]
+\text{The hard direction proves PSD matrices never get stuck.}
+\end{array}}
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=8]{Easy Direction: Positive Pivots Build Columns}
+
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+b_1\\ b_2\\ b_3
+\end{pmatrix}}_{\text{pivot column}}
+\qquad
+\underbrace{b_2>0}_{\text{positive pivot}}
+\qquad
+\Longrightarrow
+\qquad
+\underbrace{m=\frac1{\sqrt{b_2}}
+\begin{pmatrix}
+b_1\\ b_2\\ b_3
+\end{pmatrix}}_{\text{cross-filled column}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{mm^T}_{\text{one PSD piece}}
+=
+\underbrace{\frac1{b_2}
+\begin{pmatrix}b_1\\ b_2\\ b_3\end{pmatrix}
+\begin{pmatrix}b_1&b_2&b_3\end{pmatrix}}_{P}.
+\]
 
 \vfill
 
 \begin{center}
-\x{Can pivots tell us whether $A$ is positive semidefinite?}
+\x{The positive pivot is required because the column uses $\sqrt{b_2}$.}
 \end{center}
 
 \end{frame}
 
 
-\begin{frame}{What We Want to Prove}
+\begin{frame}[shrink=8]{Easy Direction: Stack All Cross-Filled Columns}
 
-Assume $A$ is symmetric. Diagonal cross-filling inspects pivots
-
-$$
-a_{ii}=e_i^TAe_i.
-$$
-
-\vfill
-
-The criterion has two directions:
-
-\begin{center}
-\renewcommand{\arraystretch}{1.35}
-\begin{tabular}{c|p{0.58\textwidth}}
-\textbf{Direction} & \textbf{Meaning}\\
-\hline
-PSD $A$ & cross-filling produces legal nonnegative behavior\\
-legal cross-filling & reconstructs $A$ as positive pieces plus PSD remainder
-\end{tabular}
-\end{center}
+\[
+\scriptsize
+\underbrace{A}_{\text{after successful cross-filling}}
+=
+\underbrace{m_1m_1^T+m_2m_2^T+\cdots+m_rm_r^T}_{\text{rank-one PSD pieces}}.
+\]
 
 \vfill
 
-\begin{center}
-\x{First state the mechanism, then prove why it works.}
-\end{center}
+\[
+\scriptsize
+\underbrace{
+M=
+\begin{pmatrix}
+|&|&&|\\
+m_1&m_2&\cdots&m_r\\
+|&|&&|
+\end{pmatrix}}_{\text{stack the cross-filled columns}}
+\qquad\Longrightarrow\qquad
+\underbrace{A=MM^T}_{\text{factorization}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{x^TAx}_{\text{test vector}}
+=
+\underbrace{x^TMM^Tx}_{\text{factorized form}}
+=
+\underbrace{\|M^Tx\|^2}_{\ge0}.
+\]
+
+\end{frame}
+
+
+\begin{frame}[shrink=8]{Hard Direction: Three Modules}
+
+\[
+\scriptsize
+\underbrace{A\succeq0}_{\text{input assumption}}
+\quad\Longrightarrow\quad
+\begin{cases}
+\underbrace{a_{ii}=e_i^TAe_i\ge0}_{\text{Module 1: no negative diagonal}},\\[0.5em]
+\underbrace{a_{ii}=0\Rightarrow \text{row }i\text{ and column }i\text{ are zero}}_{\text{Module 2: zero pivot is harmless}},\\[0.5em]
+\underbrace{a_{ii}>0\Rightarrow A=P+R,\quad P\succeq0,\quad R\succeq0}_{\text{Module 3: positive pivot keeps induction alive}}.
+\end{cases}
+\]
+
+\vfill
+
+\[
+\scriptsize
+\boxed{
+\text{zero pivot }\Rightarrow\text{ skip}
+\qquad
+\text{positive pivot }\Rightarrow\text{ cross-fill and continue}.}
+\]
 
 \end{frame}
 
@@ -1201,130 +1316,126 @@ b_1&\rd{b_2}&b_3\\[0.4em]
 \end{frame}
 
 
-\begin{frame}{Inner Product Meaning of the Entries}
 
-The same entries are inner products:
+\begin{frame}[shrink=8]{Inner Product Meaning of the Entries}
 
-$$
-b_1=\langle e_1,e_2\rangle_A,\qquad
-b_2=\langle e_2,e_2\rangle_A,\qquad
-b_3=\langle e_3,e_2\rangle_A.
-$$
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+\dfrac{\langle \bl{e_1},\rd{e_2}\rangle_A\langle \rd{e_2},\bl{e_1}\rangle_A}{\langle \rd{e_2},\rd{e_2}\rangle_A}
+&
+\langle \bl{e_1},\rd{e_2}\rangle_A
+&
+\dfrac{\langle \bl{e_1},\rd{e_2}\rangle_A\langle \rd{e_2},\gn{e_3}\rangle_A}{\langle \rd{e_2},\rd{e_2}\rangle_A}
+\\[1.0em]
+\langle \rd{e_2},\bl{e_1}\rangle_A
+&
+\langle \rd{e_2},\rd{e_2}\rangle_A
+&
+\langle \rd{e_2},\gn{e_3}\rangle_A
+\\[0.6em]
+\dfrac{\langle \gn{e_3},\rd{e_2}\rangle_A\langle \rd{e_2},\bl{e_1}\rangle_A}{\langle \rd{e_2},\rd{e_2}\rangle_A}
+&
+\langle \gn{e_3},\rd{e_2}\rangle_A
+&
+\dfrac{\langle \gn{e_3},\rd{e_2}\rangle_A\langle \rd{e_2},\gn{e_3}\rangle_A}{\langle \rd{e_2},\rd{e_2}\rangle_A}
+\end{pmatrix}}_{P\text{ written entrywise from colored basis vectors}}
+\]
 
 \vfill
 
-So each entry of $P$ is:
-
-$$
-p_{jk}
-=
-\frac{\langle e_j,e_2\rangle_A\langle e_2,e_k\rangle_A}
-{\langle e_2,e_2\rangle_A}.
-$$
+\[
+\scriptsize
+\underbrace{\bl{e_1}}_{\text{first row/column}}
+\qquad
+\underbrace{\rd{e_2}}_{\text{pivot direction}}
+\qquad
+\underbrace{\gn{e_3}}_{\text{third row/column}}.
+\]
 
 \vfill
 
 \begin{center}
-\x{Small symbols first; formulas immediately after.}
+\x{Only the vectors are colored; each inner product remains one object.}
 \end{center}
 
 \end{frame}
 
 
-\begin{frame}{Criterion Preview}
+\begin{frame}{Module 1: No Negative Diagonal}
 
-Assume $A$ is positive semidefinite.
-
-\vfill
-
-First obvious fact:
-
-$$
-a_{ii}=e_i^TAe_i\ge0.
-$$
+\[
+\scriptsize
+\underbrace{A\succeq0}_{\text{PSD assumption}}
+\qquad\Longrightarrow\qquad
+\underbrace{a_{ii}=e_i^TAe_i\ge0}_{\text{test vector }e_i}.
+\]
 
 \vfill
 
-So diagonal pivots are \x{never negative}.
+\[
+\scriptsize
+\boxed{
+\underbrace{a_{ii}<0}_{\text{negative diagonal appears}}
+\quad\Longrightarrow\quad
+\underbrace{A\not\succeq0}_{\text{stop cross-filling test}}.
+}
+\]
 
 \vfill
 
 \begin{center}
-\x{The real issue is what happens for zero pivots and remainders.}
+\x{This explains why negative pivots immediately fail the PSD test.}
 \end{center}
 
 \end{frame}
 
 
-\begin{frame}{Criterion Preview (continued)}
 
-There are two facts to prove.
+\begin{frame}[shrink=8]{Lemma: Cauchy Is the Tool for Continuation}
 
-\vfill
-
-\begin{enumerate}
-\item If $a_{ii}=0$, then the whole $i$-th row and column are zero.
-
-$$
-\text{zero diagonal} \Rightarrow \text{nothing to pivot there}
-$$
-
-\item If $a_{ii}>0$ and we cross-fill
-
-$$
-A=P+(A-P),
-$$
-
-then both pieces are positive semidefinite:
-
-$$
-P\succeq0,\qquad A-P\succeq0.
-$$
-\end{enumerate}
+\[
+\scriptsize
+\underbrace{A\succeq0}_{\text{PSD form}}
+\qquad\Longrightarrow\qquad
+\underbrace{\langle x,y\rangle_A^2
+\le
+\langle x,x\rangle_A\langle y,y\rangle_A}_{\text{Cauchy lemma}}.
+\]
 
 \vfill
 
-\begin{center}
-\x{These two facts make diagonal cross-filling legal for PSD matrices.}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}{Promised Tool: Cauchy Inequality}
-
-We will prove this later, but first we use it.
-
-\vfill
-
-For a positive semidefinite matrix $A$, define:
-
-$$
-\langle x,y\rangle_A=x^TAy.
-$$
-
-\vfill
-
-\begin{thm}[Cauchy Inequality for PSD Forms]
-If $A$ is positive semidefinite, then
-
+\begin{prop}[Cauchy Inequality for PSD Forms]
+If $A$ is positive semidefinite and $\langle x,y\rangle_A=x^TAy$, then
 $$
 \langle x,y\rangle_A^2
 \le
 \langle x,x\rangle_A\langle y,y\rangle_A.
 $$
-\end{thm}
+\end{prop}
+
+\vfill
+
+\[
+\scriptsize
+\boxed{
+\begin{array}{ccl}
+\text{Use 1} &:& a_{ii}=0\Rightarrow \text{zero row/column},\\[0.2em]
+\text{Use 2} &:& a_{ii}>0\Rightarrow R=A-P\succeq0.
+\end{array}}
+\]
 
 \vfill
 
 \begin{center}
-\x{This one inequality proves the cross-filling criterion.}
+\x{The purpose of Cauchy is to keep cross-filling alive.}
 \end{center}
 
 \end{frame}
 
 
-\begin{frame}{Proposition: Zero Diagonal Means Zero Row}
+\begin{frame}{Module 2: Zero Diagonal Means Zero Row}
 
 \begin{prop}[Zero Diagonal Lemma]
 If $A\succeq0$ and
@@ -1355,7 +1466,7 @@ So $a_{ij}=0$ for every $j$.
 \end{frame}
 
 
-\begin{frame}{Meaning of Fact 1}
+\begin{frame}{Module 2 Meaning: Skip Zero Rows}
 
 If $A\succeq0$ and a diagonal entry is zero:
 
@@ -1388,7 +1499,7 @@ then the whole row and column are already zero.
 \end{frame}
 
 
-\begin{frame}{Proposition: Positive Pivot Splits PSD}
+\begin{frame}{Module 3: Positive Pivot Splits PSD}
 
 Now assume the diagonal pivot is positive:
 
@@ -1416,179 +1527,145 @@ $$
 \end{frame}
 
 
-\begin{frame}{Positive Pivot: The $P$ Matrix}
 
-For the visible pivot $a_{22}>0$, set
+\begin{frame}[shrink=8]{Module 3 Setup: Write $A$ as Inner Products}
 
-$$
-b_1=\langle e_1,e_2\rangle_A,\qquad
-b_2=\langle e_2,e_2\rangle_A,\qquad
-b_3=\langle e_3,e_2\rangle_A.
-$$
+\[
+\scriptsize
+\underbrace{\langle \rd{e_2},\rd{e_2}\rangle_A>0}_{\text{positive pivot}}
+\]
 
 \vfill
 
 \[
+\tiny
 \underbrace{
 \begin{pmatrix}
-\dfrac{b_1b_1}{b_2}&b_1&\dfrac{b_1b_3}{b_2}\\[0.8em]
-b_1&\rd{b_2}&b_3\\[0.4em]
-\dfrac{b_3b_1}{b_2}&b_3&\dfrac{b_3b_3}{b_2}
-\end{pmatrix}}_{P}
+\langle \bl{e_1},\bl{e_1}\rangle_A&\langle \bl{e_1},\rd{e_2}\rangle_A&\langle \bl{e_1},\gn{e_3}\rangle_A\\[0.35em]
+\langle \rd{e_2},\bl{e_1}\rangle_A&\langle \rd{e_2},\rd{e_2}\rangle_A&\langle \rd{e_2},\gn{e_3}\rangle_A\\[0.35em]
+\langle \gn{e_3},\bl{e_1}\rangle_A&\langle \gn{e_3},\rd{e_2}\rangle_A&\langle \gn{e_3},\gn{e_3}\rangle_A
+\end{pmatrix}}_{A\text{ as an inner product table}}
 \]
 
 \vfill
 
 \begin{center}
-\x{The second row and second column match $A$ exactly.}
+\x{Only the basis vectors are colored. Each inner product stays one object.}
 \end{center}
 
 \end{frame}
 
 
-\begin{frame}{Why $P$ Is Positive Semidefinite}
-
-The honest display comes first.  Now factorize it for proof:
+\begin{frame}[shrink=8]{Module 3: The Cross-Filled Piece $P$}
 
 \[
+\tiny
 \underbrace{
 \begin{pmatrix}
-\dfrac{b_1b_1}{b_2}&b_1&\dfrac{b_1b_3}{b_2}\\[0.8em]
-b_1&\rd{b_2}&b_3\\[0.4em]
-\dfrac{b_3b_1}{b_2}&b_3&\dfrac{b_3b_3}{b_2}
+\dfrac{\langle \bl{e_1},\rd{e_2}\rangle_A\langle \rd{e_2},\bl{e_1}\rangle_A}{\langle \rd{e_2},\rd{e_2}\rangle_A}
+&
+\langle \bl{e_1},\rd{e_2}\rangle_A
+&
+\dfrac{\langle \bl{e_1},\rd{e_2}\rangle_A\langle \rd{e_2},\gn{e_3}\rangle_A}{\langle \rd{e_2},\rd{e_2}\rangle_A}
+\\[1.05em]
+\langle \rd{e_2},\bl{e_1}\rangle_A
+&
+\langle \rd{e_2},\rd{e_2}\rangle_A
+&
+\langle \rd{e_2},\gn{e_3}\rangle_A
+\\[0.6em]
+\dfrac{\langle \gn{e_3},\rd{e_2}\rangle_A\langle \rd{e_2},\bl{e_1}\rangle_A}{\langle \rd{e_2},\rd{e_2}\rangle_A}
+&
+\langle \gn{e_3},\rd{e_2}\rangle_A
+&
+\dfrac{\langle \gn{e_3},\rd{e_2}\rangle_A\langle \rd{e_2},\gn{e_3}\rangle_A}{\langle \rd{e_2},\rd{e_2}\rangle_A}
 \end{pmatrix}}_{P}
-=
-\frac{1}{b_2}
-\begin{pmatrix}b_1\\ b_2\\ b_3\end{pmatrix}
-\begin{pmatrix}b_1&b_2&b_3\end{pmatrix}.
 \]
 
-\begin{center}
-\x{The factorization is allowed here because the entries were already shown.}
-\end{center}
+\vfill
+
+\[
+\scriptsize
+\underbrace{P=mm^T}_{\text{PSD piece}},
+\qquad
+\underbrace{m=\frac1{\sqrt{\langle \rd{e_2},\rd{e_2}\rangle_A}}
+\begin{pmatrix}
+\langle \bl{e_1},\rd{e_2}\rangle_A\\[0.2em]
+\langle \rd{e_2},\rd{e_2}\rangle_A\\[0.2em]
+\langle \gn{e_3},\rd{e_2}\rangle_A
+\end{pmatrix}}_{\text{positive pivot gives the square root}}.
+\]
 
 \end{frame}
 
 
-\begin{frame}{Testing Vector Formula for $P$}
+\begin{frame}[shrink=8]{Module 3: The Remainder $R=A-P$}
 
-For every testing vector $v=(x_1,x_2,x_3)^T$:
-
-$$
-v^TPv
+\[
+\tiny
+\underbrace{R}_{A-P}
 =
-\frac{(b_1x_1+b_2x_2+b_3x_3)^2}{b_2}
-\ge0.
-$$
-
-In the general pivot position $i$, the same proof gives:
-
-$$
-\boxed{
-v^TPv
-=
-\frac{\langle v,e_i\rangle_A^2}{\langle e_i,e_i\rangle_A}
-}
-$$
+\underbrace{
+\begin{pmatrix}
+\langle \bl{e_1},\bl{e_1}\rangle_A-\dfrac{\langle \bl{e_1},\rd{e_2}\rangle_A\langle \rd{e_2},\bl{e_1}\rangle_A}{\langle \rd{e_2},\rd{e_2}\rangle_A}
+&0&
+\langle \bl{e_1},\gn{e_3}\rangle_A-\dfrac{\langle \bl{e_1},\rd{e_2}\rangle_A\langle \rd{e_2},\gn{e_3}\rangle_A}{\langle \rd{e_2},\rd{e_2}\rangle_A}
+\\[1.25em]
+0&0&0
+\\[0.6em]
+\langle \gn{e_3},\bl{e_1}\rangle_A-\dfrac{\langle \gn{e_3},\rd{e_2}\rangle_A\langle \rd{e_2},\bl{e_1}\rangle_A}{\langle \rd{e_2},\rd{e_2}\rangle_A}
+&0&
+\langle \gn{e_3},\gn{e_3}\rangle_A-\dfrac{\langle \gn{e_3},\rd{e_2}\rangle_A\langle \rd{e_2},\gn{e_3}\rangle_A}{\langle \rd{e_2},\rd{e_2}\rangle_A}
+\end{pmatrix}}_{\text{entrywise remainder}}
+\]
 
 \vfill
 
 \begin{center}
-\x{Since the pivot is positive, this proves $P\succeq0$.}
+\x{The pivot row and pivot column are zero; only the remaining block must stay PSD.}
 \end{center}
 
 \end{frame}
 
 
-\begin{frame}{Positive Pivot: The Remainder Matrix}
-
-Subtract entry-by-entry:
+\begin{frame}[shrink=8]{Module 3: Test the Remainder}
 
 \[
-\underbrace{
-\begin{pmatrix}
-a_{11}&b_1&a_{13}\\
-b_1&\rd{b_2}&b_3\\
-a_{31}&b_3&a_{33}
-\end{pmatrix}}_{A}
+\scriptsize
+\underbrace{v}_{\text{testing vector}}
+=
+\underbrace{x_1\bl{e_1}+x_2\rd{e_2}+x_3\gn{e_3}}_{\text{any vector}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{v^TRv}_{\text{test }R\text{ on both sides}}
+=
+\underbrace{v^T(A-P)v}_{R=A-P}
+=
+\underbrace{\langle v,v\rangle_A}_{v^TAv}
 -
-\underbrace{
-\begin{pmatrix}
-\dfrac{b_1b_1}{b_2}&b_1&\dfrac{b_1b_3}{b_2}\\[0.8em]
-b_1&\rd{b_2}&b_3\\[0.4em]
-\dfrac{b_3b_1}{b_2}&b_3&\dfrac{b_3b_3}{b_2}
-\end{pmatrix}}_{P}
-=
-\underbrace{
-\begin{pmatrix}
-*&0&*\\
-0&\rd{0}&0\\
-*&0&*
-\end{pmatrix}}_{R}.
+\underbrace{\frac{\langle v,\rd{e_2}\rangle_A^2}{\langle \rd{e_2},\rd{e_2}\rangle_A}}_{v^TPv}.
 \]
 
 \vfill
-
-\begin{center}
-\x{The pivot row and pivot column become zero in the remainder.}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}{Remainder Entries We Care About}
-
-The starred entries have honest formulas:
 
 \[
-\underbrace{
-\begin{pmatrix}
-a_{11}-\dfrac{b_1b_1}{b_2}&0&a_{13}-\dfrac{b_1b_3}{b_2}\\[0.8em]
-0&\rd{0}&0\\[0.4em]
-a_{31}-\dfrac{b_3b_1}{b_2}&0&a_{33}-\dfrac{b_3b_3}{b_2}
-\end{pmatrix}}_{R=A-P}
-\]
-
-\begin{center}
-\x{For now, only the zero pivot row/column matters.}
-\end{center}
-
-\end{frame}
-
-
-\begin{frame}{Fact 2: Why the Remainder Is PSD}
-
-Goal:
-
-$$
-v^T(A-P)v\ge0.
-$$
-
-\vfill
-
-Rewrite the left side using the previous formula:
-
-$$
-v^T(A-P)v
-=
-\langle v,v\rangle_A
--
-\frac{\langle v,e_i\rangle_A^2}{\langle e_i,e_i\rangle_A}.
-$$
-
-\vfill
-
-Cauchy gives
-
-$$
-\langle v,e_i\rangle_A^2
+\scriptsize
+\underbrace{\langle v,\rd{e_2}\rangle_A^2}_{\text{Cauchy numerator}}
 \le
-\langle v,v\rangle_A\langle e_i,e_i\rangle_A.
-$$
+\underbrace{\langle v,v\rangle_A\langle \rd{e_2},\rd{e_2}\rangle_A}_{\text{Cauchy denominator clears}}
+\quad\Longrightarrow\quad
+\boxed{v^TRv\ge0.}
+\]
 
 \vfill
 
-So the displayed expression is $\ge0$.
+\begin{center}
+\x{Cauchy is exactly the reason the remainder remains positive semidefinite.}
+\end{center}
 
 \end{frame}
 
@@ -1621,19 +1698,31 @@ $a_{ii}>0$ & cross-fill: $A=P+(A-P)$ with both PSD
 
 \begin{frame}{Proof of Cauchy: Geometric Memory}
 
-Now we prove the promised inequality.
+\begin{prop}[Cauchy Inequality for PSD Forms]
+If $A\succeq0$ and $\langle x,y\rangle_A=x^TAy$, then
+$$
+\boxed{\langle x,y\rangle_A^2
+\le
+\langle x,x\rangle_A\langle y,y\rangle_A.}
+$$
+\end{prop}
 
 \vfill
 
-For the ordinary dot product:
-
-$$
-(x^Ty)^2\le (x^Tx)(y^Ty).
-$$
+\[
+\scriptsize
+\underbrace{A=I}_{\text{ordinary dot product}}
+\qquad\Longrightarrow\qquad
+\underbrace{(x^Ty)^2\le (x^Tx)(y^Ty)}_{\text{circle intuition only}}.
+\]
 
 \vfill
 
-After normalizing, the dot product of two unit vectors is at most $1$.
+\begin{center}
+\x{This page is only for geometric memory, not the proof.}
+\end{center}
+
+\vfill
 
 \end{frame}
 
@@ -1674,7 +1763,14 @@ $$
 
 \begin{frame}{Cauchy Proof: Two Cases}
 
-For a fixed pair $x,y$, there are two cases:
+\begin{prop}[Cauchy Inequality for PSD Forms]
+If $A\succeq0$, then
+$$
+\boxed{\langle x,y\rangle_A^2
+\le
+\langle x,x\rangle_A\langle y,y\rangle_A.}
+$$
+\end{prop}
 
 \vfill
 
@@ -2080,6 +2176,60 @@ This is $>0$ for every $x\ne0$.
 \end{frame}
 
 
+\begin{frame}[shrink=8]{Test 3 Also Builds a Factorization}
+
+\[
+\scriptsize
+\underbrace{
+\begin{pmatrix}
+1&3&2\\
+3&10&7\\
+2&7&9
+\end{pmatrix}}_{A}
+=
+\underbrace{
+\begin{pmatrix}1\\3\\2\end{pmatrix}
+\begin{pmatrix}1&3&2\end{pmatrix}}_{m_1m_1^T}
++
+\underbrace{
+\begin{pmatrix}0\\1\\1\end{pmatrix}
+\begin{pmatrix}0&1&1\end{pmatrix}}_{m_2m_2^T}
++
+\underbrace{
+\begin{pmatrix}0\\0\\2\end{pmatrix}
+\begin{pmatrix}0&0&2\end{pmatrix}}_{m_3m_3^T}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{
+M=
+\begin{pmatrix}
+|&|&|\\
+m_1&m_2&m_3\\
+|&|&|
+\end{pmatrix}
+=
+\begin{pmatrix}
+1&0&0\\
+3&1&0\\
+2&1&2
+\end{pmatrix}}_{\text{stack the cross-filled columns}}
+\qquad\Longrightarrow\qquad
+\boxed{A=MM^T.}
+\]
+
+\vfill
+
+\begin{center}
+\x{Cross-filling is both a test and a constructive factorization.}
+\end{center}
+
+\end{frame}
+
+
 \begin{frame}{Cross-Filling Criterion}
 
 For a real symmetric matrix:
@@ -2392,7 +2542,204 @@ negative diagonal in $R_k$ & obstruction
 \end{frame}
 
 
-\section*{End}
+\section{Applications}
+
+\begin{frame}[shrink=8]{Application 1: Square Root of a PSD Matrix}
+
+\[
+\scriptsize
+\underbrace{A\succeq0}_{\text{positive semidefinite}}
+\quad\Longrightarrow\quad
+\underbrace{
+A=
+\Omega
+\begin{pmatrix}
+\lambda_1&&0\\
+&\ddots&\\
+0&&\lambda_n
+\end{pmatrix}
+\Omega^T}_{\substack{\text{orthogonal diagonalization}\\\lambda_i\ge0}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{
+A^{1/2}
+:=
+\Omega
+\begin{pmatrix}
+\sqrt{\lambda_1}&&0\\
+&\ddots&\\
+0&&\sqrt{\lambda_n}
+\end{pmatrix}
+\Omega^T}_{\text{define one symmetric square root}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{A^{1/2}A^{1/2}}_{\text{multiply in the same eigenbasis}}
+=
+\Omega
+\begin{pmatrix}
+\lambda_1&&0\\
+&\ddots&\\
+0&&\lambda_n
+\end{pmatrix}
+\Omega^T
+=A.
+\]
+
+\vfill
+
+\begin{center}
+\x{Matrix square roots are not unique; this defines the symmetric PSD square root.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[shrink=8]{Application 1: Example}
+
+\[
+\scriptsize
+\underbrace{
+A=
+\begin{pmatrix}
+3&1\\
+1&3
+\end{pmatrix}}_{\text{PSD}}
+=
+\underbrace{
+\Omega}_{\text{orthogonal eigenbasis}}
+\underbrace{
+\begin{pmatrix}
+4&0\\
+0&2
+\end{pmatrix}}_{\Lambda}
+\underbrace{\Omega^T}_{\text{eigen-coordinate rows}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{
+A^{1/2}
+:=
+\Omega
+\begin{pmatrix}
+\sqrt4&0\\
+0&\sqrt2
+\end{pmatrix}
+\Omega^T}_{\text{replace squared axis coefficients by axis coefficients}}
+=
+\underbrace{
+\Omega
+\begin{pmatrix}
+2&0\\
+0&\sqrt2
+\end{pmatrix}
+\Omega^T}_{\text{symmetric square root}}.
+\]
+
+\vfill
+
+\begin{center}
+\x{PSD matrices allow a real symmetric square root.}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}[shrink=10]{Application 2: Comparing Two Inner Products}
+
+\[
+\scriptsize
+\underbrace{A=
+\Omega
+\begin{pmatrix}
+\lambda_1&&0\\
+&\ddots&\\
+0&&\lambda_n
+\end{pmatrix}
+\Omega^T}_{\lambda_{\min}\le\lambda_i\le\lambda_{\max}}
+\qquad
+\underbrace{y=\Omega^Tx}_{\text{orthogonal change of coordinates}}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{x^TAx}_{\langle x,x\rangle_A}
+=
+\underbrace{y^T
+\begin{pmatrix}
+\lambda_1&&0\\
+&\ddots&\\
+0&&\lambda_n
+\end{pmatrix}
+y}_{\lambda_1y_1^2+\cdots+\lambda_ny_n^2}.
+\]
+
+\vfill
+
+\[
+\scriptsize
+\underbrace{\lambda_{\min}(y_1^2+\cdots+y_n^2)}_{\lambda_{\min}\|x\|^2}
+\le
+\underbrace{x^TAx}_{\text{new squared length}}
+\le
+\underbrace{\lambda_{\max}(y_1^2+\cdots+y_n^2)}_{\lambda_{\max}\|x\|^2}.
+\]
+
+\end{frame}
+
+
+\begin{frame}{Eigenvalue Bound for the Ratio}
+
+\[
+\scriptsize
+\boxed{
+\lambda_{\min}
+\le
+\underbrace{\frac{x^TAx}{x^Tx}}_{\text{ratio of new squared length to old squared length}}
+\le
+\lambda_{\max}
+\qquad(x\ne0).
+}
+\]
+
+\vfill
+
+\begin{thm}[Eigenvalue Comparison]
+If $A$ is real symmetric with smallest eigenvalue $\lambda_{\min}$ and
+largest eigenvalue $\lambda_{\max}$, then every nonzero vector $x$ satisfies
+$$
+\boxed{
+\lambda_{\min}
+\le
+\frac{x^TAx}{x^Tx}
+\le
+\lambda_{\max}.
+}
+$$
+\end{thm}
+
+\vfill
+
+\begin{center}
+\x{Eigenvalues measure the strongest and weakest stretching of the inner product.}
+\end{center}
+
+\end{frame}
+
+
+\section*{}
 
 \begin{frame}{Final Summary}
 
